@@ -1,0 +1,4 @@
+.page-shell {
+  display: flex;
+  flex-direction: column;
+}

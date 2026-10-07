@@ -1,0 +1,23 @@
+{
+  "description": "weapp-stylex native example",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "minified": false,
+    "postcss": true,
+    "compileHotReLoad": false,
+    "minifyWXSS": false,
+    "minifyWXML": false,
+    "uploadWithSourceMap": true
+  },
+  "compileType": "miniprogram",
+  "miniprogramRoot": "dist",
+  "libVersion": "3.7.3",
+  "appid": "touristappid",
+  "projectname": "weapp-stylex-example",
+  "condition": {}
+}

@@ -1,0 +1,18 @@
+{
+  "name": "wechat-native",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "weapp-vite build && node scripts/copy-project-config.mjs",
+    "test:headless": "node test/headless.mjs",
+    "dev": "weapp-vite dev"
+  },
+  "dependencies": {
+    "@weapp-stylex/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@weapp-stylex/weapp-vite": "workspace:*",
+    "weapp-vite": "7.4.0"
+  }
+}

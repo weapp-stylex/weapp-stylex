@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "stylex-card": "/components/stylex-card/stylex-card"
+  }
+}

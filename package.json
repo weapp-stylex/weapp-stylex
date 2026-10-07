@@ -1,0 +1,21 @@
+{
+  "name": "weapp-stylex",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@12.9.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "test": "vitest run",
+    "typecheck": "tsc -b --pretty false",
+    "lint": "tsc -b --pretty false"
+  },
+  "devDependencies": {
+    "@mpcore/test": "0.1.15",
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

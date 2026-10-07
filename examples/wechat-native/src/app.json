@@ -1,0 +1,18 @@
+{
+  "pages": ["pages/index/index"],
+  "subpackages": [
+    {
+      "root": "subpackage",
+      "pages": ["detail/index"]
+    }
+  ],
+  "window": {
+    "navigationBarTitleText": "StyleX Mini Program",
+    "navigationBarBackgroundColor": "#f6f7fb",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f6f7fb"
+  },
+  "usingComponents": {
+    "stylex-card": "components/stylex-card/stylex-card"
+  }
+}

@@ -1,0 +1,7 @@
+<view class="{{sx.page}}">
+  <view class="{{sx.eyebrow}}">NATIVE WECHAT + STYLEX</view>
+  <view class="{{sx.title}}">原子化样式，直接生成 WXSS</view>
+  <view class="{{sx.subtitle}}">StyleX 在编译阶段生成确定的 sx* class，WXML 只消费 Page data 中的字符串。</view>
+  <stylex-card title="组件样式也能复用" />
+  <view class="{{sx.button}} {{pressed ? sx.buttonPressed : ''}}" bindtap="onTapButton">点击查看条件样式</view>
+</view>
