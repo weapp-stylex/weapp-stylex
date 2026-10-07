@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "path": "lint-staged.config.js",
+  "source": {
+    "package": "@icebreakers/monorepo-templates",
+    "version": "2.3.0",
+    "assetPath": "lint-staged.config.js",
+    "hash": "7dee01c7de9e676908ec129672874c5dc30611f8832458d4dcf6a245436e9a4f"
+  },
+  "upstream": {
+    "hash": "7dee01c7de9e676908ec129672874c5dc30611f8832458d4dcf6a245436e9a4f",
+    "content": "aW1wb3J0IHsgZGVmaW5lTGludFN0YWdlZENvbmZpZyB9IGZyb20gJ3JlcG9jdGwvdG9vbGluZycKCmV4cG9ydCBkZWZhdWx0IGF3YWl0IGRlZmluZUxpbnRTdGFnZWRDb25maWcoKQo="
+  }
+}

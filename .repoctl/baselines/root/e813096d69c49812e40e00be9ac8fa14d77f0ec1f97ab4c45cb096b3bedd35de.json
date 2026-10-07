@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "path": ".npmrc",
+  "source": {
+    "package": "@icebreakers/monorepo-templates",
+    "version": "2.3.0",
+    "assetPath": "npmrc",
+    "hash": "ce3bd18df7fb3bc82df6fc4c001b59003ee0df84081212c98cde5a545a79cc23"
+  },
+  "upstream": {
+    "hash": "ce3bd18df7fb3bc82df6fc4c001b59003ee0df84081212c98cde5a545a79cc23",
+    "content": "IyDmlofmoaPlnLDlnYA6IGh0dHBzOi8vcG5wbS5pby9ucG1yYwojIyDpu5jorqTlnLDlnYAKcmVnaXN0cnk9aHR0cHM6Ly9yZWdpc3RyeS5ucG1qcy5vcmcvCiMjIOWPr+S9v+eUqOWbveWGhemVnOWDj+WcsOWdgAojIHJlZ2lzdHJ5PWh0dHA6Ly9yZWdpc3RyeS5ucG1taXJyb3IuY29tLwoKIyMgR2l0IOmFjee9rgpnaXQtY2hlY2tzPWZhbHNlCgojIyDljIXnrqHnkIblmajphY3nva4KcGFja2FnZS1tYW5hZ2VyLXN0cmljdD10cnVlCnBhY2thZ2UtbWFuYWdlci1zdHJpY3QtdmVyc2lvbj10cnVlCgojIyDkvp3otZblpITnkIYKYXV0by1pbnN0YWxsLXBlZXJzPXRydWUKc3RyaWN0LXBlZXItZGVwZW5kZW5jaWVzPWZhbHNlCnJlc29sdXRpb24tbW9kZT1oaWdoZXN0CgojIyDpg6jliIblnLrmma/lj6/og73pnIDopoHlvIDlkK/mraTphY3nva4KIyBzaGFtZWZ1bGx5LWhvaXN0PXRydWUK"
+  }
+}

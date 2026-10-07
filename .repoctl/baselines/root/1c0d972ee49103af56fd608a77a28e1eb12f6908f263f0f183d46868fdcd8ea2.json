@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "path": ".github/ISSUE_TEMPLATE/config.yml",
+  "source": {
+    "package": "@icebreakers/monorepo-templates",
+    "version": "2.3.0",
+    "assetPath": ".github/ISSUE_TEMPLATE/config.yml",
+    "hash": "6191f3e8c471588e0ec014de51d858c4610db59c3b6d34202962f3a522334e19"
+  },
+  "upstream": {
+    "hash": "a3f10f83e17d89f734fb34be0a58c6d3bfa722039426e08b87946a3403bdc0aa",
+    "content": "YmxhbmtfaXNzdWVzX2VuYWJsZWQ6IGZhbHNlCmNvbnRhY3RfbGlua3M6CiAgLSBuYW1lOiBGZWF0dXJlIFJlcXVlc3QKICAgIHVybDogaHR0cHM6Ly9naXRodWIuY29tL3dlYXBwLXN0eWxleC93ZWFwcC1zdHlsZXgvZGlzY3Vzc2lvbnMKICAgIGFib3V0OiBTdWdnZXN0IG5ldyBmZWF0dXJlcyBmb3IgY29uc2lkZXJhdGlvbgogICMgLSBuYW1lOiBEaXNjb3JkIENoYXQKICAjICAgdXJsOiBodHRwczovL2NoYXQudnVlanMub3JnCiAgIyAgIGFib3V0OiBBc2sgcXVlc3Rpb25zIGFuZCBkaXNjdXNzIHdpdGggb3RoZXIgVnVlIHVzZXJzIGluIHJlYWwgdGltZS4KICAjIC0gbmFtZTogUXVlc3Rpb25zICYgRGlzY3Vzc2lvbnMKICAjICAgdXJsOiBodHRwczovL2dpdGh1Yi5jb20vdnVlanMvY29yZS9kaXNjdXNzaW9ucwogICMgICBhYm91dDogVXNlIEdpdEh1YiBkaXNjdXNzaW9ucyBmb3IgbWVzc2FnZS1ib2FyZCBzdHlsZSBxdWVzdGlvbnMgYW5kIGRpc2N1c3Npb25zLgogICMgLSBuYW1lOiBQYXRyZW9uCiAgIyAgIHVybDogaHR0cHM6Ly93d3cucGF0cmVvbi5jb20vZXZhbnlvdQogICMgICBhYm91dDogTG92ZSBWdWUuanM/IFBsZWFzZSBjb25zaWRlciBzdXBwb3J0aW5nIHVzIHZpYSBQYXRyZW9uLgogICMgLSBuYW1lOiBPcGVuIENvbGxlY3RpdmUKICAjICAgdXJsOiBodHRwczovL29wZW5jb2xsZWN0aXZlLmNvbS92dWVqcy9kb25hdGUKICAjICAgYWJvdXQ6IExvdmUgVnVlLmpzPyBQbGVhc2UgY29uc2lkZXIgc3VwcG9ydGluZyB1cyB2aWEgT3BlbiBDb2xsZWN0aXZlLgo="
+  }
+}

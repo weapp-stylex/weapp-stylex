@@ -1,7 +1,8 @@
 {
   "name": "weapp-stylex",
-  "private": true,
+  "type": "module",
   "version": "0.1.0",
+  "private": true,
   "packageManager": "pnpm@12.9.1",
   "engines": {
     "node": ">=22.12.0"
@@ -10,12 +11,32 @@
     "build": "pnpm -r --if-present build",
     "test": "vitest run",
     "typecheck": "tsc -b --pretty false",
-    "lint": "tsc -b --pretty false"
+    "lint": "tsc -b --pretty false",
+    "repo:init": "repo init",
+    "repo:new": "repo new",
+    "repo:check": "repo check",
+    "repo:doctor": "repo doctor",
+    "commitlint": "commitlint --edit"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@eslint/config-inspector": "^3.5.0",
     "@mpcore/test": "0.1.15",
-    "@types/node": "^22.15.0",
-    "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "@types/node": "^26.6.4",
+    "@vitest/coverage-v8": "~5.0.3",
+    "eslint": "^10.12.0",
+    "execa": "^10.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "only-allow": "^1.2.2",
+    "repoctl": "^5.8.0",
+    "stylelint": "^17.16.0",
+    "tailwindcss": "^4.3.3",
+    "tsd": "^0.33.0",
+    "tsdown": "0.23.0",
+    "turbo": "^2.11.7",
+    "typescript": "^6.0.3",
+    "vitest": "~5.0.3",
+    "yaml": "^2.9.1"
   }
 }

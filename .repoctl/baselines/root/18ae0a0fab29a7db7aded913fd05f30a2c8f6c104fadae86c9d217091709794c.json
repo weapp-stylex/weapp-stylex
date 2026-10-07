@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "path": "pnpm-workspace.yaml",
+  "source": {
+    "package": "@icebreakers/monorepo-templates",
+    "version": "2.3.0",
+    "assetPath": "pnpm-workspace.yaml",
+    "hash": "6b276a7b32a421458eda942a7a11d7202c072644f401c6b90f45c05fc498de51"
+  },
+  "upstream": {
+    "hash": "6b276a7b32a421458eda942a7a11d7202c072644f401c6b90f45c05fc498de51",
+    "content": "cGFja2FnZXM6CiAgLSBhcHBzLyoKICAtIHBhY2thZ2VzLyoKICAtIHRlbXBsYXRlcy8qCiAgLSAiISoqL3Rlc3QvKioiCm1pbmltdW1SZWxlYXNlQWdlOiAwCnBtT25GYWlsOiBlcnJvcgp2ZXJzaW9uaW5nOgogIGNoYW5nZWxvZzoKICAgIHN0b3JhZ2U6IHJlcG9zaXRvcnkKYWxsb3dCdWlsZHM6CiAgIkB0YWlsd2luZGNzcy9veGlkZSI6IHRydWUKICBlc2J1aWxkOiB0cnVlCiAgbXNncGFja3ItZXh0cmFjdDogdHJ1ZQogIHNoYXJwOiB0cnVlCiAgdnVlLWRlbWk6IHRydWUKICB3b3JrZXJkOiB0cnVlCm92ZXJyaWRlczoKICBwcmV0dGllcjogMy45LjkKICB0eXBlc2NyaXB0OiA2LjAuMwogICJAYXJldGhldHlwZXN3cm9uZy9jb3JlPnR5cGVzY3JpcHQiOiA1LjkuMwogIHZpdGU6IDguMy4zCiAgcG9zdGNzczogOC41LjI5CiAgcG9zdGNzcy1zZWxlY3Rvci1wYXJzZXI6IDcuMS42CiAganMteWFtbDogNS40LjMKICBuYW5vaWQ6IDYuMC4yCiAgYnJhY2UtZXhwYW5zaW9uOiA1LjAuMTIKICBtaW5pbWF0Y2hAPDQ+YnJhY2UtZXhwYW5zaW9uOiAxLjEuMjEKICBtaW5pbWF0Y2hAPj00IDwxMD5icmFjZS1leHBhbnNpb246IDIuMS43CiAgY3Jvc3Mtc3Bhd246IDcuMC42CiAgYWRtLXppcDogMC42LjEKICB1dWlkOiAxNC4wLjIKICBlc2J1aWxkOiAwLjI4LjIK"
+  }
+}

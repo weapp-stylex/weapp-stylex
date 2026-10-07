@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "path": "CLAUDE.md",
+  "source": {
+    "package": "@icebreakers/monorepo-templates",
+    "version": "2.3.0",
+    "assetPath": "CLAUDE.md",
+    "hash": "5822bdd4fe7dafb6d295e1cc5b8d64adedcc9b87551ea7804997b365ae64ce9c"
+  },
+  "upstream": {
+    "hash": "5822bdd4fe7dafb6d295e1cc5b8d64adedcc9b87551ea7804997b365ae64ce9c",
+    "content": "IyBBZ2VudCBpbnN0cnVjdGlvbnMKClRoaXMgd29ya3NwYWNlIGlzIG1hbmFnZWQgYnkgKipyZXBvY3RsKiouIFRoZSByZWNvbW1lbmRlZCBjb21tYW5kIGlzIGByZXBvYC4KCkZvbGxvdyBgQUdFTlRTLm1kYCBpbiB0aGUgd29ya3NwYWNlIHJvb3QuIENyZWF0ZSBwYWNrYWdlcyB3aXRoCmBwbnBtIGV4ZWMgcmVwbyBuZXcgPG5hbWU+IC0tdGVtcGxhdGUgPGtleT5gLiBWZXJpZnkgd2l0aApgcG5wbSBleGVjIHJlcG8gZG9jdG9yYCBhbmQgYHBucG0gZXhlYyByZXBvIGNoZWNrYC4KCklmIHlvdSB3ZXJlIGFza2VkIHRvIGNyZWF0ZSBhIG5ldyBidXNpbmVzcyBwcm9qZWN0LCBkbyBub3QgYWRkIGl0IGluc2lkZSBhbgpleGlzdGluZyB1bnJlbGF0ZWQgcmVwb3NpdG9yeS4gVXNlIGEgbmV3IG9yIGVtcHR5IGRpcmVjdG9yeSBvdXRzaWRlIHRoZSByZXBvY3RsCnNvdXJjZSBjaGVja291dDoKCmBgYGJhc2gKcG5wbSBjcmVhdGUgcmVwb2N0bEBsYXRlc3QgPGRpcj4gLS0gLS15ZXMgLS10ZW1wbGF0ZXMgPGtleXM+CmNkIDxkaXI+CmNvcmVwYWNrIGVuYWJsZQpwbnBtIGluc3RhbGwKcG5wbSBleGVjIHJlcG8gaW5pdApwbnBtIGV4ZWMgcmVwbyBkb2N0b3IKYGBgCg=="
+  }
+}

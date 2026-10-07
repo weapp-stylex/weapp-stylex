@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "path": "Dockerfile",
+  "source": {
+    "package": "@icebreakers/monorepo-templates",
+    "version": "2.3.0",
+    "assetPath": "Dockerfile",
+    "hash": "ed4d973848c5163acd278f409ab906a98827729c09e07fbd7b33cd91515db3f6"
+  },
+  "upstream": {
+    "hash": "ed4d973848c5163acd278f409ab906a98827729c09e07fbd7b33cd91515db3f6",
+    "content": "RlJPTSBub2RlOjIyLWFscGluZSBBUyBiYXNlCkVOViBQTlBNX0hPTUU9Ii9wbnBtIgpFTlYgUEFUSD0iJFBOUE1fSE9NRTokUEFUSCIKUlVOIGNvcmVwYWNrIGVuYWJsZQoKRlJPTSBiYXNlIEFTIGJ1aWxkZXIKQ09QWSAuIC91c3Ivc3JjL2FwcApXT1JLRElSIC91c3Ivc3JjL2FwcApSVU4gLS1tb3VudD10eXBlPWNhY2hlLGlkPXBucG0sdGFyZ2V0PS9wbnBtL3N0b3JlIHBucG0gaW5zdGFsbCAtLWZyb3plbi1sb2NrZmlsZQpSVU4gcG5wbSBydW4gLXIgYnVpbGQKCkZST00gYmFzZSBBUyBhcHAKQ09QWSAtLWZyb209YnVpbGRlciAvdXNyL3NyYy9hcHAgL2FwcApXT1JLRElSIC9hcHAKRVhQT1NFIDgwMDAKQ01EIFsgInBucG0iLCAic3RhcnQiIF0KCiMgZG9ja2VyIGJ1aWxkIC4gLS10YXJnZXQgYXBwIC0tdGFnIGFwcDpsYXRlc3QK"
+  }
+}

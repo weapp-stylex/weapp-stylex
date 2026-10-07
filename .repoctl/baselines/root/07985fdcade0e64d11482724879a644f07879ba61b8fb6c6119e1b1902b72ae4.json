@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "path": ".github/FUNDING.yml",
+  "source": {
+    "package": "@icebreakers/monorepo-templates",
+    "version": "2.3.0",
+    "assetPath": ".github/FUNDING.yml",
+    "hash": "930eb09a735ce89ed8d44a6e17441b7c61d97074a27ab5b9e7b924aa66f132b3"
+  },
+  "upstream": {
+    "hash": "930eb09a735ce89ed8d44a6e17441b7c61d97074a27ab5b9e7b924aa66f132b3",
+    "content": "IyBodHRwczovL2RvY3MuZ2l0aHViLmNvbS9lbi9yZXBvc2l0b3JpZXMvbWFuYWdpbmcteW91ci1yZXBvc2l0b3J5cy1zZXR0aW5ncy1hbmQtZmVhdHVyZXMvY3VzdG9taXppbmcteW91ci1yZXBvc2l0b3J5L2Rpc3BsYXlpbmctYS1zcG9uc29yLWJ1dHRvbi1pbi15b3VyLXJlcG9zaXRvcnkKCmdpdGh1YjogW3Nvbm9mbWFnaWNdCmN1c3RvbTogWydodHRwczovL2dpdGh1Yi5jb20vc29ub2ZtYWdpYy9zcG9uc29ycyddCg=="
+  }
+}

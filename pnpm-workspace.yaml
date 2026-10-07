@@ -1,6 +1,54 @@
 packages:
   - packages/*
   - examples/*
+  - apps/*
+  - templates/*
+  - '!**/test/**'
 allowBuilds:
   '@swc/core': true
   esbuild: true
+  msgpackr-extract: true
+  '@tailwindcss/oxide': true
+  sharp: true
+  vue-demi: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - '@eslint-react/ast@5.24.8'
+  - '@eslint-react/core@5.24.8'
+  - '@eslint-react/eslint-plugin@5.24.8'
+  - '@eslint-react/eslint@5.24.8'
+  - '@eslint-react/jsx@5.24.8'
+  - '@eslint-react/shared@5.24.8'
+  - '@eslint-react/var@5.24.8'
+  - '@icebreakers/commitlint-config@4.1.2'
+  - '@icebreakers/eslint-config@8.0.8'
+  - '@icebreakers/monorepo-templates@2.3.0'
+  - '@icebreakers/monorepo@5.8.0'
+  - eslint-plugin-react-dom@5.24.8
+  - eslint-plugin-react-jsx@5.24.8
+  - eslint-plugin-react-naming-convention@5.24.8
+  - eslint-plugin-react-rsc@5.24.8
+  - eslint-plugin-react-web-api@5.24.8
+  - eslint-plugin-react-x@5.24.8
+  - repoctl@5.8.0
+minimumReleaseAge: 0
+pmOnFail: error
+versioning:
+  changelog:
+    storage: repository
+overrides:
+  prettier: 3.9.9
+  typescript: 6.0.3
+  '@arethetypeswrong/core>typescript': 5.9.3
+  vite: 8.3.3
+  postcss: 8.5.29
+  postcss-selector-parser: 7.1.6
+  js-yaml: 5.4.3
+  nanoid: 6.0.2
+  brace-expansion: 5.0.12
+  minimatch@<4>brace-expansion: 1.1.21
+  minimatch@>=4 <10>brace-expansion: 2.1.7
+  cross-spawn: 7.0.6
+  adm-zip: 0.6.1
+  uuid: 14.0.2
+  esbuild: 0.28.2

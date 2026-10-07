@@ -1,12 +1,18 @@
 {
   "name": "@weapp-stylex/core",
+  "type": "module",
   "version": "0.1.0",
   "description": "StyleX API facade for native mini-program projects",
+  "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
-  "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -14,7 +20,12 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json"
   },
