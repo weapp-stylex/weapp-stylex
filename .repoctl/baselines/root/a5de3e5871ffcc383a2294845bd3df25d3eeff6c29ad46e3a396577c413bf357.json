@@ -3,7 +3,7 @@
   "path": ".vscode/settings.json",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".vscode/settings.json",
     "hash": "b17e98c33bd0d1a2f7272c42bebcee2ebd4e555e202776626191e07059ef55b0"
   },

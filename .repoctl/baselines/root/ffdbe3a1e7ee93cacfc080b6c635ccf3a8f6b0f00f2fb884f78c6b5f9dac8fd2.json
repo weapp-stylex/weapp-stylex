@@ -3,7 +3,7 @@
   "path": "CODE_OF_CONDUCT.md",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": "CODE_OF_CONDUCT.md",
     "hash": "d92c5afa4ca2c3df504231d7408ad0694237b6ca0a9f77c1925ba5cc291754a6"
   },

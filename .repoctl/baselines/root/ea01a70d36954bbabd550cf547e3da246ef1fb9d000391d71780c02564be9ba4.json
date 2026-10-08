@@ -3,7 +3,7 @@
   "path": "repoctl.config.ts",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": "repoctl.config.ts",
     "hash": "dbd79217a0068d0f1bd7e24a9b425b6cb711ef19ca9bdc93f6d09346535fd179"
   },

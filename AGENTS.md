@@ -48,7 +48,7 @@ pnpm exec repo check
 
 ## Requirements
 
-- Node.js 22.13 or newer
+- Node.js `^22.22.1 || >=24.11.0` (CI: 22.22.1 and 24.18.0)
 - pnpm (run `corepack enable` so the declared workspace version is used)
 - CLI output is English by default; `--lang zh-CN` or `REPOCTL_LANG=zh-CN` selects Simplified Chinese
 
@@ -60,10 +60,13 @@ TypeScript, built with `weapp-vite`.
 
 ## Development
 
-- Node.js `>=22.12.0` and pnpm are required.
+- Node.js `^22.22.1 || >=24.11.0` and the pnpm version declared in `packageManager` are required.
 - Run `pnpm install` before the first build.
 - Run `pnpm test` for unit tests and `pnpm build` for package builds.
 - Run `pnpm --filter wechat-native build` to build the example.
+- Run `pnpm lint` for ESLint and `pnpm typecheck` for tooling, library sources,
+  compiler tests and the native example.
+- Run `pnpm --filter wechat-native test:headless` after building the example.
 
 The compiler uses the official StyleX Babel plugin. Keep generated WXSS
 compatible with the WeChat runtime: CSS Layers and browser-only specificity

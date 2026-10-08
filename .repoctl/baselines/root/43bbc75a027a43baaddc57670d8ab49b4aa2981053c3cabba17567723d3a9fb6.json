@@ -3,7 +3,7 @@
   "path": ".husky/pre-push",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".husky/pre-push",
     "hash": "efca4c9abc9d0139a37c605926f8c752165f410067e012d208fb200920ef52d0"
   },

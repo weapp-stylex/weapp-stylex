@@ -3,7 +3,7 @@
   "path": ".vscode/extensions.json",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".vscode/extensions.json",
     "hash": "99e32274ec567c3aa81a9e1634258a40dfa5dfbdcd47abd7444cb249e701e22e"
   },

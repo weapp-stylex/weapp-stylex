@@ -3,7 +3,7 @@
   "path": ".editorconfig",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".editorconfig",
     "hash": "d22b394a5a140050065207d160273570edb04200480160e0951df3291dd7848f"
   },

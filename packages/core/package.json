@@ -27,7 +27,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false"
   },
   "dependencies": {
     "@stylexjs/stylex": "0.19.1"

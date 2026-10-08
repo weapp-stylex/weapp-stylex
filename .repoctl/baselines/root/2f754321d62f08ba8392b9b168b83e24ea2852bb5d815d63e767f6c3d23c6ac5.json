@@ -3,7 +3,7 @@
   "path": ".dockerignore",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".dockerignore",
     "hash": "bdc2d64906b2d9e091e69f25d8d9436c5c517bb404cdff3854de26f92a8728b7"
   },

@@ -3,7 +3,7 @@
   "path": ".gitattributes",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".gitattributes",
     "hash": "0bbce8e0604d8085d35362e14699e7a61d0751a9ae098258025dd10d8f1eb90c"
   },

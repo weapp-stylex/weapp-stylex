@@ -3,7 +3,7 @@
   "path": ".github/auto-changeset/github.mjs",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".github/auto-changeset/github.mjs",
     "hash": "8151e7fbb5c868a3c4c8a197bd619b6f62bbc7fe330c15451d065c7174c63678"
   },

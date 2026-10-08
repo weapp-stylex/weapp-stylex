@@ -25,15 +25,15 @@ pnpm add -D @weapp-stylex/weapp-vite
 在 `vite.config.ts` 中注册编译器：
 
 ```ts
-import { defineConfig } from 'weapp-vite/config';
-import { stylexCompiler } from '@weapp-stylex/weapp-vite';
+import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { defineConfig } from 'weapp-vite/config'
 
 export default defineConfig({
   weapp: {
     srcRoot: 'src',
     compilerPlugins: [stylexCompiler()],
   },
-});
+})
 ```
 
 ## WXML 用法
@@ -41,7 +41,7 @@ export default defineConfig({
 StyleX 的 `create()` 在编译时移除，WXML 应该使用 `attrs(...).class` 暴露的字符串：
 
 ```ts
-import * as stylex from '@weapp-stylex/core';
+import * as stylex from '@weapp-stylex/core'
 
 const styles = stylex.create({
   root: {
@@ -51,19 +51,19 @@ const styles = stylex.create({
   active: {
     opacity: 0.6,
   },
-});
+})
 
 const sx = {
   root: stylex.attrs(styles.root).class,
   active: stylex.attrs(styles.active).class,
-};
+}
 
 Page({
   data: {
     sx,
     active: false,
   },
-});
+})
 ```
 
 ```xml
@@ -75,7 +75,7 @@ Page({
 多样式合并同样由官方编译器处理：
 
 ```ts
-const className = stylex.attrs(styles.root, active && styles.active).class;
+const className = stylex.attrs(styles.root, active && styles.active).class
 ```
 
 ## 产物规则
@@ -90,7 +90,7 @@ metadata 中的原子规则，并以 `sx` 为 class 前缀聚合去重。输出�
 每个有小程序输出的目录生成 `stylex.wxss`，同目录现有 WXSS 会获得：
 
 ```css
-@import "./stylex.wxss";
+@import './stylex.wxss';
 ```
 
 如果构建没有任何 WXSS 入口，则生成根目录 `app.wxss` 作为全局入口。独立分包暂不
@@ -98,14 +98,28 @@ metadata 中的原子规则，并以 `sx` 为 class 前缀聚合去重。输出�
 
 ## 验证
 
+开发环境使用 Node.js `^22.22.1 || >=24.11.0`，pnpm 版本由根目录
+`packageManager` 声明（当前为 `12.10.1`）。先运行 `corepack enable`。
+CI 验证 Node.js `22.22.1` 和 `24.18.0`。
+
 ```bash
-pnpm install
-pnpm test
+pnpm install --frozen-lockfile
+pnpm lint
 pnpm build
+pnpm typecheck
+pnpm test
+pnpm test:deps
 pnpm --filter @weapp-stylex/weapp-vite test
-pnpm --filter wechat-native build
 pnpm --filter wechat-native test:headless
+pnpm exec repo deps check
+pnpm exec repo doctor
+pnpm exec repo check --full
+pnpm audit --json
 ```
+
+`lint` 使用 ESLint 检查全仓；`typecheck` 覆盖工具配置、库源码、编译器测试和
+小程序示例。依赖版本、兼容例外与安全审计见
+[依赖升级记录](docs/dependency-upgrade-2026-10-08.md)。
 
 将 `examples/wechat-native` 导入微信开发者工具时，项目根目录是该目录，构建产物
 位于 `dist/`。真实 DevTools 验收应记录稳定版版本、基础库、AppID、截图与日志路径，

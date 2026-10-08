@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core';
+import * as stylex from '@weapp-stylex/core'
 
 const styles = stylex.create({
   card: {
@@ -19,17 +19,17 @@ const styles = stylex.create({
     lineHeight: 1.5,
     marginTop: 8,
   },
-});
+})
 
 const sx = {
   card: stylex.attrs(styles.card).class,
   title: stylex.attrs(styles.title).class,
   description: stylex.attrs(styles.description).class,
-};
+}
 
 Component({
   properties: {
     title: String,
   },
   data: { sx },
-});
+})

@@ -5,4 +5,4 @@
  * a native mini-program without changing its style declarations. The
  * weapp-vite plugin recognizes both this package and @stylexjs/stylex.
  */
-export * from '@stylexjs/stylex';
+export * from '@stylexjs/stylex'

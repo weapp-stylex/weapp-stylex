@@ -1,34 +1,36 @@
-# Contributing to repoctl
+# Contributing to weapp-stylex
 
-English | [简体中文](CONTRIBUTING.zh-CN.md)
-
-repoctl accepts bug fixes, documentation improvements, tests, and focused feature proposals.
-
-## Development setup
-
-1. Use Node.js 22.13+ and enable Corepack.
-2. Run `pnpm install`.
-3. Create a focused branch from `main`.
-4. Add or update tests with the implementation.
+Use Node.js `^22.22.1 || >=24.11.0` and enable Corepack so pnpm uses the
+version declared in `packageManager`. Run `pnpm install --frozen-lockfile`.
 
 Before opening a pull request, run:
 
 ```bash
-pnpm build
 pnpm lint
+pnpm build
 pnpm typecheck
-pnpm tsd
 pnpm test
+pnpm test:deps
+pnpm --filter wechat-native test:headless
+pnpm exec repo deps check
+pnpm exec repo doctor
+pnpm exec repo check --full
+pnpm audit --json
 ```
 
-Changes to publishable packages require a pnpm change intent created with `pnpm change`. Commits must use Conventional Commit syntax.
+Build before running typechecks and headless tests: the example consumes the
+library packages' `dist` exports and tests the built mini-program artifact.
+Keep StyleX runtime and Babel plugin versions aligned. The adapter compiles with
+Babel 7; weapp-vite's own Babel 8 toolchain must resolve independently.
 
-Pull requests that change a publishable package receive an automatic `.changeset/auto-pr-<number>.md` intent when they come from a branch in this repository. The default bump is `patch`; add the `release:minor` or `release:major` label to override it. Fork pull requests cannot be written to by the workflow, so add the intent manually. Existing hand-written intents are always preserved.
+Changes to publishable packages require a native pnpm change intent:
 
-To backfill merged pull requests that predate this automation, run the `Automatic Release Intent` workflow manually with a comma-separated list of PR numbers. The workflow opens one backfill pull request, and the next `repo release ci` run consumes its changesets normally.
+```bash
+pnpm change @weapp-stylex/weapp-vite --bump patch --summary 'Describe the user-visible change'
+```
 
-The repository includes repoctl's CLI and monorepo engine, template assets, shared lint/config packages, and the `apps/mock` fixture demo. Keep package APIs and independent version lines intact when working across these areas.
+Use Conventional Commits. Do not manually assign release versions or publish
+packages as part of routine dependency maintenance. Keep the native WXML data
+binding contract and WeChat compatibility boundary documented in `README.md`.
 
-When changing templates or managed root assets, update their source first and refresh packaged copies with `pnpm --filter @icebreakers/monorepo-templates sync:assets`.
-
-Report bugs at https://github.com/icelib/repoctl/issues and use discussions for design questions that do not yet have a concrete implementation.
+Report bugs at https://github.com/weapp-stylex/weapp-stylex/issues.

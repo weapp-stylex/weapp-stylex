@@ -3,7 +3,7 @@
   "path": ".husky/commit-msg",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".husky/commit-msg",
     "hash": "6b487048e84d49ca0c90bc706317e1d1eec89fee450f3f03822640e3e531ff66"
   },

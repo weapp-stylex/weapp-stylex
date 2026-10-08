@@ -3,7 +3,7 @@
   "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".github/ISSUE_TEMPLATE/bug_report.yml",
     "hash": "906bcf0071a39c52ec4468e3a61b0e830b719d6c2f4b0dad17e249bf527b5bd1"
   },

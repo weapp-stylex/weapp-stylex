@@ -3,7 +3,7 @@
   "path": ".gitignore",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": "gitignore",
     "hash": "bf9c546d144c2b16c79b9888055157075c74aaa6ac274139337b5ab9688036ae"
   },

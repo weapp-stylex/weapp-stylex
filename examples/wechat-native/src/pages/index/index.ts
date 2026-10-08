@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core';
+import * as stylex from '@weapp-stylex/core'
 
 const styles = stylex.create({
   page: {
@@ -35,7 +35,7 @@ const styles = stylex.create({
   buttonPressed: {
     opacity: 0.65,
   },
-});
+})
 
 const sx = {
   page: stylex.attrs(styles.page).class,
@@ -44,7 +44,7 @@ const sx = {
   subtitle: stylex.attrs(styles.subtitle).class,
   button: stylex.attrs(styles.button).class,
   buttonPressed: stylex.attrs(styles.buttonPressed).class,
-};
+}
 
 Page({
   data: {
@@ -52,6 +52,6 @@ Page({
     pressed: false,
   },
   onTapButton() {
-    this.setData({ pressed: !this.data.pressed });
+    this.setData({ pressed: !this.data.pressed })
   },
-});
+})

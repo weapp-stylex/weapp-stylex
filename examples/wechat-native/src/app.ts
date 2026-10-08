@@ -2,4 +2,4 @@ App({
   globalData: {
     theme: 'light',
   },
-});
+})

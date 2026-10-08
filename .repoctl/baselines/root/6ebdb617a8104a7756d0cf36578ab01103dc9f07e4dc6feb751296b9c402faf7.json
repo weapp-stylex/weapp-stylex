@@ -3,7 +3,7 @@
   "path": "CLAUDE.md",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": "CLAUDE.md",
     "hash": "5822bdd4fe7dafb6d295e1cc5b8d64adedcc9b87551ea7804997b365ae64ce9c"
   },

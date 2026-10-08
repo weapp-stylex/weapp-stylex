@@ -3,7 +3,7 @@
   "path": "commitlint.config.ts",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": "commitlint.config.ts",
     "hash": "1a713da048edceb4c1b16fb71b1c75f1c2758dee1541fab6556301ee2b2c821b"
   },

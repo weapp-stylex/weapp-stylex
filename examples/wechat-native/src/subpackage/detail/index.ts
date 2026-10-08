@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core';
+import * as stylex from '@weapp-stylex/core'
 
 const styles = stylex.create({
   page: {
@@ -8,7 +8,7 @@ const styles = stylex.create({
     color: '#4b63d3',
     fontSize: 18,
   },
-});
+})
 
 Page({
   data: {
@@ -17,4 +17,4 @@ Page({
       text: stylex.attrs(styles.text).class,
     },
   },
-});
+})

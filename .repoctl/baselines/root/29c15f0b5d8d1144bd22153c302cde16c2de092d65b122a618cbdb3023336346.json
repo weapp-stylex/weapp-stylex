@@ -3,7 +3,7 @@
   "path": "lint-staged.config.js",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": "lint-staged.config.js",
     "hash": "7dee01c7de9e676908ec129672874c5dc30611f8832458d4dcf6a245436e9a4f"
   },

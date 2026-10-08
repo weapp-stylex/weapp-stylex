@@ -3,7 +3,7 @@
   "path": ".npmrc",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": "npmrc",
     "hash": "ce3bd18df7fb3bc82df6fc4c001b59003ee0df84081212c98cde5a545a79cc23"
   },

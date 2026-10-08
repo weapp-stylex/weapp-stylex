@@ -8,16 +8,24 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22.22.1, 24.18.0]
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          version: 12.9.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.12.0
+          node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test
+      - run: pnpm lint
       - run: pnpm build
-      - run: pnpm --filter wechat-native build
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm test:deps
+      - run: pnpm --filter wechat-native test:headless
+      - run: pnpm exec repo deps check
+      - run: pnpm exec repo doctor
+      - run: pnpm exec repo check --full

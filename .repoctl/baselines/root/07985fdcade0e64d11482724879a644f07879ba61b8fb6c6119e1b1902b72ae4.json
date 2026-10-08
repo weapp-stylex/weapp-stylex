@@ -3,7 +3,7 @@
   "path": ".github/FUNDING.yml",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "assetPath": ".github/FUNDING.yml",
     "hash": "930eb09a735ce89ed8d44a6e17441b7c61d97074a27ab5b9e7b924aa66f132b3"
   },
