@@ -1,0 +1,72 @@
+{
+  "name": "@weapp-stylex/compiler",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "description": "StyleX build integration for WeChat mini-programs",
+  "author": "ice breaker <1324318532@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "packages/compiler"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
+  "keywords": [
+    "repoctl",
+    "typescript",
+    "library",
+    "template"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "^22.22.1 || >=24.11.0"
+  },
+  "scripts": {
+    "dev": "tsdown -w",
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:dev": "vitest",
+    "release": "pnpm publish",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "tsd": "pnpm build && tsd --files test-d/**/*.test-d.ts"
+  },
+  "dependencies": {
+    "@ampproject/remapping": "^2.3.0",
+    "@babel/core": "^7.29.7",
+    "@stylexjs/babel-plugin": "0.19.1",
+    "@vue/compiler-sfc": "^3.5.43",
+    "magic-string": "^0.30.21",
+    "postcss": "^8.5.29",
+    "postcss-selector-parser": "^7.1.6"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^26.6.4"
+  }
+}

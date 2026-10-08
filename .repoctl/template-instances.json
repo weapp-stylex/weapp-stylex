@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "instances": [
+    {
+      "id": "3396aa6874e36f074e16a24d",
+      "target": "examples/taro-react",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.8.1"
+      },
+      "parameters": {
+        "packageName": "taro-react",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "8f73e16c8464074adfbf5fa31cd3580124acd10713941b7eae1b231563538804"
+      }
+    },
+    {
+      "id": "f307748d7dc31fb1ef431dfc",
+      "target": "examples/taro-vue3",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.8.1"
+      },
+      "parameters": {
+        "packageName": "taro-vue3",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "a919465a1ede884ef84b77a0ee666d3dba4e0637e79c2e12618d4d0c54813ebd"
+      }
+    },
+    {
+      "id": "8ae40d05263c99dfb70ff4b2",
+      "target": "examples/uni-vue3",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.8.1"
+      },
+      "parameters": {
+        "packageName": "uni-vue3",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "58905596772519d1ab3648b3dbb494ffb6e21e1d963c845878a653f300d3466b"
+      }
+    },
+    {
+      "id": "e7737f29cc38a14d3e7c10b5",
+      "target": "examples/wechat-wevu",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.8.1"
+      },
+      "parameters": {
+        "packageName": "wechat-wevu",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "e7e3e54859245e0c790eb9714e5736aa8353eb90e4b40efb429e59a723de0be6"
+      }
+    },
+    {
+      "id": "da6537af0d378e840da47ac1",
+      "target": "packages/compiler",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.8.1"
+      },
+      "parameters": {
+        "packageName": "compiler",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "14bd72bb5c0c365d5214b9b5040bb62d99a366f63ab75093a6994266c327ff70"
+      }
+    },
+    {
+      "id": "3a32a256402f0020525c5365",
+      "target": "packages/taro",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.8.1"
+      },
+      "parameters": {
+        "packageName": "taro",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "882b4e1b5c509840c429fe5e7c35c073fbde19a4294ebc03a6261a6cb9d840a9"
+      }
+    },
+    {
+      "id": "f1487090bed7c44158da7ec0",
+      "target": "packages/uni-app",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.8.1"
+      },
+      "parameters": {
+        "packageName": "uni-app",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "bae1c3dd46f3632d24f7713027129e02c032d2c359a3757f9144b8826845cb80"
+      }
+    }
+  ]
+}

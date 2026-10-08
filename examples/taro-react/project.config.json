@@ -1,0 +1,12 @@
+{
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "dist/weapp-vite",
+  "projectname": "taro-react",
+  "libVersion": "3.7.3",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "compileHotReLoad": false
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "dist",
+  "projectname": "wechat-wevu",
+  "libVersion": "3.7.3",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "compileHotReLoad": false
+  }
+}

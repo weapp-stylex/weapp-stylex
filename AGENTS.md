@@ -54,32 +54,60 @@ pnpm exec repo check
 
 ## Scope
 
-This repository contains the native WeChat mini-program StyleX adapter. The
-first release targets `Page`/`Component` projects using WXML, WXSS and
-TypeScript, built with `weapp-vite`.
+This workspace adapts official StyleX to WeChat mini-programs: native
+Page/Component, Wevu, Taro React/Vue 3 (Vite and Webpack 5), and uni-app Vue 3.
+The shared `@weapp-stylex/compiler` owns transformation, module metadata,
+resolver identities, SFC maps and WXSS planning. Keep adapters thin.
 
 ## Development
 
-- Node.js `^22.22.1 || >=24.11.0` and the pnpm version declared in `packageManager` are required.
-- Run `pnpm install` before the first build.
-- Run `pnpm test` for unit tests and `pnpm build` for package builds.
-- Run `pnpm --filter wechat-native build` to build the example.
-- Run `pnpm lint` for ESLint and `pnpm typecheck` for tooling, library sources,
-  compiler tests and the native example.
-- Run `pnpm --filter wechat-native test:headless` after building the example.
+- Use `corepack pnpm` with the declared package manager version.
+- Run `corepack pnpm install --frozen-lockfile` before verification.
+- Run `corepack pnpm lint`, `build`, `typecheck`, `test`, `test:deps`,
+  `test:integration`, and `test:examples` from the root.
+- `build` produces seven WeChat artifacts. Taro's two builders run in sequence
+  into separate directories. CI tests Node 22.22.1 and 24.18.0.
+- `test:examples` checks all artifacts and runs native/Wevu headless interactions.
+- `test:ide` is a globally serial suite. Supply a real `WEAPP_STYLEX_APPID` and
+  explicit `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`. Check the official stable version,
+  login and service port. Use one automator per artifact, `reLaunch` between
+  routes, structure assertions before screenshots, and close only owned
+  project resources. Missing prerequisites are pending acceptance, not a pass.
 
-The compiler uses the official StyleX Babel plugin. Keep generated WXSS
-compatible with the WeChat runtime: CSS Layers and browser-only specificity
-polyfills are disabled by design.
+## Compiler and framework contract
 
-## WXML contract
+- Keep official StyleX runtime/compiler semantics. Ordinary style modules may
+  export compiled objects through named/default exports and barrels. Consumers
+  merge them using official `attrs()` or `props()`.
+- Cross-module variables use directly imported `tokens.stylex.ts`; resolve via
+  the host and canonicalize physical module identities before hashing.
+- Preserve StyleX units: numeric 16 is 16px; write '16rpx' explicitly.
+- Disable layers, specificity polyfills and runtime CSS injection. Rewrite
+  default :root variable selectors to page, retaining theme classes.
+- Native WXML binds attrs class/style through Page/Component data. Wevu and Vue
+  use computed plus explicit :class/:style. Taro React uses props() on View.
+- Process raw SFC scripts before framework compilation; retain templates,
+  macros, lifecycle and styles, compose sourcemaps, skip duplicate virtual
+  script requests. For uni-app use DCloud's matching SFC parser.
+- Replace metadata per transformed module, retain unchanged cached modules,
+  prune unreachable graph nodes, and release session state on final watcher
+  shutdown. closeBundle alone must not clear an active watcher.
+- Use host emission APIs; weapp-vite 7.4 uses a file-output compatibility path
+  for new bundle keys. Generate missing page/component WXSS companions, track
+  ownership, reject user filename conflicts and remove only owned stale files
+  and imports. An initial build with no StyleX must remain unchanged.
 
-StyleX declarations are compiled away. Expose class strings through
-`stylex.attrs(style).class` and place those strings in Page or Component data.
-The adapter does not parse WXML or add a custom `sx` attribute.
+## Dependency isolation
+
+Keep Babel 7 in the shared StyleX compiler; do not apply weapp-vite's Babel 8
+presets to it. Weapp-vite/Wevu use Vite 8; Taro 4.3.0 uses Vite 4 and Webpack
+5.91.0; uni-app's aligned vue3 channel uses Vite 5.2.8 and Vue 3.4.21. Declare
+intentional dependency groups in repoctl.config.ts instead of unifying these
+incompatible major versions with global overrides. See docs for audit limits.
 
 ## Release boundary
 
-The stable first-release scope is the WeChat main package, pages, components
-and ordinary subpackages. Independent subpackages, other mini-program
-platforms, stateful HMR patches and WXML `sx` syntax require a later release.
+Use `corepack pnpm change` to record package changes; do not hand-increment
+versions or publish npm as part of implementation tasks. Independent
+subpackages, other platforms, Vue 2, uni-app x, WXML sx syntax and stateful HMR
+remain future work.

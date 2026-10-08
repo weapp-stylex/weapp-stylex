@@ -12,12 +12,21 @@ const run = promisify(execFile)
 const root = fileURLToPath(new URL('..', import.meta.url))
 const require = createRequire(import.meta.url)
 const repoctlRequire = createRequire(require.resolve('repoctl'))
-const toolingRequire = createRequire(repoctlRequire.resolve('@icebreakers/monorepo'))
+const toolingRequire = createRequire(
+  repoctlRequire.resolve('@icebreakers/monorepo'),
+)
 
 async function main() {
-  const compilerRequire = createRequire(new URL('../packages/weapp-vite/package.json', import.meta.url))
+  const compilerRequire = createRequire(
+    new URL('../packages/compiler/package.json', import.meta.url),
+  )
   assert.match(compilerRequire('@babel/core').version, /^7\./)
-  const weappRequire = createRequire(compilerRequire.resolve('weapp-vite/package.json'))
+  const adapterRequire = createRequire(
+    new URL('../packages/weapp-vite/package.json', import.meta.url),
+  )
+  const weappRequire = createRequire(
+    adapterRequire.resolve('weapp-vite/package.json'),
+  )
   const weappBabel = weappRequire('@babel/core')
   assert.match(weappBabel.version, /^8\./)
   const transformed = weappBabel.transformSync('const answer: number = 42', {
@@ -28,13 +37,44 @@ async function main() {
   })
   assert.match(transformed.code, /const answer = 42/)
 
+  for (const example of ['taro-react', 'taro-vue3']) {
+    const hostRequire = createRequire(
+      new URL(`../examples/${example}/package.json`, import.meta.url),
+    )
+    assert.equal(hostRequire('vite/package.json').version, '4.5.14')
+    assert.equal(hostRequire('webpack/package.json').version, '5.91.0')
+    assert.equal(hostRequire('@tarojs/taro/package.json').version, '4.3.0')
+    assert.match(hostRequire('@babel/core').version, /^7\./)
+  }
+  const uniRequire = createRequire(
+    new URL('../examples/uni-vue3/package.json', import.meta.url),
+  )
+  assert.equal(uniRequire('vite/package.json').version, '5.2.8')
+  assert.equal(uniRequire('vue/package.json').version, '3.4.21')
+  for (const name of [
+    'uni-app',
+    'uni-components',
+    'uni-mp-weixin',
+    'vite-plugin-uni',
+  ]) {
+    assert.equal(
+      uniRequire(`@dcloudio/${name}/package.json`).version,
+      '3.0.0-alpha-5030120260930001',
+    )
+  }
+  assert.equal(weappRequire('vite/package.json').version, '8.3.3')
+
   // Resolve from the consuming tooling package, so these checks exercise the
   // installed overrides rather than separate direct test dependencies.
   const { simpleGit } = toolingRequire('simple-git')
   const git = simpleGit(root)
-  const nativeGit = async args => (await run('git', args, { cwd: root })).stdout.trim()
+  const nativeGit = async args =>
+    (await run('git', args, { cwd: root })).stdout.trim()
   const config = await git.getConfig('core.repositoryformatversion')
-  assert.equal(config.value, await nativeGit(['config', '--get', 'core.repositoryformatversion']))
+  assert.equal(
+    config.value,
+    await nativeGit(['config', '--get', 'core.repositoryformatversion']),
+  )
 
   const status = await git.status()
   assert.equal(typeof status.isClean(), 'boolean')
@@ -44,7 +84,10 @@ async function main() {
   const names = (await nativeGit(['remote'])).split('\n').filter(Boolean)
   assert.deepEqual(remotes.map(remote => remote.name).sort(), names.sort())
   for (const remote of remotes) {
-    assert.equal(remote.refs.fetch, await nativeGit(['remote', 'get-url', remote.name]))
+    assert.equal(
+      remote.refs.fetch,
+      await nativeGit(['remote', 'get-url', remote.name]),
+    )
   }
   const log = await git.log({ maxCount: 3 })
   assert.equal(log.latest.hash, await nativeGit(['rev-parse', 'HEAD']))
@@ -56,12 +99,25 @@ async function main() {
   const formatterRoot = path.resolve(path.dirname(formatterEntry), '..')
   const temporary = await mkdtemp(path.join(tmpdir(), 'weapp-stylex-deps-'))
   try {
-    await writeFile(path.join(temporary, 'sample.ts'), 'const sample={enabled:true,label:"StyleX"};\n')
-    await writeFile(path.join(temporary, 'sample.md'), '# Smoke\n\n```ts\nconst sample={enabled:true};\n```\n')
-    await writeFile(path.join(temporary, 'sample.vue'), '<template><div>StyleX</div></template>\n<script setup lang="ts">const sample={enabled:true};</script>\n')
+    await writeFile(
+      path.join(temporary, 'sample.ts'),
+      'const sample={enabled:true,label:"StyleX"};\n',
+    )
+    await writeFile(
+      path.join(temporary, 'sample.md'),
+      '# Smoke\n\n```ts\nconst sample={enabled:true};\n```\n',
+    )
+    await writeFile(
+      path.join(temporary, 'sample.vue'),
+      '<template><div>StyleX</div></template>\n<script setup lang="ts">const sample={enabled:true};</script>\n',
+    )
     const cli = path.join(formatterRoot, 'bin', 'oxfmt')
-    await run(process.execPath, [cli, '--write', '--threads=2', '.'], { cwd: temporary })
-    await run(process.execPath, [cli, '--check', '--threads=2', '.'], { cwd: temporary })
+    await run(process.execPath, [cli, '--write', '--threads=2', '.'], {
+      cwd: temporary,
+    })
+    await run(process.execPath, [cli, '--check', '--threads=2', '.'], {
+      cwd: temporary,
+    })
     const formatted = await readFile(path.join(temporary, 'sample.md'), 'utf8')
     assert.match(formatted, /const sample = \{ enabled: true \}/)
   }
@@ -73,7 +129,9 @@ async function main() {
   const mathRequire = createRequire(mathEntry)
   assert.equal(mathRequire('katex').version, '0.19.0')
   const { math, mathHtml } = await import(pathToFileURL(mathEntry).href)
-  const { micromark } = await import(pathToFileURL(toolingRequire.resolve('micromark')).href)
+  const { micromark } = await import(
+    pathToFileURL(toolingRequire.resolve('micromark')).href,
+  )
   const html = micromark('Inline $x^2$.\n\n$$\n\\frac{1}{2}\n$$\n', {
     extensions: [math()],
     htmlExtensions: [mathHtml()],

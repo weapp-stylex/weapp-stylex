@@ -1,0 +1,62 @@
+{
+  "name": "taro-vue3",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runnable WeChat StyleX integration example",
+  "author": "ice breaker <1324318532@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "examples/taro-vue3"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
+  "keywords": [
+    "repoctl",
+    "typescript",
+    "library",
+    "template"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": "^22.22.1 || >=24.11.0"
+  },
+  "scripts": {
+    "build": "corepack pnpm build:webpack && corepack pnpm build:vite",
+    "build:webpack": "node ../../scripts/build-taro.mjs webpack",
+    "build:vite": "node ../../scripts/build-taro.mjs vite",
+    "dev": "node ../../scripts/build-taro.mjs vite --watch",
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@tarojs/components": "4.3.0",
+    "@tarojs/runtime": "4.3.0",
+    "@tarojs/shared": "4.3.0",
+    "@tarojs/taro": "4.3.0",
+    "@weapp-stylex/core": "workspace:*",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@tarojs/cli": "4.3.0",
+    "@tarojs/helper": "4.3.0",
+    "@tarojs/plugin-framework-vue3": "4.3.0",
+    "@tarojs/plugin-platform-weapp": "4.3.0",
+    "@tarojs/vite-runner": "4.3.0",
+    "@tarojs/webpack5-runner": "4.3.0",
+    "@types/node": "^26.6.4",
+    "@vitejs/plugin-vue": "^4.6.2",
+    "@vue/babel-plugin-jsx": "^1.5.0",
+    "@weapp-stylex/taro": "workspace:*",
+    "babel-preset-taro": "4.3.0",
+    "less": "^4.9.1",
+    "sass": "^1.97.3",
+    "vite": "^4.5.14",
+    "vue-loader": "^17.4.2",
+    "vue-tsc": "^3.3.1",
+    "webpack": "5.91.0"
+  }
+}

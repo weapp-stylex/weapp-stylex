@@ -35,9 +35,7 @@
     "weapp-vite": ">=7.4.0 <8"
   },
   "dependencies": {
-    "@babel/core": "^7.29.7",
-    "@stylexjs/babel-plugin": "0.19.1",
-    "@stylexjs/stylex": "0.19.1"
+    "@weapp-stylex/compiler": "workspace:*"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.5",

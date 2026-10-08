@@ -2,6 +2,22 @@ import type { MonorepoConfig } from 'repoctl'
 
 export default {
   commands: {
+    deps: {
+      groups: [
+        {
+          name: 'taro-vite4',
+          workspaces: ['examples/taro-react', 'examples/taro-vue3'],
+          dependencies: ['vite'],
+          reason: 'Taro 4.3 runner requires Vite 4.',
+        },
+        {
+          name: 'uni-vue3',
+          workspaces: ['examples/uni-vue3'],
+          dependencies: ['vite', 'vue'],
+          reason: 'DCloud vue3 channel pins Vite 5.2.8 and Vue 3.4.21.',
+        },
+      ],
+    },
     create: {
       defaultTemplate: 'tsdown',
       renameJson: false,

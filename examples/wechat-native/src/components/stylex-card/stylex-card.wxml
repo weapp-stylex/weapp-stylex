@@ -1,4 +1,1 @@
-<view class="{{sx.card}}">
-  <view class="{{sx.title}}">{{title}}</view>
-  <view class="{{sx.description}}">页面、组件和普通分包共享同一个编译链。</view>
-</view>
+<view id="stylex-card-root" class="{{sx.class}}">组件样式也能复用</view>

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "paths": {
+      "@styles/*": ["./src/styles/*"]
+    },
+    "types": ["node", "@tarojs/taro"],
+    "noEmit": true
+  },
+  "include": ["src", "config", "vite.config.ts"]
+}

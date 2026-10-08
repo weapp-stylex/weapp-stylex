@@ -25,7 +25,15 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm test:deps
-      - run: pnpm --filter wechat-native test:headless
+      - run: pnpm test:integration
+      - run: pnpm test:examples
       - run: pnpm exec repo deps check
       - run: pnpm exec repo doctor
       - run: pnpm exec repo check --full
+      - name: Retain verification diagnostics
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: verification-node-${{ matrix.node }}
+          path: coverage/
+          if-no-files-found: ignore

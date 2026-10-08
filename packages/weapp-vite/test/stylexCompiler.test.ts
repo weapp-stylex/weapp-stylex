@@ -7,6 +7,7 @@ interface TestContext {
   platform: string
   outputExtensions: { wxss: string }
   isDev: boolean
+  resolvedConfig?: { build: { watch: unknown } }
   addWatchFile: (id: string) => void
   warn: (message: string) => void
   error: (message: string) => never
@@ -17,12 +18,16 @@ interface TestContext {
   getSourceOwner: () => undefined
 }
 
-type TestBundle = Record<string, {
-  type: 'asset' | 'chunk'
-  fileName: string
-  source?: string
-  code?: string
-}>
+type TestBundle = Record<
+  string,
+  {
+    type: 'asset' | 'chunk'
+    fileName: string
+    source?: string
+    code?: string
+    modules?: Record<string, unknown>
+  }
+>
 
 function makeContext(overrides: Partial<TestContext> = {}): TestContext {
   return {
@@ -60,6 +65,47 @@ async function compile(code: string, id = '/project/src/pages/index/index.ts') {
 }
 
 describe('stylexCompiler', () => {
+  it('retains rules across watch closeBundle disposal and forgets an import removed from an active module', async () => {
+    const plugin = stylexCompiler()
+    if (typeof plugin === 'function') {
+      throw new TypeError('Expected provider')
+    }
+    const context = makeContext({ resolvedConfig: { build: { watch: {} } } })
+    const controller = await plugin.create(context as never)
+    const id = '/project/src/page.ts'
+    await controller.transformSource?.({
+      id,
+      kind: 'script',
+      code: 'import * as stylex from \'@weapp-stylex/core\'; export const styles=stylex.create({root:{color:\'red\'}})',
+    })
+    await controller.dispose?.()
+    context.resolvedConfig = undefined
+    const retained: TestBundle = {
+      'page.js': {
+        type: 'chunk',
+        fileName: 'page.js',
+        code: '',
+        modules: { [id]: {} },
+      },
+    }
+    await controller.generateBundle?.(retained as never, context as never)
+    expect(retained['stylex.wxss']?.source).toContain('color:red')
+    const request = { id, kind: 'script' as const, code: 'Page({})' }
+    expect(controller.claimSource?.(request)).toBe(false)
+    // Removal must happen when the provider declines the new source: the host
+    // will never call transformSource for an unclaimed module.
+    const bundle: TestBundle = {
+      'page.js': {
+        type: 'chunk',
+        fileName: 'page.js',
+        code: 'Page({})',
+        modules: { [id]: {} },
+      },
+    }
+    await controller.generateBundle?.(bundle as never, context as never)
+    expect(bundle).not.toHaveProperty('stylex.wxss')
+    await controller.closeWatcher?.()
+  })
   it('transforms static styles and exposes attrs class strings', async () => {
     const { transformed } = await compile(`
       import * as stylex from '@weapp-stylex/core';
@@ -91,17 +137,36 @@ describe('stylexCompiler', () => {
       const styles = stylex.create({ root: { padding: 16 } });
       const sx = stylex.attrs(styles.root).class;
     `)
-    const second = await compile(`
+    const second = await compile(
+      `
       import * as stylex from '@weapp-stylex/core';
       const styles = stylex.create({ root: { padding: 16 } });
       const sx = stylex.attrs(styles.root).class;
-    `, '/project/src/components/card.ts')
+    `,
+      '/project/src/components/card.ts',
+    )
 
     const bundle: TestBundle = {
-      'pages/index/index.js': { type: 'chunk' as const, fileName: 'pages/index/index.js', code: first.transformed.code },
-      'pages/index/index.wxss': { type: 'asset' as const, fileName: 'pages/index/index.wxss', source: '.page{}' },
-      'components/card.js': { type: 'chunk' as const, fileName: 'components/card.js', code: second.transformed.code },
-      'components/card.wxss': { type: 'asset' as const, fileName: 'components/card.wxss', source: '.card{}' },
+      'pages/index/index.js': {
+        type: 'chunk' as const,
+        fileName: 'pages/index/index.js',
+        code: first.transformed.code,
+      },
+      'pages/index/index.wxss': {
+        type: 'asset' as const,
+        fileName: 'pages/index/index.wxss',
+        source: '.page{}',
+      },
+      'components/card.js': {
+        type: 'chunk' as const,
+        fileName: 'components/card.js',
+        code: second.transformed.code,
+      },
+      'components/card.wxss': {
+        type: 'asset' as const,
+        fileName: 'components/card.wxss',
+        source: '.card{}',
+      },
     }
     const provider = stylexCompiler()
     if (typeof provider === 'function') {
@@ -127,12 +192,24 @@ describe('stylexCompiler', () => {
     }
     await controller.generateBundle?.(bundle as never, context as never)
 
-    expect(bundle['pages/index/stylex.wxss']?.source).toBe(bundle['components/stylex.wxss']?.source)
-    expect(String(bundle['pages/index/stylex.wxss']?.source)).toContain('.sx1tamke2{padding:16px}')
-    expect(String(bundle['pages/index/stylex.wxss']?.source)).not.toContain('@layer')
-    expect(String(bundle['pages/index/index.wxss']?.source)).toContain('@import "./stylex.wxss";')
-    expect(String(bundle['components/card.wxss']?.source)).toContain('@import "./stylex.wxss";')
-    expect(String(bundle['pages/index/stylex.wxss']?.source).match(/padding:16px/g)?.length).toBe(1)
+    expect(bundle['pages/index/stylex.wxss']?.source).toBe(
+      bundle['components/stylex.wxss']?.source,
+    )
+    expect(String(bundle['pages/index/stylex.wxss']?.source)).toContain(
+      '.sx1tamke2{padding:16px}',
+    )
+    expect(String(bundle['pages/index/stylex.wxss']?.source)).not.toContain(
+      '@layer',
+    )
+    expect(String(bundle['pages/index/index.wxss']?.source)).toContain(
+      '@import "./stylex.wxss";',
+    )
+    expect(String(bundle['components/card.wxss']?.source)).toContain(
+      '@import "./stylex.wxss";',
+    )
+    expect(
+      String(bundle['pages/index/stylex.wxss']?.source).match(/padding:16px/g)?.length,
+    ).toBe(1)
   })
 
   it('creates app.wxss when there is no WXSS entry', async () => {
@@ -142,7 +219,11 @@ describe('stylexCompiler', () => {
       const sx = stylex.attrs(styles.root).class;
     `)
     const bundle: TestBundle = {
-      'pages/index/index.js': { type: 'chunk' as const, fileName: 'pages/index/index.js', code: transformed.code },
+      'pages/index/index.js': {
+        type: 'chunk' as const,
+        fileName: 'pages/index/index.js',
+        code: transformed.code,
+      },
     }
     await controller.generateBundle?.(bundle as never, context as never)
     expect(bundle['stylex.wxss']).toBeTruthy()
@@ -156,15 +237,23 @@ describe('stylexCompiler', () => {
     }
     const controller = await plugin.create(makeContext() as never)
     const bundle: TestBundle = {
-      'pages/index/index.js': { type: 'chunk' as const, fileName: 'pages/index/index.js', code: 'Page({});' },
-      'pages/index/index.wxss': { type: 'asset' as const, fileName: 'pages/index/index.wxss', source: '.page{}' },
+      'pages/index/index.js': {
+        type: 'chunk' as const,
+        fileName: 'pages/index/index.js',
+        code: 'Page({});',
+      },
+      'pages/index/index.wxss': {
+        type: 'asset' as const,
+        fileName: 'pages/index/index.wxss',
+        source: '.page{}',
+      },
     }
     const before = JSON.stringify(bundle)
     await controller.generateBundle?.(bundle as never, makeContext() as never)
     expect(JSON.stringify(bundle)).toBe(before)
   })
 
-  it('resets the CSS snapshot at the start of a full rebuild', async () => {
+  it('prunes styles no longer present in the emitted module graph', async () => {
     const plugin = stylexCompiler()
     if (typeof plugin === 'function') {
       throw new TypeError('Expected a compiler provider object')
@@ -180,7 +269,12 @@ describe('stylexCompiler', () => {
     await controller.transformSource?.(request)
     controller.buildStart?.()
     const bundle: TestBundle = {
-      'pages/index/index.js': { type: 'chunk' as const, fileName: 'pages/index/index.js', code: 'Page({});' },
+      'pages/index/index.js': {
+        type: 'chunk' as const,
+        fileName: 'pages/index/index.js',
+        code: 'Page({});',
+        modules: { '/project/src/other.ts': {} },
+      },
     }
     await controller.generateBundle?.(bundle as never, context as never)
     expect(bundle).not.toHaveProperty('stylex.wxss')
@@ -193,9 +287,19 @@ describe('stylexCompiler', () => {
       const sx = stylex.attrs(styles.root).class;
     `)
     const bundle = {
-      'stylex.wxss': { type: 'asset' as const, fileName: 'stylex.wxss', source: '.existing{}' },
-      'pages/index/index.js': { type: 'chunk' as const, fileName: 'pages/index/index.js', code: transformed.code },
+      'stylex.wxss': {
+        type: 'asset' as const,
+        fileName: 'stylex.wxss',
+        source: '.existing{}',
+      },
+      'pages/index/index.js': {
+        type: 'chunk' as const,
+        fileName: 'pages/index/index.js',
+        code: transformed.code,
+      },
     }
-    await expect(controller.generateBundle?.(bundle as never, context as never)).rejects.toThrow('文件名冲突')
+    await expect(
+      controller.generateBundle?.(bundle as never, context as never),
+    ).rejects.toThrow('文件名冲突')
   })
 })

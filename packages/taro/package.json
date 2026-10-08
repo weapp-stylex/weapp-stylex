@@ -1,0 +1,86 @@
+{
+  "name": "@weapp-stylex/taro",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "description": "StyleX build integration for WeChat mini-programs",
+  "author": "ice breaker <1324318532@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "packages/taro"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
+  "keywords": [
+    "repoctl",
+    "typescript",
+    "library",
+    "template"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./loader": {
+      "import": {
+        "types": "./dist/loader.d.mts",
+        "default": "./dist/loader.mjs"
+      },
+      "require": {
+        "types": "./dist/loader.d.cts",
+        "default": "./dist/loader.cjs"
+      }
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "^22.22.1 || >=24.11.0"
+  },
+  "scripts": {
+    "dev": "tsdown -w",
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:dev": "vitest",
+    "release": "pnpm publish",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "tsd": "pnpm build && tsd --files test-d/**/*.test-d.ts"
+  },
+  "peerDependencies": {
+    "@tarojs/service": ">=4.3.0 <4.4.0",
+    "webpack": "^5.91.0"
+  },
+  "peerDependenciesMeta": {
+    "webpack": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@weapp-stylex/compiler": "workspace:*"
+  },
+  "devDependencies": {
+    "@tarojs/service": "4.3.0",
+    "@types/node": "^26.6.4",
+    "webpack": "5.91.0"
+  }
+}

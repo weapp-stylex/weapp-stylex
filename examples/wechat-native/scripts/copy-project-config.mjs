@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import process from 'node:process'
 
 const root = path.resolve(new URL('..', import.meta.url).pathname)
 const sourcePath = path.join(root, 'project.config.json')
@@ -9,5 +10,6 @@ const config = JSON.parse(await readFile(sourcePath, 'utf8'))
 // The source project points weapp-vite at dist/. Once the output directory is
 // opened directly in DevTools, its own miniprogramRoot is the current folder.
 config.miniprogramRoot = '.'
+config.appid = process.env.WEAPP_STYLEX_APPID ?? config.appid
 await mkdir(path.dirname(distPath), { recursive: true })
 await writeFile(distPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8')

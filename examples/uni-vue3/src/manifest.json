@@ -1,0 +1,13 @@
+{
+  "name": "StyleX uni-app",
+  "appid": "",
+  "versionName": "0.1.0",
+  "versionCode": "1",
+  "mp-weixin": {
+    "appid": "touristappid",
+    "setting": {
+      "urlCheck": false
+    },
+    "usingComponents": true
+  }
+}

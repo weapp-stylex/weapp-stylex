@@ -8,16 +8,19 @@
     "node": "^22.22.1 || >=24.11.0"
   },
   "scripts": {
-    "build": "pnpm -r --if-present build",
+    "build": "corepack pnpm -r --if-present build",
     "test": "vitest run",
-    "typecheck": "tsc -p tsconfig.tooling.json --pretty false && pnpm -r --if-present typecheck",
+    "typecheck": "tsc -p tsconfig.tooling.json --pretty false && corepack pnpm -r --if-present typecheck",
     "lint": "eslint .",
     "repo:init": "repo init",
     "repo:new": "repo new",
     "repo:check": "repo check",
     "repo:doctor": "repo doctor",
     "commitlint": "commitlint --edit",
-    "test:deps": "node scripts/verify-dependency-overrides.mjs"
+    "test:deps": "node scripts/verify-dependency-overrides.mjs",
+    "test:integration": "node scripts/test-integration.mjs",
+    "test:examples": "node scripts/test-examples.mjs",
+    "test:ide": "node scripts/test-ide.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
@@ -29,6 +32,7 @@
     "execa": "^10.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
+    "miniprogram-automator": "0.12.1",
     "only-allow": "^1.2.2",
     "repoctl": "^5.8.1",
     "stylelint": "^17.16.0",

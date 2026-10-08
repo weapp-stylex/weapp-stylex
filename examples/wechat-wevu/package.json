@@ -1,0 +1,44 @@
+{
+  "name": "wechat-wevu",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runnable WeChat StyleX integration example",
+  "author": "ice breaker <1324318532@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "examples/wechat-wevu"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
+  "keywords": [
+    "repoctl",
+    "typescript",
+    "library",
+    "template"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": "^22.22.1 || >=24.11.0"
+  },
+  "scripts": {
+    "build": "weapp-vite build && node ../../scripts/project-config.mjs dist wechat-wevu",
+    "dev": "weapp-vite dev",
+    "typecheck": "weapp-vite prepare && vue-tsc -p tsconfig.json --noEmit",
+    "test:headless": "node test/headless.mjs"
+  },
+  "dependencies": {
+    "@weapp-stylex/core": "workspace:*",
+    "wevu": "7.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@weapp-stylex/weapp-vite": "workspace:*",
+    "miniprogram-api-typings": "^5.0.0",
+    "vue-tsc": "^3.3.1",
+    "weapp-vite": "7.4.0"
+  }
+}

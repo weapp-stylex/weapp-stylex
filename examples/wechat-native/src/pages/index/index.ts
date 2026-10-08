@@ -1,57 +1,36 @@
 import * as stylex from '@weapp-stylex/core'
+import styles, { darkTheme, lightTheme } from '../../styles'
 
-const styles = stylex.create({
-  page: {
-    minHeight: '100vh',
-    padding: 24,
-    boxSizing: 'border-box',
-  },
-  eyebrow: {
-    color: '#4b63d3',
-    fontSize: 13,
-    fontWeight: 600,
-    letterSpacing: 1,
-  },
-  title: {
-    color: '#172033',
-    fontSize: 28,
-    fontWeight: 700,
-    marginTop: 8,
-  },
-  subtitle: {
-    color: '#65708a',
-    fontSize: 15,
-    lineHeight: 1.6,
-    marginTop: 8,
-  },
-  button: {
-    backgroundColor: '#4b63d3',
-    borderRadius: 14,
-    color: 'white',
-    marginTop: 24,
-    padding: 14,
-    textAlign: 'center',
-  },
-  buttonPressed: {
-    opacity: 0.65,
-  },
-})
-
-const sx = {
-  page: stylex.attrs(styles.page).class,
-  eyebrow: stylex.attrs(styles.eyebrow).class,
-  title: stylex.attrs(styles.title).class,
-  subtitle: stylex.attrs(styles.subtitle).class,
-  button: stylex.attrs(styles.button).class,
-  buttonPressed: stylex.attrs(styles.buttonPressed).class,
-}
-
+const inline = stylex.create({ subtitle: { marginTop: 8, color: '#65708a' } })
 Page({
   data: {
-    sx,
     pressed: false,
+    dark: false,
+    width: 80,
+    sx: {
+      page: stylex.attrs(lightTheme, styles.root),
+      title: stylex.attrs(styles.title),
+      subtitle: stylex.attrs(inline.subtitle),
+      button: stylex.attrs(styles.button),
+      meter: stylex.attrs(styles.meter(80)),
+    },
   },
   onTapButton() {
-    this.setData({ pressed: !this.data.pressed })
+    const pressed = !this.data.pressed
+    this.setData({
+      pressed,
+      'sx.button': stylex.attrs(styles.button, pressed && styles.active),
+    })
+  },
+  onToggleTheme() {
+    const dark = !this.data.dark
+    this.setData({
+      dark,
+      'sx.page': stylex.attrs(dark ? darkTheme : lightTheme, styles.root),
+    })
+  },
+  onGrow() {
+    const width = this.data.width === 80 ? 120 : 80
+    this.setData({ width, 'sx.meter': stylex.attrs(styles.meter(width)) })
   },
 })

@@ -1,0 +1,20 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "StyleX + uni-app"
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "subpackage",
+      "pages": [
+        {
+          "path": "detail/index"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "./.weapp-vite/tsconfig.app.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "wevu",
+    "types": ["node", "miniprogram-api-typings", "weapp-vite/client"],
+    "noEmit": true
+  },
+  "include": ["src", "vite.config.ts", ".weapp-vite/**/*.d.ts"]
+}

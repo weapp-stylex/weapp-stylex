@@ -1,0 +1,47 @@
+{
+  "name": "uni-vue3",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runnable WeChat StyleX integration example",
+  "author": "ice breaker <1324318532@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "examples/uni-vue3"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
+  "keywords": [
+    "repoctl",
+    "typescript",
+    "library",
+    "template"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": "^22.22.1 || >=24.11.0"
+  },
+  "scripts": {
+    "build": "uni build -p mp-weixin && node ../../scripts/project-config.mjs dist/build/mp-weixin uni-vue3",
+    "dev": "uni -p mp-weixin",
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-components": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-mp-weixin": "3.0.0-alpha-5030120260930001",
+    "@weapp-stylex/core": "workspace:*",
+    "vue": "3.4.21"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "3.4.31",
+    "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001",
+    "@types/node": "^26.6.4",
+    "@weapp-stylex/uni-app": "workspace:*",
+    "vite": "5.2.8",
+    "vue-tsc": "^3.3.1"
+  }
+}

@@ -1,7 +1,9 @@
-<view class="{{sx.page}}">
-  <view class="{{sx.eyebrow}}">NATIVE WECHAT + STYLEX</view>
-  <view class="{{sx.title}}">原子化样式，直接生成 WXSS</view>
-  <view class="{{sx.subtitle}}">StyleX 在编译阶段生成确定的 sx* class，WXML 只消费 Page data 中的字符串。</view>
-  <stylex-card title="组件样式也能复用" />
-  <view class="{{sx.button}} {{pressed ? sx.buttonPressed : ''}}" bindtap="onTapButton">点击查看条件样式</view>
+<view id="stylex-root" data-testid="stylex-root" class="{{sx.page.class}}">
+  <text class="{{sx.title.class}}">原子化样式，直接生成 WXSS</text>
+  <text class="{{sx.subtitle.class}}">共享样式文件 · 条件合并 · 主题变量</text>
+  <stylex-card dark="{{dark}}" />
+  <view id="stylex-toggle" class="{{sx.button.class}}" bindtap="onTapButton">点击查看条件样式</view>
+  <button id="stylex-theme" bindtap="onToggleTheme">切换主题</button>
+  <button id="stylex-grow" bindtap="onGrow">动态尺寸</button>
+  <view id="stylex-meter" data-testid="stylex-meter" class="{{sx.meter.class}}" style="{{sx.meter.style}}">尺寸 {{width}}</view>
 </view>
