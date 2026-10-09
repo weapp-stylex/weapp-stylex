@@ -12,17 +12,25 @@ const run = promisify(execFile)
 const root = fileURLToPath(new URL('..', import.meta.url))
 const directory = await mkdtemp(path.join(tmpdir(), 'weapp-stylex-package-'))
 try {
-  const packs = path.join(directory, 'packs')
-  await mkdir(packs)
-  for (const name of ['core', 'compiler', 'weapp-vite', 'taro', 'uni-app', 'weapp-stylex']) {
-    await run('corepack', ['pnpm', 'pack', '--pack-destination', packs], {
-      cwd: path.join(root, 'packages', name),
-    })
+  const registryVersion = process.env.WEAPP_STYLEX_TEST_REGISTRY_VERSION
+  let packages
+  if (registryVersion) {
+    assert.match(registryVersion, /^\d+\.\d+\.\d+$/)
+    packages = [`weapp-stylex@${registryVersion}`]
   }
-  const tarballs = (await readdir(packs)).filter(file => file.endsWith('.tgz')).map(file => path.join(packs, file))
-  assert.equal(tarballs.length, 6)
+  else {
+    const packs = path.join(directory, 'packs')
+    await mkdir(packs)
+    for (const name of ['core', 'compiler', 'weapp-vite', 'taro', 'uni-app', 'weapp-stylex']) {
+      await run('corepack', ['pnpm', 'pack', '--pack-destination', packs], {
+        cwd: path.join(root, 'packages', name),
+      })
+    }
+    packages = (await readdir(packs)).filter(file => file.endsWith('.tgz')).map(file => path.join(packs, file))
+    assert.equal(packages.length, 6)
+  }
   await writeFile(path.join(directory, 'package.json'), '{"name":"packed-facade-consumer","private":true,"type":"module"}')
-  await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', ...tarballs], {
+  await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', ...packages], {
     cwd: directory,
     timeout: 120000,
     maxBuffer: 4 * 1024 * 1024,
@@ -65,7 +73,7 @@ assert.match(session.css(),/padding:16px/)
   await writeFile(path.join(directory, 'consumer.ts'), `import * as stylex from 'weapp-stylex';const styles=stylex.create({root:{padding:16}});const className:string|undefined=stylex.attrs(styles.root).class;void className;`)
   const tooling = createRequire(new URL('../package.json', import.meta.url))
   await run(process.execPath, [tooling.resolve('typescript/bin/tsc'), '--noEmit', '--strict', '--skipLibCheck', 'false', '--module', 'NodeNext', '--target', 'ES2022', 'consumer.ts'], { cwd: directory })
-  process.stdout.write('Packed facade: isolated install, optional hosts, runtime isolation, ESM/CJS exports, StyleX compilation and TypeScript passed\n')
+  process.stdout.write(`${registryVersion ? `Published weapp-stylex@${registryVersion}` : 'Packed facade'}: isolated install, optional hosts, runtime isolation, ESM/CJS exports, StyleX compilation and TypeScript passed\n`)
 }
 finally {
   await rm(directory, { recursive: true, force: true })

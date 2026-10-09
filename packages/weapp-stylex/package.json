@@ -6,6 +6,7 @@
   "description": "Official StyleX runtime and WeChat mini-program adapters for native, Wevu, Taro and uni-app",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
+  "homepage": "https://stylex.weapp.dev/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",

@@ -39,4 +39,16 @@ npm trust list @weapp-stylex/core --json
 
 首次上传后 registry 可能需要几分钟处理。确认目标版本的可见状态再恢复发布，避免重复上传已成功的版本。发布工作流保存进度 artifact；单包恢复使用 repoctl 受管工作流的 `publish-unpublished` 模式及精确包名、版本。
 
+## 聚合包发布验收
+
+首次注册后，用 `pnpm change` 记录正式版本意图，再通过 Release PR 验证首次 OIDC 上传。pnpm 原生流程会将新包当前版本作为注册版本；正式版本仍由变更意图和 Release PR 生成，不手改 manifest。
+
+确认聚合包及其依赖都已在 registry 可见后，在干净临时项目中验证实际发布产物：
+
+```bash
+WEAPP_STYLEX_TEST_REGISTRY_VERSION=0.1.0 corepack pnpm exec node scripts/test-package.mjs
+```
+
+将版本替换为本次实际发布版本。该脚本检查宿主可选 peer、runtime 隔离、ESM/CJS 子路径、官方 StyleX 编译结果和独立消费者类型声明，结束后清理临时目录。不设置版本时检查本地六个 tarball，供集成测试使用。
+
 仓库需允许 Actions 创建 Release PR。工作流使用 GitHub hosted runner、`id-token: write`、支持 trusted publishing 的 npm CLI 及公开 `publishConfig.access`。受管配置通过 repoctl 维护。
