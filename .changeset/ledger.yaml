@@ -1,0 +1,25 @@
+"@weapp-stylex/compiler@0.1.0":
+  dir: packages/compiler
+  intents:
+    - angry-wombats-dig
+    - khaki-books-melt
+"@weapp-stylex/core@0.1.1":
+  dir: packages/core
+  intents:
+    - khaki-books-melt
+"@weapp-stylex/taro@0.1.0":
+  dir: packages/taro
+  intents:
+    - angry-wombats-dig
+    - khaki-books-melt
+"@weapp-stylex/uni-app@0.1.0":
+  dir: packages/uni-app
+  intents:
+    - angry-wombats-dig
+    - khaki-books-melt
+"@weapp-stylex/weapp-vite@0.2.0":
+  dir: packages/weapp-vite
+  intents:
+    - angry-wombats-dig
+    - khaki-books-melt
+    - smart-trees-draw

@@ -1,7 +1,7 @@
 {
   "name": "@weapp-stylex/compiler",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "StyleX build integration for WeChat mini-programs",
   "author": "ice breaker <1324318532@qq.com>",
