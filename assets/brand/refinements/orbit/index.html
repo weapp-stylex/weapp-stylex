@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>双轨环抱 · 精修对比</title>
+    <style>
+      :root {
+        --preview: #fff;
+        --size: 176px;
+        color-scheme: light;
+        color: #19312e;
+        background: #fff;
+        font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1500px;
+        margin: auto;
+        padding: 36px 40px 24px;
+      }
+      header {
+        border-bottom: 1px solid #dde6e1;
+        padding-bottom: 24px;
+      }
+      .kicker {
+        font-size: 12px;
+        color: #078247;
+        letter-spacing: 1px;
+      }
+      h1 {
+        font-size: 40px;
+        letter-spacing: -1.2px;
+        margin: 8px 0 12px;
+      }
+      header p,
+      .description {
+        color: #637b73;
+        line-height: 1.7;
+      }
+      header p {
+        margin: 0;
+        font-size: 16px;
+      }
+      .toolbar,
+      .controls,
+      .group {
+        display: flex;
+        align-items: center;
+      }
+      .toolbar {
+        justify-content: space-between;
+        gap: 16px;
+        padding: 24px 0;
+      }
+      .controls {
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+      .group {
+        gap: 8px;
+      }
+      .label {
+        font-size: 13px;
+        color: #637b73;
+      }
+      button,
+      select {
+        font: inherit;
+        background: #fff;
+        border: 1px solid #ccdcd3;
+        color: inherit;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      button[aria-pressed='true'] {
+        color: #078247;
+        background: #edf9f2;
+        border-color: #078247;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      select:focus-visible {
+        outline: 3px solid #5bd3f3;
+        outline-offset: 3px;
+      }
+      #selection {
+        color: #078247;
+        font-size: 13px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 1px solid #dde6e1;
+      }
+      article {
+        min-width: 0;
+        padding: 24px 22px;
+      }
+      article + article {
+        border-left: 1px solid #dde6e1;
+      }
+      h2 {
+        font-size: 21px;
+        margin: 0 0 8px;
+      }
+      .note {
+        color: #078247;
+        font-size: 12px;
+        margin: 0;
+      }
+      .stage {
+        height: 258px;
+        display: grid;
+        place-items: center;
+        background: var(--preview);
+        border-radius: 12px;
+        margin: 20px 0 18px;
+      }
+      .stage img {
+        width: var(--size);
+        height: var(--size);
+        object-fit: contain;
+      }
+      .checker .stage {
+        background-color: white;
+        background-image: conic-gradient(#e7eeea 25%, transparent 0 50%, #e7eeea 0 75%, transparent 0);
+        background-size: 20px 20px;
+      }
+      .description {
+        font-size: 14px;
+        min-height: 72px;
+        margin: 0 0 14px;
+      }
+      .samples {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        height: 95px;
+      }
+      .sample {
+        text-align: center;
+        font-size: 11px;
+        color: #637b73;
+      }
+      .sample img {
+        display: block;
+        margin: 0 auto 8px;
+      }
+      .samples .sample:first-child img {
+        width: 64px;
+        height: 64px;
+      }
+      .samples .sample:nth-child(2) img {
+        width: 32px;
+        height: 32px;
+      }
+      .samples .sample:nth-child(3) img {
+        width: 24px;
+        height: 24px;
+      }
+      .samples .sample:nth-child(4) img {
+        width: 16px;
+        height: 16px;
+      }
+      .downloads {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 16px;
+      }
+      a {
+        color: #3e6556;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        font-size: 12px;
+      }
+      .pick {
+        font-size: 12px;
+      }
+      .chosen h2 {
+        color: #078247;
+      }
+      footer {
+        border-top: 1px solid #dde6e1;
+        padding: 20px 0;
+        color: #637b73;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+      footer a {
+        margin-right: 16px;
+      }
+      @media (max-width: 1100px) {
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        article {
+          border-bottom: 1px solid #dde6e1;
+        }
+        article:nth-child(odd) {
+          border-left: 0;
+        }
+        .toolbar {
+          align-items: start;
+        }
+      }
+      @media (max-width: 620px) {
+        main {
+          padding: 24px 18px;
+        }
+        h1 {
+          font-size: 33px;
+        }
+        .toolbar {
+          display: block;
+        }
+        .controls {
+          display: block;
+        }
+        .group {
+          margin-bottom: 12px;
+          flex-wrap: wrap;
+        }
+        #selection {
+          margin-top: 18px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        article {
+          padding: 24px 4px;
+        }
+        article + article {
+          border-left: 0;
+        }
+        .description {
+          min-height: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="kicker">WEAPP-STYLEX / ORBIT REFINEMENTS</span>
+        <h1>双轨环抱 · 精修</h1>
+        <p>保留绿色圆标与青紫双轨，调整重心、间距与小尺寸表现。</p>
+      </header>
+      <div class="toolbar">
+        <div class="controls">
+          <div class="group">
+            <span class="label">预览背景</span><button data-bg="light" aria-pressed="true">浅色</button
+            ><button data-bg="dark" aria-pressed="false">深色</button
+            ><button data-bg="checker" aria-pressed="false">透明</button>
+          </div>
+          <div class="group">
+            <label class="label" for="size">图标尺寸</label
+            ><select id="size">
+              <option value="176">176 px</option>
+              <option value="96">96 px</option>
+              <option value="64">64 px</option>
+              <option value="32">32 px</option>
+              <option value="24">24 px</option>
+            </select>
+          </div>
+        </div>
+        <div id="selection" role="status" aria-live="polite">正式采用 A1 / 原轨精修</div>
+      </div>
+      <section class="grid" aria-label="原版和三套精修方案">
+        <article id="a0">
+          <h2>A0 / 原版对照</h2>
+          <p class="note">对照</p>
+          <div class="stage"><img src="a0.svg" alt="原版双轨环抱 logo" /></div>
+          <p class="description">原先采用的双轨环抱。轮廓较高，轨道带渐隐尖端，内部标记随背景变化。</p>
+          <div class="samples">
+            <div class="sample"><img src="a0.svg" alt="原版 64px" />64 px</div>
+            <div class="sample"><img src="a0.svg" alt="原版 32px" />32 px</div>
+            <div class="sample"><img src="a0.svg" alt="原版 24px" />24 px</div>
+            <div class="sample"><img src="a0.svg" alt="原版 16px" />16 px</div>
+          </div>
+          <div class="downloads"><a href="a0.svg" download>SVG</a><a href="a0.png" download>透明 PNG</a></div>
+        </article>
+        <article id="a1" class="chosen">
+          <h2>A1 / 原轨精修</h2>
+          <p class="note">已采用 · 保留官方路径</p>
+          <div class="stage"><img src="a1.svg" alt="原轨精修 logo" /></div>
+          <p class="description">收紧外轮廓，增大中心圆标；轨道使用实色，白色标记不随背景变化。</p>
+          <div class="samples">
+            <div class="sample"><img src="a1.svg" alt="原轨精修 64px" />64 px</div>
+            <div class="sample"><img src="a1.svg" alt="原轨精修 32px" />32 px</div>
+            <div class="sample"><img src="a1.svg" alt="原轨精修 24px" />24 px</div>
+            <div class="sample"><img src="a1.svg" alt="原轨精修 16px" />16 px</div>
+          </div>
+          <button class="pick" data-pick="a1" aria-pressed="true">选 A1</button>
+          <div class="downloads">
+            <a href="a1.svg" download>SVG</a><a href="a1.png" download>透明 PNG</a
+            ><a href="a1-avatar.png" download>头像 PNG</a>
+          </div>
+        </article>
+        <article id="a2">
+          <h2>A2 / 均衡环抱</h2>
+          <p class="note">曲率重绘</p>
+          <div class="stage"><img src="a2.svg" alt="均衡环抱 logo" /></div>
+          <p class="description">重新梳理两条轨道的曲率与视觉重量，左右呼应；留出清晰的环抱间隙。</p>
+          <div class="samples">
+            <div class="sample"><img src="a2.svg" alt="均衡环抱 64px" />64 px</div>
+            <div class="sample"><img src="a2.svg" alt="均衡环抱 32px" />32 px</div>
+            <div class="sample"><img src="a2.svg" alt="均衡环抱 24px" />24 px</div>
+            <div class="sample"><img src="a2.svg" alt="均衡环抱 16px" />16 px</div>
+          </div>
+          <button class="pick" data-pick="a2" aria-pressed="false">选 A2</button>
+          <div class="downloads">
+            <a href="a2.svg" download>SVG</a><a href="a2.png" download>透明 PNG</a
+            ><a href="a2-avatar.png" download>头像 PNG</a>
+          </div>
+        </article>
+        <article id="a3">
+          <h2>A3 / 紧凑头像</h2>
+          <p class="note">小尺寸优先</p>
+          <div class="stage"><img src="a3.svg" alt="紧凑头像 logo" /></div>
+          <p class="description">中心圆标更大、轨道更厚；以更短的尖端提高头像与图标的识别度。</p>
+          <div class="samples">
+            <div class="sample"><img src="a3.svg" alt="紧凑头像 64px" />64 px</div>
+            <div class="sample"><img src="a3.svg" alt="紧凑头像 32px" />32 px</div>
+            <div class="sample"><img src="a3.svg" alt="紧凑头像 24px" />24 px</div>
+            <div class="sample"><img src="a3.svg" alt="紧凑头像 16px" />16 px</div>
+          </div>
+          <button class="pick" data-pick="a3" aria-pressed="false">选 A3</button>
+          <div class="downloads">
+            <a href="a3.svg" download>SVG</a><a href="a3.png" download>透明 PNG</a
+            ><a href="a3-avatar.png" download>头像 PNG</a>
+          </div>
+        </article>
+      </section>
+      <footer>
+        <a href="comparison.png">静态对比图</a
+        ><a href="weapp-stylex-orbit-refinements.zip" download>下载全部 SVG / PNG</a><br />
+        A1 保留官方轨道原路径；A2 / A3 沿用其青紫双轨语言重绘。中心小程序标记沿用原素材。
+      </footer>
+    </main>
+    <script>
+      const names = { a1: '原轨精修', a2: '均衡环抱', a3: '紧凑头像' }
+      for (const button of document.querySelectorAll('[data-bg]')) {
+        button.addEventListener('click', () => {
+          const mode = button.dataset.bg
+          document.body.classList.toggle('checker', mode === 'checker')
+          document.documentElement.style.setProperty('--preview', mode === 'dark' ? '#172c2b' : '#fff')
+          for (const other of document.querySelectorAll('[data-bg]'))
+            other.setAttribute('aria-pressed', String(other === button))
+        })
+      }
+      document
+        .querySelector('#size')
+        .addEventListener('change', (event) =>
+          document.documentElement.style.setProperty('--size', `${event.target.value}px`),
+        )
+      for (const button of document.querySelectorAll('[data-pick]')) {
+        button.addEventListener('click', () => {
+          for (const other of document.querySelectorAll('[data-pick]')) {
+            other.setAttribute('aria-pressed', String(other === button))
+            other.closest('article').classList.toggle('chosen', other === button)
+          }
+          const id = button.dataset.pick
+          document.querySelector('#selection').textContent = `当前选择：${id.toUpperCase()} / ${names[id]}`
+          history.replaceState(null, '', `#${id}`)
+        })
+      }
+    </script>
+  </body>
+</html>

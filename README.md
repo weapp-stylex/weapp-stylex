@@ -10,7 +10,7 @@
 
 样式可以定义在普通 `styles.ts` 中，通过具名导出、默认导出、barrel、路径别名或 workspace 源码包复用。编译后保留导出的样式映射，多个消费者继续调用官方 `attrs()` / `props()` 合并样式。
 
-标识采用 A「双轨环抱」；全部设计方案、SVG、PNG 和交互预览见 [品牌素材](assets/brand/README.md)。
+标识采用 A1「双轨环抱 · 原轨精修」；全部设计方案、SVG、PNG 和交互预览见 [品牌素材](assets/brand/README.md)。
 
 ## 包与接入方式
 
