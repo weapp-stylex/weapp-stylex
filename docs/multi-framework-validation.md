@@ -1,5 +1,7 @@
 # 共享模块与多框架验收（2026-10-08）
 
+2026-10-09 使用用户指定 AppID 完成七种产物的分别运行验收，并修复 Taro Vue / Webpack 的 SFC 编译问题。单轮完整 suite 仍受 IDE 启动故障影响；后续状态与证据见 [真实 IDE 验收记录](ide-validation-2026-10-09.md)。本文保留 10-08 的历史结果。
+
 本轮新增 `@weapp-stylex/compiler`、`@weapp-stylex/taro`、`@weapp-stylex/uni-app`，保留原生 `stylexCompiler()`，新增原生/Wevu 共享 session 工厂 `createStylex()`。包与示例通过 repoctl 的 tsdown 模板创建，保留模板基线以供后续升级比较。
 
 ## 版本与隔离

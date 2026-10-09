@@ -450,11 +450,120 @@ async function webpackCache() {
     await close()
   }
 }
+
+async function webpackVueBlocks() {
+  // Use the public Taro registration and real Vue-loader, including its pitcher
+  // requests, rather than testing only the compiler's standalone SFC transform.
+  const vueRequire = createRequire(new URL('../examples/taro-vue3/package.json', import.meta.url))
+  const runnerRequire = createRequire(vueRequire.resolve('@tarojs/webpack5-runner'))
+  const Chain = runnerRequire('webpack-chain')
+  const { VueLoaderPlugin } = vueRequire('vue-loader')
+  const { stylexTaro } = taroRequire('@weapp-stylex/taro')
+  const cwd = path.join(temporary, 'webpack-vue')
+  await mkdir(cwd)
+  await writeFile(path.join(cwd, 'package.json'), '{"name":"webpack-vue-fixture","type":"module"}')
+  await writeFile(path.join(cwd, 'shared.js'), declaration('green'))
+  const sfc = color => `<script>
+import * as stylex from '@weapp-stylex/core'
+export const normal = stylex.create({normal:{marginTop:8}})
+</script>
+<script setup>
+import * as stylex from '@weapp-stylex/core'
+import {styles} from './shared.js'
+import External from './external.vue'
+const inline = stylex.create({label:{color:'${color}',fontSize:14}})
+const sx = stylex.attrs(styles.root, inline.label)
+</script>
+<template><view :class="sx.class"><External /></view></template>
+<style scoped>.local { opacity: .5 }</style>
+<unhandled>this custom block is deliberately not JavaScript</unhandled>`
+  const component = path.join(cwd, 'entry.vue')
+  await writeFile(component, sfc('red'))
+  await writeFile(path.join(cwd, 'external.vue'), '<script src="./external.js"></script><template><view :class="sx.class" /></template>')
+  await writeFile(path.join(cwd, 'external.js'), `import * as stylex from '@weapp-stylex/core';const s=stylex.create({root:{opacity:0.8}});export default {setup(){return {sx:stylex.attrs(s.root)}}}`)
+  const cssLoader = path.join(cwd, 'local-style-loader.cjs')
+  await writeFile(cssLoader, 'module.exports=function(code){this.emitFile("local.wxss",code);return "export default {}"}')
+  const makeCompiler = () => {
+    const chain = new Chain()
+    chain.mode('development').context(cwd).target('node').devtool('source-map')
+    chain.entry('entry').add('./entry.vue')
+    chain.output.path(path.join(cwd, 'dist')).filename('entry.cjs').library({ type: 'commonjs2' })
+    chain.resolve.alias.set('@weapp-stylex/core', path.join(root, 'packages/core/dist/index.js'))
+    chain.resolve.alias.set('vue$', vueRequire.resolve('vue'))
+    chain.resolve.alias.set('vue/server-renderer', vueRequire.resolve('vue/server-renderer'))
+    chain.module.rule('vue').test(/\.vue$/).use('vue-loader').loader(vueRequire.resolve('vue-loader'))
+    chain.module.rule('css').test(/\.css$/).use('fixture-css').loader(cssLoader)
+    chain.plugin('vue').use(VueLoaderPlugin)
+    chain.cache({ type: 'filesystem', cacheDirectory: path.join(cwd, 'cache') })
+    const previous = process.env.TARO_ENV
+    process.env.TARO_ENV = 'weapp'
+    try {
+      stylexTaro({ modifyViteConfig() {}, modifyWebpackChain: register => register({ chain }) }, compilerOptions)
+    }
+    finally {
+      if (previous === undefined) {
+        delete process.env.TARO_ENV
+      }
+      else {
+        process.env.TARO_ENV = previous
+      }
+    }
+    return webpack(chain.toConfig())
+  }
+  let compiler = makeCompiler()
+  const close = () => new Promise((resolve, reject) => compiler.close(error => error ? reject(error) : resolve()))
+  const run = () => new Promise((resolve, reject) => compiler.run((error, stats) => error
+    ? reject(error)
+    : stats.hasErrors() ? reject(new Error(stats.toString({ all: false, errors: true }))) : resolve(stats)))
+  const css = () => readFile(path.join(cwd, 'dist/stylex.wxss'), 'utf8')
+  const execute = async (color) => {
+    const output = path.join(cwd, 'dist/entry.cjs')
+    delete taroRequire.cache[output]
+    const loaded = taroRequire(output)
+    // A leaked create() throws here even after minification renamed the import.
+    const bindings = loaded.default.setup({}, { expose() {} })
+    assert.match(bindings.sx.class, /sx\w+/)
+    assert.match(bindings.External.setup().sx.class, /sx\w+/)
+    assert.ok(loaded.normal.normal)
+    assert.match(await css(), new RegExp(`color:${color}`))
+    assert.match(await css(), /margin-top:8px/)
+    assert.match(await css(), /opacity:0?\.8/)
+    assert.match(loaded.default.__scopeId, /^data-v-\w+$/)
+    assert.match(await readFile(path.join(cwd, 'dist/local.wxss'), 'utf8'), /\.local \{ opacity: \.5 \}/)
+    return bindings.sx.class
+  }
+  try {
+    await run()
+    const original = await execute('red')
+    const map = JSON.parse(await readFile(path.join(cwd, 'dist/entry.cjs.map'), 'utf8'))
+    assert.ok(map.sources.some(source => source.includes('entry.vue')))
+    assert.ok(map.sourcesContent.some(source => source?.includes('const sx = stylex.attrs')))
+    await close()
+    compiler = makeCompiler()
+    const restored = await run()
+    assert.equal(await execute('red'), original)
+    const script = [...restored.compilation.modules].find(module => module.resource?.includes('entry.vue?vue&type=script') && module.buildInfo.weappStylex)
+    assert.ok(script?.buildInfo.weappStylex.rules.length, 'Cached Vue script lost inline StyleX rules')
+    assert.ok(!restored.compilation.builtModules.has(script), 'Vue script was not restored from disk cache')
+    await writeFile(component, sfc('blue'))
+    await run()
+    assert.notEqual(await execute('blue'), original)
+    assert.doesNotMatch(await css(), /color:red/)
+    await writeFile(component, '<script setup>const sx={class:"plain"}</script><template><view :class="sx.class" /></template><style>.local { opacity: .5 }</style>')
+    await run()
+    await assert.rejects(css(), { code: 'ENOENT' })
+    process.stdout.write('Real Vue-loader blocks, setup execution, external scripts, custom blocks and disk cache passed\n')
+  }
+  finally {
+    await close()
+  }
+}
 try {
   await compiledSfcEntrypoints()
   await nativeBuild()
   await viteWatch()
   await webpackCache()
+  await webpackVueBlocks()
   process.stdout.write(
     'CJS/ESM SFC, native module graph, Vite watch and Webpack cache integration passed\n',
   )

@@ -33,6 +33,7 @@ for (const example of examples) {
   ).join('\n')
   summaries[`${example.name}/${example.directory}`] = { paths: styles.map(file => path.relative(example.project, file)).sort(), css }
   assert.match(css, /padding:16px/)
+  assert.match(css, /margin-top:8px/)
   assert.match(css, /margin-top:12rpx/)
   assert.match(css, /--sx/)
   let hasDefaultVariables = false

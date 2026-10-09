@@ -48,4 +48,4 @@
 - 本地验证 Node 24.18.0；CI 保留 22.22.1 与 24.18.0 并运行双模式和原生可用/缺失路径。此机器独立 pnpm 12.9.1 在 PATH 中遮住 Corepack shim，repo check --full 验证时在该命令的 PATH 前置 Node 24.18.0 的 bin，仍使用声明的 pnpm 12.10.1；没有降低版本检查。
 - 审计仍为 72 条：4 critical、20 high、38 moderate、10 low，与此前完整工具链基线一致。新增 SWC 未引入新的公告；已有限定 override 兼容验证通过。残留范围见 [依赖升级记录](dependency-upgrade-2026-10-09.md)。不宣称审计为零。
 
-真实 IDE 验收为 **pending**。2026-10-09 已核对官方稳定版来源，报告最新稳定版为 `2.02.2608080`；缺少 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH` 与真实 `WEAPP_STYLEX_APPID`，实际 IDE/基础库/AppID/截图尚未记录。诊断在本地 `artifacts/ide/report.json` 和 `artifacts-ide.log`。本任务未创建 DevTools 或 automator，资源列表为空。七份产物结构检查和两套 headless 通过不能替代真实 IDE 验收。
+后续已使用 weapp-tailwindcss 的 AppID `wx6ffee4673b257014` 和 weapp-vite 选定 CLI 验收：实际工具 Stable `2.02.2608080`、基础库 `3.17.4`。七种产物的运行断言分别通过，**单轮完整 suite 仍待验收**，最近重跑因原生模拟器启动失败而退出。真实验收另发现并修复 Taro Vue / Webpack 的内联 SFC 漏编译，增加真实 Vue-loader 的 setup 执行与磁盘缓存回归；Babel/auto 集成、七份产物和 headless 重新通过。截图、日志、原始失败与资源清理范围见 [IDE 验收记录](ide-validation-2026-10-09.md)。本文完整构建耗时采于该 SFC 修复前，保留为历史观测，不能作为修复后整体构建的性能承诺；单文件和共享核心转换数据的边界不变。

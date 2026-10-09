@@ -92,7 +92,10 @@ The private root workspace is named `weapp-stylex-workspace`.
   use computed plus explicit :class/:style. Taro React uses props() on View.
 - Process raw SFC scripts before framework compilation; retain templates,
   macros, lifecycle and styles, compose sourcemaps, skip duplicate virtual
-  script requests. For uni-app use DCloud's matching SFC parser.
+  script requests in Vite. Webpack Vue-loader rereads raw SFCs for inline block
+  requests: preprocess them before block selection, deduplicate cloned loaders
+  with a stable ident, and retain unknown custom-block behavior. For uni-app use
+  DCloud's matching SFC parser.
 - Replace metadata per transformed module, retain unchanged cached modules,
   prune unreachable graph nodes, and release session state on final watcher
   shutdown. closeBundle alone must not clear an active watcher.

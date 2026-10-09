@@ -38,17 +38,17 @@ function grow() {
     <text :class="title.class">
       共享 StyleX 样式
     </text>
-    <view :class="label.class">
+    <view id="stylex-inline" :class="label.class">
       独立文件 · Vue SFC 内联 · 动态尺寸
     </view>
-    <StylexCard :dark="dark" />
+    <StylexCard id="stylex-card" :dark="dark" />
     <view id="stylex-toggle" :class="button.class" @tap="toggle">
       点击查看条件样式
     </view>
     <button id="stylex-theme" @tap="toggleTheme">
       切换主题
     </button>
-    <button @tap="grow">
+    <button id="stylex-grow" @tap="grow">
       动态尺寸
     </button>
     <view

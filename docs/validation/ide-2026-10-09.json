@@ -1,0 +1,641 @@
+{
+  "runtimeAssertions": "passed for all seven artifacts across separate serial runs",
+  "fullSuite": "pending; latest attempted run failed native simulator startup readiness",
+  "backend": "auto",
+  "appid": "wx6ffee4673b257014",
+  "cliPath": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli",
+  "latestStable": "2.02.2608080",
+  "officialSource": "https://devtools.wxqcloud.qq.com.cn/WechatWebDev/nightly/versions/config.json",
+  "officialChecks": [
+    "2026-10-09T08:17:54.109Z",
+    "2026-10-09T08:22:16.037Z",
+    "2026-10-09T08:22:46.168Z"
+  ],
+  "selectedArtifacts": [
+    {
+      "name": "wechat-native",
+      "directory": "dist",
+      "status": "passed",
+      "screenshots": [
+        "artifacts/ide/run-1791533874324/0-wechat-native/index.png",
+        "artifacts/ide/run-1791533874324/0-wechat-native/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791533874324/0-wechat-native/console.json",
+      "stage": "subpackage route",
+      "openLog": "artifacts/ide/run-1791533874324/0-wechat-native/open.log",
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "brand": "devtools",
+        "model": "iPhone 12/13 (Pro)",
+        "system": "iOS 10.0.1",
+        "platform": "devtools",
+        "benchmarkLevel": -1,
+        "pixelRatio": 3,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "windowWidth": 390,
+        "windowHeight": 753,
+        "statusBarHeight": 47,
+        "safeArea": {
+          "top": 47,
+          "left": 0,
+          "right": 390,
+          "bottom": 810,
+          "width": 390,
+          "height": 763
+        },
+        "language": "zh_CN",
+        "version": "8.0.5",
+        "fontSizeSetting": 16,
+        "SDKVersion": "3.17.4",
+        "host": {
+          "env": "WeChat"
+        },
+        "enableDebug": false,
+        "mode": "default",
+        "deviceOrientation": "portrait",
+        "bluetoothEnabled": true,
+        "locationEnabled": true,
+        "wifiEnabled": true,
+        "albumAuthorized": true,
+        "cameraAuthorized": true,
+        "locationAuthorized": true,
+        "microphoneAuthorized": true,
+        "notificationAuthorized": true,
+        "notificationAlertAuthorized": true,
+        "notificationBadgeAuthorized": true,
+        "notificationSoundAuthorized": true,
+        "phoneCalendarAuthorized": true,
+        "bluetoothAuthorized": true,
+        "locationReducedAccuracy": true,
+        "devicePixelRatio": 3
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      }
+    },
+    {
+      "name": "wechat-wevu",
+      "directory": "dist",
+      "status": "passed",
+      "screenshots": [
+        "artifacts/ide/run-1791533874324/1-wechat-wevu/index.png",
+        "artifacts/ide/run-1791533874324/1-wechat-wevu/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791533874324/1-wechat-wevu/console.json",
+      "stage": "subpackage route",
+      "openLog": "artifacts/ide/run-1791533874324/1-wechat-wevu/open.log",
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "brand": "devtools",
+        "model": "iPhone 12/13 (Pro)",
+        "system": "iOS 10.0.1",
+        "platform": "devtools",
+        "benchmarkLevel": -1,
+        "pixelRatio": 3,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "windowWidth": 390,
+        "windowHeight": 753,
+        "statusBarHeight": 47,
+        "safeArea": {
+          "top": 47,
+          "left": 0,
+          "right": 390,
+          "bottom": 810,
+          "width": 390,
+          "height": 763
+        },
+        "language": "zh_CN",
+        "version": "8.0.5",
+        "fontSizeSetting": 16,
+        "SDKVersion": "3.17.4",
+        "host": {
+          "env": "WeChat"
+        },
+        "enableDebug": false,
+        "mode": "default",
+        "deviceOrientation": "portrait",
+        "bluetoothEnabled": true,
+        "locationEnabled": true,
+        "wifiEnabled": true,
+        "albumAuthorized": true,
+        "cameraAuthorized": true,
+        "locationAuthorized": true,
+        "microphoneAuthorized": true,
+        "notificationAuthorized": true,
+        "notificationAlertAuthorized": true,
+        "notificationBadgeAuthorized": true,
+        "notificationSoundAuthorized": true,
+        "phoneCalendarAuthorized": true,
+        "bluetoothAuthorized": true,
+        "locationReducedAccuracy": true,
+        "devicePixelRatio": 3
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      }
+    },
+    {
+      "name": "taro-react",
+      "directory": "dist/weapp-webpack",
+      "status": "passed",
+      "screenshots": [
+        "artifacts/ide/run-1791533874324/2-taro-react/index.png",
+        "artifacts/ide/run-1791533874324/2-taro-react/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791533874324/2-taro-react/console.json",
+      "stage": "subpackage route",
+      "openLog": "artifacts/ide/run-1791533874324/2-taro-react/open.log",
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "brand": "devtools",
+        "model": "iPhone 12/13 (Pro)",
+        "system": "iOS 10.0.1",
+        "platform": "devtools",
+        "benchmarkLevel": -1,
+        "pixelRatio": 3,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "windowWidth": 390,
+        "windowHeight": 753,
+        "statusBarHeight": 47,
+        "safeArea": {
+          "top": 47,
+          "left": 0,
+          "right": 390,
+          "bottom": 810,
+          "width": 390,
+          "height": 763
+        },
+        "language": "zh_CN",
+        "version": "8.0.5",
+        "fontSizeSetting": 16,
+        "SDKVersion": "3.17.4",
+        "host": {
+          "env": "WeChat"
+        },
+        "enableDebug": false,
+        "mode": "default",
+        "deviceOrientation": "portrait",
+        "bluetoothEnabled": true,
+        "locationEnabled": true,
+        "wifiEnabled": true,
+        "albumAuthorized": true,
+        "cameraAuthorized": true,
+        "locationAuthorized": true,
+        "microphoneAuthorized": true,
+        "notificationAuthorized": true,
+        "notificationAlertAuthorized": true,
+        "notificationBadgeAuthorized": true,
+        "notificationSoundAuthorized": true,
+        "phoneCalendarAuthorized": true,
+        "bluetoothAuthorized": true,
+        "locationReducedAccuracy": true,
+        "devicePixelRatio": 3
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      }
+    },
+    {
+      "name": "taro-react",
+      "directory": "dist/weapp-vite",
+      "status": "passed",
+      "screenshots": [
+        "artifacts/ide/run-1791533874324/3-taro-react/index.png",
+        "artifacts/ide/run-1791533874324/3-taro-react/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791533874324/3-taro-react/console.json",
+      "stage": "subpackage route",
+      "openLog": "artifacts/ide/run-1791533874324/3-taro-react/open.log",
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "brand": "devtools",
+        "model": "iPhone 12/13 (Pro)",
+        "system": "iOS 10.0.1",
+        "platform": "devtools",
+        "benchmarkLevel": -1,
+        "pixelRatio": 3,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "windowWidth": 390,
+        "windowHeight": 753,
+        "statusBarHeight": 47,
+        "safeArea": {
+          "top": 47,
+          "left": 0,
+          "right": 390,
+          "bottom": 810,
+          "width": 390,
+          "height": 763
+        },
+        "language": "zh_CN",
+        "version": "8.0.5",
+        "fontSizeSetting": 16,
+        "SDKVersion": "3.17.4",
+        "host": {
+          "env": "WeChat"
+        },
+        "enableDebug": false,
+        "mode": "default",
+        "deviceOrientation": "portrait",
+        "bluetoothEnabled": true,
+        "locationEnabled": true,
+        "wifiEnabled": true,
+        "albumAuthorized": true,
+        "cameraAuthorized": true,
+        "locationAuthorized": true,
+        "microphoneAuthorized": true,
+        "notificationAuthorized": true,
+        "notificationAlertAuthorized": true,
+        "notificationBadgeAuthorized": true,
+        "notificationSoundAuthorized": true,
+        "phoneCalendarAuthorized": true,
+        "bluetoothAuthorized": true,
+        "locationReducedAccuracy": true,
+        "devicePixelRatio": 3
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      }
+    },
+    {
+      "name": "taro-vue3",
+      "directory": "dist/weapp-webpack",
+      "status": "passed",
+      "screenshots": [
+        "artifacts/ide/run-1791533874324/4-taro-vue3/index.png",
+        "artifacts/ide/run-1791533874324/4-taro-vue3/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791533874324/4-taro-vue3/console.json",
+      "stage": "subpackage route",
+      "openLog": "artifacts/ide/run-1791533874324/4-taro-vue3/open.log",
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "brand": "devtools",
+        "model": "iPhone 12/13 (Pro)",
+        "system": "iOS 10.0.1",
+        "platform": "devtools",
+        "benchmarkLevel": -1,
+        "pixelRatio": 3,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "windowWidth": 390,
+        "windowHeight": 753,
+        "statusBarHeight": 47,
+        "safeArea": {
+          "top": 47,
+          "left": 0,
+          "right": 390,
+          "bottom": 810,
+          "width": 390,
+          "height": 763
+        },
+        "language": "zh_CN",
+        "version": "8.0.5",
+        "fontSizeSetting": 16,
+        "SDKVersion": "3.17.4",
+        "host": {
+          "env": "WeChat"
+        },
+        "enableDebug": false,
+        "mode": "default",
+        "deviceOrientation": "portrait",
+        "bluetoothEnabled": true,
+        "locationEnabled": true,
+        "wifiEnabled": true,
+        "albumAuthorized": true,
+        "cameraAuthorized": true,
+        "locationAuthorized": true,
+        "microphoneAuthorized": true,
+        "notificationAuthorized": true,
+        "notificationAlertAuthorized": true,
+        "notificationBadgeAuthorized": true,
+        "notificationSoundAuthorized": true,
+        "phoneCalendarAuthorized": true,
+        "bluetoothAuthorized": true,
+        "locationReducedAccuracy": true,
+        "devicePixelRatio": 3
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      }
+    },
+    {
+      "name": "taro-vue3",
+      "directory": "dist/weapp-vite",
+      "status": "passed",
+      "screenshots": [
+        "artifacts/ide/run-1791533874324/5-taro-vue3/index.png",
+        "artifacts/ide/run-1791533874324/5-taro-vue3/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791533874324/5-taro-vue3/console.json",
+      "stage": "subpackage route",
+      "openLog": "artifacts/ide/run-1791533874324/5-taro-vue3/open.log",
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "brand": "devtools",
+        "model": "iPhone 12/13 (Pro)",
+        "system": "iOS 10.0.1",
+        "platform": "devtools",
+        "benchmarkLevel": -1,
+        "pixelRatio": 3,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "windowWidth": 390,
+        "windowHeight": 753,
+        "statusBarHeight": 47,
+        "safeArea": {
+          "top": 47,
+          "left": 0,
+          "right": 390,
+          "bottom": 810,
+          "width": 390,
+          "height": 763
+        },
+        "language": "zh_CN",
+        "version": "8.0.5",
+        "fontSizeSetting": 16,
+        "SDKVersion": "3.17.4",
+        "host": {
+          "env": "WeChat"
+        },
+        "enableDebug": false,
+        "mode": "default",
+        "deviceOrientation": "portrait",
+        "bluetoothEnabled": true,
+        "locationEnabled": true,
+        "wifiEnabled": true,
+        "albumAuthorized": true,
+        "cameraAuthorized": true,
+        "locationAuthorized": true,
+        "microphoneAuthorized": true,
+        "notificationAuthorized": true,
+        "notificationAlertAuthorized": true,
+        "notificationBadgeAuthorized": true,
+        "notificationSoundAuthorized": true,
+        "phoneCalendarAuthorized": true,
+        "bluetoothAuthorized": true,
+        "locationReducedAccuracy": true,
+        "devicePixelRatio": 3
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      }
+    },
+    {
+      "name": "uni-vue3",
+      "directory": "dist/build/mp-weixin",
+      "status": "passed",
+      "screenshots": [
+        "artifacts/ide/run-1791534136167/6-uni-vue3/index.png",
+        "artifacts/ide/run-1791534136167/6-uni-vue3/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791534136167/6-uni-vue3/console.json",
+      "stage": "subpackage route",
+      "openLog": "artifacts/ide/run-1791534136167/6-uni-vue3/open.log",
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "brand": "devtools",
+        "model": "iPhone 12/13 (Pro)",
+        "system": "iOS 10.0.1",
+        "platform": "devtools",
+        "benchmarkLevel": -1,
+        "pixelRatio": 3,
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "windowWidth": 390,
+        "windowHeight": 753,
+        "statusBarHeight": 47,
+        "safeArea": {
+          "top": 47,
+          "left": 0,
+          "right": 390,
+          "bottom": 810,
+          "width": 390,
+          "height": 763
+        },
+        "language": "zh_CN",
+        "version": "8.0.5",
+        "fontSizeSetting": 16,
+        "SDKVersion": "3.17.4",
+        "host": {
+          "env": "WeChat"
+        },
+        "enableDebug": false,
+        "mode": "default",
+        "deviceOrientation": "portrait",
+        "bluetoothEnabled": true,
+        "locationEnabled": true,
+        "wifiEnabled": true,
+        "albumAuthorized": true,
+        "cameraAuthorized": true,
+        "locationAuthorized": true,
+        "microphoneAuthorized": true,
+        "notificationAuthorized": true,
+        "notificationAlertAuthorized": true,
+        "notificationBadgeAuthorized": true,
+        "notificationSoundAuthorized": true,
+        "phoneCalendarAuthorized": true,
+        "bluetoothAuthorized": true,
+        "locationReducedAccuracy": true,
+        "devicePixelRatio": 3
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      }
+    }
+  ],
+  "selectedResources": [
+    {
+      "projectPath": "artifacts/ide/run-1791533874324/0-wechat-native/project",
+      "port": 52385,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s48",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791533874324/0-wechat-native/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791533874324/1-wechat-wevu/project",
+      "port": 52800,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s50",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791533874324/1-wechat-wevu/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791533874324/2-taro-react/project",
+      "port": 53269,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s52",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791533874324/2-taro-react/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791533874324/3-taro-react/project",
+      "port": 53631,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s53",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791533874324/3-taro-react/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791533874324/4-taro-vue3/project",
+      "port": 54423,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s54",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791533874324/4-taro-vue3/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791533874324/5-taro-vue3/project",
+      "port": 54747,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s55",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791533874324/5-taro-vue3/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791534136167/6-uni-vue3/project",
+      "port": 58021,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s57",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791534136167/6-uni-vue3/native.log"
+    }
+  ],
+  "sourceReports": [
+    "artifacts/ide/run-1791533874324/report.json",
+    "artifacts/ide/run-1791534136167/report.json"
+  ],
+  "latestAttempt": {
+    "status": "failed",
+    "report": "artifacts/ide/run-1791534166378/report.json",
+    "artifact": {
+      "name": "wechat-native",
+      "directory": "dist",
+      "status": "failed",
+      "screenshots": [
+        "artifacts/ide/run-1791534166378/0-wechat-native/index.png",
+        "artifacts/ide/run-1791534166378/0-wechat-native/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791534166378/0-wechat-native/console.json",
+      "stage": "open project before automation",
+      "openLog": "artifacts/ide/run-1791534166378/0-wechat-native/open.log",
+      "error": "Error: Owned project did not reach native page readiness before automation\n    at until (file://scripts/test-ide.mjs:98:9)\n    at async main (file://scripts/test-ide.mjs:335:11)"
+    },
+    "resource": {
+      "projectPath": "artifacts/ide/run-1791534166378/0-wechat-native/project",
+      "port": 58411,
+      "createdByTask": true,
+      "launches": 0,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s58",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791534166378/0-wechat-native/native.log"
+    }
+  }
+}

@@ -24,6 +24,8 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Verify IDE resource ownership without launching DevTools
+        run: pnpm exec node --test scripts/ide-native-journal.test.mjs
       - run: pnpm test:deps
       - run: pnpm test:integration
       - run: pnpm test:examples

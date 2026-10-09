@@ -19,9 +19,11 @@ Each normalized module ID owns rules and dependencies. A transform replaces that
 
 ## Vue and Webpack
 
-SFC preprocessing changes script contents only and composes sourcemaps. Template compilation and framework macros stay with the host. Virtual script requests are skipped. uni-app uses its own compatible parser.
+SFC preprocessing changes script contents only and composes sourcemaps. Template compilation and framework macros stay with the host. Vite virtual script requests are skipped. uni-app uses its own compatible parser.
 
 Taro's Webpack pre-loader runs before Babel/Vue processing and records metadata in module `buildInfo`. `processAssets` collects cached rules and injects WXSS after the host finishes its own styles.
+
+Vue-loader rereads the raw SFC for inline script, template and style requests. The Webpack pre-loader transforms that document before Vue-loader selects the block, reusing session caches. A stable loader identity prevents duplicate processing from cloned Vue-loader rules. External scripts follow the ordinary script path; unknown custom blocks keep the host's default behavior.
 
 ## Output planning
 

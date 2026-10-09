@@ -19,9 +19,11 @@ sidebar:
 
 ## Vue 与 Webpack
 
-SFC 预处理只修改脚本内容并组合 sourcemap，模板编译与框架宏留给宿主。虚拟 script 请求会跳过。uni-app 使用自身兼容的 parser。
+SFC 预处理只修改脚本内容并组合 sourcemap，模板编译与框架宏留给宿主。Vite 虚拟 script 请求会跳过。uni-app 使用自身兼容的 parser。
 
 Taro 的 Webpack pre-loader 在 Babel/Vue 之前执行，将 metadata 存入模块 `buildInfo`。`processAssets` 收集缓存规则，在宿主完成样式转换后注入 WXSS。
+
+Vue-loader 会为内联 script、template 和 style 请求重新读取原始 SFC。Webpack pre-loader 在 Vue-loader 选择内容块前处理整个文档，并复用 session 缓存。固定 loader 身份避免 Vue-loader 克隆规则造成重复处理；外部脚本沿用普通脚本路径，未知自定义块保留宿主的默认行为。
 
 ## 输出规划
 

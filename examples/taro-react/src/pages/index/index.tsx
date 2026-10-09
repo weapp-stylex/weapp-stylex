@@ -16,7 +16,7 @@ export default function Index() {
       {...stylex.props(dark ? darkTheme : lightTheme, styles.root)}
     >
       <Text {...stylex.props(styles.title)}>共享 StyleX 样式</Text>
-      <View {...stylex.props(inline.label)}>
+      <View id="stylex-inline" {...stylex.props(inline.label)}>
         独立文件 · React props · 动态尺寸
       </View>
       <StylexCard dark={dark} />

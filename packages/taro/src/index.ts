@@ -31,8 +31,17 @@ export function stylexTaro(
       .rule('weapp-stylex')
       .test(/\.(?:vue|[cm]?[jt]sx?)$/)
       .enforce('pre')
-      .resourceQuery((query: string) => !query.includes('vue'))
+      // Vue-loader rereads the raw SFC for inline block requests. Transform it
+      // before selectBlock too; the session reuses cached script transforms.
+      .resourceQuery((query: string) => {
+        const params = new URLSearchParams(query)
+        // Preserve Vue-loader's behavior of ignoring unknown custom blocks.
+        return !params.has('vue') || ['script', 'template', 'style'].includes(params.get('type') ?? '')
+      })
       .use('weapp-stylex')
+      // Vue-loader clones JS rules for render functions. A stable loader ident
+      // lets its pitcher deduplicate the original and cloned pre-loader.
+      .set('ident', 'weapp-stylex')
       .loader(require.resolve('@weapp-stylex/taro/loader'))
       .options(options)
   })
