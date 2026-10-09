@@ -1,7 +1,7 @@
 {
   "name": "@weapp-stylex/uni-app",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": false,
   "description": "StyleX Vite plugin for uni-app Vue 3, compiling shared styles and themes to WeChat mini-program WXSS",
   "author": "ice breaker <1324318532@qq.com>",

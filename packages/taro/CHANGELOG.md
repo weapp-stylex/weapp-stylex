@@ -1,5 +1,20 @@
 # @weapp-stylex/taro
 
+## 0.2.0
+
+### Minor Changes
+
+- Add opt-in safe SWC compilation, reuse Babel ASTs and session caches, coalesce token work, protect watch generations and Webpack cache identities, and report framework diagnostics.
+
+### Patch Changes
+
+- 完善六个公开包的官网、用途描述、中英文搜索关键词与赞助入口，移除模板元数据，方便在 npm、GitHub 与 AI 工具中识别项目和查找框架接入文档。
+
+- Compile raw Vue SFCs for Webpack inline block requests, deduplicate cloned pre-loaders and preserve custom block handling.
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes
