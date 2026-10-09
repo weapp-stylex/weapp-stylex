@@ -34,3 +34,9 @@ StyleX 编译器保留 Babel 7，不要把 weapp-vite 的 Babel 8 要求全局�
 尚未形成稳定契约：独立分包、其他小程序平台、Vue 2、uni-app x、自定义 WXML `sx` 属性和 stateful HMR。WXML 不能直接调用 StyleX 函数，编译器也不会从模板反推 TS 模块。
 
 提交 [GitHub issue](https://github.com/weapp-stylex/weapp-stylex/issues)时请附框架版本、配置、最小共享模块和相关 WXSS 产物。
+
+## 为什么 auto 仍使用 Babel？
+
+`auto` 只加速已验证的写法。主题 API、跨文件 token、自定义 Babel 配置、不支持的 runtime 子路径、未验证的编译期表达式及原始 SFC 脚本保留 Babel。SWC 0.19.0 可能删除仅在模板中使用的绑定，因此适配器保护这些脚本。每种回退原因在 session 内只提示一次。
+
+原生依赖缺失时，启用可选依赖重新安装并重启构建。Babel 可以继续使用；项目完全处于支持范围时才使用强制 `swc`。未知错误不会被回退隐藏。可复现测量和完整构建收益的边界见[性能说明](/zh/performance/)。

@@ -45,9 +45,9 @@ async function execute(code: string, file: string) {
 }
 
 describe('shared StyleX compilation', () => {
-  it('preserves named/default exports and uses official runtime merge and dynamic styles', async () => {
+  it.each(['babel', 'auto'] as const)('preserves shared named/default/barrel exports and runtime merges (%s)', async (backend) => {
     const { root, host } = await fixture()
-    const session = new StylexSession()
+    const session = new StylexSession({ backend })
     const defining = await session.transform(
       `import * as stylex from '@weapp-stylex/core';
       export const styles = stylex.create({base:{color:'red',padding:16}, override:{color:'blue'}, active:{opacity:0.6}, dynamic:width=>({width})});

@@ -13,6 +13,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
+const compilerOptions = { backend: process.env.WEAPP_STYLEX_BACKEND === 'auto' ? 'auto' : 'babel' }
 const root = fileURLToPath(new URL('..', import.meta.url))
 const adapterRequire = createRequire(
   new URL('../packages/weapp-vite/package.json', import.meta.url),
@@ -77,7 +78,7 @@ const sx = stylex.attrs(styles.text).class
 <style>.local { opacity: 0.5 }</style>`
   const filename = path.join(temporary, 'compiled-entrypoints.vue')
   const host = { resolve: async () => undefined, addWatchFile() {} }
-  const sessions = [new StylexSession(), new EsmSession()]
+  const sessions = [new StylexSession(compilerOptions), new EsmSession(compilerOptions)]
   const [cjs, esm] = await Promise.all(
     sessions.map(session => session.transform(source, filename, host)),
   )
@@ -159,7 +160,7 @@ async function nativeBuild() {
     = 'import * as stylex from \'@weapp-stylex/core\';import styles from \'@styles/index\';Page({data:{sx:stylex.attrs(styles.root).class}})'
   await writeFile(path.join(cwd, 'src/pages/index/index.ts'), consumer)
   const config = `import {createStylex} from ${JSON.stringify(path.join(root, 'packages/weapp-vite/dist/index.js'))};
-    const sx=createStylex();export default {plugins:sx.vitePlugins,resolve:{alias:{'@weapp-stylex/core':${JSON.stringify(core)},'@styles':${JSON.stringify(path.join(cwd, 'shared'))}}},weapp:{srcRoot:'src',compilerPlugins:[sx.compilerPlugin]}};`
+    const sx=createStylex(${JSON.stringify(compilerOptions)});export default {plugins:sx.vitePlugins,resolve:{alias:{'@weapp-stylex/core':${JSON.stringify(core)},'@styles':${JSON.stringify(path.join(cwd, 'shared'))}}},weapp:{srcRoot:'src',compilerPlugins:[sx.compilerPlugin]}};`
   await writeFile(path.join(cwd, 'vite.config.mjs'), config)
   const options = { cwd, outDir: 'dist', skipNpm: true }
   await buildTestArtifact(options)
@@ -225,7 +226,7 @@ async function viteWatch() {
   const entry
     = 'import * as stylex from \'@weapp-stylex/core\';import {styles,themed} from \'./shared.js\';export const sx=stylex.attrs(styles.root,themed.root).class;'
   await writeFile(path.join(cwd, 'entry.js'), entry)
-  const session = new StylexSession()
+  const session = new StylexSession(compilerOptions)
   const watcher = await build({
     configFile: false,
     root: cwd,
@@ -322,12 +323,13 @@ async function viteWatch() {
 async function webpackCache() {
   const cwd = path.join(temporary, 'webpack')
   await mkdir(cwd)
+  await writeFile(path.join(cwd, 'package.json'), '{"name":"webpack-cache-fixture","type":"module"}')
   await writeFile(path.join(cwd, 'tokens.stylex.js'), tokenDeclaration('orange'))
   await writeFile(path.join(cwd, 'shared.js'), themedDeclaration('red', 'js'))
   const entry
     = 'import * as stylex from \'@weapp-stylex/core\';import styles from \'./shared.js\';export const sx=stylex.attrs(styles.root).class;'
   await writeFile(path.join(cwd, 'entry.js'), entry)
-  const makeCompiler = () =>
+  const makeCompiler = (stylexOptions = compilerOptions) =>
     webpack({
       mode: 'development',
       context: cwd,
@@ -338,7 +340,7 @@ async function webpackCache() {
         filename: 'entry.cjs',
         library: { type: 'commonjs2' },
       },
-      cache: { type: 'filesystem', cacheDirectory: path.join(cwd, 'cache') },
+      cache: { type: 'filesystem', version: 'host-v1', cacheDirectory: path.join(cwd, 'cache'), buildDependencies: { fixture: [path.join(cwd, 'package.json')] } },
       resolve: {
         alias: {
           '@weapp-stylex/core': path.join(root, 'packages/core/dist/index.js'),
@@ -354,7 +356,7 @@ async function webpackCache() {
         ],
       },
       plugins: [
-        new StylexWebpackPlugin(),
+        new StylexWebpackPlugin(stylexOptions),
         {
           apply(host) {
             host.hooks.thisCompilation.tap('fixture', (compilation) => {
@@ -425,6 +427,21 @@ async function webpackCache() {
     await run()
     assert.match(await css(), /(?:^|\n)page(?:\s*,[^{}]*)?\{[^}]*:purple/)
     assert.doesNotMatch(await css(), /orange/)
+    await close()
+    compiler = makeCompiler({ ...compilerOptions, babel: { enableMinifiedKeys: false } })
+    const reconfigured = await run()
+    const recompiled = [...reconfigured.compilation.modules].find(module => module.resource === path.join(cwd, 'shared.js'))
+    assert.ok(reconfigured.compilation.builtModules.has(recompiled), 'Compiler options change reused stale filesystem cache')
+    assert.notEqual(recompiled.buildInfo.weappStylex.fingerprint, shared.buildInfo.weappStylex.fingerprint)
+    assert.match(compiler.options.cache.version, /^host-v1:weapp-stylex:/, 'StyleX replaced the host cache identity')
+    assert.deepEqual(compiler.options.cache.buildDependencies.fixture, [path.join(cwd, 'package.json')])
+    await close()
+    compiler = makeCompiler({ backend: compilerOptions.backend === 'auto' ? 'babel' : 'auto' })
+    const switched = await run()
+    const switchedModule = [...switched.compilation.modules].find(module => module.resource === path.join(cwd, 'shared.js'))
+    assert.ok(switched.compilation.builtModules.has(switchedModule), 'Backend switch reused stale filesystem cache')
+    assert.notEqual(switchedModule.buildInfo.weappStylex.fingerprint, shared.buildInfo.weappStylex.fingerprint)
+
     await writeFile(path.join(cwd, 'entry.js'), 'export const sx=""')
     await run()
     await assert.rejects(css(), { code: 'ENOENT' })

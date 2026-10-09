@@ -525,12 +525,19 @@ importers:
         specifier: 7.1.6
         version: 7.1.6
     devDependencies:
+      '@jridgewell/trace-mapping':
+        specifier: ^0.3.31
+        version: 0.3.31
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
       '@types/node':
         specifier: ^26.6.4
         version: 26.6.4
+    optionalDependencies:
+      '@stylexswc/rs-compiler':
+        specifier: 0.19.0
+        version: 0.19.0(@swc/core@1.16.13)
 
   packages/core:
     dependencies:
@@ -5690,6 +5697,57 @@ packages:
 
   '@stylexjs/stylex@0.19.1':
     resolution: {integrity: sha512-JwNFm0MOYPqi+M4Ax5Un4ZxfZp4HEAX2sAWetZ88KALFcv1eEiHNJs75oO3V3U7RVWnzfkiM8i9eBowC3hqgUw==}
+
+  '@stylexswc/rs-compiler-darwin-arm64@0.19.0':
+    resolution: {integrity: sha512-Aq3s8q/WzsOhzLzj3qcy80fBlu2yJDVLiW7TI+wvqmIdXYHN83a1ZvA+v2/BEZQBfhfQd7wuv+UebM8sJYS70Q==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@stylexswc/rs-compiler-darwin-x64@0.19.0':
+    resolution: {integrity: sha512-FsUks+eLTTTNnJi0SgVVKKU3Btr8NT26qdNju0Bt3cnBcATqxtrlQtDBTWnNesCy+8nCP5WWlRFpCxvzTJzklg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@stylexswc/rs-compiler-linux-arm64-gnu@0.19.0':
+    resolution: {integrity: sha512-9hm/Ce6aMKHccOjGSLei2acNFloi1w/YLeRrRRpx9uUgg80oZXqclcGAcdb4J/gCquBdnkFC66FiI2YBpvE4xg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@stylexswc/rs-compiler-linux-x64-gnu@0.19.0':
+    resolution: {integrity: sha512-SH7S6Y2nHWSUNKvR+zamTN0ZaT1BJNJe4rYct1naqaJ1ezBmNtWQsnTgbQ4peKFBUHL0Zs+E/3P9BHV+ZWWfgA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@stylexswc/rs-compiler-linux-x64-musl@0.19.0':
+    resolution: {integrity: sha512-G+mx6aURr2/Jv7Flywiv/Kt00WUswgx9dHpLT664Z2Iba86i6Y+iHm7dPgqHdP+ctDHltcJ2EskGDBCl3KotQQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@stylexswc/rs-compiler-win32-arm64-msvc@0.19.0':
+    resolution: {integrity: sha512-IA0Cz33H8XlAMHc2Eg0g6gH9Efpl4IsFDRf1GXtPIQFxJlfMW1eI3M/1dBOTP1SctCCqvOx5MMGG2BgsjH6F5w==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@stylexswc/rs-compiler-win32-x64-msvc@0.19.0':
+    resolution: {integrity: sha512-SCJktdVz+Yw7GBQehtvo3T1rHIzzP6scsTG+8ayi4MvZ+8fPzI1TosT2776ZqtvfbdmEhXSBRW5O9Eo1CQQLJA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@stylexswc/rs-compiler@0.19.0':
+    resolution: {integrity: sha512-5X0MWxdTR78jT6iJU9soP+jSYUMtCJTTtp7ueTFpBJESxpvfRdo3Zl5/H6QP9aBlz7+7YbF37Vb0SwI9RhSWoA==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@swc/core': ^1
 
   '@stylistic/eslint-plugin@5.10.0':
     resolution: {integrity: sha512-nPK52ZHvot8Ju/0A4ucSX1dcPV2/1clx0kLcH5wDmrE4naKso7TUC/voUyU1O9OTKTrR6MYip6LP0ogEMQ9jPQ==}
@@ -20647,6 +20705,41 @@ snapshots:
       css-mediaquery: 0.1.2
       invariant: 2.2.4
       styleq: 0.2.1
+
+  '@stylexswc/rs-compiler-darwin-arm64@0.19.0':
+    optional: true
+
+  '@stylexswc/rs-compiler-darwin-x64@0.19.0':
+    optional: true
+
+  '@stylexswc/rs-compiler-linux-arm64-gnu@0.19.0':
+    optional: true
+
+  '@stylexswc/rs-compiler-linux-x64-gnu@0.19.0':
+    optional: true
+
+  '@stylexswc/rs-compiler-linux-x64-musl@0.19.0':
+    optional: true
+
+  '@stylexswc/rs-compiler-win32-arm64-msvc@0.19.0':
+    optional: true
+
+  '@stylexswc/rs-compiler-win32-x64-msvc@0.19.0':
+    optional: true
+
+  '@stylexswc/rs-compiler@0.19.0(@swc/core@1.16.13)':
+    dependencies:
+      '@swc/core': 1.16.13
+      picomatch: 4.0.7
+    optionalDependencies:
+      '@stylexswc/rs-compiler-darwin-arm64': 0.19.0
+      '@stylexswc/rs-compiler-darwin-x64': 0.19.0
+      '@stylexswc/rs-compiler-linux-arm64-gnu': 0.19.0
+      '@stylexswc/rs-compiler-linux-x64-gnu': 0.19.0
+      '@stylexswc/rs-compiler-linux-x64-musl': 0.19.0
+      '@stylexswc/rs-compiler-win32-arm64-msvc': 0.19.0
+      '@stylexswc/rs-compiler-win32-x64-msvc': 0.19.0
+    optional: true
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))':
     dependencies:

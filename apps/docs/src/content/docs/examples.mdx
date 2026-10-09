@@ -51,3 +51,16 @@ WEAPP_STYLEX_APPID=your-real-appid WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH=/path/to/wec
 Use a real AppID, the selected official stable IDE, login and an enabled service port. The suite is globally serial: one automator per artifact, `reLaunch` between pages, structural assertions before screenshots. It records IDE/base-library versions, screenshots, logs and owned-resource cleanup in `artifacts/ide`.
 
 Missing IDE prerequisites are reported as pending, not passed. Taro/uni-app runtime behavior requires this real IDE check; static build validation does not replace it. See the [validation record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-framework-validation.md) for the actual acceptance status.
+
+## Validate both backends
+
+Every example accepts `WEAPP_STYLEX_BACKEND=auto`; leaving it unset selects Babel. Build and verify sequentially so each mode's artifacts are checked before replacement:
+
+```sh
+corepack pnpm build
+corepack pnpm test:examples
+WEAPP_STYLEX_BACKEND=auto corepack pnpm --filter './examples/*' build
+corepack pnpm test:examples
+```
+
+The matrix includes all seven WeChat artifacts and native/Wevu headless interactions. Theme modules and raw SFC scripts use Babel in both modes; eligible TS/JS modules use SWC in auto. CI tests both native availability and a physically missing optional package in an isolated packed install.

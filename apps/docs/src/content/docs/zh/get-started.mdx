@@ -87,3 +87,7 @@ Page({
 执行框架的常规构建，在微信开发者工具打开产物目录。适配器会自动生成 `stylex.wxss` 和相对导入，请不要自己创建同名文件。
 
 接着阅读[共享样式](/zh/styles/)或对应的[框架示例](/zh/examples/)。
+
+## 可选加速
+
+现有配置无需修改即可获得缓存优化。希望启用安全加速时，把 `stylexCompiler()` 改为 `stylexCompiler({ backend: 'auto' })`；Wevu 工厂、Taro 插件元组与 `stylexUniApp` 使用同一个选项。主题和原始 SFC 脚本保留官方 Babel 语义。强制 `swc` 前请阅读[后端选择](/zh/configuration/#编译后端)。

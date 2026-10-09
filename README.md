@@ -45,6 +45,22 @@ pnpm add -D @weapp-stylex/weapp-vite # 或 @weapp-stylex/taro / @weapp-stylex/un
 
 版本、OIDC 配置及恢复流程见 [npm 发布](docs/npm-release.md)。
 
+## 编译提速
+
+默认仍使用官方 Babel，现有配置自动获得 AST 复用、并发任务合并、token 和转换缓存优化。所有适配器统一支持 `backend: 'babel' | 'auto' | 'swc'`：
+
+```ts
+stylexCompiler({ backend: 'auto' })
+createStylex({ backend: 'auto' }) // Wevu
+stylexUniApp({ backend: 'auto' })
+// Taro plugins:
+const plugins = [[require.resolve('weapp-stylex/taro'), { backend: 'auto' }]]
+```
+
+`auto` 为已验证的常规 TS/JS 样式使用可选 `@stylexswc/rs-compiler@0.19.0`；主题、编译期导入、runtime 子路径、非空 Babel 自定义配置和未验证的表达式保留 Babel。原始 Vue SFC 脚本保留 Babel，以保护只在模板中使用的变量和组件导入。原生模块首次需要时才加载，不要求 Rust；缺失时 auto 回退，强制 swc 明确报错。普通语法和编译错误不会被隐藏。
+
+示例可通过 `WEAPP_STYLEX_BACKEND=auto` 切换。配置、回退与性能测量见[中文说明](https://stylex.weapp.dev/zh/performance/)和[English](https://stylex.weapp.dev/performance/)。可复现 benchmark：`corepack pnpm exec node scripts/benchmark.mjs --full`；完整构建收益与单文件编译收益分别报告。
+
 ## 共享样式与官方 runtime
 
 普通样式文件不需要特殊文件名：

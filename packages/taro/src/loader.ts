@@ -3,12 +3,13 @@ import type {
   StylexSession,
 } from '@weapp-stylex/compiler'
 import type { LoaderContext } from 'webpack'
+import { formatDiagnostic } from '@weapp-stylex/compiler'
 
 interface Context extends LoaderContext<StylexCompilerOptions> {
   stylexSession: StylexSession
 }
 export function stylexLoader(this: Context, code: string): void {
-  this.cacheable()
+  this.cacheable(!Object.keys(this.stylexSession.options.babel ?? {}).length)
   const callback = this.async()
   this.stylexSession
     .transform(code, this.resourcePath, {
@@ -22,12 +23,17 @@ export function stylexLoader(this: Context, code: string): void {
           )
         }),
       addWatchFile: id => this.addDependency(id),
+      diagnostic: (diagnostic) => {
+        if (diagnostic.level === 'warning') {
+          this.emitWarning(new Error(formatDiagnostic(diagnostic)))
+        }
+      },
     })
     .then((result) => {
       if (this._module?.buildInfo) {
         Object.assign(this._module.buildInfo, {
           weappStylex: result
-            ? { rules: result.rules, dependencies: result.dependencies }
+            ? { rules: result.rules, dependencies: result.dependencies, fingerprint: this.stylexSession.fingerprint }
             : undefined,
         })
       }

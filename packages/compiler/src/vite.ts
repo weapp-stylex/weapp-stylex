@@ -2,10 +2,11 @@ import type { StylexSession } from './session.js'
 import type { StyleBundle } from './wxss.js'
 import { rm } from 'node:fs/promises'
 import path from 'node:path'
+import { formatDiagnostic } from './diagnostics.js'
 import { sourceId } from './session.js'
 import { WxssEmitter } from './wxss.js'
 
-interface PluginHost {
+export interface PluginHost {
   resolve: (
     source: string,
     importer?: string,
@@ -14,6 +15,8 @@ interface PluginHost {
     id: string
     external?: boolean | 'absolute' | 'relative'
   } | null>
+  warn: (message: string) => void
+  error: (error: { message: string, id: string, loc?: { line: number, column: number } }) => never
   addWatchFile: (id: string) => void
   getModuleIds: () => IterableIterator<string>
   emitFile: (asset: {
@@ -34,6 +37,9 @@ export function createVitePlugins(
     {
       name: 'weapp-stylex:source',
       enforce: 'pre' as const,
+      buildStart() {
+        session.beginBuild()
+      },
       async transform(this: PluginHost, code: string, id: string) {
         if (options.sfcOnly && (!id.endsWith('.vue') || id.includes('?'))) {
           return null
@@ -46,6 +52,14 @@ export function createVitePlugins(
             return resolved && !resolved.external ? resolved.id : undefined
           },
           addWatchFile: dependency => this.addWatchFile(dependency),
+          diagnostic: (diagnostic) => {
+            if (diagnostic.level === 'warning') {
+              this.warn(formatDiagnostic(diagnostic))
+            }
+            else {
+              this.error({ message: formatDiagnostic(diagnostic), id: diagnostic.file, loc: diagnostic.line ? { line: diagnostic.line, column: (diagnostic.column ?? 1) - 1 } : undefined })
+            }
+          },
         })
         return result ? { code: result.code, map: result.map } : null
       },

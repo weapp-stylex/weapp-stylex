@@ -7,8 +7,8 @@ import { mkdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import {
   createVitePlugins,
+  formatDiagnostic,
   SCRIPT_RE,
-  sourceId,
   StylexSession,
   WxssEmitter,
 } from '@weapp-stylex/compiler'
@@ -32,6 +32,9 @@ function provider(
     create(context) {
       const emitter = new WxssEmitter()
       return {
+        buildStart() {
+          session.beginBuild()
+        },
         claimSource(request) {
           if (
             request.kind !== 'script'
@@ -40,8 +43,7 @@ function provider(
             return false
           }
           if (!session.hasImport(request.code)) {
-            session.modules.delete(sourceId(request.id))
-            session.dirty.delete(sourceId(request.id))
+            session.remove(request.id)
             return false
           }
           return { id: request.id, entryId: request.id }
@@ -51,6 +53,12 @@ function provider(
             resolve: async (source, importer) =>
               (await context.resolve(source, importer, { skipSelf: true }))?.id,
             addWatchFile: id => context.addWatchFile(id),
+            diagnostic: (diagnostic) => {
+              if (diagnostic.level === 'warning') {
+                context.warn(formatDiagnostic(diagnostic))
+              }
+              else { context.error(formatDiagnostic(diagnostic)) }
+            },
           })
           return result
             ? {

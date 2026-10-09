@@ -87,3 +87,7 @@ Page({
 Run your normal framework build, then open the output directory in WeChat DevTools. The adapter emits `stylex.wxss` and relative imports automatically. Do not create a user-owned file with that name.
 
 Continue with [shared styles](/styles/) or your [framework example](/examples/).
+
+## Optional acceleration
+
+Existing configuration gains cache optimizations without changes. To opt into safe acceleration, change `stylexCompiler()` to `stylexCompiler({ backend: 'auto' })`. Use the same option on `createStylex`, the Taro plugin tuple or `stylexUniApp`. Themes and raw SFC scripts keep official Babel semantics. See [backend selection](/configuration/#backend-selection) before forcing `swc`.

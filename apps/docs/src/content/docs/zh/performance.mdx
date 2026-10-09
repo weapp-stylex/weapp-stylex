@@ -1,0 +1,29 @@
+---
+title: "编译性能"
+description: "安全加速、兼容性保护与可复现测量。"
+sidebar:
+  order: 11
+---
+
+## 选择后端
+
+默认 Babel 自动获得 AST 复用、共享 token 读取、转换缓存和并发请求合并。任意适配器增加 `backend: 'auto'` 可启用已验证的 SWC 写法；`swc` 为强制模式，能力或原生模块不可用时明确报错。参见[配置说明](/zh/configuration/#编译后端)。
+
+SWC 0.19.0 尚不支持本项目的 custom 主题 resolver 与所有 runtime 导入子路径，并且会删除只在 Vue 模板中使用的脚本绑定和组件导入。因此原始 SFC 脚本、主题与常量 API、编译期导入、自定义 Babel 配置及未验证表达式保留官方 Babel；独立 TS/JS 样式模块仍可加速。适配器保留原始 import 与主题身份算法。
+
+## 复现实测
+
+```sh
+corepack pnpm build
+corepack pnpm exec node scripts/benchmark.mjs --full
+```
+
+Benchmark 输出 `artifacts/benchmark.json`，记录环境、五轮预热后七轮采样、sourcemap、逐轮数据和中位数。解析、旧双重解析转换器对照、新 Babel session、auto session 与缓存命中分别计时。旧转换器对照不包含 session 和依赖管理开销，不能作为完整构建基线。另用 64 个并发 token 消费者和实际调用次数验证缓存。`--full` 对每个后端先预热，再顺序测量三次根构建，包含文档、包与七份产物。
+
+## 实测结果
+
+本次 Apple M4 Max / Node 24.18.0 / sourcemap 测量中，1000 个样式的新 Babel 冷 session 为 122.44ms，auto 为 64.18ms，缓存命中为 0.38ms。64 个共享 token 消费者的未变化 watch 转换批次中位数为 2.93ms，零解析、零编译。三轮完整根构建中位数为 Babel 9.69s、auto 9.50s；差异约 1.9%，属于小示例波动范围。冷 Babel 并未在所有规模上变快。
+
+本次记录保存在仓库的 `docs/compiler-performance-2026-10-09.md`。完整构建包含框架编译和原生模块启动，转换器倍数不能代替完整构建倍数。当前小示例中大量主题与 SFC 工作保留 Babel，auto 可能更慢；在更广的工作负载有足够证据前，默认模式继续使用 Babel。
+
+CI 断言缓存调用次数和正确性，同时检查可选原生模块可用与实际移除的路径，不设置容易波动的计时倍数门槛。

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
-import { mkdir, mkdtemp, readdir, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readdir, rename, rm, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
@@ -63,6 +63,7 @@ assert.ok(result)
 assert.ok(!result.code.includes('stylex.create'))
 const {writeFile}=await import('node:fs/promises')
 await writeFile(new URL('styles.mjs',import.meta.url),result.code)
+assert.ok(!Object.keys(require.cache).some(file=>file.includes('@stylexswc')), 'Default Babel loaded the native addon')
 const {styles,attrs}=await import('./styles.mjs')
 assert.match(attrs.class,/sx[a-z0-9]+/)
 assert.equal(stylex.props(styles.root).className,attrs.class)
@@ -70,6 +71,34 @@ assert.equal(require('weapp-stylex/core').attrs(styles.root).class,attrs.class)
 assert.match(session.css(),/padding:16px/)
 `)
   await run(process.execPath, ['consumer.mjs'], { cwd: directory })
+  if (!registryVersion) {
+    await writeFile(path.join(directory, 'backend.mjs'), `
+import assert from 'node:assert/strict'
+import {StylexSession} from 'weapp-stylex/compiler'
+const missing=process.argv[2]==='missing'
+const source="import * as stylex from 'weapp-stylex';export const styles=stylex.create({root:{padding:16}})"
+const host={resolve:async()=>undefined,addWatchFile(){}}
+const filename=new URL('backend-style.js',import.meta.url).pathname
+const session=new StylexSession({backend:'auto'})
+await session.transform(source,filename,host)
+assert.equal(session.getStats().swcTransforms,missing?0:1)
+assert.equal(session.getStats().babelTransforms,missing?1:0)
+assert.match(session.css(),/padding:16px/)
+if(missing) await assert.rejects(new StylexSession({backend:'swc'}).transform(source,filename,host),/unavailable/)
+`)
+    await run(process.execPath, ['backend.mjs'], { cwd: directory })
+    const compilerRequire = createRequire(require.resolve('@weapp-stylex/compiler'))
+    const addon = path.dirname(compilerRequire.resolve('@stylexswc/rs-compiler/package.json'))
+    const hidden = path.join(directory, 'optional-addon-disabled')
+    await rename(addon, hidden)
+    try {
+      await run(process.execPath, ['consumer.mjs'], { cwd: directory })
+      await run(process.execPath, ['backend.mjs', 'missing'], { cwd: directory })
+    }
+    finally {
+      await rename(hidden, addon)
+    }
+  }
   await writeFile(path.join(directory, 'consumer.ts'), `import * as stylex from 'weapp-stylex';const styles=stylex.create({root:{padding:16}});const className:string|undefined=stylex.attrs(styles.root).class;void className;`)
   const tooling = createRequire(new URL('../package.json', import.meta.url))
   await run(process.execPath, [tooling.resolve('typescript/bin/tsc'), '--noEmit', '--strict', '--skipLibCheck', 'false', '--module', 'NodeNext', '--target', 'ES2022', 'consumer.ts'], { cwd: directory })

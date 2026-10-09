@@ -35,6 +35,7 @@ Use the [aggregate package](/aggregate-package/) for one-package installation. S
 
 ```ts
 interface StylexCompilerOptions {
+  backend?: 'babel' | 'auto' | 'swc'
   importSources?: readonly string[]
   babel?: Partial<Options> // @stylexjs/babel-plugin Options
 }
@@ -53,3 +54,21 @@ Platform settings are enforced: `classNamePrefix: 'sx'`, `debug: false`, `dev: f
 ## Build-core API
 
 Adapter authors can use `StylexSession`, `createVitePlugins`, `WxssEmitter`, `processRules` and `sourceId`. Applications should use the framework adapter. See the [architecture guide](/architecture/) and the [source](https://github.com/weapp-stylex/weapp-stylex/tree/main/packages/compiler/src) for host and output contracts.
+
+## Backend selection
+
+The default `backend: 'babel'` uses official Babel 7 with AST reuse and session caching. `backend: 'auto'` selects SWC for the verified subset and reports compatibility fallbacks once per reason per session. `backend: 'swc'` requires SWC and fails explicitly when unsupported or unavailable.
+
+```ts
+stylexCompiler({ backend: 'auto' })
+createStylex({ backend: 'auto' }) // Wevu: register both fields
+stylexUniApp({ backend: 'auto' })
+// Taro config:
+const plugins = [[require.resolve('weapp-stylex/taro'), { backend: 'auto' }]]
+```
+
+SWC supports static styles, simple local dynamic styles, conditional merges, common shorthands/null, keyframes and firstThatWorks. Themes/constants, compile-time imports, runtime import subpaths rejected by SWC, non-empty `babel` options and unverified expression folding use Babel. Raw Vue SFC scripts also use Babel: SWC 0.19.0 removes bindings used only by templates. Shared TS/JS style files can still accelerate. Original imports and theme identities are preserved.
+
+`@stylexswc/rs-compiler@0.19.0` is an optional, lazy native dependency. Rust is unnecessary. Omitting optional dependencies keeps Babel usable; `auto` warns and uses Babel, while `swc` explains how to reinstall. Default Babel and the runtime entry never load the addon. Syntax, resolver and unknown compiler errors are reported rather than silently retried.
+
+Host authors may provide `TransformHost.diagnostic(diagnostic)` to receive structured warnings/errors with source location and repair hints. Vite, weapp-vite and Webpack adapters forward them through native diagnostics; SFC positions refer to the `.vue` file. See [performance and scope](/performance/).

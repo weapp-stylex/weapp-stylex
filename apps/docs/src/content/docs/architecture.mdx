@@ -7,7 +7,7 @@ sidebar:
 
 ## Pipeline
 
-Source modules → official StyleX Babel 7 plugin → module metadata → rule aggregation → WXSS output planning → host asset emission.
+Source modules → official StyleX Babel 7 / optional SWC backend → module metadata → rule aggregation → WXSS output planning → host asset emission.
 
 `@weapp-stylex/compiler` owns transforms, resolver identity, SFC maps, metadata and WXSS planning. Framework adapters handle host hooks, lifecycle and emission. The runtime facade stays a thin official re-export.
 
@@ -32,3 +32,11 @@ Rules are aggregated and deduplicated. CSS layers, browser specificity polyfills
 Output is idempotent. User-owned filename collisions fail with an explicit error. Watch rebuilds remove only plugin-owned stale files/imports. An initial build without StyleX does not change assets.
 
 New assets use host emission APIs where available. weapp-vite `7.4` exposes a read-only bundle for new keys, so its adapter uses the documented file-output compatibility path.
+
+## Backend and cache boundary
+
+A shared backend interface returns code, sourcemaps and official-format rules. Babel reuses the analysis AST; the AST belongs to a single transform and is never stored in a mutable cache. SWC is loaded only after conservative AST capability checks. Raw SFC scripts retain Babel so template-only bindings and imports survive.
+
+Only imports used in StyleX compile-time evaluation are pre-resolved. Ordinary component imports and runtime styles remain in the host graph. Sessions coalesce concurrent source/token work, reuse filesystem and resolver facts within a build, and cache transforms by physical ID, source hash, compiler/options fingerprint, actual backend and dependency signatures. Non-empty custom Babel options disable transform caching because callbacks may read external state.
+
+Changes invalidate dependent results; configuration/manifest changes revalidate identities and caches. Generation and per-module request checks stop stale asynchronous jobs from restoring removed metadata. Cached modules survive watch output hooks, unreachable modules are pruned, and final watcher shutdown releases caches. Webpack adds the fingerprint to the host cache version and appends compiler build dependencies, retaining host cache settings and rules in buildInfo.

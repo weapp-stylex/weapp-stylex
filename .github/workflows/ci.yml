@@ -27,6 +27,20 @@ jobs:
       - run: pnpm test:deps
       - run: pnpm test:integration
       - run: pnpm test:examples
+        env:
+          WEAPP_STYLEX_COMPARE_BACKENDS: '1'
+      - name: Build seven WeChat artifacts with safe SWC acceleration
+        run: pnpm --filter './examples/*' build
+        env:
+          WEAPP_STYLEX_BACKEND: auto
+      - run: pnpm test:examples
+        env:
+          WEAPP_STYLEX_BACKEND: auto
+          WEAPP_STYLEX_COMPARE_BACKENDS: '1'
+      - name: Verify mixed backend module graphs and filesystem caches
+        run: pnpm test:integration
+        env:
+          WEAPP_STYLEX_BACKEND: auto
       - run: pnpm exec repo deps check
       - run: pnpm exec repo doctor
       - run: pnpm exec repo check --full
@@ -35,5 +49,8 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: verification-node-${{ matrix.node }}
-          path: coverage/
+          path: |
+            coverage/
+            artifacts/benchmark.json
+            artifacts/ide/report.json
           if-no-files-found: ignore

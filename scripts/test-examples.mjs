@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readdir, readFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import process from 'node:process'
@@ -20,6 +20,7 @@ async function files(directory) {
     )
   ).flat()
 }
+const summaries = {}
 for (const example of examples) {
   const output = await files(example.project)
   const styles = output.filter(file => file.endsWith('stylex.wxss'))
@@ -28,8 +29,9 @@ for (const example of examples) {
     `${example.name}/${example.directory}: missing StyleX WXSS`,
   )
   const css = (
-    await Promise.all(styles.map(file => readFile(file, 'utf8')))
+    await Promise.all(styles.toSorted().map(file => readFile(file, 'utf8')))
   ).join('\n')
+  summaries[`${example.name}/${example.directory}`] = { paths: styles.map(file => path.relative(example.project, file)).sort(), css }
   assert.match(css, /padding:16px/)
   assert.match(css, /margin-top:12rpx/)
   assert.match(css, /--sx/)
@@ -84,6 +86,17 @@ for (const example of examples) {
   process.stdout.write(
     `Artifact checks passed: ${example.name}/${example.directory}\n`,
   )
+}
+if (process.env.WEAPP_STYLEX_COMPARE_BACKENDS === '1') {
+  const baseline = new URL('../artifacts/example-babel-css.json', import.meta.url)
+  if (process.env.WEAPP_STYLEX_BACKEND === 'auto') {
+    assert.deepEqual(summaries, JSON.parse(await readFile(baseline, 'utf8')), 'Auto WXSS differs from the official Babel artifacts')
+    process.stdout.write('All seven auto WXSS artifacts match Babel exactly\n')
+  }
+  else {
+    await mkdir(new URL('../artifacts/', import.meta.url), { recursive: true })
+    await writeFile(baseline, JSON.stringify(summaries))
+  }
 }
 for (const name of ['wechat-native', 'wechat-wevu']) {
   await execa('corepack', ['pnpm', '--filter', name, 'test:headless'], {

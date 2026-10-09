@@ -1,3 +1,6 @@
+export type { StylexBackend } from './backend.js'
+export { backendBuildDependencies } from './backend.js'
+export * from './diagnostics.js'
 export * from './session.js'
 export * from './vite.js'
 export * from './wxss.js'

@@ -1,0 +1,29 @@
+---
+title: "Compilation performance"
+description: "Safe acceleration, compatibility guards and reproducible measurements."
+sidebar:
+  order: 11
+---
+
+## Choose a backend
+
+Babel is the default and gains AST reuse, shared token reads, transform caching and concurrent request coalescing. Opt into the verified SWC subset with `backend: 'auto'` on any adapter. `swc` is strict and fails when a capability or native addon is unavailable. See [configuration](/configuration/#backend-selection).
+
+SWC 0.19.0 does not support our custom theme resolver or all runtime import subpaths. It also removes script bindings and component imports used only in Vue templates. These modules keep official Babel, including raw SFC scripts, theme/constants APIs, compile-time imports, custom Babel options and expressions outside the checked subset. Shared TS/JS modules remain eligible. No import rewriting or alternative theme hashing is used to force acceleration.
+
+## Reproduce measurements
+
+```sh
+corepack pnpm build
+corepack pnpm exec node scripts/benchmark.mjs --full
+```
+
+The benchmark writes `artifacts/benchmark.json`: environment, seven rounds after five warmups, source maps enabled, individual samples and medians. It separates parsing, the previous double-parse converter control, fresh optimized Babel sessions, fresh auto sessions and cached transforms. The converter control omits session/dependency bookkeeping and is not a full-build baseline. Sixty-four concurrent token consumers demonstrate cache behavior using call counts. `--full` warms each backend and measures three sequential root builds, including docs, packages and all seven artifacts.
+
+## Measured results
+
+On Apple M4 Max / Node 24.18.0 with sourcemaps, 1000 styles took 122.44ms in a fresh Babel session, 64.18ms in auto and 0.38ms on a cache hit. Unchanged watch conversion batches for 64 token consumers had a 2.93ms median, with zero parses/transforms. Three full root builds had medians of 9.69s for Babel and 9.50s for auto. The 1.9% difference is within small-example variation. Cold Babel did not improve at every size.
+
+Measurements are recorded in the repository's `docs/compiler-performance-2026-10-09.md`. Full-build results include framework compilation and native addon startup; converter speedups do not imply the same full-build speedup. The small current examples can be slower in auto because most theme/SFC work remains Babel. Default Babel stays enabled until wider workloads justify a change.
+
+CI asserts cache call counts and correctness, with both available and physically missing optional addon tests. It deliberately does not enforce unstable timing ratios.

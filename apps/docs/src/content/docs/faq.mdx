@@ -34,3 +34,9 @@ Supported: WeChat main package, pages, components, ordinary subpackages; native,
 Not yet a stable contract: independent subpackages, other mini-program platforms, Vue 2, uni-app x, custom WXML `sx` attributes and stateful HMR. WXML cannot call StyleX functions directly, and the compiler does not infer TS modules from templates.
 
 Report issues with framework versions, config, a minimal shared module and the affected WXSS artifact in [GitHub issues](https://github.com/weapp-stylex/weapp-stylex/issues).
+
+## Why does auto use Babel?
+
+`auto` promises compatibility with a verified subset, not acceleration of every module. Theme APIs, cross-file token imports, custom Babel options, unsupported runtime subpaths, unverified compile-time expressions and raw SFC scripts retain Babel. SWC 0.19.0 can delete template-only SFC bindings, so the adapter protects them. Each fallback reason is reported once during a session.
+
+If the native dependency is absent, install with optional dependencies and restart the build. Babel remains usable without it. Use `swc` only for a project within the documented subset; unknown errors are not hidden by fallback. See [performance](/performance/) for reproducible measurements and full-build limits.

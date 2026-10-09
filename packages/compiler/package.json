@@ -65,7 +65,11 @@
     "postcss": "^8.5.29",
     "postcss-selector-parser": "^7.1.6"
   },
+  "optionalDependencies": {
+    "@stylexswc/rs-compiler": "0.19.0"
+  },
   "devDependencies": {
+    "@jridgewell/trace-mapping": "^0.3.31",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^26.6.4"
   }

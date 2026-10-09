@@ -7,7 +7,7 @@ sidebar:
 
 ## 编译链
 
-源码模块 → 官方 StyleX Babel 7 插件 → 模块 metadata → 规则聚合 → WXSS 输出规划 → 宿主资产输出。
+源码模块 → 官方 StyleX Babel 7 / 可选 SWC 后端 → 模块 metadata → 规则聚合 → WXSS 输出规划 → 宿主资产输出。
 
 `@weapp-stylex/compiler` 管理转换、resolver 身份、SFC sourcemap、metadata 与 WXSS 规划。框架适配器负责宿主 hook、生命周期和资产输出。runtime 保持官方薄封装。
 
@@ -32,3 +32,11 @@ Taro 的 Webpack pre-loader 在 Babel/Vue 之前执行，将 metadata 存入模�
 输出保持幂等；用户同名文件会明确报错。watch 重建只清理插件拥有的过期文件和 import。首次没有 StyleX 的构建不改变资产。
 
 新增资产优先使用宿主 emission API。weapp-vite `7.4` 的 bundle 对新增 key 只读，因此其适配器采用已记录的文件输出兼容路径。
+
+## 后端与缓存边界
+
+统一后端接口返回代码、sourcemap 和官方格式的规则。Babel 复用分析阶段的 AST；每份 AST 只属于一次转换，不放入可被污染的缓存。SWC 只在保守的 AST 能力检查后加载；原始 SFC 脚本保留 Babel，保护仅供模板使用的绑定与导入。
+
+仅预解析参与 StyleX 编译期求值的导入，普通组件和运行时样式依赖交给宿主模块图。Session 合并并发源码与 token 任务，在一轮构建中复用文件系统与 resolver 信息；转换缓存保存物理 ID、源码哈希、编译器和选项指纹、实际后端及依赖签名。非空自定义 Babel 配置停用转换缓存，因为回调可能读取外部状态。
+
+文件变更使依赖结果失效，配置与 manifest 变更重新校验身份和缓存。构建代次与每模块请求检查阻止旧异步任务恢复已移除的 metadata。活动 watcher 保留缓存，按图剔除不可达模块，最终关闭时释放。Webpack 将指纹追加到宿主 cache version，并追加编译器 buildDependencies；保留宿主设置和 buildInfo 中的规则。

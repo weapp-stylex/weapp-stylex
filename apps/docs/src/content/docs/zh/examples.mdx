@@ -51,3 +51,16 @@ WEAPP_STYLEX_APPID=your-real-appid WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH=/path/to/wec
 使用真实 AppID、选定的官方稳定版 IDE，完成登录并开启服务端口。suite 全局串行，每份产物只启动一次 automator，使用 `reLaunch` 切页，先结构断言后截图。IDE/基础库版本、截图、日志和本任务资源清理记录保存在 `artifacts/ide`。
 
 缺少 IDE 前提时记为待验收，不视为通过。Taro/uni-app 运行行为需要真实 IDE 验证，静态构建检查无法替代。实际验收状态参见[验证记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-framework-validation.md)。
+
+## 验证两种后端
+
+所有示例均支持 `WEAPP_STYLEX_BACKEND=auto`，未设置时使用 Babel。顺序构建并检查，确保产物在被下一模式覆盖前完成验收：
+
+```sh
+corepack pnpm build
+corepack pnpm test:examples
+WEAPP_STYLEX_BACKEND=auto corepack pnpm --filter './examples/*' build
+corepack pnpm test:examples
+```
+
+矩阵覆盖七份微信产物和原生、Wevu headless 交互。两种模式的主题模块和原始 SFC 脚本均使用 Babel；auto 中符合条件的 TS/JS 模块使用 SWC。CI 在隔离的打包安装中测试原生依赖可用和实际移除可选包两条路径。

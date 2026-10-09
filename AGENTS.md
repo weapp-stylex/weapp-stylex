@@ -101,6 +101,19 @@ The private root workspace is named `weapp-stylex-workspace`.
   ownership, reject user filename conflicts and remove only owned stale files
   and imports. An initial build with no StyleX must remain unchanged.
 
+## Compilation backends
+
+- Default to official Babel. `backend: 'auto'` uses SWC only for the verified AST subset;
+  `swc` rejects unsupported inputs. Never catch arbitrary transform failures as fallbacks.
+- Keep `@stylexswc/rs-compiler` optional, pinned and lazy. Runtime and default Babel must
+  not load the native addon. Themes, compiler imports, custom Babel options, rejected
+  runtime subpaths and raw Vue SFC scripts stay on Babel. SWC 0.19.0 deletes template-only
+  SFC bindings; preserve this guard until a verified upstream fix exists.
+- Keep caches session-owned, generation-safe, with concurrent token work coalesced.
+  Replay watch dependencies on cache hits. Preserve Webpack host cache identity.
+- Run examples and integration in Babel and `WEAPP_STYLEX_BACKEND=auto` modes. Benchmark
+  with `corepack pnpm exec node scripts/benchmark.mjs --full`; assert calls, report timings.
+
 ## Dependency isolation
 
 Keep Babel 7 in the shared StyleX compiler; do not apply weapp-vite's Babel 8

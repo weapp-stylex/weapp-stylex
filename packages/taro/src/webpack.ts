@@ -6,8 +6,10 @@ import type {
 import type { Compiler, Module } from 'webpack'
 import { rm } from 'node:fs/promises'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import {
   assetText,
+  backendBuildDependencies,
   processRules,
   StylexSession,
   WxssEmitter,
@@ -18,7 +20,14 @@ export class StylexWebpackPlugin {
   apply(compiler: Compiler): void {
     const session = new StylexSession(this.options)
     const emitter = new WxssEmitter()
+    // Append to the host cache identity and build inputs; never replace its settings.
+    if (compiler.options.cache && compiler.options.cache.type === 'filesystem') {
+      const cache = compiler.options.cache
+      cache.version = `${cache.version ?? ''}:weapp-stylex:${session.fingerprint}`
+      cache.buildDependencies = { ...cache.buildDependencies, weappStylex: [...(cache.buildDependencies?.weappStylex ?? []), ...backendBuildDependencies, typeof __filename === 'string' ? __filename : fileURLToPath(import.meta.url)] }
+    }
     compiler.hooks.thisCompilation.tap('weapp-stylex', (compilation) => {
+      session.beginBuild()
       compiler.webpack.NormalModule.getCompilationHooks(compilation).loader.tap(
         'weapp-stylex',
         (context) => {
@@ -40,6 +49,9 @@ export class StylexWebpackPlugin {
             visited.add(module)
             const info = module.buildInfo as { weappStylex?: ModuleStyles }
             if (info?.weappStylex) {
+              if ((info.weappStylex as ModuleStyles & { fingerprint?: string }).fingerprint !== session.fingerprint) {
+                throw new Error('Stale StyleX Webpack cache. Clear the host cache and rebuild.')
+              }
               metadata.push(info.weappStylex)
             }
             if ('modules' in module) {

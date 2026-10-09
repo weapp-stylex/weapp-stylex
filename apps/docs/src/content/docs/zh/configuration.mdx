@@ -35,6 +35,7 @@ sidebar:
 
 ```ts
 interface StylexCompilerOptions {
+  backend?: 'babel' | 'auto' | 'swc'
   importSources?: readonly string[]
   babel?: Partial<Options> // @stylexjs/babel-plugin Options
 }
@@ -53,3 +54,21 @@ const stylex = createStylex({
 ## 构建核心 API
 
 适配器作者可以使用 `StylexSession`、`createVitePlugins`、`WxssEmitter`、`processRules` 与 `sourceId`。应用项目优先使用框架适配器。宿主和输出契约参见[架构指南](/zh/architecture/)与[源码](https://github.com/weapp-stylex/weapp-stylex/tree/main/packages/compiler/src)。
+
+## 编译后端
+
+默认 `backend: 'babel'` 使用官方 Babel 7，同时启用 AST 复用与 session 缓存。`backend: 'auto'` 为已验证的写法选择 SWC，每个 session 对同一种回退原因只提示一次。`backend: 'swc'` 强制使用 SWC，不支持或不可用时明确报错。
+
+```ts
+stylexCompiler({ backend: 'auto' })
+createStylex({ backend: 'auto' }) // Wevu：注册工厂的两个字段
+stylexUniApp({ backend: 'auto' })
+// Taro 配置：
+const plugins = [[require.resolve('weapp-stylex/taro'), { backend: 'auto' }]]
+```
+
+SWC 覆盖静态样式、简单的局部动态样式、条件合并、常规 shorthand/null、keyframes 与 firstThatWorks。主题和常量、编译期导入、SWC 不接受的 runtime 子路径、非空 `babel` 配置及未验证的表达式求值继续使用 Babel。原始 Vue SFC 脚本也保留 Babel：SWC 0.19.0 会删除只在模板中使用的绑定；独立 TS/JS 样式文件仍可加速。原始导入和主题身份算法保持一致。
+
+`@stylexswc/rs-compiler@0.19.0` 是按需加载的可选原生依赖，不需要安装 Rust。省略可选依赖时 Babel 仍可使用；`auto` 提示并使用 Babel，`swc` 给出重装建议。默认 Babel 与 runtime 入口不会加载原生模块。语法错误、解析失败及未知编译错误会正常报告。
+
+宿主作者可提供 `TransformHost.diagnostic(diagnostic)`，接收包含文件、可确定位置和修复建议的结构化诊断。Vite、weapp-vite 与 Webpack 适配器通过原生诊断接口展示；SFC 位置指向 `.vue` 原文件。参见[性能与边界](/zh/performance/)。
