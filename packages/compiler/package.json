@@ -61,7 +61,7 @@
     "@babel/core": "^7.29.7",
     "@stylexjs/babel-plugin": "0.19.1",
     "@vue/compiler-sfc": "^3.5.43",
-    "magic-string": "^0.30.21",
+    "magic-string": "^1.4.3",
     "postcss": "^8.5.29",
     "postcss-selector-parser": "^7.1.6"
   },

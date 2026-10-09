@@ -37,8 +37,8 @@
   "devDependencies": {
     "@types/node": "^26.6.4",
     "@weapp-stylex/weapp-vite": "workspace:*",
-    "miniprogram-api-typings": "^5.0.0",
-    "vue-tsc": "^3.3.1",
+    "miniprogram-api-typings": "^5.2.3",
+    "vue-tsc": "^3.3.12",
     "weapp-vite": "7.4.0"
   }
 }

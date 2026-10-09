@@ -62,6 +62,40 @@ function tokenDeclaration(color) {
   return `import * as stylex from '@weapp-stylex/core';export const tokens=stylex.defineVars({accent:'${color}'})`
 }
 
+async function compiledSfcEntrypoints() {
+  const { StylexSession: EsmSession } = await import('../packages/compiler/dist/index.mjs')
+  const source = `<template><view :class="sx">compiled SFC</view></template>
+<script lang="ts">
+import * as stylex from '@weapp-stylex/core'
+export const shared = stylex.create({root:{padding:16}})
+</script>
+<script setup lang="ts">
+import * as stylex from '@weapp-stylex/core'
+const styles = stylex.create({text:{color:'red'}})
+const sx = stylex.attrs(styles.text).class
+</script>
+<style>.local { opacity: 0.5 }</style>`
+  const filename = path.join(temporary, 'compiled-entrypoints.vue')
+  const host = { resolve: async () => undefined, addWatchFile() {} }
+  const sessions = [new StylexSession(), new EsmSession()]
+  const [cjs, esm] = await Promise.all(
+    sessions.map(session => session.transform(source, filename, host)),
+  )
+  assert.ok(cjs && esm, 'Both published compiler entrypoints must transform SFCs')
+  assert.equal(cjs.code, esm.code, 'CJS and ESM transformations must agree')
+  assert.equal(cjs.map, esm.map, 'CJS and ESM sourcemaps must agree')
+  assert.ok(cjs.code.includes('<template><view :class="sx">compiled SFC</view></template>'))
+  assert.ok(cjs.code.includes('<style>.local { opacity: 0.5 }</style>'))
+  assert.doesNotMatch(cjs.code, /stylex\.create/)
+  const map = JSON.parse(cjs.map)
+  assert.deepEqual(map.sources, [filename])
+  assert.deepEqual(map.sourcesContent, [source])
+  assert.ok(map.mappings.length > 0)
+  assert.equal(sessions[0].css(), sessions[1].css())
+  assert.match(sessions[0].css(), /padding:16px/)
+  assert.match(sessions[0].css(), /color:red/)
+}
+
 async function nativeBuild() {
   const cwd = path.join(temporary, 'native')
   await mkdir(path.join(cwd, 'src/pages/index'), { recursive: true })
@@ -400,11 +434,12 @@ async function webpackCache() {
   }
 }
 try {
+  await compiledSfcEntrypoints()
   await nativeBuild()
   await viteWatch()
   await webpackCache()
   process.stdout.write(
-    'Native module graph, Vite watch and Webpack cache integration passed\n',
+    'CJS/ESM SFC, native module graph, Vite watch and Webpack cache integration passed\n',
   )
 }
 finally {

@@ -53,10 +53,10 @@
     "@weapp-stylex/taro": "workspace:*",
     "babel-preset-taro": "4.3.0",
     "less": "^4.9.1",
-    "sass": "^1.97.3",
+    "sass": "^1.105.1",
     "vite": "^4.5.14",
     "vue-loader": "^17.4.2",
-    "vue-tsc": "^3.3.1",
+    "vue-tsc": "^3.3.12",
     "webpack": "5.91.0"
   }
 }

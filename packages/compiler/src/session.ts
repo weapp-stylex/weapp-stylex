@@ -7,7 +7,7 @@ import remapping from '@ampproject/remapping'
 import babel from '@babel/core'
 import stylexPlugin from '@stylexjs/babel-plugin'
 import { parse } from '@vue/compiler-sfc'
-import MagicString, { Bundle } from 'magic-string'
+import { Bundle, MagicString } from 'magic-string'
 import postcss from 'postcss'
 import selectorParser from 'postcss-selector-parser'
 

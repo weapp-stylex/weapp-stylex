@@ -75,7 +75,7 @@ async function main() {
       '3.0.0-alpha-5030120260930001',
     )
   }
-  assert.equal(weappRequire('vite/package.json').version, '8.3.3')
+  assert.equal(weappRequire('vite/package.json').version, '8.3.4')
 
   // Resolve from the consuming tooling package, so these checks exercise the
   // installed overrides rather than separate direct test dependencies.

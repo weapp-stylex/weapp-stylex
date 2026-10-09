@@ -46,4 +46,18 @@ for (const file of ['llms.txt', 'zh/llms.txt', 'llms-full.txt', 'robots.txt', 's
 }
 const zhIndex = await readFile(new URL('zh/llms.txt', output), 'utf8')
 assert.ok(zhIndex.includes(`${origin}/zh/`), 'Chinese AI index must use the canonical domain')
-console.log(`Verified ${pages.length} pages: languages, canonical URLs, alternates, internal links, anchors, Markdown and search assets.`)
+for (const file of ['.well-known/ard.json', '.well-known/ai-catalog.json']) {
+  const discovery = JSON.parse(await readFile(new URL(file, output), 'utf8'))
+  assert.equal(discovery.host.identifier, `${origin}/`, `Wrong discovery host: ${file}`)
+  assert.ok(discovery.entries.some(entry => entry.url === `${origin}/llms.txt`), `Missing documentation index: ${file}`)
+  assert.ok(discovery.entries.some(entry => entry.url === `${origin}/index.md`), `Missing homepage Markdown: ${file}`)
+  for (const entry of discovery.entries) {
+    assert.equal(new URL(entry.url).origin, origin, `Unexpected discovery origin: ${file}`)
+    await checkLink(entry.url, '/')
+  }
+}
+const headers = await readFile(new URL('_headers', output), 'utf8')
+const ownerHeaders = await readFile(new URL('../public/_headers', import.meta.url), 'utf8')
+assert.ok(headers.includes(ownerHeaders.trim()), 'Generated headers must retain the site security and caching rules')
+assert.ok(headers.includes(`<${origin}/.well-known/ard.json>; rel="ard"`), 'Missing homepage discovery Link header')
+console.log(`Verified ${pages.length} pages: languages, canonical URLs, alternates, internal links, anchors, Markdown, search assets and agent discovery.`)
