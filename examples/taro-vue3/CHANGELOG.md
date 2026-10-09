@@ -1,5 +1,12 @@
 # taro-vue3
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies:
+  - weapp-stylex@0.2.0
+
 ## 0.0.2
 
 ### Patch Changes

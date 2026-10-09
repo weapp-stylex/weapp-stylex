@@ -1,7 +1,7 @@
 {
   "name": "@weapp-stylex/weapp-vite",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "StyleX compiler integration for native WeChat and Wevu mini-programs built with weapp-vite",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
