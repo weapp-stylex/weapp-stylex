@@ -3,9 +3,14 @@
   "type": "module",
   "version": "0.1.1",
   "private": false,
-  "description": "StyleX build integration for WeChat mini-programs",
+  "description": "StyleX Vite plugin for uni-app Vue 3, compiling shared styles and themes to WeChat mini-program WXSS",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sonofmagic/sponsors"
+  },
+  "homepage": "https://stylex.weapp.dev/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
@@ -15,10 +20,18 @@
     "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
   },
   "keywords": [
-    "repoctl",
+    "stylex",
+    "weapp-stylex",
+    "wechat",
+    "miniprogram",
+    "wxss",
+    "css-in-js",
+    "atomic-css",
     "typescript",
-    "library",
-    "template"
+    "微信小程序",
+    "uni-app",
+    "vue",
+    "vite"
   ],
   "sideEffects": false,
   "exports": {

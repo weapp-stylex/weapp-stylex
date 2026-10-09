@@ -2,9 +2,14 @@
   "name": "@weapp-stylex/weapp-vite",
   "type": "module",
   "version": "0.2.1",
-  "description": "StyleX compiler plugin for native WeChat mini-programs built with weapp-vite",
+  "description": "StyleX compiler integration for native WeChat and Wevu mini-programs built with weapp-vite",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sonofmagic/sponsors"
+  },
+  "homepage": "https://stylex.weapp.dev/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
@@ -13,6 +18,21 @@
   "bugs": {
     "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
   },
+  "keywords": [
+    "stylex",
+    "weapp-stylex",
+    "wechat",
+    "miniprogram",
+    "wxss",
+    "css-in-js",
+    "atomic-css",
+    "typescript",
+    "微信小程序",
+    "weapp-vite",
+    "wevu",
+    "vite",
+    "vue"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

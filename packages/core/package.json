@@ -2,9 +2,14 @@
   "name": "@weapp-stylex/core",
   "type": "module",
   "version": "0.1.1",
-  "description": "StyleX API facade for native mini-program projects",
+  "description": "StyleX runtime APIs, types and theme helpers for WeChat mini-programs",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sonofmagic/sponsors"
+  },
+  "homepage": "https://stylex.weapp.dev/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
@@ -13,6 +18,19 @@
   "bugs": {
     "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
   },
+  "keywords": [
+    "stylex",
+    "weapp-stylex",
+    "wechat",
+    "miniprogram",
+    "wxss",
+    "css-in-js",
+    "atomic-css",
+    "typescript",
+    "微信小程序",
+    "runtime",
+    "themes"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

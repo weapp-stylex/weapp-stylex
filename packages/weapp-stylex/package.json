@@ -3,9 +3,13 @@
   "type": "module",
   "version": "0.1.0",
   "private": false,
-  "description": "Official StyleX runtime and WeChat mini-program adapters for native, Wevu, Taro and uni-app",
+  "description": "StyleX runtime and build adapters for WeChat mini-programs: native, Wevu, Taro React/Vue 3 and uni-app Vue 3",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sonofmagic/sponsors"
+  },
   "homepage": "https://stylex.weapp.dev/",
   "repository": {
     "type": "git",
@@ -17,12 +21,20 @@
   },
   "keywords": [
     "stylex",
+    "weapp-stylex",
     "wechat",
     "miniprogram",
+    "wxss",
+    "css-in-js",
+    "atomic-css",
+    "typescript",
+    "微信小程序",
     "weapp-vite",
     "wevu",
     "taro",
-    "uni-app"
+    "uni-app",
+    "react",
+    "vue"
   ],
   "sideEffects": false,
   "exports": {
