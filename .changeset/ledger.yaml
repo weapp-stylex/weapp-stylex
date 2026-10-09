@@ -44,3 +44,7 @@ weapp-stylex@0.0.0:
   dir: packages/weapp-stylex
   intents:
     - clean-foxes-share
+weapp-stylex@0.1.0:
+  dir: packages/weapp-stylex
+  intents:
+    - wet-eagles-compete
