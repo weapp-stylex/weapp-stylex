@@ -26,9 +26,6 @@ export function analyzeScript(ast: ScriptAst, importSources: readonly string[], 
     }
     else {
       externalImports = true
-      if (/\.stylex(?:\.|$)/.test(source)) {
-        dependencies.add(source)
-      }
     }
   }
   if (!checkCapabilities && !externalImports) {

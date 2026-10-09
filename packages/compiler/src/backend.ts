@@ -17,7 +17,7 @@ export interface BackendResult {
 const require = createRequire(typeof __filename === 'string' ? __filename : import.meta.url)
 export const SWC_VERSION = '0.19.0'
 // Bump when analysis, hashing or output semantics change, including local development.
-const CACHE_ABI = 2
+const CACHE_ABI = 3
 export const backendBuildDependencies = [
   typeof __filename === 'string' ? __filename : fileURLToPath(import.meta.url),
   require.resolve('../package.json'),

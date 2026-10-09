@@ -38,13 +38,15 @@ it('coalesces concurrent token reads/transforms and replays dependencies to ever
 })
 it('leaves runtime dependencies to the bundler but finds imports through local constants', async () => {
   const { root, host } = await fixture()
-  const session = new StylexSession()
-  await session.transform(`${prefix}import {View} from '@tarojs/components';import {styles} from './shared';export const attrs=stylex.attrs(styles.root);`, path.join(root, 'runtime.ts'), { ...host, resolve: async () => {
-    throw new Error('runtime imports must not be resolved')
-  } })
-  expect(session.getStats().resolutions).toBe(0)
-  await expect(session.transform(`${prefix}import {tokens} from '@tokens';const accent=tokens.accent;export const styles=stylex.create({root:{color:accent}});`, path.join(root, 'compile.ts'), host)).rejects.toThrow('Could not resolve the path')
-  expect(session.getStats().resolutions).toBe(1)
+  for (const backend of ['babel', 'auto'] as const) {
+    const session = new StylexSession({ backend })
+    await session.transform(`${prefix}import {View} from '@tarojs/components';import {type TokenShape} from './types.stylex';import {styles} from './shared.stylex';export const attrs=stylex.attrs(styles.root);`, path.join(root, 'runtime.ts'), { ...host, resolve: async () => {
+      throw new Error('runtime imports must not be resolved')
+    } })
+    expect(session.getStats().resolutions).toBe(0)
+    await expect(session.transform(`${prefix}import {tokens} from '@tokens';const accent=tokens.accent;export const styles=stylex.create({root:{color:accent}});`, path.join(root, 'compile.ts'), host)).rejects.toThrow('Could not resolve the path')
+    expect(session.getStats().resolutions).toBe(1)
+  }
 })
 it('revalidates changed token files between builds even without watch events', async () => {
   const { root, token, host } = await fixture()
