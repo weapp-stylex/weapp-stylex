@@ -46,3 +46,5 @@ config.ts.timestamp-*.mjs
 /pnpm-publish-summary.json.*.tmp
 /repoctl-publish-progress.json.*.tmp
 /repoctl-release-progress.json
+
+/repoctl-ci-progress.json
