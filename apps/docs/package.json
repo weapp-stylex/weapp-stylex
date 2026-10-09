@@ -24,9 +24,9 @@
     "deploy:dry-run": "corepack pnpm build && wrangler deploy --dry-run",
     "preview": "astro preview",
     "typecheck": "astro check && tsc --noEmit",
-    "lint": "eslint . && stylelint \"src/styles/**/*.css\" && nimbus-docs lint",
-    "lint:docs": "nimbus-docs lint",
-    "lint:docs:fix": "nimbus-docs lint --fix",
+    "lint": "eslint . && stylelint \"src/styles/**/*.css\" && corepack pnpm lint:docs",
+    "lint:docs": "corepack pnpm build && nimbus-docs lint",
+    "lint:docs:fix": "corepack pnpm build && nimbus-docs lint --fix",
     "check:locales": "node scripts/check-locales.mjs",
     "check:site": "node scripts/check-site.mjs"
   },

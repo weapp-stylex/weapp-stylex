@@ -7,6 +7,7 @@ This is a static Nimbus + Astro documentation site. Run commands in this workspa
 - Register MDX components in `src/components.ts`. Add a text conversion in `astro.config.ts` when a custom component conveys information that would otherwise disappear from Markdown.
 - Set the canonical `site` URL and project title in `astro.config.ts` before deployment. Static output is `dist/` and can be hosted anywhere.
 - Run `pnpm build`, `pnpm lint`, and `pnpm typecheck`. `typecheck` combines Astro diagnostics with TypeScript checks. Search uses the production Pagefind index; verify it with `pnpm preview` after building.
+- `lint:docs` builds before running Nimbus authoring lint, because its resolved rules and route manifest are generated under `.nimbus/`. Keep this preparation in the script so fresh checkouts do not depend on local caches.
 - Verify `/llms.txt`, `/zh/llms.txt`, `/llms-full.txt`, and each page's `/index.md` and `/index.mdx`. Keep private content outside public content collections; `noindex` is not access control.
 - `draft: true` excludes unfinished pages from production. When adding a page, create its translation before publishing so the language switch remains valid.
 - Keep `nimbus.json` and `UPSTREAM.md` when upgrading. Review Nimbus migrations and project-owned changes before advancing the reviewed version.

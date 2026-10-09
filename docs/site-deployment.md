@@ -68,6 +68,7 @@ corepack pnpm --filter docs exec wrangler rollback <previous-version-id>
 - 最终 Worker version：`dc94754d-8ef2-4be6-8953-16c3fa3d87ff`。
 - Cloudflare 与 Google 公共 DNS 均解析成功；HTTPS 真实浏览器加载成功。
 - 14 组中英文页面、对应语言切换、两种语言搜索、Markdown/AI 入口、404、移动菜单、无横向溢出和深色模式均通过。线上浏览器未报告页面错误。
+- 首次文档 CI 暴露干净 checkout 缺少 `.nimbus/lint.json` / 路由清单的问题。文档 lint 入口已自动先 build 再执行 Nimbus lint，同时验证无缓存运行；不将本地已生成文件当作 CI 前提。
 - frozen install、根 lint/build/typecheck/test、test:deps、test:integration、test:examples、repo deps check、repo doctor、repo check --full 均返回 0；文档 lint、类型检查、check:site 和部署 dry-run 通过。
 - repo doctor 仍提示 override 声明等证据限制，未将 warn 描述为通过证明。pnpm audit 返回 1：全仓 4 critical / 20 high / 38 moderate / 10 low，残留包含受兼容版本约束的框架工具链，审计不视为通过。本次没有扩大到框架依赖全面升级。文档依赖路径也包含 Vite 的可选 Stylus → glob CLI 告警，审计详情保留在日志中。
 - 新增 Nimbus 改变了私有 hoist 的 estree-walker 版本，暴露 DCloud `uni-mp-vite` 对 CJS walker 的未声明依赖。通过审查并应用 repo upgrade JSON，给该精确 DCloud 版本补充 `estree-walker: 2.0.2` packageExtension，并加入真实 CJS walk 兼容检查，七份示例产物已重新验证。

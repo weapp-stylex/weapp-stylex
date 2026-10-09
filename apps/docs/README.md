@@ -17,4 +17,6 @@ corepack pnpm --filter docs preview
 
 Search requires the production build. `check:site` verifies language metadata, canonical/alternate URLs, local links and anchors, Markdown exports and AI/search assets.
 
+Nimbus authoring lint also needs the resolved rules and route manifest. `lint:docs` builds the site first so `lint` works in a clean checkout and always checks the current configuration.
+
 Cloudflare Workers Static Assets hosts `dist/` with a custom domain declared in `wrangler.jsonc`. Use `deploy:dry-run` to inspect and `deploy` to build and upload. Authenticate with Wrangler locally; never commit credentials. See the [deployment runbook](../../docs/site-deployment.md).
