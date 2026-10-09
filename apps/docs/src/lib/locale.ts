@@ -5,6 +5,12 @@ export function isChinese(path: string) {
 }
 
 export function alternatePath(path: string) {
+  if (path === '/zh' || path === '/zh/') {
+    return '/en/'
+  }
+  if (path === '/en' || path === '/en/') {
+    return '/zh/'
+  }
   return isChinese(path) ? path.slice(3) || '/' : `/zh${path}`
 }
 

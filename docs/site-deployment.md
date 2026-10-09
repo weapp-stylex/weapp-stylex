@@ -1,6 +1,6 @@
 # 文档站部署
 
-核心域名：<https://stylex.weapp.dev/>，英文位于 `/`，中文位于 `/zh/`。所有 canonical、hreflang、sitemap 和 Markdown/AI 入口都使用该域名。
+核心域名：<https://stylex.weapp.dev/>，根地址默认以 HTTP 302 跳转到中文 `/zh/`；英文首页位于 `/en/`，其他英文指南沿用根目录路由。所有 canonical、hreflang、sitemap 和 Markdown/AI 入口都使用该域名。
 
 ## 创建与升级记录
 
@@ -30,6 +30,7 @@ corepack pnpm --filter docs exec wrangler deploy
 - custom domain：`stylex.weapp.dev`，由 Wrangler 管理 DNS 与 TLS。
 - 禁用 workers.dev 和 preview URL，主域名作为唯一公开站点入口。
 - HTML 使用末尾斜线；未知页面返回真实 404，不返回 SPA 首页。
+- `public/_redirects` 在静态资源层处理默认中文入口，Astro 的同一跳转配置覆盖开发与静态 preview。英文首页使用 `slug: en`，导航与语言切换明确指向 `/en/`；旧 `/index.mdx` 跳转到 `/en/index.mdx`。
 - `_headers` 为哈希静态资源提供长期缓存，并配置基本响应头。
 - 所有凭据留在本地 Wrangler 登录配置或 CI secret，代码不包含令牌。
 
@@ -40,6 +41,7 @@ corepack pnpm --filter docs exec wrangler deploy
 ```text
 /
 /zh/
+/en/
 /get-started/
 /zh/get-started/
 /llms.txt
@@ -74,3 +76,14 @@ corepack pnpm --filter docs exec wrangler rollback <previous-version-id>
 - 新增 Nimbus 改变了私有 hoist 的 estree-walker 版本，暴露 DCloud `uni-mp-vite` 对 CJS walker 的未声明依赖。通过审查并应用 repo upgrade JSON，给该精确 DCloud 版本补充 `estree-walker: 2.0.2` packageExtension，并加入真实 CJS walk 兼容检查，七份示例产物已重新验证。
 - 线上截图：`artifacts/docs-desktop.png`、`artifacts/docs-mobile.png`、`artifacts/docs-dark.png`。浏览器日志：`artifacts/docs-online-qa.log`；完整命令结果：`artifacts/docs-validation.json`；审计：`artifacts/docs-audit.json`；部署：`artifacts/docs-deploy-final.log`。
 - 浏览器 QA 使用 headless Chrome，每次以 try/finally 关闭 context/browser。复用原有项目预览标签展示中文线上首页；本地文档 preview 与已被线上页面替换的 logo preview 服务在交付时关闭。保留一个线上交付页。
+
+## 默认中文入口修复（2026-10-09）
+
+- 根因：英文首页原先由根内容条目发布到 `/`，没有语言跳转规则；中文只在 `/zh/` 提供。静态部署不会依据浏览器语言自动切换。
+- 根地址现在返回 `302 Location: /zh/`。Astro 的 redirect 覆盖开发及静态 preview，Cloudflare `public/_redirects` 在资源层提供无需 JavaScript 的 HTTP 跳转。
+- 英文首页通过原内容的 `slug: en` 发布到 `/en/`。更新首页语言切换、品牌导航、404 返回入口、项目及组织 README 链接；其他英文指南保持原有路由。旧 `/index.mdx` 返回 301 到 `/en/index.mdx`。
+- 原生产版本：`42d7e0f8-3c2d-437a-b3b1-8e2eb8b9aead`；新生产版本：`6a458a77-d506-49d5-a35f-8810b7f29e5c`。部署日志：`artifacts/docs-language-deploy.log`。
+- frozen install、文档 lint/typecheck、32 页站点检查、仓库 `repo check --full`、发布意图检查及部署 dry-run 均通过。Doctor 为 175 pass / 83 warn / 0 fail，保留模板定制与 override 一致性证据等提示。
+- 本地和线上各通过 37 项 HTTP 与真实浏览器检查：根地址及带查询参数的入口、默认中文、英文首页、正文对应语言切换、双语搜索、canonical、Markdown、AI 发现入口、sitemap、robots 和真实 404。浏览器未报告页面错误。回归检查已加入 `check:site`。
+- 日志：`artifacts/docs-language-local-qa.log`、`artifacts/docs-language-online-qa.log`；截图：`artifacts/docs-language-local-zh.png`、`artifacts/docs-language-online-zh.png`；结构化记录：`artifacts/docs-language-validation.json`。两次验收脚本路径/执行环境错误保留为独立日志，没有将错误当作通过。
+- 复用一个本任务创建的 headless Chrome 会话 `sxlang1009`，确认 `headed: false`。验收结束已关闭并核对无剩余会话；本任务 Wrangler 本地服务的 18969/18970 端口均已释放，没有操作用户的浏览器或其他任务资源。

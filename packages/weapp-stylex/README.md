@@ -51,5 +51,5 @@ export default defineConfig({
 Both Taro Vite and Webpack 5 are supported. Existing `@weapp-stylex/*` packages
 remain available for projects that prefer installing only one adapter.
 
-Documentation: [English](https://stylex.weapp.dev/) ·
+Documentation: [English](https://stylex.weapp.dev/en/) ·
 [中文](https://stylex.weapp.dev/zh/).

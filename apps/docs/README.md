@@ -1,10 +1,10 @@
 # weapp-stylex documentation
 
-Primary domain: [stylex.weapp.dev](https://stylex.weapp.dev/). [中文](https://stylex.weapp.dev/zh/) / [English](https://stylex.weapp.dev/).
+Primary domain: [stylex.weapp.dev](https://stylex.weapp.dev/), which redirects to Chinese. [中文](https://stylex.weapp.dev/zh/) / [English](https://stylex.weapp.dev/en/).
 
 Created with `corepack pnpm exec repo new docs --template nimbus` using repoctl 5.9.0 and template 2.3.1. This workspace uses Nimbus 0.16.0, Astro 7.3.7 and Pagefind 1.5.2. Keep `nimbus.json` and `UPSTREAM.md` for future upgrades.
 
-English content is in `src/content/docs/`; Chinese translations have identical relative filenames under `zh/`. The framework and compiler contracts are documented in both languages. The layout, components and styles are project-owned.
+English content is in `src/content/docs/`; Chinese translations have identical relative filenames under `zh/`. The English homepage uses `slug: en`; other English guides retain their root-level routes. `/` redirects to `/zh/` through Astro in development/static previews and through Cloudflare's `_redirects` with HTTP 302 in production. The framework and compiler contracts are documented in both languages. The layout, components and styles are project-owned.
 
 ```sh
 corepack pnpm --filter docs dev
