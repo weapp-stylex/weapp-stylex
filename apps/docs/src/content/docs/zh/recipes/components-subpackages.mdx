@@ -1,0 +1,107 @@
+---
+title: "组件与分包"
+description: "在隔离组件中绑定样式，并让普通分包加载生成的 WXSS。"
+sidebar:
+  order: 5
+---
+
+声明可以共享，每个组件仍需管理自身节点的 class/style 字符串。隔离组件需要自己的入口能够加载生成的 WXSS，并在根节点显式应用主题 class。普通分包使用同一构建图；独立分包不属于稳定支持契约。
+
+## 创建隔离的原生组件
+
+复用[共享模块教程](/zh/recipes/shared-modules/)中的 `src/styles/card.ts`，以及 [token 与主题教程](/zh/recipes/tokens-themes/)中的 token/theme 模块。将主题相关模块放在 `src/styles/` 下。
+
+```ts
+// src/components/style-card/index.ts
+import * as stylex from 'weapp-stylex'
+import { cardStyles } from '../../styles/card'
+import { darkTheme } from '../../styles/themes'
+
+Component({
+  properties: {
+    active: { type: Boolean, value: false },
+    dark: { type: Boolean, value: false },
+  },
+  data: { card: stylex.attrs(cardStyles.root) },
+  observers: {
+    'active, dark'(active: boolean, dark: boolean) {
+      this.setData({ card: stylex.attrs(
+        cardStyles.root,
+        active && cardStyles.active,
+        dark && darkTheme,
+      ) })
+    },
+  },
+})
+```
+
+本例需要主题颜色：将 `cardStyles.root` 的 `backgroundColor` 改为 `tokens.surface`，添加 `color: tokens.text`，并通过 `import { tokens } from './tokens.stylex'` 直接导入 token。否则主题 class 只改变变量，卡片仍使用静态颜色。
+
+```xml
+<!-- src/components/style-card/index.wxml -->
+<view class="{{card.class}}" style="{{card.style}}">
+  <slot />
+</view>
+```
+
+`src/components/style-card/index.json`：
+
+```json
+{ "component": true }
+```
+
+任一属性变化时，observer 都重新计算两个字符串。保留组件正常的生命周期与隔离设置。父页面上的主题 class 不能替代组件内部对所选主题的绑定。
+
+## 注册并驱动组件
+
+`src/pages/index/index.json`：
+
+```json
+{
+  "usingComponents": { "style-card": "/components/style-card/index" }
+}
+```
+
+```ts
+// src/pages/index/index.ts
+Page({
+  data: { active: false, dark: false },
+  toggleActive() { this.setData({ active: !this.data.active }) },
+  toggleTheme() { this.setData({ dark: !this.data.dark }) },
+})
+```
+
+```xml
+<style-card active="{{active}}" dark="{{dark}}">Shared component</style-card>
+<button bindtap="toggleActive">Toggle active</button>
+<button bindtap="toggleTheme">Switch theme</button>
+```
+
+React 组件接收 `active`/`dark` props，在自身 `View` 上展开 `stylex.props(cardStyles.root, active && cardStyles.active, dark && darkTheme)`。Vue/Wevu 组件通过 `computed()` 根据组件 props 计算相同的 `attrs()` 调用，绑定两个结果；`computed` 应从实际宿主 `vue` 或 `wevu` 导入。
+
+## 显式声明普通分包
+
+原生微信保留既有路由声明：
+
+`src/app.json`：
+
+```json
+{
+  "pages": ["pages/index/index"],
+  "subpackages": [{ "root": "subpackage", "pages": ["detail/index"] }]
+}
+```
+
+分包页面可以导入 `../../styles/card`，在 Page data 中组合 `attrs()` 并在 WXML 绑定。使用 `style-card` 时，也在该页的 `usingComponents` 注册组件。Taro 与 uni-app 使用各自的框架路由配置，不要用原生路由文件覆盖它们。
+
+<Aside type="warning" title="独立分包">
+
+本例支持的是普通分包。不要加入 `independent: true` 并认为教程已保证独立的依赖与样式行为；独立分包需要另外的实现和验收计划。
+
+</Aside>
+
+## 验证每个产物入口
+
+存在 StyleX 规则时，同时输出 WXML 和 JavaScript、却没有本地 WXSS 的页面/组件会补齐同名 WXSS。Emitter 还会按需创建 `app.wxss`，在需要样式的目录写入 `stylex.wxss`，补齐文件自动导入它。用户编写的同名 `stylex.wxss` 会触发冲突错误。
+
+打开主页面与分包路由，切换组件属性，检查组件自身根节点的 class/style 和颜色；核对页面/组件 WXSS 及其 import。七份[示例产物](/zh/examples/)覆盖普通分包输出，实际 IDE 验收范围以保留日期的运行记录为准。

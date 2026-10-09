@@ -1,9 +1,12 @@
 ---
-interface Props { title?: string }
-const { title } = Astro.props
+import Icon from './icon.astro'
+
+interface Props { title?: string, type?: 'note' | 'tip' | 'warning' | 'caution' }
+const { title, type = 'note' } = Astro.props
+const icon = type === 'tip' ? 'lightning' : type === 'warning' || type === 'caution' ? 'warning' : 'book'
 ---
 
-<aside class="callout">
-  {title && <strong>{title}</strong>}
-  <slot />
+<aside class:list={['callout', `callout-${type}`]}>
+  <div class="callout-heading"><Icon name={icon} />{title && <strong>{title}</strong>}</div>
+  <div class="callout-content"><slot /></div>
 </aside>

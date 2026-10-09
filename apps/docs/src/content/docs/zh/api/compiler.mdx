@@ -1,0 +1,376 @@
+---
+title: "编译器与宿主 API"
+description: "共享配置、转换、会话、诊断与受管 WXSS 输出。"
+sidebar:
+  order: 34
+---
+
+从 `weapp-stylex/compiler` 或 `@weapp-stylex/compiler` 导入值与类型。这是面向适配器作者的公开构建核心。应用项目使用[框架适配器](/zh/api/adapters/)，获得正确的 resolver、SFC 预处理与输出生命周期。根 runtime 入口不提供这些工具。
+
+<a id="api-StylexBackend"></a>
+## StylexBackend
+
+```ts
+type StylexBackend = 'babel' | 'auto' | 'swc'
+```
+
+没有泛型参数，选项默认 `babel`，使用官方 Babel 7。`auto` 仅加速保守的已验证 AST 子集；strict `swc` 拒绝不支持的输入或缺失的可选原生编译器。语法、resolver 与未知转换错误向上传递。原始 SFC、主题/常量、编译期 import 与非空自定义 Babel 配置在 `auto` 中保留 Babel。
+
+<a id="api-StylexCompilerOptions"></a>
+## StylexCompilerOptions
+
+```ts
+interface StylexCompilerOptions {
+  backend?: StylexBackend
+  importSources?: readonly string[]
+  babel?: Partial<Options> // 官方 @stylexjs/babel-plugin Options
+}
+```
+
+全部字段可选，adapter/session 配置默认 `{}`。backend 默认 `'babel'`；importSources 默认 `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`，自定义列表会**替换**默认项。babel 默认无自定义配置，配置官方 StyleX plugin，不是任意 Babel transform。
+
+```ts
+const options: StylexCompilerOptions = {
+  backend: 'auto',
+  importSources: ['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
+}
+```
+
+自定义配置之后固定 `importSources`、`classNamePrefix: 'sx'`、`debug: false`、`dev: false`、`test: false`、`runtimeInjection: false` 和 `styleResolution: 'application-order'`。规则处理固定 `legacyDisableLayers: true` 与 `useLayers: false`。自定义 `unstable_moduleResolution` 能覆盖宿主桥接；没有自行负责 token 解析语义时不要覆盖。Babel 7 与宿主 Babel 8 presets 保持隔离。库不读取 `WEAPP_STYLEX_BACKEND`。
+
+<a id="api-SfcParser"></a>
+## SfcParser
+
+```ts
+type SfcParser = typeof import('@vue/compiler-sfc').parse
+```
+
+session 构造器接受的 parser 函数类型。必填源文本、可选 parse 配置与 descriptor/error 返回遵循已安装 Vue parser 签名。session 默认使用自身 Vue parser；uni-app 传入从 DCloud 匹配依赖树解析的 parser。不要为了统一宿主版本而替换成错配 parser。
+
+<a id="api-TransformHost"></a>
+## TransformHost
+
+```ts
+interface TransformHost {
+  resolve(source: string, importer: string): Promise<string | undefined>
+  addWatchFile(id: string): void
+  diagnostic?(diagnostic: StylexDiagnostic): void
+}
+```
+
+resolve 与 addWatchFile 必填。通过宿主解析，返回可用物理 id 或 undefined，解析错误向上传递。每个依赖加入 watcher，缓存命中也会重放。可选 diagnostic 接收结构化通知/错误，没有默认 callback；编译错误仍会 reject。不要用猜测的路径拼接替代宿主 alias/package resolution。
+
+<a id="api-ModuleStyles"></a>
+## ModuleStyles
+
+```ts
+interface ModuleStyles {
+  rules: Rule[] // @stylexjs/babel-plugin
+  dependencies: string[]
+}
+```
+
+两个字段必填，无默认值。单模块官方规则与受监听依赖 id 保存在 `StylexSession.modules`。成功转换后替换 metadata，避免累计过期规则。rules 是编译器数据，不是原始 CSS 字符串。
+
+<a id="api-SourceTransform"></a>
+## SourceTransform
+
+```ts
+interface SourceTransform extends ModuleStyles {
+  code: string
+  map?: string // 序列化 JSON sourcemap
+}
+```
+
+在 rules/dependencies 上增加必填 code 与可选 **JSON 字符串** map。session.transform 返回该结果，跳过时返回 null。Webpack loader 解析 map JSON，共享 Vite hook 传字符串。原始 SFC 转换保留 template/styles/macros，并组合 script maps。
+
+<a id="api-StylexSession"></a>
+## StylexSession
+
+```ts
+new StylexSession(options: StylexCompilerOptions = {}, parseSfc: SfcParser = parse)
+```
+
+创建构建所属状态，默认使用编译器的 Vue parser。非法运行时 backend 抛出 `Unknown StyleX backend`。source/output 阶段共享一个 session。缓存身份包含规范物理文件名、源文本与配置/编译器版本/cache ABI 的 fingerprint，不额外加入最终选择的实际 backend。
+
+```ts
+import { StylexSession, WxssEmitter } from 'weapp-stylex/compiler'
+const session = new StylexSession({ backend: 'babel' })
+const emitter = new WxssEmitter()
+// 开始：session.beginBuild()
+// 源码：await session.transform(code, id, host)
+// 输出：session.prune(reachableIds)
+// await emitter.generate(bundle, session.css(), sink)
+// watcher 最终关闭：session.clear(); emitter.clear()
+```
+
+这是生命周期示意，代码、id、host context、bundle 与 sink 由宿主提供，应用项目使用适配器。
+
+<a id="api-StylexSession-options"></a>
+### options
+
+`readonly options: StylexCompilerOptions` 保存构造器配置，默认 `{}`。fingerprint 在创建时计算，session 内将配置视为固定。
+
+<a id="api-StylexSession-parseSfc"></a>
+### parseSfc
+
+`readonly parseSfc: SfcParser` 保存构造器 parser，默认导入的 Vue parse。在创建 session 时提供匹配宿主的 parser。
+
+<a id="api-StylexSession-modules"></a>
+### modules
+
+`readonly modules: Map<string, ModuleStyles>` 初始为空，保存由 transform 替换的规范模块 metadata。供宿主读取，变化通过生命周期方法管理。
+
+<a id="api-StylexSession-dirty"></a>
+### dirty
+
+`readonly dirty: Set<string>` 初始为空。change 标记需要宿主失效的 id，宿主读取以失效缓存模块。
+
+<a id="api-StylexSession-importSources"></a>
+### importSources
+
+`readonly importSources: readonly string[]` 为配置来源列表，未设置时使用 StylexCompilerOptions 的四个默认来源，hasImport 用它筛选。
+
+<a id="api-StylexSession-fingerprint"></a>
+### fingerprint
+
+`readonly fingerprint: string` 是配置/编译器版本/ABI 计算的不透明身份。与宿主 cache metadata 一起保存，不从 hash 推导语义行为。
+
+<a id="api-StylexSession-hasImport"></a>
+### hasImport
+
+`hasImport(code: string): boolean` 接收必填源文本，返回是否含配置来源子串。它不是 AST import 证明；后续分析处理安全误报。
+
+<a id="api-StylexSession-getStats"></a>
+### getStats
+
+```ts
+getStats(): {
+  parses: number; babelTransforms: number; swcTransforms: number
+  cacheHits: number; tokenReads: number; resolutions: number
+}
+```
+
+无参数，返回六项计数器快照，初始为零并在 session 生命周期内累计。beginBuild 与 clear 不重置计数器，用于 benchmark/调用断言，不是计时 API。
+
+<a id="api-StylexSession-beginBuild"></a>
+### beginBuild
+
+`beginBuild(): void` 无参数，推进 generation，过期本轮 resolver/filesystem 事实与 pending work，保留未变化编译 metadata/cache。在构建开始调用，不在每个模块后调用。
+
+<a id="api-StylexSession-transform"></a>
+### transform
+
+```ts
+transform(code: string, id: string, host: TransformHost): Promise<SourceTransform | null>
+```
+
+参数全部必填。这是常规、负责 metadata 的转换入口，接受脚本/原始 `.vue`，跳过不适用或重复 virtual 请求，替换模块 metadata，返回 code/map/rules/dependencies 或 null。跳过时保留原代码；编译/token/parser 错误 reject 并带结构化编译信息。
+
+<a id="api-StylexSession-transformScript"></a>
+### transformScript
+
+```ts
+transformScript(
+  code: string, filename: string, host: TransformHost,
+  ancestors: ReadonlySet<string> = new Set(),
+  generation = /* 当前 revision */,
+): Promise</* ModuleStyles + code、Babel map 与 backend */>
+```
+
+code、filename、host 必填。低层结果包含 code、map（Babel map 对象/null/undefined）、rules、dependencies 与实际 backend（babel/swc），本身不提交常规单模块 metadata。ancestors 检测递归 token 循环，generation 防止生命周期变化后旧工作覆盖新状态。未接管内部递归/生命周期契约时保留默认值。内部结果别名不导出，可用 `Awaited<ReturnType<StylexSession['transformScript']>>` 推导精确类型。
+
+<a id="api-StylexSession-remove"></a>
+### remove
+
+`remove(id: string): void` 接收必填 id，移除 metadata、dirty 标记与关联 cache/pending/alias 记录。模块消失或不再含 StyleX 时使用，不删除任意宿主文件。
+
+<a id="api-StylexSession-change"></a>
+### change
+
+`change(id: string, deleted: boolean = false): void` 接收必填变化 id，推进 generation，过期 resolver 事实、失效关联工作并标记依赖方 dirty。删除时使用先前已知物理身份移除模块。配置/manifest/lock 变化会扩大失效范围，宿主必须根据 dirty 执行失效。
+
+<a id="api-StylexSession-prune"></a>
+### prune
+
+`prune(ids: Iterable<string>): void` 接收必填宿主可达 id，保留所需依赖（含从输出 JS 中消失的 tokens），移除不可达 metadata/cache。在图确定后、聚合输出前调用。
+
+<a id="api-StylexSession-css"></a>
+### css
+
+`css(): string` 无参数，通过 processRules 聚合当前规则，返回供 WXSS 规划的 CSS，空图得到空 CSS。本方法不输出文件。
+
+<a id="api-StylexSession-clear"></a>
+### clear
+
+`clear(): void` 无参数或返回值，释放 metadata/cache/pending work 并推进 generation。不删除宿主输出，不重置计数器。在 watcher 最终关闭时调用；单独 closeBundle 不能清掉活动 watcher。
+
+<a id="api-SCRIPT_RE"></a>
+## SCRIPT_RE
+
+```ts
+const SCRIPT_RE: RegExp = /\.[cm]?[jt]sx?$/i
+```
+
+扩展名匹配器，没有参数/默认值。通过 `SCRIPT_RE.test(sourceId(id))` 筛选 JS/TS/JSX/TSX 与对应 c/m 变体。不匹配 Vue SFC，也不证明存在 StyleX import。
+
+<a id="api-sourceId"></a>
+## sourceId
+
+`sourceId(id: string): string` 接收必填宿主 id，移除 query/开头 null virtual 前缀、规范分隔符并尝试 filesystem realpath。失败返回规范文本路径，用于物理身份，不替代宿主 resolver。
+
+<a id="api-processRules"></a>
+## processRules
+
+`processRules(rules: Rule[]): string` 接收必填官方规则，关闭 layers 聚合，再将 :root 改为 page，保留主题 class（.theme:root → page.theme）。返回 CSS 文本，空输入得到空文本。不转换 px→rpx，不验证 WXSS 能力，规则/解析错误向上传递。
+
+<a id="api-PluginHost"></a>
+## PluginHost
+
+```ts
+interface PluginHost {
+  resolve(source: string, importer?: string, options?: { skipSelf?: boolean }): Promise<{
+    id: string
+    external?: boolean | 'absolute' | 'relative'
+  } | null>
+  warn(message: string): void
+  error(error: { message: string; id: string; loc?: { line: number; column: number } }): never
+  addWatchFile(id: string): void
+  getModuleIds(): IterableIterator<string>
+  emitFile(asset: { type: 'asset'; fileName: string; source: string }): string
+}
+```
+
+跨 Vite 4/5/8 的结构化 hook context，不打包 Vite runtime，方法全部必填。external/null 解析结果不作为 token 来源。error 中断，emitFile 返回宿主引用 id。原生 Vite 错误行号从 1 开始、列号从 0 开始；项目 diagnostic 列号从 1 开始。
+
+<a id="api-createVitePlugins"></a>
+## createVitePlugins
+
+```ts
+createVitePlugins(session: StylexSession, options: {
+  sfcOnly?: boolean
+  emitStyles?: boolean
+} = {}): /* pre-source 与 post-output plugin 数组 */
+```
+
+session 必填，options 默认 `{}`。省略 sfcOnly 时不限制为 SFC；true 仅接受不含 query 的原始 .vue 请求。emitStyles 除显式 false 外默认启用。返回 pre-source/post-output plugins，包含 cache/watch、prune、诊断与输出 hooks。例如 `createVitePlugins(new StylexSession(), { emitStyles: true })`。
+
+框架编译前转换原始 SFC，跳过重复 virtual 请求。非 watch 最终关闭清理状态，watch 保留到 shutdown。该通用桥接不替代框架原生输出兼容路径，应用使用适配器。
+
+<a id="api-backendBuildDependencies"></a>
+## backendBuildDependencies
+
+`const backendBuildDependencies: string[]` 列出参与宿主 build cache 失效的编译器/backend 文件与 package manifest 路径。没有参数/用户默认值。与 session.fingerprint 一起加入 cache dependencies，不修改共用列表，也不当作每个源模块的完整依赖图。
+
+<a id="api-StylexDiagnostic"></a>
+## StylexDiagnostic
+
+```ts
+interface StylexDiagnostic {
+  level: 'warning' | 'error'
+  code: 'STYLEX_FALLBACK' | 'STYLEX_COMPILE_ERROR'
+  message: string
+  file: string
+  line?: number
+  column?: number
+  hint: string
+}
+```
+
+level、code、message、file 与 hint 必填。可确定的位置从 1 开始，缺失表示未知。fallback 通知描述兼容选择，按原因/session 去重；compile error 描述失败。通过宿主 diagnostic callback 接收。
+
+<a id="api-formatDiagnostic"></a>
+## formatDiagnostic
+
+`formatDiagnostic(diagnostic: StylexDiagnostic): string` 接收必填 diagnostic，返回 `[weapp-stylex] file[:line:column]: message`、换行与 hint。有 line 无 column 时显示列默认 1，例如 `host.warn(formatDiagnostic(diagnostic))`。格式化不抛错、不改变 severity。
+
+<a id="api-StylexCompileError"></a>
+## StylexCompileError
+
+`new StylexCompileError(diagnostic: StylexDiagnostic, cause?: unknown)` 接收必填 diagnostic/可选 cause。name 为 StylexCompileError，message 已格式化，readonly diagnostic 公开结构化数据。用 instanceof StylexCompileError 检查；cause 遵循 Error cause 语义。
+
+<a id="api-compileError"></a>
+## compileError
+
+`compileError(cause: unknown, file: string): StylexCompileError` 两个参数必填。已有 StylexCompileError 原样返回；否则用 cause/message/file 与修复 hint 包装。Babel 列转成从 1 开始。方法返回错误，使用 `throw compileError(cause, file)` 才会抛出。
+
+<a id="api-StyleAsset"></a>
+## StyleAsset
+
+```ts
+interface StyleAsset {
+  type: 'asset'
+  fileName: string
+  source: string | Uint8Array
+}
+```
+
+字段全部必填，无默认值。fileName 相对 bundle，source 是文本或 UTF-8 字节。例如 `{ type: 'asset', fileName: 'pages/home/home.wxss', source: '' }`。
+
+<a id="api-ScriptChunk"></a>
+## ScriptChunk
+
+```ts
+interface ScriptChunk {
+  type: 'chunk'
+  fileName: string
+  code: string
+  modules?: Record<string, unknown>
+}
+```
+
+type/fileName/code 必填，可选 modules 默认不存在。模块键代表用于 prune 的宿主身份，.js 是否存在用于 companion 规划。例如 `{ type: 'chunk', fileName: 'pages/home/home.js', code: '', modules: {} }`。
+
+<a id="api-StyleBundle"></a>
+## StyleBundle
+
+`type StyleBundle = Record<string, StyleAsset | ScriptChunk>` 是以文件名为键的当前宿主输出记录，无泛型/默认值。键与 fileName 应一致。generation 能修改已有 style asset、移除所属过期记录，新文件由 sink 输出。不传过期文件系统清单。
+
+<a id="api-AssetSink"></a>
+## AssetSink
+
+```ts
+interface AssetSink {
+  emit(fileName: string, source: string): void | Promise<void>
+  remove?(fileName: string): void | Promise<void>
+}
+```
+
+emit 必填、remove 可选，没有默认 callback，都可同步/异步且会被等待。使用宿主 API；文件系统兼容 sink 保持 bundle/ownership 语义。没有 remove 时由宿主负责文件系统清理。sink 错误让 generation reject。
+
+<a id="api-assetText"></a>
+## assetText
+
+`assetText(asset: StyleAsset): string` 接收必填 asset，字符串 source 原样返回，字节用 TextDecoder 解码。不输出文件或改变 ownership，用于读取/更新宿主 bundle 的 WXSS。
+
+<a id="api-WxssEmitter"></a>
+## WxssEmitter
+
+`new WxssEmitter()` 无参数，创建初始为空的 asset/import ownership 记录。watch rebuild 复用以识别过期生成输出。只拥有自身生成文件与插入 import，不删除用户样式。需要旧输出清理的 rebuild 前不要重置。
+
+<a id="api-WxssEmitter-generate"></a>
+### generate
+
+```ts
+generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>
+```
+
+全部参数必填。规划目录内 stylex.wxss、相对 import 与 WXML/JS 存在时缺失的页面/组件 companion。首次 CSS 为空时不改变输出，后续只移除已记录所属过期 assets/imports，调用可选 sink.remove。已有用户 stylex.wxss 会报冲突，应该重命名而非覆盖。sink 错误 reject。
+
+```ts
+await emitter.generate(bundle, session.css(), {
+  emit: (fileName, source) => { bundle[fileName] = { type: 'asset', fileName, source } },
+  remove: fileName => { delete bundle[fileName] },
+})
+```
+
+这是可变内存 bundle 示例。真实适配器用宿主 API；weapp-vite 7.4 新增 key 需要文件输出兼容路径。输出不验证 WXSS 特性支持。
+
+<a id="api-WxssEmitter-clear"></a>
+### clear
+
+`clear(): void` 无参数，释放 ownership 记录，本身不删除文件/import。在输出清理之后最终 shutdown 使用，不在仍需旧 history 的活动 watch 中调用。
+
+## 公开 API 与实现细节
+
+只通过上述 package barrel/export map 入口导入。原生 backend loader、fingerprint helper、AST 分析类型与 Taro Webpack 实现没有公开子路径。签名中引用的类型仍可能是内部类型；通过公开函数推导精确类型，不导入实现文件。

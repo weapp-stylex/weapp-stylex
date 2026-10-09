@@ -1,0 +1,121 @@
+---
+title: "适配器与配置"
+description: "框架工厂、默认值、宿主注册与支持版本范围。"
+sidebar:
+  order: 33
+---
+
+每个适配器重新导出 [`StylexCompilerOptions`](/zh/api/compiler/#api-StylexCompilerOptions) 类型。配置默认 `{}`，因此使用 Babel 后端。这些是构建期入口，应用 runtime 仍从 `weapp-stylex` 导入。下方具名与默认导出指向同一函数。
+
+## 共用选项
+
+| 选项 | 默认值 | 契约 |
+| --- | --- | --- |
+| `backend` | `'babel'` | `'auto'` 为已验证子集使用 SWC；`'swc'` 在不支持或不可用时拒绝。 |
+| `importSources` | 四个官方/聚合来源 | 替换整个列表，增加 façade 时保留默认项。 |
+| `babel` | 无自定义选项 | 官方 StyleX plugin 的 Partial options，不是通用 Babel 配置。 |
+
+`WEAPP_STYLEX_BACKEND` 只是示例配置约定，不是库级环境变量 API。请显式传入 `backend`。构建固定配置与诊断详见[编译器参考](/zh/api/compiler/)。
+
+<a id="api-stylexCompiler"></a>
+## stylexCompiler
+
+```ts
+stylexCompiler(options: StylexCompilerOptions = {}): WeappCompilerPluginOption
+```
+
+是 `weapp-stylex/weapp-vite` 或 `@weapp-stylex/weapp-vite` 的具名与默认导出。返回原生 weapp-vite source compiler provider，注册到 `weapp.compilerPlugins`；宿主负责转换、watch 失效与 WXSS 输出。
+
+```ts
+import { defineConfig } from 'weapp-vite/config'
+import { stylexCompiler } from 'weapp-stylex/weapp-vite'
+export default defineConfig({
+  weapp: { srcRoot: 'src', compilerPlugins: [stylexCompiler()] },
+})
+```
+
+该入口处理原生 JS/TS 脚本；Vue SFC 预处理使用 `createStylex`。编译错误与生成文件名冲突通过宿主诊断报告。
+
+<a id="api-createStylex"></a>
+## createStylex
+
+```ts
+createStylex(options: StylexCompilerOptions = {}): { vitePlugins: ReturnType<typeof createVitePlugins>; compilerPlugin: WeappCompilerPluginOption }
+```
+
+是 weapp-vite 入口的具名导出，返回共享同一 `StylexSession` 的两部分：原始 SFC pre-plugin 与原生 compiler/output provider。**同一次调用的两个字段都要注册**，分开调用会破坏共享 metadata 与输出契约。
+
+```ts
+import { defineConfig } from 'weapp-vite/config'
+import { createStylex } from 'weapp-stylex/weapp-vite'
+const sx = createStylex({ backend: 'auto' })
+export default defineConfig({
+  plugins: sx.vitePlugins,
+  weapp: { srcRoot: 'src', compilerPlugins: [sx.compilerPlugin] },
+})
+```
+
+Vite 部分以 `sfcOnly: true` 与 `emitStyles: false` 在框架编译前转换原始 SFC script，原生部分负责 WXSS 输出。即使是 `auto`，原始 SFC 仍走 Babel，保护仅供模板使用的绑定。这是 Wevu/Vue SFC 接入，不是浏览器 CSS 注入器。
+
+<a id="api-stylexTaro"></a>
+## stylexTaro
+
+```ts
+stylexTaro(ctx: IPluginContext, options: StylexCompilerOptions = {}): void
+```
+
+是 `weapp-stylex/taro` 或 `@weapp-stylex/taro` 的具名与默认导出。Taro 提供必填 `ctx`，函数注册 Vite 与 Webpack hooks，不返回值。配置插件路径，不在应用代码中调用：
+
+```ts
+export default {
+  plugins: [[require.resolve('weapp-stylex/taro'), { backend: 'babel' }]],
+}
+```
+
+只支持 `TARO_ENV=weapp`，其他目标明确报配置错误。覆盖已验证 Vite/Webpack 5 宿主上的 Taro React/Vue 3。插件负责注入 Webpack session、稳定 loader 身份与缓存 metadata，无需手配 loader。`StylexWebpackPlugin` 不是公开包导出。
+
+<a id="api-stylexLoader"></a>
+## stylexLoader
+
+```ts
+stylexLoader(this: /* Webpack LoaderContext<StylexCompilerOptions> with stylexSession */, code: string): void
+```
+
+是 `weapp-stylex/taro/loader` 或 `@weapp-stylex/taro/loader` 的具名与默认导出。Webpack 提供必填 loader context 与源代码，Taro 插件必须注入 `stylexSession`。返回 `void`，异步代码、序列化 map 的解码与错误通过 `this.async()` callback 交给宿主。
+
+```ts
+const loaderPath = require.resolve('weapp-stylex/taro/loader')
+```
+
+路径供插件/宿主解析使用，不是独立手配 loader 的完整方案。缺少 context/session 时调用会失败；编译错误走 callback，依赖与警告走 Webpack API。context 类型本身未导出。
+
+<a id="api-stylexUniApp"></a>
+## stylexUniApp
+
+```ts
+stylexUniApp(options: StylexCompilerOptions = {}): /* platform guard + shared Vite plugin array */
+```
+
+是 `weapp-stylex/uni-app` 或 `@weapp-stylex/uni-app` 的具名与默认导出。返回插件数组，在 **`uni()` 之后展开**。它解析 DCloud 匹配的 `@vue/compiler-sfc`，不拿 workspace 的 Vue parser 替换。
+
+```ts
+import uniImport from '@dcloudio/vite-plugin-uni'
+import { defineConfig } from 'vite'
+import { stylexUniApp } from 'weapp-stylex/uni-app'
+const uni = (uniImport as unknown as { default?: typeof uniImport }).default ?? uniImport
+export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
+```
+
+只支持 `UNI_PLATFORM=mp-weixin`，config hook 拒绝其他平台。缺少或错配 DCloud parser 依赖会在 factory 初始化时失败。Vue 2 与 uni-app x 不在稳定契约内。
+
+## 宿主版本与验收边界
+
+框架 peer 在适配器中为 optional；应用安装实际使用的宿主。各版本范围有意保持独立。
+
+| 适配器 | 声明的框架 peer | 示例验证基线 |
+| --- | --- | --- |
+| weapp-vite | `weapp-vite >=7.4.0 <8` | weapp-vite/Wevu 7.4.0，Vite 8 |
+| Taro | `@tarojs/service >=4.3.0 <4.4.0`；`webpack ^5.91.0` | Taro 4.3.0，Vite 4.5.14 / Webpack 5.91.0 |
+| uni-app | `@dcloudio/vite-plugin-uni 3.0.0-alpha-5030120260930001` | 对应 vue3 channel，Vue 3.4.21 / Vite 5.2.8 |
+
+Node 需要满足 `^22.22.1 || >=24.11.0`，CI 覆盖 22.22.1 与 24.18.0。不要用全局 override 合并不兼容的宿主 Vite/Vue/Babel 版本。共享 StyleX 编译保持 Babel 7。静态构建、headless 交互与真实微信 IDE 证据属于不同检查，当前验收记录见[示例](/zh/examples/)。

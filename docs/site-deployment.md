@@ -116,3 +116,12 @@ corepack pnpm --filter docs exec wrangler rollback <previous-version-id>
 - 本地与线上各通过 69 项 HTTP/真实浏览器检查，包含中外时区与浏览器语言不一致、上海/乌鲁木齐、同为 UTC+8 的新加坡、UTC、手动选择优先、无效存储、storage/Intl 不可用、浏览器语言回退、无 JavaScript、query/hash、旧 MDX 入口、正文切换、后退、双语搜索、Markdown/AI、404。浏览器无页面错误。
 - 证据：`artifacts/docs-client-region-online-qa.json`、`artifacts/docs-client-region-online-qa.log`、`artifacts/docs-client-region-validation.json`、`artifacts/docs-client-region-deploy.log`；截图：`artifacts/docs-client-region-local-zh.png`、`artifacts/docs-client-region-online-zh.png`。
 - 本任务的 `sxgeo1009` Chrome 会话为 headless、in-memory，所有临时地区测试 context 均通过 `finally` 关闭；会话已关闭，`playwright-cli list` 确认无浏览器。本地 Wrangler 18971 端口已释放，未操作用户原有浏览器或保留临时页面。
+
+## 文档体系与站点界面（2026-10-10）
+
+- 文档增加到 29 对、58 个双语页面，保留原有 URL。五组共享导航同时驱动侧栏、面包屑和前后页；新增 API 总览、Runtime、类型、适配器、Compiler、六类场景教程及排障页。
+- API 覆盖检查读取构建后的公开声明：13 个入口、24 个声明条件、64 个公开符号和 54 个对象/会话成员，要求两种语言都有对应章节。官方不稳定、遗留和微信未验证能力各自标注，不把内部导出当作公共 API。
+- 首页和文章布局由项目维护，采用浅色底、绿色强调及静态 Phosphor SVG。主题支持浅色、深色和系统；搜索使用生产 Pagefind 索引，提供键盘快捷键、摘要、空结果及失败重试。Tabs、步骤、提示和 API 表同步进入 Markdown 与 AI 全文导出。
+- 本地 Node 24.18.0、Corepack pnpm 12.10.1 下，frozen install、文档 lint/build/typecheck/test/check:site 与仓库 lint/build/typecheck/test/test:deps 通过；Babel/auto integration、七产物构建及 examples/headless 验证通过，auto WXSS 与 Babel 完全一致。repo deps check、doctor、check --full 和 pnpm change check 通过，没有包发布意图。Node 22.22.1 与 24.18.0 的远端矩阵由提交后 CI 确认。
+- 单个 headless、in-memory 浏览器会话验证桌面和手机、浅色/深色/系统、复制、Tabs 键盘操作、搜索/空结果/失败重试、Escape 与焦点恢复、语言切换，以及 JavaScript 和存储不可用时的导航阅读。全部文档分别检查桌面与手机宽度，无页面横向溢出；API 稳定锚点保留顶栏偏移。
+- 浏览器验收面向文档站点。七份微信产物和原生/Wevu headless 检查不等同于七框架全部微信开发者工具真实交互验收；历史 IDE 报告的 partial/pending 状态继续保留。

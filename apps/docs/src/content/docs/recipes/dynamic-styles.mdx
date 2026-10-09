@@ -1,0 +1,127 @@
+---
+title: "Dynamic styles"
+description: "Drive a width from runtime input while keeping declarations compiled."
+sidebar:
+  order: 2
+---
+
+Use a style function when a value comes from runtime state. The function's parameter belongs in the declaration, while the actual value is supplied by the consumer. A slider-controlled meter demonstrates the complete path.
+
+## Declare the dynamic value
+
+```ts
+// styles.ts, next to the consumer
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  meter: (width: number) => ({
+    width,
+    height: 12,
+    backgroundColor: '#168958',
+    borderRadius: 6,
+  }),
+})
+```
+
+`styles.meter(80)` represents an `80px` width. Dynamic lengths follow the same units as static lengths. To accept `rpx`, change the parameter to `string` and supply a value such as `'160rpx'`.
+
+<Aside type="warning" title="Bind the inline style">
+
+Dynamic styles use inline CSS custom properties as well as generated classes. Binding only the class loses the runtime value. CSS custom properties must work in your chosen WeChat base library.
+
+</Aside>
+
+## Update from a slider
+
+<Tabs>
+  <Tab label="Native WeChat">
+
+```ts
+// index.ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+Page({
+  data: { width: 80, meter: stylex.attrs(styles.meter(80)) },
+  updateWidth(event: { detail: { value: number } }) {
+    const width = Math.max(40, Math.min(160, event.detail.value))
+    this.setData({ width, meter: stylex.attrs(styles.meter(width)) })
+  },
+})
+```
+
+```xml
+<slider min="40" max="160" value="{{width}}" bindchange="updateWidth" />
+<view class="{{meter.class}}" style="{{meter.style}}" />
+<text>{{width}}px</text>
+```
+
+  </Tab>
+  <Tab label="Taro React">
+
+```tsx
+import { Slider, Text, View } from '@tarojs/components'
+import { useState } from 'react'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+export default function Meter() {
+  const [width, setWidth] = useState(80)
+  return (
+    <View>
+      <Slider min={40} max={160} value={width} onChange={event => setWidth(event.detail.value)} />
+      <View {...stylex.props(styles.meter(width))} />
+      <Text>{width}px</Text>
+    </View>
+  )
+}
+```
+
+`props()` supplies both properties. An additional `style` prop placed after the spread would replace that style object, so preserve its dynamic custom properties when adding inline styles.
+
+  </Tab>
+  <Tab label="Vue 3">
+
+```vue
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+const width = ref(80)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+function updateWidth(event: { detail: { value: number } }) {
+  width.value = Math.max(40, Math.min(160, event.detail.value))
+}
+</script>
+
+<template>
+  <slider :min="40" :max="160" :value="width" @change="updateWidth" />
+  <view :class="meter.class" :style="meter.style" />
+  <text>{{ width }}px</text>
+</template>
+```
+
+Use this with Taro Vue 3 or uni-app Vue 3.
+
+  </Tab>
+  <Tab label="Wevu">
+
+Use the same SFC with the host's reactivity APIs:
+
+```ts
+import { computed, ref } from 'wevu'
+```
+
+The [Wevu adapter](/wevu/) must register the Vite and compiler fields of one shared factory.
+
+  </Tab>
+</Tabs>
+
+## Verify the data flow
+
+Move the slider from 80 to 120. Confirm the text changes, the node keeps a generated class, and its inline style contains the updated custom-property value. Inspect the resulting width in the target runtime; text alone only proves that state changed.
+
+Keep event input validation in the application. Avoid capturing runtime state inside a new `create()` call: declare a parameterized style once and invoke the compiled style function when state changes.
+
+For a small finite set of appearances, [conditional composition](/recipes/composition/) often describes the intent more clearly. For values shared across a design system, use [tokens and themes](/recipes/tokens-themes/).

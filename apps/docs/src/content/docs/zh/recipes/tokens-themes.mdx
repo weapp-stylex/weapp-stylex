@@ -1,0 +1,146 @@
+---
+title: "Token 与主题"
+description: "共享设计值，并在明确的组件根节点切换主题。"
+sidebar:
+  order: 3
+---
+
+Token 提供默认值，主题为同一组 token 提供另一组值。通过直接导入 `tokens.stylex.ts` 保持身份一致。普通样式模块可以使用 barrel，但 token 定义遵循编译期导入契约。
+
+## 创建三个模块
+
+```ts
+// tokens.stylex.ts
+import * as stylex from 'weapp-stylex'
+
+export const tokens = stylex.defineVars({
+  surface: '#ffffff',
+  text: '#17352a',
+  accent: '#168958',
+})
+```
+
+```ts
+// themes.ts
+import * as stylex from 'weapp-stylex'
+import { tokens } from './tokens.stylex'
+
+export const darkTheme = stylex.createTheme(tokens, {
+  surface: '#17352a',
+  text: '#f3f6f4',
+  accent: '#86e0b5',
+})
+```
+
+```ts
+// styles.ts
+import * as stylex from 'weapp-stylex'
+import { tokens } from './tokens.stylex'
+
+export const styles = stylex.create({
+  root: { padding: 16, backgroundColor: tokens.surface, color: tokens.text },
+  accent: { color: tokens.accent },
+})
+```
+
+`styles.ts` 和 `themes.ts` 都直接导入 token 文件。编译器通过宿主解析对应物理模块；即使 Babel 移除了 JavaScript token 导入，仍保留 CSS 和 watch 依赖。
+
+## 切换主题
+
+本例将这些模块放在消费者旁边。
+
+<Tabs>
+  <Tab label="原生微信">
+
+```ts
+// index.ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+Page({
+  data: { dark: false, root: stylex.attrs(styles.root) },
+  toggleTheme() {
+    const dark = !this.data.dark
+    this.setData({ dark, root: stylex.attrs(styles.root, dark && darkTheme) })
+  },
+})
+```
+
+```xml
+<view class="{{root.class}}" style="{{root.style}}">
+  <text>{{dark ? 'Dark theme' : 'Default theme'}}</text>
+  <button bindtap="toggleTheme">Switch theme</button>
+</view>
+```
+
+  </Tab>
+  <Tab label="Taro React">
+
+```tsx
+import { Button, Text, View } from '@tarojs/components'
+import { useState } from 'react'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+export default function ThemePreview() {
+  const [dark, setDark] = useState(false)
+  return (
+    <View {...stylex.props(styles.root, dark && darkTheme)}>
+      <Text>{dark ? 'Dark theme' : 'Default theme'}</Text>
+      <Button onClick={() => setDark(!dark)}>Switch theme</Button>
+    </View>
+  )
+}
+```
+
+  </Tab>
+  <Tab label="Vue 3">
+
+```vue
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+const dark = ref(false)
+const root = computed(() => stylex.attrs(styles.root, dark.value && darkTheme))
+</script>
+
+<template>
+  <view :class="root.class" :style="root.style">
+    <text>{{ dark ? 'Dark theme' : 'Default theme' }}</text>
+    <button @tap="dark = !dark">Switch theme</button>
+  </view>
+</template>
+```
+
+  </Tab>
+  <Tab label="Wevu">
+
+沿用相同 SFC，从 `wevu` 导入 `computed` 与 `ref`：
+
+```ts
+import { computed, ref } from 'wevu'
+```
+
+  </Tab>
+</Tabs>
+
+## 处理组件样式隔离
+
+编译器把默认变量选择器从 `:root` 改为 `page`，保留主题 class 选择器。隔离组件应通过应用状态接收主题选择，并把自己计算的 `attrs(styles.root, dark && darkTheme)` 结果绑定到根节点，不能依赖页面 class 穿透样式隔离。[组件教程](/zh/recipes/components-subpackages/)提供原生 property observer 示例。
+
+## 验证默认值和切换
+
+检查 `stylex.wxss` 中 `page` 下的默认变量与独立的主题选择器。从默认主题切换到深色，再切回默认值。检查实际背景和文字颜色，并在隔离组件中重复验证。
+
+<Aside type="note" title="编译支持与运行支持">
+
+`backend: 'auto'` 中主题模块仍使用官方 Babel。CSS 自定义属性需要所选微信基础库支持。[2026-10-09 IDE 记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/ide-validation-2026-10-09.md)保留各产物分别验收的结果和仍待完成的完整 suite，不代表每种设备或基础库版本都已验收。
+
+</Aside>
+
+API 契约参见 [`defineVars()` 与 `createTheme()`](/zh/api/runtime/)，缺失变量时按[排障步骤](/zh/troubleshooting/)检查。

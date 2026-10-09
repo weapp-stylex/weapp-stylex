@@ -1,0 +1,76 @@
+---
+title: "Shared modules"
+description: "Reuse compiled declarations through ordinary exports and the host module graph."
+sidebar:
+  order: 4
+---
+
+Ordinary style declarations may live in any supported TS/JS module. They do not need a `.stylex.ts` suffix. Keep the reusable declaration separate from page state, and let each consumer compose it with official runtime APIs.
+
+## Export an ordinary style mapping
+
+```ts
+// src/styles/card.ts
+import * as stylex from 'weapp-stylex'
+
+export const cardStyles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: '#f3f6f4' },
+  active: { opacity: 0.6 },
+})
+export default cardStyles
+```
+
+An ordinary barrel can expose both exports:
+
+```ts
+// src/styles/index.ts
+export { default, cardStyles } from './card'
+```
+
+The default export here is **your style module's export**. The `weapp-stylex` runtime root itself has no default export; import it as a namespace or use named imports.
+
+## Import from two consumers
+
+```ts
+// src/pages/index/index.ts
+import * as stylex from 'weapp-stylex'
+import sharedStyles from '../../styles'
+
+Page({ data: { card: stylex.attrs(sharedStyles.root) } })
+```
+
+```ts
+// src/subpackage/detail/index.ts
+import * as stylex from 'weapp-stylex'
+import { cardStyles } from '../../styles'
+
+Page({ data: { card: stylex.attrs(cardStyles.root, cardStyles.active) } })
+```
+
+Both pages bind the composed result:
+
+```xml
+<view class="{{card.class}}" style="{{card.style}}">Shared card</view>
+```
+
+For React, spread `stylex.props(cardStyles.root)` on `View`. For Vue/Wevu, compute `stylex.attrs(...)` with the host's `computed()` and bind its class/style explicitly. See [conditional composition](/recipes/composition/) for complete reactive examples.
+
+## Use aliases and workspace sources
+
+Configure aliases with your framework's resolver, then import the alias normally. A workspace package must expose source that the host actually resolves and transforms. Declaring a package dependency or adding a TypeScript `paths` entry does not by itself include a module in the production graph.
+
+The shared compiler canonicalizes physical module identities after host resolution, including symlinks. Register one session per host build; duplicate compiler instances can produce separate rule graphs and ownership state. [Adapter registration](/api/adapters/) shows the correct host hooks.
+
+<Aside type="warning" title="Token imports follow a different contract">
+
+Import token definitions directly from `tokens.stylex.ts` in style and theme modules. Do not re-export tokens through this ordinary-style barrel. See [tokens and themes](/recipes/tokens-themes/).
+
+</Aside>
+
+## Verify graph behavior
+
+Build both consumers and confirm their class bindings and WXSS imports. Rules are aggregated and deduplicated before the generated stylesheet is written to each required style directory; this is not a separate stylesheet per source module.
+
+During watch, change a shared declaration and inspect both pages. Removing one consumer must retain styles needed by the other; removing all reachable imports should remove stale rules. These graph cases are covered by the repository's [integration tests](/examples/); your framework's own watcher must still notify it of source changes.
+
+Read [compiler architecture](/architecture/) for metadata lifetime or [components and subpackages](/recipes/components-subpackages/) for entry-point output.

@@ -1,0 +1,314 @@
+---
+title: "Runtime API"
+description: "官方 StyleX 函数、对象成员与微信支持边界。"
+sidebar:
+  order: 31
+---
+
+通过 namespace 或具名导入使用 `weapp-stylex`、`weapp-stylex/core` 或 `@weapp-stylex/core`，runtime 没有默认导出。这里保留官方 StyleX 0.19.1 API。下面的泛型签名简写了内部映射约束；优先让输入推断结果，不要手工拼装编译对象。
+
+```ts
+import * as stylex from 'weapp-stylex'
+```
+
+<Aside type="note" title="先编译，再运行时组合">
+
+`create`、变量、主题、常量及 CSS helper 需要配置好的编译器处理。未经转换直接执行会抛出 `Unexpected 'stylex.…' call at runtime`。`attrs` 与 `props` 用于组合转换结果，排查方法见 [FAQ](/zh/faq/)。
+
+</Aside>
+
+<a id="api-create"></a>
+## create
+
+```ts
+create<const S extends /* style namespaces */>(styles: S): MapNamespaces<S>
+```
+
+`styles` 必填，是具名静态样式或返回样式对象的函数集合，没有参数默认值。结果保留 namespace 名称；动态函数返回编译样式与 inline style 的二元组。定义必须能被当前编译器静态分析；数值长度保留 px 语义。
+
+```ts
+const styles = stylex.create({
+  base: { padding: 16, color: '#263544' },
+  active: { color: '#087f5b' },
+  width: (value: number) => ({ width: value }),
+})
+const binding = stylex.attrs(styles.base, enabled && styles.active, styles.width(120))
+```
+
+`enabled` 表示应用状态。后传入的样式覆盖同属性；动态参数在组合时求值，样式函数本身在模块顶层定义。
+
+<a id="api-attrs"></a>
+## attrs
+
+```ts
+attrs(...styles): Readonly<{ class?: string; 'data-style-src'?: string; style?: string }>
+```
+
+接收任意数量的编译样式、动态二元组、嵌套 readonly 数组与 `null`/`undefined`/boolean 条件，允许空参数。返回可选的 `class` 与字符串 `style`，以及官方可选调试元数据。原生 WXML 和 Vue/Wevu 同时绑定两个字段；不能传原始 CSS 对象。
+
+```ts
+const binding = stylex.attrs(styles.base, [condition && styles.active], styles.width(120))
+// Page data: { binding }; WXML：
+// <view class="{{binding.class}}" style="{{binding.style}}" />
+// Vue/Wevu：<view :class="binding.class" :style="binding.style" />
+```
+
+<a id="api-props"></a>
+## props
+
+```ts
+props(...styles): Readonly<{ className?: string; 'data-style-src'?: string; style?: Readonly<Record<string, string | number>> }>
+```
+
+参数规则与 `attrs` 相同，允许空列表和嵌套条件。结果使用 `className` 与 inline style 对象。Taro React 将整个结果展开到 `View`；只取 `className` 会丢失动态 inline 值。
+
+```tsx
+<View {...stylex.props(styles.base, styles.width(120))} />
+```
+
+<a id="api-defineVars"></a>
+## defineVars
+
+```ts
+defineVars<DefaultTokens, ID extends symbol = symbol>(tokens: DefaultTokens): VarGroup</* flattened token values */, ID>
+```
+
+`tokens` 必填且可静态分析。值可为字符串、数字、变量引用、typed wrapper、受支持函数，或带 at-rule 分支的条件默认值。返回带不透明身份的变量引用组，不是字面量默认值。在 `.stylex.*` 文件（通常为 `tokens.stylex.ts`）定义并直接导入，让宿主 resolver 确定身份。
+
+```ts
+// tokens.stylex.ts
+export const tokens = stylex.defineVars({ ink: '#263544', gap: '16rpx' })
+// styles.ts: import { tokens } from './tokens.stylex'
+const styles = stylex.create({ base: { color: tokens.ink, gap: tokens.gap } })
+```
+
+编译器将默认 `:root` 改成 `page`，不会取消微信组件隔离。普通样式对象支持重新导出；跨文件 tokens 解析要求直接 token import。
+
+<a id="api-createTheme"></a>
+## createTheme
+
+```ts
+createTheme<TVars extends VarGroup<{}>, ThemeID extends symbol = symbol>(baseTokens: TVars, overrides: /* typed partial overrides */): Theme<TVars, ThemeID>
+```
+
+两个参数都必填。`baseTokens` 来自 `defineVars`；覆盖项使用对应 token 名与值类型，未覆盖的键可以省略。返回可传给 `attrs`/`props` 的编译主题。将主题应用到变量能传递至目标元素的祖先，并考虑微信样式隔离。
+
+```ts
+import { tokens } from './tokens.stylex'
+const dark = stylex.createTheme(tokens, { ink: '#e7edf3' })
+const themed = stylex.attrs(dark, styles.base)
+```
+
+未知键、不兼容值及无法解析的 token 模块会产生类型或编译错误。主题走 Babel，strict SWC 拒绝。
+
+<a id="api-defineConsts"></a>
+## defineConsts
+
+```ts
+defineConsts<T extends Record<string, number | string>>(tokens: T): T
+```
+
+必填参数是字符串/数字组成的扁平对象；声明返回相同键值形状。编译器在构建期解析常量，不生成可主题切换的变量。跨文件常量使用直接导入的 `.stylex.*` 模块，没有参数默认值。
+
+```ts
+// constants.stylex.ts
+export const sizes = stylex.defineConsts({ gutter: '16rpx' })
+```
+
+需要主题切换时用 `defineVars`。常量需要 Babel，`auto` 会选择 Babel，strict SWC 拒绝。
+
+<a id="api-keyframes"></a>
+## keyframes
+
+```ts
+keyframes(keyframes: Keyframes): string
+```
+
+必填参数将 `from`、`to` 或百分比帧映射到 CSS 属性，返回用于 `animationName` 的生成名称。编译器输出规则；属性、动画表现与目标微信基础库仍需分别验证。
+
+```ts
+const fade = stylex.keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
+const motion = stylex.create({ enter: { animationName: fade, animationDuration: '200ms' } })
+```
+
+编译测试覆盖该 helper，不等于所有动画属性都被 WXSS 支持。
+
+<a id="api-firstThatWorks"></a>
+## firstThatWorks
+
+```ts
+firstThatWorks<T extends string | number>(...values: ReadonlyArray<T>): ReadonlyArray<T>
+```
+
+按优先级从高到低列出候选值；声明接收可变参数，没有隐式 fallback。在编译期样式定义中使用，编译器输出 CSS fallback 声明，它不是 JavaScript 能力探测器。
+
+```ts
+const layout = stylex.create({ root: { width: stylex.firstThatWorks('fit-content', '100%') } })
+```
+
+检查输出 WXSS 与目标端表现；浏览器接受某个值不能证明微信同样支持。
+
+<a id="api-types"></a>
+<a id="api-types-angle"></a>
+<a id="api-types-color"></a>
+<a id="api-types-url"></a>
+<a id="api-types-image"></a>
+<a id="api-types-integer"></a>
+<a id="api-types-lengthPercentage"></a>
+<a id="api-types-length"></a>
+<a id="api-types-percentage"></a>
+<a id="api-types-number"></a>
+<a id="api-types-resolution"></a>
+<a id="api-types-time"></a>
+<a id="api-types-transformFunction"></a>
+<a id="api-types-transformList"></a>
+## types
+
+`types` 提供编译期 typed variable 构造器，通常放在 `defineVars` 内。每项接收一个必填值，没有运行时参数默认值，返回对应 `Types` wrapper。表中 `ValueWithDefault<T>` 表示 `T` 或递归条件对象（必须有 `default`），它不是包的独立导出。泛型 `T` 默认取表中接受的值类型。
+
+| 成员 | 签名 | 含义 |
+| --- | --- | --- |
+| `types.angle` | `<T extends string \| 0 = string \| 0>(value: ValueWithDefault<T>): Types.Angle<T>` | 角度 |
+| `types.color` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Color<T>` | 颜色 |
+| `types.url` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Url<T>` | URL |
+| `types.image` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Image<T>` | 图像 |
+| `types.integer` | `<T extends number = number>(value: ValueWithDefault<T>): Types.Integer<T>` | 整数 |
+| `types.lengthPercentage` | `<T extends number \| string = number \| string>(value: ValueWithDefault<T>): Types.LengthPercentage<T>` | 长度/百分比 |
+| `types.length` | `<T extends number \| string = number \| string>(value: ValueWithDefault<T>): Types.Length<T>` | 长度 |
+| `types.percentage` | `<T extends number \| string = number \| string>(value: ValueWithDefault<T>): Types.Percentage<T>` | 百分比 |
+| `types.number` | `<T extends number = number>(value: ValueWithDefault<T>): Types.Num<T>` | 数值 |
+| `types.resolution` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Resolution<T>` | 分辨率 |
+| `types.time` | `<T extends string \| 0 = string \| 0>(value: ValueWithDefault<T>): Types.Time<T>` | 时间 |
+| `types.transformFunction` | `<T extends string = string>(value: ValueWithDefault<T>): Types.TransformFunction<T>` | 单个变换函数 |
+| `types.transformList` | `<T extends string = string>(value: ValueWithDefault<T>): Types.TransformList<T>` | 变换列表 |
+
+```ts
+// tokens.stylex.ts
+export const typed = stylex.defineVars({ ink: stylex.types.color('#263544') })
+```
+
+<Aside type="warning" title="不承诺微信 typed CSS 注册能力">
+
+官方 typed variables 可能涉及 CSS 注册语义，项目尚未建立这类语义的通用 WXSS 支持结论。常规场景先用未包装的 `defineVars`，采用 typed 输出前单独验证。
+
+</Aside>
+
+<a id="api-defineMarker"></a>
+## defineMarker
+
+```ts
+defineMarker(): /* compiled namespace with opaque marker: symbol */
+```
+
+无参数，产生带不透明 symbol 的官方编译 marker，供 `when` 与样式组合使用。通过 `attrs`/`props` 将 marker 放到参与关系的元素。它属于浏览器选择器功能，微信端尚未验证；这里描述官方导出，不提供 WXSS 可用承诺。
+
+<a id="api-defaultMarker"></a>
+## defaultMarker
+
+```ts
+defaultMarker(): /* compiled namespace with marker: 'default-marker' */
+```
+
+无参数，返回官方默认 marker namespace；`when` 没有传 custom marker 时可使用默认 marker。它同样需要编译，微信选择器表现尚未验证；小程序常规流程可用显式应用状态选择样式变体。
+
+<a id="api-when"></a>
+<a id="api-when-ancestor"></a>
+<a id="api-when-descendant"></a>
+<a id="api-when-siblingBefore"></a>
+<a id="api-when-siblingAfter"></a>
+<a id="api-when-anySibling"></a>
+## when
+
+五个方法的官方签名形状均为 `when.method(pseudo?, customMarker?): string`，返回带模板字面量类型的选择器。`pseudo` 为 `:${string}` 或 `[${string}]`；`customMarker` 是 `defineMarker` 返回的编译 namespace。声明中两个参数都可选，项目没有另行定义默认 pseudo。返回字符串可用作官方 StyleX 条件属性键。
+
+| 方法 | 关系 |
+| --- | --- |
+| `when.ancestor` | 祖先 |
+| `when.descendant` | 后代 |
+| `when.siblingBefore` | 前方兄弟 |
+| `when.siblingAfter` | 后方兄弟 |
+| `when.anySibling` | 任意兄弟 |
+
+```ts
+// 仅展示官方形状，不是已验证的微信选择器 recipe。
+const marker = stylex.defineMarker()
+const related = stylex.create({ text: { color: { default: '#263544', [stylex.when.ancestor(':hover', marker)]: '#087f5b' } } })
+```
+
+这些方法保留官方导出，但生成的关系选择器与伪类在微信端尚未验证。试用前查阅[官方 API 参考](https://stylexjs.com/docs/api/)。
+
+<a id="api-env"></a>
+## env
+
+```ts
+env: /* registered official env type, otherwise Readonly<Record<string, unknown>> */
+```
+
+这是导出对象，不是函数。已安装 runtime 将其初始化为冻结空对象；官方类型可通过上游注册机制细化。项目没有预设字段或运行时默认值，它不是 `process.env`，适配层不配置环境 schema。读取字段前查看上游编译配置；项目尚未验证这条微信能力路径。
+
+<a id="api-positionTry"></a>
+## positionTry
+
+```ts
+positionTry(positionTry: PositionTry): string
+```
+
+必填参数是官方 anchor positioning fallback 描述，返回生成名称。形状示例：`stylex.positionTry({ positionArea: 'top' })`。`PositionTry` 描述支持定位、inset、margin、尺寸与自身对齐字段，需要编译。WXSS 的 CSS anchor positioning 尚未验证，不能将它作为已支持的微信布局方案。
+
+<a id="api-viewTransitionClass"></a>
+## viewTransitionClass
+
+```ts
+viewTransitionClass(styles: { readonly group?: CSSProperties; readonly imagePair?: CSSProperties; readonly old?: CSSProperties; readonly new?: CSSProperties }): string
+```
+
+参数为官方 view-transition 样式描述；四个字段都可选，参数对象本身必填。返回生成 class 标识符。形状示例：`stylex.viewTransitionClass({ old: { opacity: 0 } })`，需要编译。上游描述类型不是根入口独立类型导出，可用 `Parameters<typeof stylex.viewTransitionClass>[0]`。微信端尚未验证浏览器 view transitions。
+
+<a id="api-unstable_conditional"></a>
+## unstable_conditional
+
+```ts
+unstable_conditional<T extends { readonly default: unknown; readonly [key: string]: unknown }>(value: T): T
+```
+
+必填参数是含 `default` 的条件对象，返回相同推断形状。官方用途是区分嵌套 token 内的条件值，例如 `{ default: 'white', '@media (...)': 'black' }`。仅用于编译期，属于实验 API，不是项目稳定契约；不承诺嵌套 token 流程或这些条件在微信中可用。
+
+<a id="api-unstable_defineVarsNested"></a>
+## unstable_defineVarsNested
+
+```ts
+unstable_defineVarsNested<T extends /* nested vars object */>(tokens: T): T
+```
+
+必填参数是官方嵌套变量对象：叶子为字符串、typed string/number wrapper 或更深对象。声明保留输入结构，编译器将叶子替换为变量引用。形状示例：`{ colors: { ink: '#263544' } }`。只用于编译期，属于实验 API，稳定小程序验收未验证；稳定路径使用扁平 `defineVars`。
+
+<a id="api-unstable_defineConstsNested"></a>
+## unstable_defineConstsNested
+
+```ts
+unstable_defineConstsNested<T extends /* nested string/number constants */>(tokens: T): T
+```
+
+必填参数由嵌套字符串/数字叶子组成，声明返回原形状，例如 `stylex.unstable_defineConstsNested({ spacing: { small: '8rpx' } })`。在编译期解析，属于实验 API，不提供稳定微信兼容承诺；常规文档 recipe 使用扁平 `defineConsts`。
+
+<a id="api-unstable_createThemeNested"></a>
+## unstable_createThemeNested
+
+```ts
+unstable_createThemeNested(baseTokens: /* nested string references */, overrides: /* nested vars values */): CompiledStyles
+```
+
+两个参数都必填，分别是嵌套变量引用与覆盖值，返回扁平 `CompiledStyles` 主题。公开声明不保留稳定 `createTheme` 的 `Theme<TVars>` 品牌关联。只用于编译期，属于实验 API，微信端尚未验证；不能推断稳定 token resolver 支持所有嵌套形状。
+
+<a id="api-legacyMerge"></a>
+## legacyMerge
+
+```ts
+legacyMerge(...styles: ReadonlyArray<StyleXArray<null | undefined | CompiledStyles | boolean>>): string
+```
+
+官方声明明确标注 **DO NOT USE. Legacy export for Meta**。对象还有遗留函数属性，不属于推荐组合接口。签名返回 class 字符串，没有项目默认值，不能承载完整动态 inline-style 绑定契约。请使用 `attrs` 或 `props`，此处不提供应用 recipe 或微信支持承诺。
+
+## 函数类型别名
+
+除 `attrs` 与 `props` 外，上面每个具名 runtime 值都提供等于其 `typeof` 的同名导出类型。比如 `import type { create, types, when } from 'weapp-stylex'` 导入函数/对象类型，不是它们生成的样式类型。组件的样式输入使用 [`StyleXStyles`](/zh/api/types/#api-StyleXStyles)。legacy 与 unstable 别名遵循对应值的相同边界。

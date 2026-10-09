@@ -1,0 +1,160 @@
+---
+title: "Conditional composition"
+description: "Compose base, selected and disabled styles with application state."
+sidebar:
+  order: 1
+---
+
+Use separate style entries for the base appearance and each state. Later active entries override earlier entries for the same property; false conditions contribute no styles. This recipe makes a card selectable while preserving an explicit disabled appearance.
+
+## Declare the states
+
+```ts
+// styles.ts
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  card: {
+    padding: 16,
+    borderRadius: '12rpx',
+    backgroundColor: '#f3f6f4',
+    color: '#17352a',
+    opacity: 1,
+  },
+  selected: { backgroundColor: '#d8f4e4' },
+  disabled: { opacity: 0.45 },
+})
+```
+
+Numeric padding is `16px`; the radius explicitly uses `rpx`. Keep the declaration at module scope. State decides which compiled entries are passed to the runtime, rather than creating a new declaration inside an event handler.
+
+## Connect state to the rendered node
+
+The examples place `styles.ts` next to the consumer; adjust only the import path for your directory layout.
+
+<Tabs>
+  <Tab label="Native WeChat">
+
+```ts
+// index.ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+Page({
+  data: {
+    selected: false,
+    disabled: false,
+    card: stylex.attrs(styles.card),
+  },
+  toggle() {
+    if (this.data.disabled) return
+    const selected = !this.data.selected
+    this.setData({
+      selected,
+      card: stylex.attrs(styles.card, selected && styles.selected),
+    })
+  },
+  toggleDisabled() {
+    const disabled = !this.data.disabled
+    this.setData({
+      disabled,
+      card: stylex.attrs(
+        styles.card,
+        this.data.selected && styles.selected,
+        disabled && styles.disabled,
+      ),
+    })
+  },
+})
+```
+
+```xml
+<!-- index.wxml -->
+<view class="{{card.class}}" style="{{card.style}}" bindtap="toggle">
+  <text>{{selected ? 'Selected' : 'Select this card'}}</text>
+</view>
+<button bindtap="toggleDisabled">Toggle disabled state</button>
+```
+
+`setData()` updates state and the composed strings together. `data` stores the result of `attrs()`, not the `create()` mapping.
+
+  </Tab>
+  <Tab label="Taro React">
+
+```tsx
+import { Button, Text, View } from '@tarojs/components'
+import { useState } from 'react'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+export default function Card() {
+  const [selected, setSelected] = useState(false)
+  const [disabled, setDisabled] = useState(false)
+  return (
+    <View>
+      <View
+        {...stylex.props(styles.card, selected && styles.selected, disabled && styles.disabled)}
+        onClick={() => { if (!disabled) setSelected(!selected) }}
+      >
+        <Text>{selected ? 'Selected' : 'Select this card'}</Text>
+      </View>
+      <Button onClick={() => setDisabled(!disabled)}>Toggle disabled state</Button>
+    </View>
+  )
+}
+```
+
+`props()` supplies React's `className` and `style` together. Recompute during rendering instead of saving a compiled mapping in state.
+
+  </Tab>
+  <Tab label="Vue 3">
+
+```vue
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+const selected = ref(false)
+const disabled = ref(false)
+const card = computed(() => stylex.attrs(
+  styles.card,
+  selected.value && styles.selected,
+  disabled.value && styles.disabled,
+))
+function toggle() {
+  if (!disabled.value) selected.value = !selected.value
+}
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style" @tap="toggle">
+    <text>{{ selected ? 'Selected' : 'Select this card' }}</text>
+  </view>
+  <button @tap="disabled = !disabled">Toggle disabled state</button>
+</template>
+```
+
+This applies to Taro Vue 3 and uni-app Vue 3 after their adapter is registered.
+
+  </Tab>
+  <Tab label="Wevu">
+
+Use the Vue example with this reactivity import:
+
+```ts
+import { computed, ref } from 'wevu'
+```
+
+Register both fields of the same `createStylex()` factory as shown in the [Wevu guide](/wevu/). The explicit class/style bindings remain the same.
+
+  </Tab>
+</Tabs>
+
+## Verify composition
+
+Select the card, disable it, and enable it again. Selection should change the background, disabling should change opacity and block selection, and enabling should preserve the previous selection. Inspect the node's class after each interaction.
+
+To override a property, place the overriding entry later. Use `null` in a later declaration to reset a StyleX property when that is the intended official composition behavior. Class string concatenation cannot replace StyleX's property-aware merge.
+
+Continue with [dynamic values](/recipes/dynamic-styles/) or read [`attrs()` and `props()`](/api/runtime/).

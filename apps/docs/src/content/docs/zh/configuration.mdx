@@ -20,7 +20,14 @@ sidebar:
 
 ## Runtime
 
-`@weapp-stylex/core` 重新导出 `@stylexjs/stylex`，包含 `create`、`attrs`、`props`、`defineVars`、`createTheme` 与类型。默认也识别直接导入 `@stylexjs/stylex` 的写法。
+`weapp-stylex`、`weapp-stylex/core` 和 `@weapp-stylex/core` 转导出 `@stylexjs/stylex` 的官方具名 runtime API 与类型。根/core runtime 没有默认导出，使用 namespace 或具名导入；根入口不会加载构建适配器。默认也识别直接导入 `@stylexjs/stylex`。
+
+```ts
+import * as stylex from 'weapp-stylex'
+// 或 import { create, attrs, props } from 'weapp-stylex'
+```
+
+完整导出见 [runtime 参考](/zh/api/runtime/)，样式契约见[类型参考](/zh/api/types/)。原生/Vue 使用 `attrs()` 的 class/style 字符串，Taro React 在 `View` 展开 `props()`。
 
 ## 适配器入口
 
@@ -30,6 +37,24 @@ sidebar:
 | weapp-vite | `createStylex(options?)` | 同时注册 `vitePlugins` 与 `compilerPlugin` |
 | Taro | 默认导出 | Taro `plugins` 配置 |
 | uni-app | `stylexUniApp(options?)` | 在 `uni()` 后展开返回的插件 |
+
+完整签名与注册示例见[适配器参考](/zh/api/adapters/)。
+
+## 工具链版本矩阵
+
+以下是仓库示例版本，不代表同一主版本内的每个发布都已验证。适配器 peer 声明约束安装，真实运行验收有独立的[日期记录](/zh/examples/)。
+
+| 宿主 | 示例基线 | Builder |
+| --- | --- | --- |
+| 原生微信 | weapp-vite 7.4.0 | Vite 8.3.4 |
+| Wevu | wevu 7.4.0 + weapp-vite 7.4.0 | Vite 8.3.4 |
+| Taro React | Taro 4.3.0 + React 18.3.1 | Vite 4.5.14 或 Webpack 5.91.0 |
+| Taro Vue 3 | Taro 4.3.0 + Vue 3.5.43 | Vite 4.5.14 或 Webpack 5.91.0 |
+| uni-app Vue 3 | DCloud `3.0.0-alpha-5030120260930001` + Vue 3.4.21 | Vite 5.2.8 |
+
+weapp-vite 适配器声明 `>=7.4.0 <8`；Taro 适配器声明 `@tarojs/service >=4.3.0 <4.4.0` 和 `webpack ^5.91.0`；uni-app 适配器固定为上面的 DCloud 插件通道。Optional peer 表示不会自动安装未使用的宿主，不表示可以省略所选宿主。
+
+官方 StyleX runtime/plugin 为 0.19.1。共享编译器使用 Babel 7，weapp-vite 保留自身 Babel 8。不兼容的 Vite/Vue/Babel 分组分开管理，不要用全局 override 统一。DCloud runtime/plugin 包需匹配同一通道及其 SFC parser。
 
 ## 通用选项
 
@@ -55,6 +80,8 @@ const stylex = createStylex({
 
 适配器作者可以使用 `StylexSession`、`createVitePlugins`、`WxssEmitter`、`processRules` 与 `sourceId`。应用项目优先使用框架适配器。宿主和输出契约参见[架构指南](/zh/architecture/)与[源码](https://github.com/weapp-stylex/weapp-stylex/tree/main/packages/compiler/src)。
 
+[编译器参考](/zh/api/compiler/)介绍公开类、宿主类型与生命周期归属；[共享模块教程](/zh/recipes/shared-modules/)展示无需直接管理 session 的应用写法。
+
 ## 编译后端
 
 默认 `backend: 'babel'` 使用官方 Babel 7，同时启用 AST 复用与 session 缓存。`backend: 'auto'` 为已验证的写法选择 SWC，每个 session 对同一种回退原因只提示一次。`backend: 'swc'` 强制使用 SWC，不支持或不可用时明确报错。
@@ -72,3 +99,5 @@ SWC 覆盖静态样式、简单的局部动态样式、条件合并、常规 sho
 `@stylexswc/rs-compiler@0.19.0` 是按需加载的可选原生依赖，不需要安装 Rust。省略可选依赖时 Babel 仍可使用；`auto` 提示并使用 Babel，`swc` 给出重装建议。默认 Babel 与 runtime 入口不会加载原生模块。语法错误、解析失败及未知编译错误会正常报告。
 
 宿主作者可提供 `TransformHost.diagnostic(diagnostic)`，接收包含文件、可确定位置和修复建议的结构化诊断。Vite、weapp-vite 与 Webpack 适配器通过原生诊断接口展示；SFC 位置指向 `.vue` 原文件。参见[性能与边界](/zh/performance/)。
+
+构建失败时，先按[问题排查](/zh/troubleshooting/)定位原因，再调整后端或依赖约束。[迁移教程](/zh/recipes/migration/)介绍先建立基线的接入流程。

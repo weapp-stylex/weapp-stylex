@@ -7,7 +7,9 @@ sidebar:
 
 ## 定义 token 与主题
 
-遵循官方 `tokens.stylex.ts` 约定。定义、引用与 `createTheme()` 都应直接导入 token 文件，不要通过 barrel 转导出 token。
+遵循官方命名约定，在 `tokens.stylex.ts` 中定义 token。样式模块与 `createTheme()` 模块直接导入这个文件，不要通过 barrel 转导出 token。
+
+[Token/主题教程](/zh/recipes/tokens-themes/)提供完整原生、React、Vue 与 Wevu 主题切换。API 契约见 [`defineVars()` 与 `createTheme()`](/zh/api/runtime/)。
 
 ```ts
 // tokens.stylex.ts
@@ -61,8 +63,12 @@ WXSS 中默认 token 的 `:root` 选择器映射为 `page`，主题 class 选择
 
 `styles.meter(80)` 等样式函数通过官方 runtime 生成 class 和行内 CSS 自定义属性。因此需要同时绑定结果里的 style 字符串与 class；React 的 `props()` 同时提供两者。
 
+输入变化时重新计算组合结果。[动态样式教程](/zh/recipes/dynamic-styles/)展示滑块值如何依次经过状态、绑定与实际宽度验收。
+
 ## 跨模块身份与 watch
 
 宿主 resolver 预解析别名和 workspace 路径，官方编译器使用规范化模块身份，使定义端与消费者生成一致的变量哈希。Babel 移除 JavaScript token 导入后，默认变量 CSS 仍受依赖记录管理。token 变化会使消费者失效重编译。
 
 CSS 自定义属性仍依赖所选微信基础库的支持。请用实际 AppID 和基础库执行 IDE suite，验证主题与动态值。
+
+即使启用 `backend: 'auto'`，原始 SFC 脚本和主题模块仍使用官方 Babel。编译支持不能代替运行兼容性验收。按[示例验收](/zh/examples/)执行，并保留其链接的 IDE 记录日期与范围。默认值缺失或隔离组件异常时，按对应[排障步骤](/zh/troubleshooting/)检查。

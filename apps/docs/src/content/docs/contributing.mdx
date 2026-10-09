@@ -7,23 +7,29 @@ sidebar:
 
 ## Workspace workflow
 
-This repository uses repoctl `5.9.0`, pnpm `12.10.1` and Node.js `^22.22.1 || >=24.11.0`. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
+This repository uses repoctl `5.10.0`, pnpm `12.10.1` and Node.js `^22.22.1 || >=24.11.0`. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
 
 Run the full [validation workflow](/examples/) before submitting compiler changes. Use `corepack pnpm change` for publishable package changes; documentation changes do not publish npm packages.
 
 ## Documentation source
 
-The site at [stylex.weapp.dev](https://stylex.weapp.dev/) is generated from the default repoctl Nimbus template, using Nimbus `0.17.0` and Astro `7.3.8`. Content lives in `apps/docs/src/content/docs/`. English pages use root filenames; matching Chinese pages use `zh/`.
+The site at [stylex.weapp.dev](https://stylex.weapp.dev/) started from the repoctl Nimbus template and uses Nimbus `0.17.0` with Astro `7.3.8`. Layouts and components are project-owned. Content lives in `apps/docs/src/content/docs/`; English pages use root-relative paths, with matching Chinese files under `zh/`. Recipes and API references use their own subdirectories.
 
 ```sh
 corepack pnpm --filter docs dev
 corepack pnpm --filter docs lint
 corepack pnpm --filter docs typecheck
 corepack pnpm --filter docs build
+corepack pnpm --filter docs check:site
+corepack pnpm --filter docs test
 corepack pnpm --filter docs preview
 ```
 
 Production builds generate Pagefind search. Check both language routes and switching on a production preview, rather than expecting search to work in the dev server.
+
+Add both translations before publishing a page. Keep code behavior and public links equivalent, and register informative MDX components together with their Markdown text conversion. Verify custom tabs/steps in the page's Markdown export as well as the visual site. [Practical recipes](/recipes/) should show real framework bindings; [API references](/api/) should match package exports and source types.
+
+Keep validation records dated. The [2026-10-09 runtime record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/ide-validation-2026-10-09.md) separates individual artifact success from a pending full suite. Later documentation edits must not turn that historical result into an unsupported claim of current acceptance.
 
 ## Read with tools
 

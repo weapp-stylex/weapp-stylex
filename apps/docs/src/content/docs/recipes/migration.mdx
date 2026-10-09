@@ -1,0 +1,72 @@
+---
+title: "Migrate an existing project"
+description: "Adopt StyleX one component at a time without changing the host framework."
+sidebar:
+  order: 6
+---
+
+Start with a small leaf component. Keep the framework, route structure and authored styles while you introduce compiled declarations. A successful pilot should include a state change and a clean production build, not only a static screenshot.
+
+<Steps>
+  <Step title="Identify the host and versions">
+
+Check whether the project is native WeChat, Wevu, Taro React/Vue 3 or uni-app Vue 3. Follow the matching [adapter guide](/api/adapters/) and retain its compatible builder versions. The repository's [version matrix](/configuration/) is a tested example baseline, not a reason to apply a single global Vite, Vue or Babel override.
+
+  </Step>
+  <Step title="Install and register one adapter">
+
+```sh
+pnpm add weapp-stylex
+```
+
+Use `stylexCompiler()` for native scripts. For Wevu, register `vitePlugins` and `compilerPlugin` from the same `createStylex()` factory. Taro resolves the plugin with `require.resolve('weapp-stylex/taro')`; uni-app places its plugin after `uni()`. Do not register a second session to process the same output.
+
+  </Step>
+  <Step title="Move a small declaration">
+
+```ts
+// card.styles.ts
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: '#f3f6f4' },
+  active: { opacity: 0.6 },
+})
+```
+
+Preserve the intended units while moving CSS: a WXSS `16rpx` value becomes `'16rpx'`, not the numeric `16`. Keep supported declarations at module scope and pass runtime values through a [style function](/recipes/dynamic-styles/).
+
+  </Step>
+  <Step title="Change the binding and its updates">
+
+Native Page/Component stores `attrs()` strings in `data` and recomputes with `setData()`. Taro React spreads `props()` on `View`. Vue/Wevu computes `attrs()` and binds both class/style. The [composition recipe](/recipes/composition/) includes complete examples.
+
+If a legacy class remains, bind it alongside the generated class on the intended node. Authored CSS and StyleX still participate in the platform cascade; verify any overlapping property before moving the next declaration. Do not concatenate generated classes to implement StyleX's own property merge.
+
+  </Step>
+  <Step title="Validate and expand">
+
+Inspect generated WXSS imports, test a state change, and compare the resulting layout on the selected base library. Introduce [shared modules](/recipes/shared-modules/) and [tokens](/recipes/tokens-themes/) once the leaf component works. Keep [troubleshooting](/troubleshooting/) available for each build/runtime boundary.
+
+  </Step>
+</Steps>
+
+## Move existing official StyleX code
+
+The root forwards official named runtime APIs and types. Use supported imports:
+
+```ts
+import * as stylex from 'weapp-stylex'
+// Or:
+import { create, attrs, props } from 'weapp-stylex'
+```
+
+`weapp-stylex` and `weapp-stylex/core` have no default runtime export. This differs from a user-authored style module that deliberately exports its compiled mapping as default. Direct `@stylexjs/stylex` imports remain recognized by default, so changing every existing import is unnecessary.
+
+Bring over declarations and composition semantics, then review output that depends on DOM elements, browser pseudo-classes, media features or unsupported WXSS properties. The compiler does not supply a browser runtime or emulate those features. Themes and dynamic values require CSS custom-property support in the target base library.
+
+## Finish the pilot
+
+Confirm the host's macros, lifecycle, routes and authored style blocks still behave correctly. Inspect both page and isolated-component output; an initial build with no StyleX should remain unchanged. Keep default Babel initially. Enable `backend: 'auto'` only after the baseline works, and compare the same interactions and WXSS artifacts before accepting it.
+
+Independent subpackages, other mini-program platforms, Vue 2, uni-app x, WXML `sx` syntax and stateful HMR are outside the stable support boundary. See [scope](/faq/) and [example validation](/examples/) before broadening rollout.

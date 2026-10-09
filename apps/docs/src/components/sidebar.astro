@@ -1,26 +1,19 @@
 ---
 import type { SidebarItem } from '@cloudflare/nimbus-docs/types'
-import { withBase } from '@cloudflare/nimbus-docs/runtime'
+import Icon from './icon.astro'
 
 interface Props { items: SidebarItem[] }
 const { items } = Astro.props
+function active(item: SidebarItem): boolean {
+  return item.type === 'group' ? Boolean(item.indexIsCurrent || item.children.some(active)) : Boolean(item.type === 'link' && item.isCurrent)
+}
 ---
 
 <ul class="navigation-list">
-  {items.map(item => (
-    <li>
-      {item.type === 'group'
-        ? (
-            <>
-              {item.indexHref
-                ? <a href={withBase(item.indexHref, import.meta.env.BASE_URL)} aria-current={item.indexIsCurrent ? 'page' : undefined}>{item.label}</a>
-                : <span>{item.label}</span>}
-              <Astro.self items={item.children} />
-            </>
-          )
-        : (
-            <a href={withBase(item.href, import.meta.env.BASE_URL)} aria-current={item.type === 'link' && item.isCurrent ? 'page' : undefined}>{item.label}</a>
-          )}
-    </li>
-  ))}
+  {items.map(item => <li class:list={{ 'navigation-group': item.type === 'group' }}>
+    {item.type === 'group' ? <details open={!item.collapsed || active(item)}>
+      <summary><Icon name={item.icon || 'book'} size={18} /><span>{item.label}</span></summary>
+      <Astro.self items={item.children} />
+    </details> : <a href={item.href} aria-current={item.type === 'link' && item.isCurrent ? 'page' : undefined}>{item.label}</a>}
+  </li>)}
 </ul>

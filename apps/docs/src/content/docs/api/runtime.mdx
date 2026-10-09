@@ -1,0 +1,314 @@
+---
+title: "Runtime API"
+description: "Official StyleX functions, object members and WeChat support boundaries."
+sidebar:
+  order: 31
+---
+
+Import from `weapp-stylex`, `weapp-stylex/core` or `@weapp-stylex/core` with a namespace or named import. There is no default runtime export. These are official StyleX 0.19.1 APIs, not a second style language. The generic signatures below abbreviate internal mapped constraints; infer the result from the input rather than constructing compiled objects by hand.
+
+```ts
+import * as stylex from 'weapp-stylex'
+```
+
+<Aside type="note" title="Compile first, compose at runtime">
+
+`create`, variables, themes, constants and CSS helpers must pass through the configured compiler. Calling their untransformed runtime implementation throws `Unexpected 'stylex.…' call at runtime`. `attrs` and `props` compose the resulting styles. See [troubleshooting](/faq/) when this error appears.
+
+</Aside>
+
+<a id="api-create"></a>
+## create
+
+```ts
+create<const S extends /* style namespaces */>(styles: S): MapNamespaces<S>
+```
+
+`styles` is a required object of named static styles or functions returning style objects. There are no parameter defaults. The return keeps namespace names; dynamic functions return a compiled-style/inline-style tuple. Definitions must be statically analyzable by the selected compiler. Numeric lengths retain pixel units.
+
+```ts
+const styles = stylex.create({
+  base: { padding: 16, color: '#263544' },
+  active: { color: '#087f5b' },
+  width: (value: number) => ({ width: value }),
+})
+const binding = stylex.attrs(styles.base, enabled && styles.active, styles.width(120))
+```
+
+`enabled` represents application state. Composition later in the argument list overrides the same property. Dynamic arguments run at composition time; define the style function at module scope.
+
+<a id="api-attrs"></a>
+## attrs
+
+```ts
+attrs(...styles): Readonly<{ class?: string; 'data-style-src'?: string; style?: string }>
+```
+
+Accepts any number of compiled styles, dynamic tuples, nested readonly arrays and `null`/`undefined`/boolean conditions; the empty argument list is valid. Returns optional `class` and serialized `style`, with optional official debug metadata. Bind both fields in native WXML or Vue/Wevu. Raw CSS objects are not valid arguments.
+
+```ts
+const binding = stylex.attrs(styles.base, [condition && styles.active], styles.width(120))
+// Page data: { binding }; WXML:
+// <view class="{{binding.class}}" style="{{binding.style}}" />
+// Vue/Wevu: <view :class="binding.class" :style="binding.style" />
+```
+
+<a id="api-props"></a>
+## props
+
+```ts
+props(...styles): Readonly<{ className?: string; 'data-style-src'?: string; style?: Readonly<Record<string, string | number>> }>
+```
+
+Parameters follow `attrs`, including an empty list and nested conditions. Returns `className` plus an inline-style object instead of the native/Vue representation. Spread the result onto Taro React `View`. Passing only `className` loses dynamic inline values.
+
+```tsx
+<View {...stylex.props(styles.base, styles.width(120))} />
+```
+
+<a id="api-defineVars"></a>
+## defineVars
+
+```ts
+defineVars<DefaultTokens, ID extends symbol = symbol>(tokens: DefaultTokens): VarGroup</* flattened token values */, ID>
+```
+
+`tokens` is a required statically analyzable token object. Values may be strings, numbers, variable references, typed wrappers, supported functions or conditional defaults with at-rule branches. Returns variable references grouped under an opaque identity; it does not return literal defaults. Define and directly import tokens from a `.stylex.*` file, normally `tokens.stylex.ts`, so the host resolver can identify them.
+
+```ts
+// tokens.stylex.ts
+export const tokens = stylex.defineVars({ ink: '#263544', gap: '16rpx' })
+// styles.ts: import { tokens } from './tokens.stylex'
+const styles = stylex.create({ base: { color: tokens.ink, gap: tokens.gap } })
+```
+
+The compiler rewrites default `:root` selectors to `page`; this does not remove WeChat component isolation rules. Re-exported ordinary style objects are supported, but cross-file token resolution requires direct token imports.
+
+<a id="api-createTheme"></a>
+## createTheme
+
+```ts
+createTheme<TVars extends VarGroup<{}>, ThemeID extends symbol = symbol>(baseTokens: TVars, overrides: /* typed partial overrides */): Theme<TVars, ThemeID>
+```
+
+Both arguments are required. `baseTokens` must come from `defineVars`; overrides use matching token keys and value types, and can omit unchanged keys. Returns a compiled theme accepted by `attrs`/`props`. Apply it to an ancestor whose variables reach the target element, taking WeChat style isolation into account.
+
+```ts
+import { tokens } from './tokens.stylex'
+const dark = stylex.createTheme(tokens, { ink: '#e7edf3' })
+const themed = stylex.attrs(dark, styles.base)
+```
+
+Unknown keys, incompatible overrides and unresolved token modules produce compiler/type errors. Themes use Babel; strict SWC rejects them.
+
+<a id="api-defineConsts"></a>
+## defineConsts
+
+```ts
+defineConsts<T extends Record<string, number | string>>(tokens: T): T
+```
+
+Requires a flat object of string/number constants; returns the same key/value shape in the declaration. The compiler resolves constants at build time rather than emitting themeable variables. Use a directly imported `.stylex.*` module for cross-file constants. There are no parameter defaults.
+
+```ts
+// constants.stylex.ts
+export const sizes = stylex.defineConsts({ gutter: '16rpx' })
+```
+
+Use `defineVars` for values that need theme switching. Constants require Babel; `auto` selects it and strict SWC rejects them.
+
+<a id="api-keyframes"></a>
+## keyframes
+
+```ts
+keyframes(keyframes: Keyframes): string
+```
+
+Requires named animation stops (`from`, `to` or percentages) mapped to CSS properties. Returns the generated animation name for `animationName`. The compiler emits rules; validate the properties, animation behavior and target WeChat base library separately.
+
+```ts
+const fade = stylex.keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
+const motion = stylex.create({ enter: { animationName: fade, animationDuration: '200ms' } })
+```
+
+Compilation coverage includes this helper, but it does not establish support for every animation property in WXSS.
+
+<a id="api-firstThatWorks"></a>
+## firstThatWorks
+
+```ts
+firstThatWorks<T extends string | number>(...values: ReadonlyArray<T>): ReadonlyArray<T>
+```
+
+Lists fallback values in preferred-first order; its declaration accepts a variadic list, without an implicit fallback value. Use inside a compile-time style definition. The compiler emits CSS fallback declarations; this is not a JavaScript support detector.
+
+```ts
+const layout = stylex.create({ root: { width: stylex.firstThatWorks('fit-content', '100%') } })
+```
+
+Check the generated WXSS and actual target behavior. A browser accepting a value does not prove WeChat will accept it.
+
+<a id="api-types"></a>
+<a id="api-types-angle"></a>
+<a id="api-types-color"></a>
+<a id="api-types-url"></a>
+<a id="api-types-image"></a>
+<a id="api-types-integer"></a>
+<a id="api-types-lengthPercentage"></a>
+<a id="api-types-length"></a>
+<a id="api-types-percentage"></a>
+<a id="api-types-number"></a>
+<a id="api-types-resolution"></a>
+<a id="api-types-time"></a>
+<a id="api-types-transformFunction"></a>
+<a id="api-types-transformList"></a>
+## types
+
+The `types` object provides compile-time typed-variable constructors, normally inside `defineVars`. Each takes one required value, has no runtime argument default, and returns the corresponding `Types` wrapper. In the table, `ValueWithDefault<T>` describes `T` or a recursively conditional object with a required `default`; it is not a standalone package export. The generic `T` defaults to the stated accepted type.
+
+| Member | Signature | Meaning |
+| --- | --- | --- |
+| `types.angle` | `<T extends string \| 0 = string \| 0>(value: ValueWithDefault<T>): Types.Angle<T>` | angle |
+| `types.color` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Color<T>` | color |
+| `types.url` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Url<T>` | url |
+| `types.image` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Image<T>` | image |
+| `types.integer` | `<T extends number = number>(value: ValueWithDefault<T>): Types.Integer<T>` | integer |
+| `types.lengthPercentage` | `<T extends number \| string = number \| string>(value: ValueWithDefault<T>): Types.LengthPercentage<T>` | length/percentage |
+| `types.length` | `<T extends number \| string = number \| string>(value: ValueWithDefault<T>): Types.Length<T>` | length |
+| `types.percentage` | `<T extends number \| string = number \| string>(value: ValueWithDefault<T>): Types.Percentage<T>` | percentage |
+| `types.number` | `<T extends number = number>(value: ValueWithDefault<T>): Types.Num<T>` | number |
+| `types.resolution` | `<T extends string = string>(value: ValueWithDefault<T>): Types.Resolution<T>` | resolution |
+| `types.time` | `<T extends string \| 0 = string \| 0>(value: ValueWithDefault<T>): Types.Time<T>` | time |
+| `types.transformFunction` | `<T extends string = string>(value: ValueWithDefault<T>): Types.TransformFunction<T>` | one transform function |
+| `types.transformList` | `<T extends string = string>(value: ValueWithDefault<T>): Types.TransformList<T>` | transform list |
+
+```ts
+// tokens.stylex.ts
+export const typed = stylex.defineVars({ ink: stylex.types.color('#263544') })
+```
+
+<Aside type="warning" title="Typed CSS registration is not a WeChat promise">
+
+Official typed variables can involve CSS registration semantics. This project has not established general WXSS support for those semantics. Untyped `defineVars` is the practical default; verify typed output before adopting it.
+
+</Aside>
+
+<a id="api-defineMarker"></a>
+## defineMarker
+
+```ts
+defineMarker(): /* compiled namespace with opaque marker: symbol */
+```
+
+No arguments. Produces an official compiled marker for use with `when` and composition. Apply it with `attrs`/`props` to the element participating in a relationship. This browser-oriented selector feature is not verified for WeChat; the signature describes the official export, not a supported WXSS recipe.
+
+<a id="api-defaultMarker"></a>
+## defaultMarker
+
+```ts
+defaultMarker(): /* compiled namespace with marker: 'default-marker' */
+```
+
+No arguments. Returns the official default marker namespace; `when` can use it when no custom marker is supplied. This also requires compilation. Its selector behavior is unverified on WeChat; use explicit application-state variants for a verified mini-program flow.
+
+<a id="api-when"></a>
+<a id="api-when-ancestor"></a>
+<a id="api-when-descendant"></a>
+<a id="api-when-siblingBefore"></a>
+<a id="api-when-siblingAfter"></a>
+<a id="api-when-anySibling"></a>
+## when
+
+All five methods have the official signature shape `when.method(pseudo?, customMarker?): string`, with a template-literal selector return type. `pseudo` is `:${string}` or `[${string}]`; `customMarker` is the compiled namespace from `defineMarker`. Both arguments are optional in the declarations; there is no project-defined default pseudo. Use the returned string as a conditional property key in an official StyleX definition.
+
+| Method | Relationship |
+| --- | --- |
+| `when.ancestor` | an ancestor |
+| `when.descendant` | a descendant |
+| `when.siblingBefore` | a preceding sibling |
+| `when.siblingAfter` | a following sibling |
+| `when.anySibling` | any sibling |
+
+```ts
+// Official shape only; not a verified WeChat selector recipe.
+const marker = stylex.defineMarker()
+const related = stylex.create({ text: { color: { default: '#263544', [stylex.when.ancestor(':hover', marker)]: '#087f5b' } } })
+```
+
+The compiler/runtime exports these methods, but WeChat support for the generated relationship selectors and pseudo-classes is unverified. See the [official API reference](https://stylexjs.com/docs/api/) before experimenting.
+
+<a id="api-env"></a>
+## env
+
+```ts
+env: /* registered official env type, otherwise Readonly<Record<string, unknown>> */
+```
+
+An exported object, not a function. The installed runtime initializes it as a frozen empty object; official typing can be specialized through the upstream registration mechanism. It has no project-defined keys or runtime defaults, and is not `process.env`. The wrapper does not configure an environment schema. Consult upstream compilation configuration before reading fields; this path is not verified as a WeChat feature.
+
+<a id="api-positionTry"></a>
+## positionTry
+
+```ts
+positionTry(positionTry: PositionTry): string
+```
+
+Requires an official anchor-positioning fallback descriptor; returns a generated name. Example shape: `stylex.positionTry({ positionArea: 'top' })`. The accepted descriptor covers positioning, inset, margin, size and self-alignment fields listed by `PositionTry`. Requires compilation. CSS anchor positioning is not verified for WXSS; do not use it as a WeChat placement solution.
+
+<a id="api-viewTransitionClass"></a>
+## viewTransitionClass
+
+```ts
+viewTransitionClass(styles: { readonly group?: CSSProperties; readonly imagePair?: CSSProperties; readonly old?: CSSProperties; readonly new?: CSSProperties }): string
+```
+
+Requires the official view-transition style descriptor; all four descriptor fields are optional and the argument itself is required. Returns a generated class identifier. Example shape: `stylex.viewTransitionClass({ old: { opacity: 0 } })`. Requires compilation. The upstream descriptor type is not a standalone root type export; use `Parameters<typeof stylex.viewTransitionClass>[0]`. Browser view transitions are unverified on WeChat.
+
+<a id="api-unstable_conditional"></a>
+## unstable_conditional
+
+```ts
+unstable_conditional<T extends { readonly default: unknown; readonly [key: string]: unknown }>(value: T): T
+```
+
+Requires a conditional object with `default`; returns the same inferred shape. Official use is disambiguating conditional values in nested token definitions, for example `{ default: 'white', '@media (...)': 'black' }`. Compile-time only, experimental and not a stable project contract. Neither its nested-token workflow nor its conditions are promised to work in WeChat.
+
+<a id="api-unstable_defineVarsNested"></a>
+## unstable_defineVarsNested
+
+```ts
+unstable_defineVarsNested<T extends /* nested vars object */>(tokens: T): T
+```
+
+Requires a nested object of official nested variable values: string leaves, typed string/number wrappers or further objects. Returns the same declared structure while the compiler replaces leaves with variable references. Example shape: `{ colors: { ink: '#263544' } }`. Compile-time only; experimental and not verified by the stable mini-program acceptance suite. Use flat `defineVars` for the stable path.
+
+<a id="api-unstable_defineConstsNested"></a>
+## unstable_defineConstsNested
+
+```ts
+unstable_defineConstsNested<T extends /* nested string/number constants */>(tokens: T): T
+```
+
+Requires nested string/number leaves; returns the same declared shape. Example: `stylex.unstable_defineConstsNested({ spacing: { small: '8rpx' } })`. Resolves at compile time. Experimental, with no stable WeChat compatibility promise; use flat `defineConsts` for supported documentation recipes.
+
+<a id="api-unstable_createThemeNested"></a>
+## unstable_createThemeNested
+
+```ts
+unstable_createThemeNested(baseTokens: /* nested string references */, overrides: /* nested vars values */): CompiledStyles
+```
+
+Both arguments are required. Accepts nested variable references and nested overrides, and returns a flat compiled theme. Its public declaration does not preserve the branded `Theme<TVars>` relationship of stable `createTheme`. Compile-time only, experimental and not verified on WeChat. Do not assume the stable token resolver supports every nested shape.
+
+<a id="api-legacyMerge"></a>
+## legacyMerge
+
+```ts
+legacyMerge(...styles: ReadonlyArray<StyleXArray<null | undefined | CompiledStyles | boolean>>): string
+```
+
+The official declaration labels this export **DO NOT USE. Legacy export for Meta**. It also carries legacy function properties, but is not a supported alternative composition API. The signature returns a class string, with no project defaults; it cannot carry the full dynamic inline-style binding contract. Use `attrs` or `props`. No application recipe or WeChat support promise is provided.
+
+## Function types
+
+Except `attrs` and `props`, every named runtime value above also has a same-name exported type alias equal to `typeof` that value. For example, `import type { create, types, when } from 'weapp-stylex'` imports callable/object types, not styles produced by them. Use [`StyleXStyles`](/api/types/#api-StyleXStyles) for a component style input. The legacy and unstable aliases inherit the same cautions as their values.

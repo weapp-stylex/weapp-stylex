@@ -1,0 +1,112 @@
+---
+title: "问题排查"
+description: "从源码导入、编译、WXSS 到运行时绑定逐层定位问题。"
+sidebar:
+  order: 15
+---
+
+按模块解析 → StyleX 转换 → WXSS 输出 → 节点绑定 → 目标运行时的顺序，找到第一个失败边界。排查时同时保留框架版本、实际适配器配置和一份受影响产物。
+
+## 没有样式
+
+**症状：**页面正常渲染，StyleX 声明却没有效果。
+
+**常见原因：**未注册适配器，定义模块未进入宿主构建图，或节点拿到的是 `create()` 映射而非组合后的属性。
+
+<Steps>
+  <Step title="检查注册与导入">
+
+按对应[适配器指南](/zh/api/adapters/)检查。Wevu 注册同一个 `createStylex()` 工厂的两个字段。默认识别 `weapp-stylex`、`weapp-stylex/core`、`@weapp-stylex/core` 和 `@stylexjs/stylex`，显式设置 `importSources` 会替换这些默认值。
+
+  </Step>
+  <Step title="检查生成产物">
+
+构建受影响宿主，确认消费者导入了定义模块，输出包含生成的 class、`stylex.wxss` 和同目录 WXSS import。存在 StyleX 规则时，没有手写 WXSS 的页面/组件入口应补齐同名文件。未被导入的源码不会贡献规则。
+
+  </Step>
+  <Step title="检查实际节点绑定">
+
+原生/Vue 同时绑定 `attrs().class` 和 `attrs().style`；React 在 Taro `View` 展开 `props()`。原生 Page data 保存组合后的字符串，通过 `setData()` 更新。完整示例见[条件组合](/zh/recipes/composition/)。
+
+  </Step>
+</Steps>
+
+**修复与验收：**修正失败边界、重新构建，检查实际节点 class 与对应 WXSS 规则。再切换一个状态，验证初始输出与后续更新。
+
+## 运行时执行了 create()
+
+**症状：**编译后的应用仍在运行时执行样式声明，或共享模块正常而 SFC 内联声明失败。
+
+**常见原因：**脚本跳过了转换，或 SFC 处理发生在框架选择、编译 script block 之后。
+
+检查原始脚本导入来源、适配器注册和包版本。Wevu 使用共享工厂；Taro Vue/Webpack 保留适配器的 pre-loader 与固定 loader 身份，不要在 Vue-loader 后添加通用 loader。不要手动排除全部 `?vue` Webpack 请求：Vue-loader 会为内联内容块重读原始 SFC。Vite 虚拟脚本的生命周期不同，原始 SFC 处理后会主动跳过。
+
+**修复与验收：**使用支持的注册方式，重新构建，分别检查内联声明和共享模块。声明应在运行前完成编译，模板专用绑定、宏和手写 style block 保持完整。[架构指南](/zh/architecture/)说明 SFC 边界。
+
+## 动态值不更新
+
+**症状：**显示的数值变化了，宽度或颜色却没有改变。
+
+**常见原因：**只绑定 class，组合结果只计算了一次，或后来的行内 `style` 覆盖动态自定义属性。
+
+检查实际节点的 class 和行内 style。原生代码在更新数值的同一次 `setData()` 中重新计算 `attrs(styles.meter(value))`；Vue/Wevu 使用实际宿主的 `computed()`；React 每次渲染计算 `props()`，追加行内样式时保留它的 `style`。
+
+**修复与验收：**按[动态样式教程](/zh/recipes/dynamic-styles/)修改输入，核对行内自定义属性值和实际宽度。确认所选微信基础库支持 CSS 自定义属性。
+
+## 主题在组件内无效
+
+**症状：**页面主题变化，隔离组件仍保留原来的颜色。
+
+**常见原因：**组件根节点没有自己的主题 class，样式使用固定颜色，或通过 barrel 而非直接 token 文件解析 token。
+
+样式和主题直接导入 `tokens.stylex.ts`，受影响属性引用对应 token。把主题选择作为组件状态传入，重新计算组件自身根节点属性；检查组件 WXSS import 和默认 `page` 变量规则。
+
+**修复与验收：**参考 [token 与主题](/zh/recipes/tokens-themes/)和[组件 observer](/zh/recipes/components-subpackages/)，在页面与隔离组件上分别检查默认、选中主题的颜色，再切回默认值。
+
+## stylex.wxss 文件名冲突
+
+**症状：**构建因输出路径已存在 `stylex.wxss` 而失败。
+
+**原因：**该文件名归生成产物使用，用户文件或其他插件占用了同一路径。
+
+根据错误路径查找源码和宿主 emission。重命名手写样式文件，保留正常页面/组件 WXSS 入口。不要关闭冲突检查，也不要把生成规则复制到每个页面。
+
+**修复与验收：**重新构建，确认插件拥有 `stylex.wxss`，手写样式保留在更名后的文件中，重复构建没有重复 import。过期清理只删除插件拥有的产物。
+
+## 长度是 px 而不是 rpx
+
+**症状：**`padding: 16` 输出 `16px`，即使宿主通常会转换像素。
+
+**原因：**这是官方 StyleX 的单位语义。StyleX WXSS 在宿主常规尺寸转换之后输出。
+
+设计需要微信响应式单位时使用 `'16rpx'`。opacity 等无单位数值保持自身语义，不要给所有数值都追加 `rpx`。
+
+**验收：**检查生成 WXSS，并在目标屏宽中比较布局。参见[单位说明](/zh/styles/)与[迁移教程](/zh/recipes/migration/)。
+
+## 构建出现版本或导入错误
+
+**症状：**插件解析失败，Vue compiler API 缺失，或修改依赖 override 后宿主构建失败。
+
+**常见原因：**不兼容的框架主版本被统一，DCloud 包使用不同通道，或假定根 runtime 支持默认导入。
+
+将[工具链矩阵](/zh/configuration/)与实际 lockfile 和适配器 peer 对照。StyleX 的 Babel 7 与 weapp-vite 的 Babel 8 分开保留。Taro 使用 Vite 4 或其 Webpack 5 builder；对齐的 uni-app 通道使用 Vite 5 和 Vue 3.4。Taro 配置通过 `require.resolve('weapp-stylex/taro')` 获取插件，不能直接使用子路径插件名。原生 ESM 配置可以通过 Node 的 `createRequire()` 创建 `require`。
+
+使用 `import * as stylex from 'weapp-stylex'` 或具名导入。根/core runtime 没有默认导出，构建工具使用[独立子路径](/zh/aggregate-package/)。
+
+**修复与验收：**恢复各宿主兼容的依赖分组，按项目声明的包管理器和 lockfile 重新安装，构建目标宿主。不要通过全局主版本 override 修补框架不匹配。
+
+## Auto 使用 Babel，或强制 SWC 失败
+
+**症状：**`backend: 'auto'` 提示兼容性回退，或 `backend: 'swc'` 拒绝模块。
+
+**原因：**模块超出 SWC 的已验证范围，或可选原生依赖不可用。主题/常量、编译期导入、自定义 Babel 配置、拒绝的 runtime 子路径和原始 Vue SFC 脚本保留 Babel。SFC 保护逻辑避免 SWC 0.19.0 删除模板专用绑定。
+
+这些输入使用默认 Babel 或 `auto`。缺少原生包但需要加速时，按项目正常包管理器配置包含可选依赖重新安装并重启构建。不要强制 SWC 绕过不支持的输入诊断。语法、resolver 和未知转换错误都是真实失败，不能当作兼容性回退。
+
+**验收：**检查诊断原因和生成 WXSS，在 Babel/auto 中比较相同交互。[性能说明](/zh/performance/)介绍测量方法与限制。
+
+## 提交可复现的问题
+
+包含框架/builder、Node/包管理器版本、适配器配置、最小声明与消费者、预期行为、首个错误和受影响 WXSS/JavaScript。运行时问题还需包含微信 IDE/基础库版本及实际失败交互，避免提交凭据或应用私有数据。
+
+通过 [GitHub issues](https://github.com/weapp-stylex/weapp-stylex/issues)报告。[验收说明](/zh/examples/)介绍需要收集的证据。`docs/` 中保留日期的记录只描述那些运行；缺少前置条件或仅局部通过的 IDE suite 仍待验收。

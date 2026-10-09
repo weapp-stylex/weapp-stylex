@@ -11,6 +11,8 @@ Source modules → official StyleX Babel 7 / optional SWC backend → module met
 
 `@weapp-stylex/compiler` owns transforms, resolver identity, SFC maps, metadata and WXSS planning. Framework adapters handle host hooks, lifecycle and emission. The runtime facade stays a thin official re-export.
 
+The runtime root/core uses named re-exports and has no default export. Its JavaScript composes compiled mappings into attributes/props; build tools stay on explicit subpaths. See [public entry points](/aggregate-package/) and the [build-core reference](/api/compiler/).
+
 ## Metadata and graph lifetime
 
 Each normalized module ID owns rules and dependencies. A transform replaces that module's metadata. Watch rebuilds retain unchanged cached modules, invalidate dependents on change, and prune modules that are no longer reachable. Token dependencies remain tracked even when their runtime imports disappear.
@@ -27,9 +29,13 @@ Vue-loader rereads the raw SFC for inline script, template and style requests. T
 
 ## Output planning
 
-Every native style directory receives one generated `stylex.wxss`. Sibling styles import it using `@import "./stylex.wxss";`. Pages and components without local WXSS receive companions; a build with no style entry gets `app.wxss` as fallback.
+When StyleX rules exist, the emitter writes the aggregated stylesheet as `stylex.wxss` beside each required WXSS directory. Sibling styles import it using `@import "./stylex.wxss";`. This can repeat the stylesheet across directories; it is not a separate stylesheet for each source module.
+
+An emitted WXML entry with matching JavaScript and no authored WXSS receives a same-name companion. `app.wxss` is also created when needed. Companions load generated styles without changing the host's page/component registration. See [components and ordinary subpackages](/recipes/components-subpackages/).
 
 Rules are aggregated and deduplicated. CSS layers, browser specificity polyfills and runtime stylesheet injection are disabled. Default variable `:root` selectors map to `page`.
+
+This is a compile/output boundary. It does not polyfill browser selectors, DOM behavior or unsupported WXSS properties; target base-library behavior requires runtime validation. [Tokens and themes](/recipes/tokens-themes/) show the explicit root binding.
 
 Output is idempotent. User-owned filename collisions fail with an explicit error. Watch rebuilds remove only plugin-owned stale files/imports. An initial build without StyleX does not change assets.
 

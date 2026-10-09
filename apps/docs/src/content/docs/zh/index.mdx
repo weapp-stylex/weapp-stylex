@@ -1,44 +1,185 @@
 ---
 title: "把 StyleX 带进微信小程序"
-description: "在页面、组件和不同框架之间，复用同一份类型安全样式。"
+description: "用熟悉的 StyleX API 定义、组合与共享样式，编译为微信小程序的原子 WXSS。"
 sidebar:
   order: 0
 ---
 
-<img className="home-mark" src="/logo.svg" width="112" height="112" alt="weapp-stylex 标识" />
+<HomeHero title="把 StyleX 带进微信小程序" description="用熟悉的 StyleX API 定义、组合与共享样式，编译为微信小程序的原子 WXSS。" chinese>
 
-## 定义一次，组合使用
+<Tabs label="框架示例">
 
-保留官方 StyleX API。把样式写进普通模块，用 `attrs()` 或 `props()` 组合，再编译成微信小程序的原子 WXSS。
-
-[快速开始 →](/zh/get-started/) · [查看示例](/zh/examples/) · [GitHub](https://github.com/weapp-stylex/weapp-stylex)
+<Tab label="styles.ts">
 
 ```ts
-// styles.ts
 import * as stylex from 'weapp-stylex'
 
 export const styles = stylex.create({
-  root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
-  active: { opacity: 0.6 },
-  meter: (width: number) => ({ width, height: 12 }),
+  card: {
+    padding: 16,
+    marginTop: '12rpx',
+    borderRadius: 12,
+    backgroundColor: '#edf7f1',
+  },
 })
-export default styles
 ```
 
-## 选择你的框架
+</Tab>
 
-| 框架 | 构建接入 | 指南 |
-| --- | --- | --- |
-| 原生 Page / Component | weapp-vite 编译插件 | [原生微信](/zh/native/) |
-| Wevu Vue SFC / JSX | weapp-vite + 共享 StyleX session | [Wevu](/zh/wevu/) |
-| Taro React | Vite 或 Webpack 5 | [Taro React](/zh/taro-react/) |
-| Taro Vue 3 | Vite 或 Webpack 5 | [Taro Vue 3](/zh/taro-vue3/) |
-| uni-app Vue 3 | DCloud Vite 插件 | [uni-app](/zh/uni-app/) |
+<Tab label="原生微信">
 
-## 熟悉的语义，原生产物
+```ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
 
-共享模块支持具名导出、默认导出、barrel、路径别名和 workspace 源码。主题沿用官方 token，动态值交给官方 runtime。数值 `16` 保持 `16px`，需要时显式写 `'16rpx'`。
+Page({
+  data: { card: stylex.attrs(styles.card) },
+})
+```
 
-无需 CSS Layers 或运行时样式注入。构建适配器收集、去重规则，输出 `stylex.wxss`，再接入页面与组件样式。
+```xml
+<view class="{{card.class}}" style="{{card.style}}">
+  StyleX
+</view>
+```
 
-当前支持微信主包和普通分包。接入独立分包或其他平台之前，请先查看[支持边界](/zh/faq/)。
+</Tab>
+
+<Tab label="Wevu">
+
+```vue
+<script setup lang="ts">
+import * as stylex from 'weapp-stylex'
+import { computed } from 'wevu'
+import { styles } from './styles'
+const card = computed(() => stylex.attrs(styles.card))
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style">StyleX</view>
+</template>
+```
+
+</Tab>
+
+<Tab label="Taro React">
+
+```tsx
+import { View } from '@tarojs/components'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+export default function Card() {
+  return <View {...stylex.props(styles.card)}>StyleX</View>
+}
+```
+
+</Tab>
+
+<Tab label="Taro Vue">
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+const card = computed(() => stylex.attrs(styles.card))
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style">StyleX</view>
+</template>
+```
+
+</Tab>
+
+<Tab label="uni-app">
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+const card = computed(() => stylex.attrs(styles.card))
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style">StyleX</view>
+</template>
+```
+
+</Tab>
+
+</Tabs>
+
+</HomeHero>
+
+## 从你的框架开始
+
+主包、页面、组件和普通分包共享样式。选择现有工具链，按指南注册编译适配器。
+
+<CardGrid>
+<LinkCard title="原生微信" description="Page / Component · weapp-vite" href="/zh/native/" icon="devices" />
+<LinkCard title="Wevu" description="Vue SFC / JSX · weapp-vite" href="/zh/wevu/" icon="layers" />
+<LinkCard title="Taro React" description="React · Vite / Webpack 5" href="/zh/taro-react/" icon="code" />
+<LinkCard title="Taro Vue 3" description="Vue 3 · Vite / Webpack 5" href="/zh/taro-vue3/" icon="stack" />
+<LinkCard title="uni-app Vue 3" description="DCloud · Vite" href="/zh/uni-app/" icon="globe" />
+</CardGrid>
+
+## 从样式模块到原生 WXSS
+
+<div className="home-flow">
+
+<Steps>
+
+<Step title="定义样式">
+
+普通 TS / JS 模块中的 create()、tokens 与主题。
+
+</Step>
+
+<Step title="绑定到视图">
+
+用 attrs() 的 class/style，或 React props()，连接框架更新。
+
+</Step>
+
+<Step title="构建微信产物">
+
+编译器收集并去重规则，适配器接入页面和组件 WXSS。
+
+</Step>
+
+</Steps>
+
+</div>
+
+数值 `16` 保持 `16px`，小程序相对单位请写 `'16rpx'`。样式在构建时生成，无需运行时样式注入。
+
+## 把常见需求写成可复用样式
+
+<CardGrid>
+<LinkCard title="条件与覆盖" description="组合顺序、嵌套数组与 null 重置。" href="/zh/recipes/composition/" icon="layers" />
+<LinkCard title="动态值与更新" description="尺寸、状态与 class/style 双重绑定。" href="/zh/recipes/dynamic-styles/" icon="lightning" />
+<LinkCard title="Tokens 与主题" description="直接 token 导入、主题切换和组件隔离。" href="/zh/recipes/tokens-themes/" icon="palette" />
+<LinkCard title="跨模块共享" description="具名与默认导出、barrel、alias 和 workspace。" href="/zh/recipes/shared-modules/" icon="stack" />
+<LinkCard title="组件与分包" description="类型安全样式属性、组件和普通分包。" href="/zh/recipes/components-subpackages/" icon="devices" />
+<LinkCard title="渐进接入" description="从一个页面开始，保留已有样式。" href="/zh/recipes/migration/" icon="rocket" />
+</CardGrid>
+
+## 随用随查的 API 参考
+
+<CardGrid>
+<LinkCard title="Runtime" description="定义、组合、tokens、主题及官方能力边界。" href="/zh/api/runtime/" icon="code" />
+<LinkCard title="类型" description="样式属性约束、变量和官方类型工具。" href="/zh/api/types/" icon="book" />
+<LinkCard title="构建适配器" description="参数、默认值和框架注册方式。" href="/zh/api/adapters/" icon="tool" />
+<LinkCard title="Compiler" description="转换会话、宿主接口、诊断和 WXSS 输出。" href="/zh/api/compiler/" icon="terminal" />
+</CardGrid>
+
+## 接入遇到问题？
+
+<CardGrid>
+<LinkCard title="排障指南" description="从错误现象定位转换、绑定、解析和输出问题。" href="/zh/troubleshooting/" icon="tool" />
+<LinkCard title="示例与验收" description="查看七份构建产物与当前验收入口。" href="/zh/examples/" icon="flask" />
+<LinkCard title="支持边界" description="核对平台、版本与微信运行支持。" href="/zh/faq/" icon="warning" />
+</CardGrid>

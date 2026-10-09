@@ -1,95 +1,72 @@
 ---
 import type { DocsPageProps } from '@cloudflare/nimbus-docs/types'
-import { withBase } from '@cloudflare/nimbus-docs/runtime'
-import { config } from 'virtual:nimbus/config'
 import Head from '../components/head.astro'
-import Search from '../components/search/index.astro'
+import Icon from '../components/icon.astro'
 import Sidebar from '../components/sidebar.astro'
-import { labels } from '../lib/locale'
+import SiteFooter from '../components/site-footer.astro'
+import SiteHeader from '../components/site-header.astro'
+import SiteTools from '../components/site-tools.astro'
 import '../styles/site.css'
 
-type Props = Omit<DocsPageProps, 'breadcrumbs' | 'prevNext'> & { chinese: boolean, alternate: string }
-const { title, description, sidebar, headings, markdownUrl, chinese, alternate, noindex, draft, searchable } = Astro.props
-const text = labels[chinese ? 'zh' : 'en']
-const base = import.meta.env.BASE_URL
-const indexUrl = withBase(chinese ? '/zh/llms.txt' : '/llms.txt', base)
+type Props = DocsPageProps & { chinese: boolean, alternate: string }
+const { title, description, sidebar, headings, markdownUrl, chinese, alternate, noindex, draft, searchable, breadcrumbs, prevNext, editUrl } = Astro.props
+const indexUrl = chinese ? '/zh/llms.txt' : '/llms.txt'
 ---
 
 <!doctype html>
-<html lang={chinese ? 'zh-CN' : 'en'}>
+<html lang={chinese ? 'zh-CN' : 'en'} data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <Head title={title} description={description} markdownUrl={markdownUrl} noindex={noindex || draft} chinese={chinese} />
-    <link rel="alternate" hreflang={chinese ? 'en' : 'zh-CN'} href={new URL(withBase(alternate, base), Astro.site)} />
-    <link rel="alternate" type="text/plain" href={indexUrl} title={text.index} />
+    <link rel="alternate" hreflang={chinese ? 'en' : 'zh-CN'} href={new URL(alternate, Astro.site)} />
+    <link rel="alternate" type="text/plain" href={indexUrl} title={chinese ? '文档索引' : 'Documentation index'} />
   </head>
   <body>
-    <a class="skip-link" href="#main-content">{text.skip}</a>
-    <header class="site-header">
-      <a class="brand" href={withBase(chinese ? '/zh/' : '/en/', base)}>
-        <img src={withBase('/logo.svg', base)} width="36" height="36" alt="" />
-        {config.title}
-      </a>
-      <div class="header-links">
-        <a href="https://github.com/weapp-stylex/weapp-stylex">GitHub ↗</a>
-        <a class="language-link" href={withBase(alternate, base)} lang={chinese ? 'en' : 'zh-CN'} data-language={chinese ? 'en' : 'zh'}>{chinese ? 'English' : '简体中文'}</a>
-      </div>
-    </header>
+    <a class="skip-link" href="#main-content">{chinese ? '跳转到正文' : 'Skip to content'}</a>
+    <SiteHeader chinese={chinese} alternate={alternate} current={Astro.url.pathname} mobileNav={sidebar !== false} />
     <div class="docs-grid">
-      <aside class="site-rail">
-        <Search chinese={chinese} />
+      {sidebar !== false && <aside class="site-rail">
         <details class="site-navigation" open>
-          <summary>{text.navigation}</summary>
-          <nav aria-label={text.navigation}>
-          {sidebar !== false && <Sidebar items={sidebar} />}
-          </nav>
+          <summary><Icon name="menu" />{chinese ? '文档导航' : 'Documentation navigation'}</summary>
+          <nav aria-label={chinese ? '站点导航' : 'On this site'}><Sidebar items={sidebar} /></nav>
         </details>
-        <a class="index-link" href={indexUrl}>llms.txt ↗</a>
-      </aside>
-      <main id="main-content" tabindex="-1">
+        <a class="index-link" href={indexUrl}><Icon name="terminal" size={16} />llms.txt<Icon name="external" size={16} /></a>
+      </aside>}
+      <main class="doc-content" id="main-content" tabindex="-1">
+        {breadcrumbs.length > 0 && <nav aria-label={chinese ? '当前位置' : 'Breadcrumbs'}><ol class="breadcrumbs">
+          {breadcrumbs.map((crumb, index) => <li>{crumb.href && index < breadcrumbs.length - 1 ? <a href={crumb.href}>{crumb.label}</a> : <span aria-current={index === breadcrumbs.length - 1 ? 'page' : undefined}>{crumb.label}</span>}</li>)}
+        </ol></nav>}
         <div data-pagefind-body={searchable !== false && !noindex && !draft ? '' : undefined} data-pagefind-ignore={searchable === false || noindex || draft ? '' : undefined}>
           <h1>{title}</h1>
           {description && <p class="description">{description}</p>}
           <article><slot /></article>
         </div>
-        {markdownUrl && (
-          <footer>
-            <a href={withBase(markdownUrl, base)}>
-              {text.markdown}
-              {' '}
-              ↗
-            </a>
-          </footer>
-        )}
+        <div class="doc-actions">
+          {editUrl && <a href={editUrl}><Icon name="github" size={18} />{chinese ? '在 GitHub 编辑此页' : 'Edit this page on GitHub'}</a>}
+          {markdownUrl && <a href={markdownUrl}><Icon name="book" size={18} />{chinese ? '阅读 Markdown' : 'Read Markdown'}</a>}
+        </div>
+        <nav class="prev-next" aria-label={chinese ? '继续阅读' : 'Continue reading'}>
+          {prevNext.prev ? <a href={prevNext.prev.href}><span>{chinese ? '上一页' : 'Previous'}</span><strong>{prevNext.prev.label}</strong></a> : <span />}
+          {prevNext.next && <a href={prevNext.next.href}><span>{chinese ? '下一页' : 'Next'}</span><strong>{prevNext.next.label}</strong></a>}
+        </nav>
       </main>
-      <aside class="page-rail">
-        {headings !== false && headings.length > 0 && (
-          <nav aria-label={text.contents}>
-            <p class="rail-title">{text.contents}</p>
-            <ul class="navigation-list">
-              {headings.map(heading => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
-            </ul>
-          </nav>
-        )}
-      </aside>
+      {headings !== false && headings.length > 0 && <aside class="page-rail"><nav aria-label={chinese ? '本页目录' : 'On this page'}>
+        <p class="rail-title">{chinese ? '本页目录' : 'On this page'}</p>
+        <ul class="toc-list">{headings.map(heading => <li data-depth={heading.depth}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul>
+      </nav></aside>}
     </div>
+    {sidebar !== false && <dialog id="mobile-navigation" class="mobile-navigation" aria-labelledby="mobile-navigation-title">
+      <div class="mobile-navigation-heading"><strong id="mobile-navigation-title">{chinese ? '文档导航' : 'Documentation navigation'}</strong><button type="button" class="icon-button" data-menu-close aria-label={chinese ? '关闭导航' : 'Close navigation'}><Icon name="close" /></button></div>
+      <nav aria-label={chinese ? '站点导航' : 'On this site'}><Sidebar items={sidebar} /></nav>
+    </dialog>}
+    <SiteFooter chinese={chinese} />
+    <SiteTools chinese={chinese} />
   </body>
 </html>
 
 <script>
-  import { isLocale, rememberLanguage } from '../lib/language-preference'
+  import { mountSite } from '../lib/site-client'
 
-  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-language]')) {
-    link.addEventListener('click', () => {
-      const locale = link.dataset.language
-      if (isLocale(locale)) {
-        rememberLanguage(locale)
-      }
-    })
-  }
-  const navigation = document.querySelector<HTMLDetailsElement>('.site-navigation')
-  if (navigation && window.matchMedia('(max-width: 48rem)').matches) {
-    navigation.open = false
-  }
+  mountSite()
 </script>

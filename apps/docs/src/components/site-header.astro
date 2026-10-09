@@ -1,0 +1,30 @@
+---
+import Icon from './icon.astro'
+import Search from './search/index.astro'
+import ThemeSwitcher from './theme-switcher.astro'
+
+interface Props { chinese: boolean, alternate: string, current: string, mobileNav?: boolean }
+const { chinese, alternate, current, mobileNav = false } = Astro.props
+const prefix = chinese ? '/zh' : ''
+const links = [
+  { href: `${prefix}/get-started/`, label: chinese ? '文档' : 'Docs', active: !current.includes('/api/') && !current.includes('/recipes/'), icon: 'book' },
+  { href: `${prefix}/api/`, label: 'API', active: current.includes('/api/'), icon: 'code' },
+  { href: `${prefix}/recipes/`, label: chinese ? '场景指南' : 'Recipes', active: current.includes('/recipes/'), icon: 'layers' },
+]
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href={chinese ? '/zh/' : '/en/'}><img src="/logo.svg" width="34" height="34" alt="" /><span>weapp-stylex</span></a>
+    <nav class="primary-nav" aria-label={chinese ? '主要导航' : 'Main navigation'}>
+      {links.map(link => <a href={link.href} class:list={{ active: link.active }}><Icon name={link.icon} size={18} />{link.label}</a>)}
+    </nav>
+    <div class="header-tools">
+      <Search chinese={chinese} />
+      <a class="icon-button github-link" href="https://github.com/weapp-stylex/weapp-stylex" aria-label="GitHub"><Icon name="github" /></a>
+      <a class="language-link" href={alternate} lang={chinese ? 'en' : 'zh-CN'} data-language={chinese ? 'en' : 'zh'}><Icon name="globe" size={18} /><span>{chinese ? 'EN' : '中文'}</span></a>
+      <ThemeSwitcher chinese={chinese} />
+      {mobileNav && <button class="icon-button mobile-menu-button" type="button" data-menu-open aria-controls="mobile-navigation" aria-expanded="false" aria-label={chinese ? '打开文档导航' : 'Open documentation navigation'} hidden><Icon name="menu" /></button>}
+    </div>
+  </div>
+</header>

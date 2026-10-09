@@ -1,0 +1,76 @@
+---
+title: "共享模块"
+description: "通过普通导出和宿主模块图复用编译后的声明。"
+sidebar:
+  order: 4
+---
+
+普通样式声明可以放在支持的 TS/JS 模块中，无需 `.stylex.ts` 后缀。把可复用声明与页面状态分开，让各消费者通过官方 runtime API 组合样式。
+
+## 导出普通样式映射
+
+```ts
+// src/styles/card.ts
+import * as stylex from 'weapp-stylex'
+
+export const cardStyles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: '#f3f6f4' },
+  active: { opacity: 0.6 },
+})
+export default cardStyles
+```
+
+普通 barrel 可以同时暴露两种导出：
+
+```ts
+// src/styles/index.ts
+export { default, cardStyles } from './card'
+```
+
+这里的默认导出属于**你自己的样式模块**。`weapp-stylex` runtime 根入口本身没有默认导出，请使用 namespace 或具名导入。
+
+## 两个消费者分别导入
+
+```ts
+// src/pages/index/index.ts
+import * as stylex from 'weapp-stylex'
+import sharedStyles from '../../styles'
+
+Page({ data: { card: stylex.attrs(sharedStyles.root) } })
+```
+
+```ts
+// src/subpackage/detail/index.ts
+import * as stylex from 'weapp-stylex'
+import { cardStyles } from '../../styles'
+
+Page({ data: { card: stylex.attrs(cardStyles.root, cardStyles.active) } })
+```
+
+两个页面都绑定组合结果：
+
+```xml
+<view class="{{card.class}}" style="{{card.style}}">Shared card</view>
+```
+
+React 在 `View` 上展开 `stylex.props(cardStyles.root)`；Vue/Wevu 用宿主的 `computed()` 计算 `stylex.attrs(...)`，显式绑定 class/style。完整响应式示例见[条件组合](/zh/recipes/composition/)。
+
+## 使用别名与 workspace 源码
+
+通过框架 resolver 配置别名，再正常导入。workspace 包必须暴露宿主能够解析并转换的源码。仅声明包依赖或添加 TypeScript `paths` 并不能让模块进入生产构建图。
+
+共享编译器在宿主解析后规范化物理模块身份，包括符号链接。每个宿主构建只注册一个 session，重复实例会产生独立规则图和输出归属。[适配器注册](/zh/api/adapters/)介绍正确的宿主 hook。
+
+<Aside type="warning" title="Token 导入有独立契约">
+
+样式和主题模块应直接导入 `tokens.stylex.ts` 中的 token 定义，不要通过普通样式 barrel 转导出 token。参见 [token 与主题](/zh/recipes/tokens-themes/)。
+
+</Aside>
+
+## 验证模块图行为
+
+构建两个消费者，确认 class 绑定与 WXSS import。规则先统一聚合、去重，再写入每个需要样式的目录，并非每个源码模块各生成一张样式表。
+
+watch 中修改共享声明，检查两个页面。删除一个消费者时，应保留另一个仍需使用的规则；删除全部可达导入后，应清理过期规则。仓库的[集成测试](/zh/examples/)覆盖这些模块图场景，框架 watcher 仍需要通知源码变化。
+
+Metadata 生命周期见[编译器架构](/zh/architecture/)，入口输出见[组件与分包](/zh/recipes/components-subpackages/)。

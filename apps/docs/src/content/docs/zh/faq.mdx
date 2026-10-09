@@ -1,15 +1,21 @@
 ---
-title: "排障与支持边界"
-description: "排查绑定、主题和产物问题，了解当前支持范围。"
+title: "常见问题与支持范围"
+description: "了解单位、runtime 导入、支持的宿主和验收边界。"
 sidebar:
   order: 12
 ---
 
 ## 样式没有生效
 
-确认适配器已经注册，定义模块进入宿主构建模块图，产物包含生成的 `stylex.wxss` import。源码应导入 `@weapp-stylex/core` 或 `@stylexjs/stylex`，除非配置了其他 `importSources`。
+确认适配器已经注册，定义模块进入宿主构建模块图，产物包含生成的 `stylex.wxss` import。默认导入为 `weapp-stylex`、`weapp-stylex/core`、`@weapp-stylex/core` 和 `@stylexjs/stylex`；显式设置 `importSources` 会替换这些默认值。
 
 Wevu SFC 应注册同一个 `createStylex()` 工厂的两个字段，不要使用两个独立 session。Page data 绑定 `attrs()` 的结果，不是 `create()` 的映射对象。
+
+具体症状、诊断步骤、修复和验收请按[问题排查](/zh/troubleshooting/)执行。
+
+## Runtime 有默认导出吗？
+
+`weapp-stylex` 和 `weapp-stylex/core` 通过 `export *` 转导出官方具名 API 与类型。使用 `import * as stylex from 'weapp-stylex'` 或具名导入，根/core runtime 没有默认导出。用户编写的样式模块仍可默认导出编译后的映射。构建适配器使用各自的[子路径导出](/zh/aggregate-package/)。
 
 ## 动态值或主题不生效
 
@@ -32,6 +38,10 @@ StyleX 编译器保留 Babel 7，不要把 weapp-vite 的 Babel 8 要求全局�
 已支持：微信主包、页面、组件和普通分包；原生、Wevu、Taro React/Vue 3 与 uni-app Vue 3。
 
 尚未形成稳定契约：独立分包、其他小程序平台、Vue 2、uni-app x、自定义 WXML `sx` 属性和 stateful HMR。WXML 不能直接调用 StyleX 函数，编译器也不会从模板反推 TS 模块。
+
+沿用官方 StyleX API 语义，不代表所有浏览器选择器、媒体特性和 CSS 属性都受 WXSS 支持。编译能力、输出语法与所选微信基础库中的行为需要分别检查。主题和动态值依赖 CSS 自定义属性。[Runtime 参考](/zh/api/runtime/)与[实践教程](/zh/recipes/)说明平台绑定契约。
+
+[2026-10-09 IDE 记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/ide-validation-2026-10-09.md)保留七种产物分别验收的结果，完整 suite 仍待验收。它是有日期的记录，不是当前全部通过或最低基础库版本承诺。[示例页](/zh/examples/)提供可复现验收命令。
 
 提交 [GitHub issue](https://github.com/weapp-stylex/weapp-stylex/issues)时请附框架版本、配置、最小共享模块和相关 WXSS 产物。
 

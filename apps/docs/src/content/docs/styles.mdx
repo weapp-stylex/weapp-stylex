@@ -9,6 +9,8 @@ sidebar:
 
 Style declarations may live in any TS/JS module. Ordinary styles do not require a `.stylex.ts` suffix.
 
+This guide explains the module contract. The [shared-module recipe](/recipes/shared-modules/) includes complete consumer paths, bindings and watch checks; [composition](/recipes/composition/) covers reactive state.
+
 ```ts
 // styles.ts
 import * as stylex from 'weapp-stylex'
@@ -39,6 +41,8 @@ const active = stylex.attrs(styles.root, styles.active)
 
 The definition module is compiled and its exported style mapping remains available to consumers. The official runtime handles merging, including conditional entries and property precedence. Later active entries override earlier entries for the same property.
 
+The default export above belongs to the user-authored style module. The `weapp-stylex` root/core runtime has no default export; use namespace or named runtime imports. See [package entries](/aggregate-package/).
+
 ## Aliases and workspace modules
 
 Configure aliases in your framework's resolver, then import them normally. Workspace source packages must be included in the host build graph. The compiler uses the host resolver and canonical physical module identities; do not bundle a second independent compiler session for the same output.
@@ -52,8 +56,12 @@ const props = stylex.props(styles.root, active && styles.active)
 
 Use `attrs()` for native/Vue bindings and `props()` for React. A StyleX style mapping is not a serializable Page data contract; only store the resulting class/style strings there.
 
+Recompute when state changes: native uses `setData()`, Vue/Wevu uses the host's `computed()`, and React uses its next render. Always bind both returned properties. The [runtime reference](/api/runtime/) documents the composition APIs.
+
 ## Units
 
 Numeric CSS values follow official StyleX semantics, including unitless properties such as opacity. Length `16` becomes `16px`. Use `'16rpx'` for explicit responsive WeChat units. The emitted CSS bypasses framework px-to-rpx conversion.
 
 Theme token files follow a separate naming and direct-import requirement described in [themes and dynamic values](/themes/).
+
+Compiled CSS still follows the target WXSS/base-library capabilities; the adapter does not polyfill browser selectors or properties. See [scope](/faq/) and [troubleshooting](/troubleshooting/).

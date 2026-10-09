@@ -1,0 +1,208 @@
+---
+title: "Runtime types"
+description: "Every public StyleX type, component inputs and the typed-variable namespace."
+sidebar:
+  order: 32
+---
+
+Import these names with `import type` from `weapp-stylex`, `weapp-stylex/core` or `@weapp-stylex/core`. They are official types, erased from JavaScript. No type adds a WeChat compatibility check. Runtime function aliases are covered alongside their [runtime values](/api/runtime/).
+
+```ts
+import type { StyleXStyles, StyleXStylesWithout } from 'weapp-stylex'
+type ButtonStyle = StyleXStyles<{ color?: string; padding?: number | string }>
+type LayoutProtectedStyle = StyleXStylesWithout<{ position: 'absolute' }>
+```
+
+Prefer `StyleXStyles` for a component style input and let `create` infer style outputs. In the readable signatures below, official internal constraints such as the extended CSS shape are described rather than introduced as additional package exports.
+
+<a id="api-CSSProperties"></a>
+## CSSProperties
+
+```ts
+CSSProperties
+```
+
+The official authored CSS property map, including property-specific value and condition types. Use `CSSProperties['color']` to derive a value type. It is not the compiled style type accepted by `attrs`. Browser-oriented properties remain in the upstream map; WXSS support must be checked independently.
+
+<a id="api-CompiledStyles"></a>
+## CompiledStyles
+
+```ts
+CompiledStyles = /* readonly compiled property classes or a readonly theme class */
+```
+
+Broad low-level compiled representation accepted by composition. It includes opaque generated class values and theme styles. Use it for host/compiler interfaces, not to construct arbitrary class objects. Dynamic results additionally carry `InlineStyles` in a tuple.
+
+<a id="api-InlineStyles"></a>
+## InlineStyles
+
+```ts
+InlineStyles = { _opaque: /* official unique symbol */ }
+```
+
+Opaque marker type for the inline portion of a dynamic style result. It has no generic defaults and is not a CSS dictionary to author. Obtain it by invoking a dynamic `create` namespace; use `attrs`/`props` to serialize it.
+
+<a id="api-StyleXArray"></a>
+## StyleXArray
+
+```ts
+type StyleXArray<T> = T | ReadonlyArray<StyleXArray<T>>
+```
+
+One value or any depth of readonly nested arrays of that value. `T` is required and has no default. Useful when describing a composable input, for example `StyleXArray<CompiledStyles | false | null>`. Order is preserved by composition.
+
+<a id="api-StyleXStyles"></a>
+## StyleXStyles
+
+```ts
+StyleXStyles<CSS = /* official extended CSS map */>
+```
+
+Application-facing style input: recursively nested compiled styles, dynamic tuples and `false`/`null`/`undefined`. `CSS` constrains the allowed authored property names and values; by default it uses the official extended CSS map. Example: `StyleXStyles<{ color?: string }>` accepts style variants restricted to color. Type errors expose forbidden properties; it does not accept raw authored objects.
+
+<a id="api-StyleXStylesWithout"></a>
+## StyleXStylesWithout
+
+```ts
+StyleXStylesWithout<CSS> = StyleXStyles<Omit</* extended CSS map */, keyof CSS>>
+```
+
+Requires an object whose keys identify excluded properties; there is no generic default. `StyleXStylesWithout<{ position: 'absolute' }>` excludes the entire `position` property, not merely the value `absolute`. Remaining styles may still contain dynamic tuples and nested conditions. Use it to protect a component-owned layout contract.
+
+<a id="api-StaticStyles"></a>
+## StaticStyles
+
+```ts
+StaticStyles<CSS = /* official extended CSS map */>
+```
+
+Like the property-constrained static portion of `StyleXStyles`, including nested arrays and falsy conditions, but excludes dynamic inline-style tuples. The CSS constraint defaults to the official extended CSS map. Use only when an interface intentionally accepts static compiled styles.
+
+<a id="api-StaticStylesWithout"></a>
+## StaticStylesWithout
+
+```ts
+StaticStylesWithout<CSS> = StaticStyles<Omit</* extended CSS map */, keyof CSS>>
+```
+
+Required CSS key set, without a generic default. Excludes those property names from a static-only input. For example, `StaticStylesWithout<{ position: 'absolute' }>` blocks position variants and all dynamic tuples.
+
+<a id="api-MapNamespaces"></a>
+## MapNamespaces
+
+```ts
+MapNamespaces<S>
+```
+
+Requires the same static/dynamic namespace shape as `create`, with no generic default. Maps each static namespace to opaque property classes and each dynamic function to a function returning a readonly `[compiled namespace, InlineStyles]` tuple. `typeof styles` is usually easier and preserves exact inference.
+
+<a id="api-StyleXClassNameFor"></a>
+## StyleXClassNameFor
+
+```ts
+StyleXClassNameFor<K, V> = string & /* opaque key/value brand */
+```
+
+Both generics are required. A generated class string branded with authored property `K` and value type `V`. Useful in derived declarations, not for casting arbitrary strings into supported styles. The opaque identity belongs to the official runtime/compiler.
+
+<a id="api-StyleXVar"></a>
+## StyleXVar
+
+```ts
+StyleXVar<Val> = /* opaque variable reference */ & string
+```
+
+`Val` is required. String-shaped variable reference carrying the original token value type. Obtain it from `defineVars`; do not reconstruct hashes. Use `typeof tokens.ink` when an exact token reference type is needed.
+
+<a id="api-VarGroup"></a>
+## VarGroup
+
+```ts
+VarGroup<Tokens extends Record<string, any>, ID extends symbol = symbol>
+```
+
+Maps each required `Tokens` key to `StyleXVar<Tokens[key]>`, with opaque group identity and token metadata. `ID` defaults to `symbol`. `defineVars` infers it; internal metadata fields are not application token names. Themes retain the group relationship.
+
+<a id="api-Theme"></a>
+## Theme
+
+```ts
+Theme<T extends VarGroup<{}>, Tag extends symbol = symbol>
+```
+
+Required base variable group `T`; `Tag` defaults to `symbol`. Branded compiled theme from `createTheme`, linking a theme class to its base token group. Prefer `typeof darkTheme`; pass the value through `attrs`/`props` rather than reading or rewriting its class.
+
+<a id="api-Keyframes"></a>
+## Keyframes
+
+```ts
+type Keyframes = Readonly<Record<string, CSSProperties>>
+```
+
+No generics. Maps frame names or percentages to CSS properties for `keyframes`. Example: `{ from: { opacity: 0 }, to: { opacity: 1 } }`. Type acceptance does not guarantee support for a given WXSS animation property.
+
+<a id="api-PositionTry"></a>
+## PositionTry
+
+```ts
+PositionTry = Readonly</* optional anchor, inset, margin, size and self-alignment properties */>
+```
+
+No generics; a restricted descriptor for `positionTry`, not the entire CSS map. Covers `positionAnchor`/`positionArea`, physical/logical insets and margins, physical/logical dimensions and min/max dimensions, plus `alignSelf`/`justifySelf`/`placeSelf`. All fields are optional. Browser anchor positioning is unverified on WeChat.
+
+<a id="api-Types"></a>
+<a id="api-Types-CSSSyntax"></a>
+<a id="api-Types-CSSSyntaxType"></a>
+<a id="api-Types-InnerValue"></a>
+<a id="api-Types-ICSSType"></a>
+<a id="api-Types-Angle"></a>
+<a id="api-Types-Color"></a>
+<a id="api-Types-Url"></a>
+<a id="api-Types-Image"></a>
+<a id="api-Types-Integer"></a>
+<a id="api-Types-LengthPercentage"></a>
+<a id="api-Types-Length"></a>
+<a id="api-Types-Percentage"></a>
+<a id="api-Types-Num"></a>
+<a id="api-Types-Resolution"></a>
+<a id="api-Types-Time"></a>
+<a id="api-Types-TransformFunction"></a>
+<a id="api-Types-TransformList"></a>
+<a id="api-Types-CSSType"></a>
+## Types
+
+`Types` is a **type-only namespace**, not the runtime `types` object. For example, `import type { Types } from 'weapp-stylex'` enables `Types.Color<string>`; it does not provide constructors to call with `new`. The installed public declaration exposes the following namespace members. None is an independent root named export.
+
+| Member | Signature / shape | Use and boundary |
+| --- | --- | --- |
+| `Types.CSSSyntax` | `'*' or '<length>' … '<transform-list>'` | Official CSS syntax string union, including color, image, URL, integer, angle, time, resolution and custom-ident. |
+| `Types.CSSSyntaxType` | `CSSSyntax` | Advanced alias exposed by the installed namespace declarations; use CSSSyntax in application types. |
+| `Types.InnerValue` | `null \| string \| number` | Shared constraint for wrapper types, with no generic parameters. |
+| `Types.ICSSType` | `ICSSType<T extends InnerValue>` | Required generic; readonly value is a conditional string value, and readonly syntax is CSSSyntaxType. A declaration helper, not an application object constructor. |
+| `Types.Angle` | `Angle<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Color` | `Color<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Url` | `Url<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Image` | `Image<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Integer` | `Integer<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.LengthPercentage` | `LengthPercentage<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Length` | `Length<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Percentage` | `Percentage<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Num` | `Num<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Resolution` | `Resolution<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.Time` | `Time<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.TransformFunction` | `TransformFunction<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.TransformList` | `TransformList<T extends InnerValue>` | Required generic, no default. Readonly `value` and `syntax`; inferred from the matching runtime `types` helper. |
+| `Types.CSSType` | `CSSType<T extends InnerValue>` | Union of the thirteen wrappers above; required generic, no default. |
+
+Typed wrappers describe official CSS registration semantics. Their existence in TypeScript does not establish WXSS support. Prefer inferred values over direct access to wrapper fields; see the [runtime caution](/api/runtime/#api-types).
+
+## Derive an unexported input type
+
+Some official function declarations mention internal types that are not root exports. Obtain their public parameter shape through the function:
+
+```ts
+import * as stylex from 'weapp-stylex'
+type TransitionInput = Parameters<typeof stylex.viewTransitionClass>[0]
+```
+
+This preserves the signature without importing internal runtime file paths. It does not change the view-transition support boundary.

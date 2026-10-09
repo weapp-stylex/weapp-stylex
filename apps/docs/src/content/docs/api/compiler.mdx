@@ -1,0 +1,376 @@
+---
+title: "Compiler and host API"
+description: "Shared options, transforms, sessions, diagnostics and owned WXSS output."
+sidebar:
+  order: 34
+---
+
+Import values and types from `weapp-stylex/compiler` or `@weapp-stylex/compiler`. This is the public build-core surface for adapter authors. Application projects should use a [framework adapter](/api/adapters/) for the correct resolver, SFC preprocessing and emission lifecycle. The root runtime entry does not expose these tools.
+
+<a id="api-StylexBackend"></a>
+## StylexBackend
+
+```ts
+type StylexBackend = 'babel' | 'auto' | 'swc'
+```
+
+No generic parameters. The option defaults to `babel`, using official Babel 7. `auto` accelerates only the conservative verified AST subset; strict `swc` rejects unsupported inputs or a missing optional native compiler. Syntax, resolver and unknown transform failures propagate. Raw SFCs, themes/constants, compile-time imports and non-empty custom Babel options remain on Babel in `auto`.
+
+<a id="api-StylexCompilerOptions"></a>
+## StylexCompilerOptions
+
+```ts
+interface StylexCompilerOptions {
+  backend?: StylexBackend
+  importSources?: readonly string[]
+  babel?: Partial<Options> // official @stylexjs/babel-plugin Options
+}
+```
+
+All fields are optional; adapter/session options default to `{}`. `backend` defaults to `'babel'`. `importSources` defaults to `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`. A supplied list **replaces** the defaults. `babel` defaults to no custom options and configures the official StyleX plugin, not arbitrary Babel transforms.
+
+```ts
+const options: StylexCompilerOptions = {
+  backend: 'auto',
+  importSources: ['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
+}
+```
+
+After custom options, the compiler fixes `importSources`, `classNamePrefix: 'sx'`, `debug: false`, `dev: false`, `test: false`, `runtimeInjection: false` and `styleResolution: 'application-order'`. Rule processing fixes `legacyDisableLayers: true` and `useLayers: false`. Custom `unstable_moduleResolution` can override the host bridge: do not override it without owning token-resolution semantics. Keep Babel 7 isolated from host Babel 8 presets. There is no library-level `WEAPP_STYLEX_BACKEND` lookup.
+
+<a id="api-SfcParser"></a>
+## SfcParser
+
+```ts
+type SfcParser = typeof import('@vue/compiler-sfc').parse
+```
+
+Parser function type accepted by the session constructor. Required source, optional parse options and descriptor/error output follow the installed Vue parser signature. By default the session uses its own Vue parser; uni-app supplies the parser resolved from DCloud's matching dependency tree. Do not substitute a mismatched parser to unify host versions.
+
+<a id="api-TransformHost"></a>
+## TransformHost
+
+```ts
+interface TransformHost {
+  resolve(source: string, importer: string): Promise<string | undefined>
+  addWatchFile(id: string): void
+  diagnostic?(diagnostic: StylexDiagnostic): void
+}
+```
+
+`resolve` and `addWatchFile` are required. Resolve through the host, returning a usable physical id or `undefined`; propagate resolver errors. Every dependency is registered with the watcher, including cache-hit replays. Optional `diagnostic` receives structured notices/errors, with no default callback. Compile errors still reject. Do not replace host aliases/package resolution with guessed path joins.
+
+<a id="api-ModuleStyles"></a>
+## ModuleStyles
+
+```ts
+interface ModuleStyles {
+  rules: Rule[] // @stylexjs/babel-plugin
+  dependencies: string[]
+}
+```
+
+Both fields are required, without defaults. Per-module official rules and watched dependency ids are stored in `StylexSession.modules`. Replace metadata after a successful transform instead of accumulating obsolete rules. Rules are compiler data, not raw CSS strings.
+
+<a id="api-SourceTransform"></a>
+## SourceTransform
+
+```ts
+interface SourceTransform extends ModuleStyles {
+  code: string
+  map?: string // serialized JSON source map
+}
+```
+
+Required transformed code and optional **JSON string** map supplement rules/dependencies. `session.transform` returns this result or `null` for a skipped request. Webpack's loader parses the map JSON; the shared Vite hook passes the string. Raw SFC transforms preserve template/styles/macros and compose script maps.
+
+<a id="api-StylexSession"></a>
+## StylexSession
+
+```ts
+new StylexSession(options: StylexCompilerOptions = {}, parseSfc: SfcParser = parse)
+```
+
+Creates build-owned state, using the compiler's Vue parser by default. An invalid runtime backend throws `Unknown StyleX backend`. Share one session across source and output stages. Cache identity includes canonical physical filename, source and a fingerprint of requested options/compiler versions/cache ABI; it does not additionally include the actually selected backend.
+
+```ts
+import { StylexSession, WxssEmitter } from 'weapp-stylex/compiler'
+const session = new StylexSession({ backend: 'babel' })
+const emitter = new WxssEmitter()
+// Start: session.beginBuild()
+// Source: await session.transform(code, id, host)
+// Output: session.prune(reachableIds)
+// await emitter.generate(bundle, session.css(), sink)
+// Final watcher shutdown: session.clear(); emitter.clear()
+```
+
+This is a lifecycle sketch: the host supplies code, ids, host context, bundle and sink. Use an adapter in application projects.
+
+<a id="api-StylexSession-options"></a>
+### options
+
+`readonly options: StylexCompilerOptions` stores constructor options, default `{}`. Treat them as fixed throughout the session because the fingerprint is computed at construction.
+
+<a id="api-StylexSession-parseSfc"></a>
+### parseSfc
+
+`readonly parseSfc: SfcParser` stores the constructor parser, default imported Vue `parse`. Supply the matching host parser when constructing the session.
+
+<a id="api-StylexSession-modules"></a>
+### modules
+
+`readonly modules: Map<string, ModuleStyles>` starts empty and holds canonical module metadata replaced by `transform`. Read it for host integration; manage changes through lifecycle methods.
+
+<a id="api-StylexSession-dirty"></a>
+### dirty
+
+`readonly dirty: Set<string>` starts empty. `change` marks ids requiring host invalidation; the host inspects them to invalidate cached modules.
+
+<a id="api-StylexSession-importSources"></a>
+### importSources
+
+`readonly importSources: readonly string[]` is the configured source list, or the four defaults in `StylexCompilerOptions`. `hasImport` screens against this list.
+
+<a id="api-StylexSession-fingerprint"></a>
+### fingerprint
+
+`readonly fingerprint: string` is an opaque identity computed from options/compiler versions/ABI. Store it alongside host cache metadata; do not infer semantic behavior from the hash.
+
+<a id="api-StylexSession-hasImport"></a>
+### hasImport
+
+`hasImport(code: string): boolean` requires source text and reports whether it contains any configured source string. This is a substring screen, not proof of an AST import. Later analysis handles safe false positives.
+
+<a id="api-StylexSession-getStats"></a>
+### getStats
+
+```ts
+getStats(): {
+  parses: number; babelTransforms: number; swcTransforms: number
+  cacheHits: number; tokenReads: number; resolutions: number
+}
+```
+
+No arguments. Returns a snapshot of six counters, initially zero and accumulated over the session lifetime. `beginBuild` and `clear` do not reset them. Useful for benchmarks/call assertions, not a timing API.
+
+<a id="api-StylexSession-beginBuild"></a>
+### beginBuild
+
+`beginBuild(): void` takes no arguments, advances generation and expires per-build resolver/filesystem facts and pending work. Unchanged compiled metadata/cache survive. Call at build start, not after every source module.
+
+<a id="api-StylexSession-transform"></a>
+### transform
+
+```ts
+transform(code: string, id: string, host: TransformHost): Promise<SourceTransform | null>
+```
+
+All arguments are required. This normal metadata-owning transform accepts scripts/raw `.vue`, skips ineligible or duplicate virtual requests, replaces module metadata and returns code/map/rules/dependencies or `null`. Retain original source when skipped. Compiler/token/parser errors reject with structured compile information.
+
+<a id="api-StylexSession-transformScript"></a>
+### transformScript
+
+```ts
+transformScript(
+  code: string, filename: string, host: TransformHost,
+  ancestors: ReadonlySet<string> = new Set(),
+  generation = /* current revision */,
+): Promise</* ModuleStyles + code, Babel map and backend */>
+```
+
+Code, filename and host are required. The lower-level result contains `code`, `map` (Babel map object/null/undefined), `rules`, `dependencies` and actual `backend` (`babel`/`swc`). It does not itself commit normal per-module metadata. `ancestors` detects recursive token cycles; `generation` guards work across lifecycle changes. Leave both defaults unless implementing this recursion/lifecycle contract. Its internal result alias is not exported; obtain the exact type with `Awaited<ReturnType<StylexSession['transformScript']>>`.
+
+<a id="api-StylexSession-remove"></a>
+### remove
+
+`remove(id: string): void` requires an id and drops metadata, dirty marker and associated cache/pending/alias records. Use when a module disappears or no longer claims StyleX. It does not delete arbitrary host files.
+
+<a id="api-StylexSession-change"></a>
+### change
+
+`change(id: string, deleted: boolean = false): void` requires a changed id. It advances generation, expires resolver facts, invalidates affected work and marks dependants dirty. Deletion removes the module using its previously known physical identity. Configuration/manifest/lock changes invalidate broadly. The host must act on `dirty`.
+
+<a id="api-StylexSession-prune"></a>
+### prune
+
+`prune(ids: Iterable<string>): void` requires reachable host ids. Retains their dependencies, including tokens eliminated from rendered JS, and removes unreachable metadata/cache records. Call after graph resolution and before output aggregation.
+
+<a id="api-StylexSession-css"></a>
+### css
+
+`css(): string` takes no arguments and aggregates current rules through `processRules`. Returns CSS for WXSS planning; an empty graph produces empty CSS. It does not emit a file.
+
+<a id="api-StylexSession-clear"></a>
+### clear
+
+`clear(): void` releases metadata/caches/pending work and advances generation. No arguments or return value. It does not delete host output or reset counters. Call at final watcher shutdown; `closeBundle` alone must not clear a live watcher.
+
+<a id="api-SCRIPT_RE"></a>
+## SCRIPT_RE
+
+```ts
+const SCRIPT_RE: RegExp = /\.[cm]?[jt]sx?$/i
+```
+
+Extension matcher, without arguments/defaults. Use `SCRIPT_RE.test(sourceId(id))` to screen JS/TS/JSX/TSX and matching c/m variants. It does not match Vue SFCs or prove StyleX is imported.
+
+<a id="api-sourceId"></a>
+## sourceId
+
+`sourceId(id: string): string` requires a host id. Strips query/leading null virtual prefix, normalizes separators and attempts filesystem realpath. On failure returns the normalized textual path. Use for physical identity, not as a replacement for the host resolver.
+
+<a id="api-processRules"></a>
+## processRules
+
+`processRules(rules: Rule[]): string` requires official rules. Aggregates with layers disabled and rewrites `:root` to `page`, preserving theme classes (`.theme:root` becomes `page.theme`). Returns CSS text, empty for empty input. It does not convert px to rpx or validate WXSS features. Rule/parse errors propagate.
+
+<a id="api-PluginHost"></a>
+## PluginHost
+
+```ts
+interface PluginHost {
+  resolve(source: string, importer?: string, options?: { skipSelf?: boolean }): Promise<{
+    id: string
+    external?: boolean | 'absolute' | 'relative'
+  } | null>
+  warn(message: string): void
+  error(error: { message: string; id: string; loc?: { line: number; column: number } }): never
+  addWatchFile(id: string): void
+  getModuleIds(): IterableIterator<string>
+  emitFile(asset: { type: 'asset'; fileName: string; source: string }): string
+}
+```
+
+Structural hook context shared across Vite 4/5/8; no Vite runtime is bundled. All methods are required. Resolved external/null modules are not token sources. `error` aborts; `emitFile` returns the host reference id. Native Vite errors use one-based lines and zero-based columns; project diagnostic columns are one-based.
+
+<a id="api-createVitePlugins"></a>
+## createVitePlugins
+
+```ts
+createVitePlugins(session: StylexSession, options: {
+  sfcOnly?: boolean
+  emitStyles?: boolean
+} = {}): /* pre-source and post-output plugin array */
+```
+
+Session is required; options default `{}`. Omitted `sfcOnly` does not restrict to SFCs; true accepts only raw `.vue` requests without queries. `emitStyles` is enabled unless false. Returns pre-source/post-output plugins with cache/watch, prune, diagnostics and emission hooks. Example: `createVitePlugins(new StylexSession(), { emitStyles: true })`.
+
+Raw SFCs are transformed before framework compilation; duplicate virtual requests are skipped. Final non-watch close clears state; watch preserves it until shutdown. This generic bridge does not replace a framework's native emission compatibility path. Applications use adapters.
+
+<a id="api-backendBuildDependencies"></a>
+## backendBuildDependencies
+
+`const backendBuildDependencies: string[]` lists compiler/backend file and package-manifest paths for host build-cache invalidation. No arguments or user defaults. Include it in cache dependencies alongside `session.fingerprint`; do not mutate the shared list or treat it as every source module's dependency graph.
+
+<a id="api-StylexDiagnostic"></a>
+## StylexDiagnostic
+
+```ts
+interface StylexDiagnostic {
+  level: 'warning' | 'error'
+  code: 'STYLEX_FALLBACK' | 'STYLEX_COMPILE_ERROR'
+  message: string
+  file: string
+  line?: number
+  column?: number
+  hint: string
+}
+```
+
+Severity, code, message, file and hint are required. Known optional locations are one-based; missing means unknown. Fallback notices describe compatibility decisions and are deduplicated per reason/session. Compile errors describe failure. Receive these through the host diagnostic callback.
+
+<a id="api-formatDiagnostic"></a>
+## formatDiagnostic
+
+`formatDiagnostic(diagnostic: StylexDiagnostic): string` returns `[weapp-stylex] file[:line:column]: message`, a newline and hint. Diagnostic is required. Display column defaults to 1 when a line exists without a column. Example: `host.warn(formatDiagnostic(diagnostic))`. Formatting does not throw or change severity.
+
+<a id="api-StylexCompileError"></a>
+## StylexCompileError
+
+`new StylexCompileError(diagnostic: StylexDiagnostic, cause?: unknown)` creates an Error with required diagnostic/optional cause. `name` is `StylexCompileError`, message is formatted and readonly `diagnostic` exposes structured data. Use `instanceof StylexCompileError` to inspect it; cause follows Error cause semantics.
+
+<a id="api-compileError"></a>
+## compileError
+
+`compileError(cause: unknown, file: string): StylexCompileError` requires both inputs. Returns an existing `StylexCompileError` unchanged, otherwise wraps cause/message/file with a repair hint. Babel location columns are converted to one-based. It returns an error; use `throw compileError(cause, file)` to fail.
+
+<a id="api-StyleAsset"></a>
+## StyleAsset
+
+```ts
+interface StyleAsset {
+  type: 'asset'
+  fileName: string
+  source: string | Uint8Array
+}
+```
+
+All fields are required, with no defaults. Filename is bundle-relative; source is text or UTF-8 bytes. Example: `{ type: 'asset', fileName: 'pages/home/home.wxss', source: '' }`.
+
+<a id="api-ScriptChunk"></a>
+## ScriptChunk
+
+```ts
+interface ScriptChunk {
+  type: 'chunk'
+  fileName: string
+  code: string
+  modules?: Record<string, unknown>
+}
+```
+
+Discriminator/filename/code are required; optional modules is absent by default. Module keys represent host identities for pruning; `.js` presence helps companion planning. Example: `{ type: 'chunk', fileName: 'pages/home/home.js', code: '', modules: {} }`.
+
+<a id="api-StyleBundle"></a>
+## StyleBundle
+
+`type StyleBundle = Record<string, StyleAsset | ScriptChunk>` is a filename-keyed current host output record, without generics/defaults. Keys and fileName should agree. Generation can mutate existing style assets and remove owned stale record entries; the sink emits new files. Do not pass a stale filesystem listing.
+
+<a id="api-AssetSink"></a>
+## AssetSink
+
+```ts
+interface AssetSink {
+  emit(fileName: string, source: string): void | Promise<void>
+  remove?(fileName: string): void | Promise<void>
+}
+```
+
+Emission is required, removal optional, with no default callbacks. Both can be sync/async and are awaited. Use host APIs; compatibility filesystem sinks must preserve bundle/ownership semantics. Without remove, the host owns filesystem cleanup. Sink errors reject generation.
+
+<a id="api-assetText"></a>
+## assetText
+
+`assetText(asset: StyleAsset): string` requires an asset, returns string source unchanged or decodes bytes with TextDecoder. It does not emit or change ownership. Use it when inspecting/updating WXSS in the host bundle.
+
+<a id="api-WxssEmitter"></a>
+## WxssEmitter
+
+`new WxssEmitter()` takes no arguments and creates initially empty asset/import ownership records. Reuse it through watch rebuilds to identify stale generated output. It owns only its generated files and inserted imports; user styles are not deleted. Do not reset before a rebuild that needs cleanup.
+
+<a id="api-WxssEmitter-generate"></a>
+### generate
+
+```ts
+generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>
+```
+
+All inputs are required. Plans directory-local `stylex.wxss`, relative imports and missing page/component companions where WXML/JS exist. Initial empty CSS leaves output unchanged. Later builds remove only tracked owned stale assets/imports, calling optional sink.remove. Existing user `stylex.wxss` causes a collision error; rename it instead of overwriting. Sink failures reject.
+
+```ts
+await emitter.generate(bundle, session.css(), {
+  emit: (fileName, source) => { bundle[fileName] = { type: 'asset', fileName, source } },
+  remove: fileName => { delete bundle[fileName] },
+})
+```
+
+This illustrates a mutable in-memory bundle. Real adapters use host APIs; weapp-vite 7.4 needs file-output compatibility for new keys. Emission does not validate WXSS feature support.
+
+<a id="api-WxssEmitter-clear"></a>
+### clear
+
+`clear(): void` takes no arguments and releases ownership records. It does not itself delete files/imports. Use at final shutdown after output cleanup, not while watch may need the previous history.
+
+## Public API versus implementation detail
+
+Only the package barrel/export-map surface above supports imports. Native backend loaders, fingerprint helpers, AST analysis types and the Taro Webpack implementation have no public subpaths. A type referenced by a signature may remain internal; derive exact types through the public function instead of importing implementation files.

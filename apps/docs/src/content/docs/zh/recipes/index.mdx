@@ -1,0 +1,49 @@
+---
+title: "实践教程"
+description: "用共享 StyleX 声明构建可交互的小程序界面。"
+sidebar:
+  order: 14
+---
+
+先完成[快速开始](/zh/get-started/)和对应的[框架适配器](/zh/api/adapters/)接入。以下教程假设插件已经注册，首次构建可以生成 WXSS。每个教程都把可复用声明与宿主的状态、渲染分开处理。
+
+## 按任务选择教程
+
+| 任务 | 教程 | 验收目标 |
+| --- | --- | --- |
+| 切换选中或禁用状态 | [条件组合](/zh/recipes/composition/) | 状态变化后 class 随之变化 |
+| 根据用户输入调整宽度 | [动态样式](/zh/recipes/dynamic-styles/) | class 和行内 style 都绑定到节点 |
+| 切换配色 | [Token 与主题](/zh/recipes/tokens-themes/) | 默认值使用 `page`，主题到达组件根节点 |
+| 多页面共用声明 | [共享模块](/zh/recipes/shared-modules/) | 导入进入宿主模块图，消费者拿到编译后的对象 |
+| 为隔离组件和普通分包提供样式 | [组件与分包](/zh/recipes/components-subpackages/) | 每个渲染入口都能加载生成的 WXSS |
+| 渐进引入 StyleX | [迁移现有项目](/zh/recipes/migration/) | 原有样式与框架行为继续正常工作 |
+
+## 保持职责清晰
+
+在模块顶层用 `create()` 定义样式。应用状态变化时，用 `attrs()` 或 `props()` 组合编译后的对象。编译器负责 WXSS；状态、模板、组件和生命周期仍由框架管理。
+
+<Tabs>
+  <Tab label="原生微信">
+
+在 JavaScript 中计算 `attrs()`，把结果里的 class/style 字符串放进 Page 或 Component 的 `data`，再通过 `setData()` 更新。WXML 只绑定字符串，不能调用 StyleX 函数。
+
+  </Tab>
+  <Tab label="Taro React">
+
+在渲染时调用 `props()`，并将结果展开到 Taro `View`。React 状态变化触发下一次渲染。
+
+  </Tab>
+  <Tab label="Vue 与 Wevu">
+
+通过宿主的 `computed()` 计算 `attrs()`，显式绑定 `:class` 和 `:style`。Wevu 从 `wevu` 导入响应式 API，Taro Vue 3 与 uni-app Vue 3 从 `vue` 导入。
+
+  </Tab>
+</Tabs>
+
+## 核对结果
+
+构建后检查生成的 `stylex.wxss`，以及页面/组件 WXSS 中指向同目录的 import。数值长度保留官方 StyleX 单位语义：`16` 是 `16px`，`'16rpx'` 才是响应式 WXSS。主题和动态值还需要所选微信基础库支持 CSS 自定义属性。
+
+在目标运行时验证交互。[示例与验收](/zh/examples/)说明静态产物检查、headless 交互和真实微信开发者工具各自能证明什么。编译成功不能证明所有浏览器选择器和 CSS 属性都能在微信中运行。
+
+教程运行异常时，按[排障步骤](/zh/troubleshooting/)检查。[Runtime 参考](/zh/api/runtime/)解释每个 API，[类型参考](/zh/api/types/)介绍组件的样式契约。

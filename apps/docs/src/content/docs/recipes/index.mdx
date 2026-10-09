@@ -1,0 +1,49 @@
+---
+title: "Practical recipes"
+description: "Build interactive mini-program interfaces with shared StyleX declarations."
+sidebar:
+  order: 14
+---
+
+Start with the [quick start](/get-started/) and your [framework adapter](/api/adapters/). These recipes assume that the adapter is registered and your first build produces WXSS. Each recipe separates reusable declarations from the host's state and rendering.
+
+## Choose a task
+
+| Task | Recipe | What to verify |
+| --- | --- | --- |
+| Toggle a selected or disabled state | [Conditional composition](/recipes/composition/) | The class changes when state changes |
+| Set a width from user input | [Dynamic styles](/recipes/dynamic-styles/) | Both the class and inline style reach the node |
+| Switch a color scheme | [Tokens and themes](/recipes/tokens-themes/) | Defaults use `page`; the selected theme reaches component roots |
+| Share declarations across pages | [Shared modules](/recipes/shared-modules/) | Imports enter the host graph and consumers retain compiled objects |
+| Style isolated components and ordinary subpackages | [Components and subpackages](/recipes/components-subpackages/) | Each rendered entry can load its generated WXSS |
+| Adopt StyleX gradually | [Migration](/recipes/migration/) | Existing styles and framework behavior still work |
+
+## Keep the boundary clear
+
+Define styles at module scope with `create()`. Compose those compiled objects with `attrs()` or `props()` when application state changes. The compiler produces WXSS; your framework remains responsible for state, templates, components and lifecycle.
+
+<Tabs>
+  <Tab label="Native WeChat">
+
+Compute `attrs()` in JavaScript. Put its class/style strings in Page or Component `data`, and update them with `setData()`. WXML binds those strings and cannot call StyleX functions.
+
+  </Tab>
+  <Tab label="Taro React">
+
+Call `props()` during rendering and spread the result on a Taro `View`. React state triggers the next render.
+
+  </Tab>
+  <Tab label="Vue and Wevu">
+
+Compute `attrs()` with the host's `computed()` and explicitly bind `:class` and `:style`. Import reactivity from `wevu` in Wevu, and from `vue` in Taro Vue 3 or uni-app Vue 3.
+
+  </Tab>
+</Tabs>
+
+## Check the result
+
+After a build, inspect the generated `stylex.wxss` and same-directory imports in page/component WXSS. Numeric lengths preserve official StyleX units: `16` is `16px`, while `'16rpx'` is responsive WXSS. Theme and dynamic-value recipes also require CSS custom-property support in the chosen WeChat base library.
+
+Run interactions in the target runtime. [Example validation](/examples/) explains what static artifact checks, headless interactions and real WeChat DevTools checks establish. A successful compile alone does not establish support for every browser selector or CSS property.
+
+If a recipe does not work, follow [troubleshooting](/troubleshooting/). The [runtime reference](/api/runtime/) explains each API; [types](/api/types/) cover component style contracts.

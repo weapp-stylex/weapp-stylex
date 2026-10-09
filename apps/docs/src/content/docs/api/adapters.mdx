@@ -1,0 +1,121 @@
+---
+title: "Adapters and options"
+description: "Framework factories, defaults, host registration and supported version ranges."
+sidebar:
+  order: 33
+---
+
+Every adapter re-exports the [`StylexCompilerOptions`](/api/compiler/#api-StylexCompilerOptions) type. Options default to `{}` and therefore the Babel backend. These are build-time imports; application runtime imports remain at `weapp-stylex`. Named/default exports shown below refer to the same function.
+
+## Shared options
+
+| Option | Default | Contract |
+| --- | --- | --- |
+| `backend` | `'babel'` | `'auto'` uses the verified SWC subset; `'swc'` rejects unsupported/unavailable inputs. |
+| `importSources` | Four official/façade sources | Replaces the list; include the defaults when adding a façade. |
+| `babel` | No custom options | Partial official StyleX plugin options, not general Babel configuration. |
+
+`WEAPP_STYLEX_BACKEND` is an example configuration convention, not a library environment API. Set `backend` explicitly. Build enforcement and diagnostics are detailed in the [compiler reference](/api/compiler/).
+
+<a id="api-stylexCompiler"></a>
+## stylexCompiler
+
+```ts
+stylexCompiler(options: StylexCompilerOptions = {}): WeappCompilerPluginOption
+```
+
+Named and default export of `weapp-stylex/weapp-vite` or `@weapp-stylex/weapp-vite`. Returns a native weapp-vite source compiler provider. Register it in `weapp.compilerPlugins`; the host drives transforms, watch invalidation and WXSS emission.
+
+```ts
+import { defineConfig } from 'weapp-vite/config'
+import { stylexCompiler } from 'weapp-stylex/weapp-vite'
+export default defineConfig({
+  weapp: { srcRoot: 'src', compilerPlugins: [stylexCompiler()] },
+})
+```
+
+This entry handles native JS/TS scripts. Vue SFC preprocessing uses `createStylex`. Compilation and generated filename conflicts surface through host diagnostics.
+
+<a id="api-createStylex"></a>
+## createStylex
+
+```ts
+createStylex(options: StylexCompilerOptions = {}): { vitePlugins: ReturnType<typeof createVitePlugins>; compilerPlugin: WeappCompilerPluginOption }
+```
+
+Named export of the weapp-vite entry. Returns two parts sharing one `StylexSession`: raw SFC pre-plugins and a native compiler/output provider. Register **both fields from one call**. Separate calls break their shared metadata/output contract.
+
+```ts
+import { defineConfig } from 'weapp-vite/config'
+import { createStylex } from 'weapp-stylex/weapp-vite'
+const sx = createStylex({ backend: 'auto' })
+export default defineConfig({
+  plugins: sx.vitePlugins,
+  weapp: { srcRoot: 'src', compilerPlugins: [sx.compilerPlugin] },
+})
+```
+
+The Vite half transforms raw SFC scripts before framework compilation with `sfcOnly: true` and `emitStyles: false`; the native half owns WXSS emission. Raw SFCs stay on Babel even in `auto`, protecting template-only bindings. This factory is the Wevu/Vue SFC path, not a browser CSS injector.
+
+<a id="api-stylexTaro"></a>
+## stylexTaro
+
+```ts
+stylexTaro(ctx: IPluginContext, options: StylexCompilerOptions = {}): void
+```
+
+Named and default export of `weapp-stylex/taro` or `@weapp-stylex/taro`. Taro supplies required `ctx`; the function registers Vite and Webpack hooks and returns nothing. Configure the plugin path instead of invoking it in application code:
+
+```ts
+export default {
+  plugins: [[require.resolve('weapp-stylex/taro'), { backend: 'babel' }]],
+}
+```
+
+Only `TARO_ENV=weapp` is supported; another target raises an explicit configuration error. Supports Taro React/Vue 3 on the verified Vite/Webpack 5 hosts. The plugin injects Webpack session state, stable loader identity and cache metadata; no manual loader recipe is required. `StylexWebpackPlugin` is not a public package export.
+
+<a id="api-stylexLoader"></a>
+## stylexLoader
+
+```ts
+stylexLoader(this: /* Webpack LoaderContext<StylexCompilerOptions> with stylexSession */, code: string): void
+```
+
+Named/default export of `weapp-stylex/taro/loader` or `@weapp-stylex/taro/loader`. Webpack supplies the required loader context and source. The Taro plugin must inject `stylexSession`. Return is `void`; asynchronous output, serialized-map decoding and errors go through `this.async()` callback.
+
+```ts
+const loaderPath = require.resolve('weapp-stylex/taro/loader')
+```
+
+The path is public for plugin/host resolution, not a self-contained manual loader setup. Calling it without its context/session fails. Compiler failures use the callback; dependencies and warnings use Webpack APIs. The context type itself is not exported.
+
+<a id="api-stylexUniApp"></a>
+## stylexUniApp
+
+```ts
+stylexUniApp(options: StylexCompilerOptions = {}): /* platform guard + shared Vite plugin array */
+```
+
+Named/default export of `weapp-stylex/uni-app` or `@weapp-stylex/uni-app`. Returns an array to spread **after `uni()`**. It resolves DCloud’s matching `@vue/compiler-sfc` parser instead of substituting a workspace Vue parser.
+
+```ts
+import uniImport from '@dcloudio/vite-plugin-uni'
+import { defineConfig } from 'vite'
+import { stylexUniApp } from 'weapp-stylex/uni-app'
+const uni = (uniImport as unknown as { default?: typeof uniImport }).default ?? uniImport
+export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
+```
+
+Only `UNI_PLATFORM=mp-weixin` is supported; the config hook rejects another platform. Missing/mismatched DCloud parser dependencies can fail during factory setup. Vue 2 and uni-app x are outside the stable contract.
+
+## Host versions and validation boundary
+
+The framework peers are optional on adapters: install the host used by your application. Their supported ranges are deliberately kept separate.
+
+| Adapter | Declared framework peer | Verified example baseline |
+| --- | --- | --- |
+| weapp-vite | `weapp-vite >=7.4.0 <8` | weapp-vite/Wevu 7.4.0 with Vite 8 |
+| Taro | `@tarojs/service >=4.3.0 <4.4.0`; `webpack ^5.91.0` | Taro 4.3.0, Vite 4.5.14 / Webpack 5.91.0 |
+| uni-app | `@dcloudio/vite-plugin-uni 3.0.0-alpha-5030120260930001` | Matching vue3 channel, Vue 3.4.21 / Vite 5.2.8 |
+
+Node must satisfy `^22.22.1 || >=24.11.0`; CI covers 22.22.1 and 24.18.0. Avoid global overrides that unify incompatible host Vite/Vue/Babel versions. Shared StyleX compilation remains on Babel 7. Static builds, headless interaction and real WeChat IDE evidence are distinct checks; consult [examples](/examples/) for the current acceptance records.

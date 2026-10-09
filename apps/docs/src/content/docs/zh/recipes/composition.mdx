@@ -1,0 +1,160 @@
+---
+title: "条件组合"
+description: "根据应用状态组合基础、选中和禁用样式。"
+sidebar:
+  order: 1
+---
+
+把基础外观和不同状态拆成独立样式条目。同一属性以后面生效的条目为准，条件为 false 时不添加样式。本例实现可选中的卡片，并保留明确的禁用外观。
+
+## 定义状态样式
+
+```ts
+// styles.ts
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  card: {
+    padding: 16,
+    borderRadius: '12rpx',
+    backgroundColor: '#f3f6f4',
+    color: '#17352a',
+    opacity: 1,
+  },
+  selected: { backgroundColor: '#d8f4e4' },
+  disabled: { opacity: 0.45 },
+})
+```
+
+数值 padding 输出 `16px`，圆角显式使用 `rpx`。声明放在模块顶层，状态只决定向 runtime 传入哪些编译后的条目，不要在事件处理函数中重新声明样式。
+
+## 将状态连接到节点
+
+以下示例将 `styles.ts` 放在消费者旁边。目录不同的项目只需调整导入路径。
+
+<Tabs>
+  <Tab label="原生微信">
+
+```ts
+// index.ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+Page({
+  data: {
+    selected: false,
+    disabled: false,
+    card: stylex.attrs(styles.card),
+  },
+  toggle() {
+    if (this.data.disabled) return
+    const selected = !this.data.selected
+    this.setData({
+      selected,
+      card: stylex.attrs(styles.card, selected && styles.selected),
+    })
+  },
+  toggleDisabled() {
+    const disabled = !this.data.disabled
+    this.setData({
+      disabled,
+      card: stylex.attrs(
+        styles.card,
+        this.data.selected && styles.selected,
+        disabled && styles.disabled,
+      ),
+    })
+  },
+})
+```
+
+```xml
+<!-- index.wxml -->
+<view class="{{card.class}}" style="{{card.style}}" bindtap="toggle">
+  <text>{{selected ? 'Selected' : 'Select this card'}}</text>
+</view>
+<button bindtap="toggleDisabled">Toggle disabled state</button>
+```
+
+`setData()` 同时更新状态和组合后的字符串。`data` 保存 `attrs()` 的结果，不保存 `create()` 的样式映射。
+
+  </Tab>
+  <Tab label="Taro React">
+
+```tsx
+import { Button, Text, View } from '@tarojs/components'
+import { useState } from 'react'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+export default function Card() {
+  const [selected, setSelected] = useState(false)
+  const [disabled, setDisabled] = useState(false)
+  return (
+    <View>
+      <View
+        {...stylex.props(styles.card, selected && styles.selected, disabled && styles.disabled)}
+        onClick={() => { if (!disabled) setSelected(!selected) }}
+      >
+        <Text>{selected ? 'Selected' : 'Select this card'}</Text>
+      </View>
+      <Button onClick={() => setDisabled(!disabled)}>Toggle disabled state</Button>
+    </View>
+  )
+}
+```
+
+`props()` 同时提供 React 的 `className` 和 `style`。每次渲染重新计算，不需要把编译后的映射放进状态。
+
+  </Tab>
+  <Tab label="Vue 3">
+
+```vue
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+const selected = ref(false)
+const disabled = ref(false)
+const card = computed(() => stylex.attrs(
+  styles.card,
+  selected.value && styles.selected,
+  disabled.value && styles.disabled,
+))
+function toggle() {
+  if (!disabled.value) selected.value = !selected.value
+}
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style" @tap="toggle">
+    <text>{{ selected ? 'Selected' : 'Select this card' }}</text>
+  </view>
+  <button @tap="disabled = !disabled">Toggle disabled state</button>
+</template>
+```
+
+该写法适用于已注册适配器的 Taro Vue 3 与 uni-app Vue 3。
+
+  </Tab>
+  <Tab label="Wevu">
+
+沿用 Vue 示例，但将响应式导入改为：
+
+```ts
+import { computed, ref } from 'wevu'
+```
+
+按 [Wevu 指南](/zh/wevu/)注册同一个 `createStylex()` 工厂的两个字段，class/style 的显式绑定保持一致。
+
+  </Tab>
+</Tabs>
+
+## 验证组合
+
+依次选中卡片、禁用、重新启用。选中时背景变化，禁用时透明度变化且无法切换选中状态，启用后保留原来的选中状态。检查每次交互后节点的 class。
+
+覆盖同一属性时，把覆盖条目放到后面。需要官方组合语义中的属性重置时，在后面的声明中使用 `null`。直接拼接 class 字符串不能替代 StyleX 按属性合并的行为。
+
+继续阅读[动态值](/zh/recipes/dynamic-styles/)，或查阅 [`attrs()` 与 `props()`](/zh/api/runtime/)。

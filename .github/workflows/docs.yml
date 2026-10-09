@@ -22,6 +22,8 @@ jobs:
           node-version: 24.18.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Build public API declarations for documentation coverage
+        run: pnpm --filter './packages/*' build
       - run: pnpm --filter docs lint
       - run: pnpm --filter docs typecheck
       - run: pnpm --filter docs build

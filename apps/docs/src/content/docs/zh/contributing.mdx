@@ -7,23 +7,29 @@ sidebar:
 
 ## Workspace 工作流
 
-仓库使用 repoctl `5.9.0`、pnpm `12.10.1` 与 Node.js `^22.22.1 || >=24.11.0`。通过 `corepack pnpm exec repo new <name> --template <key>` 创建包，保持适配器精简，共享编译行为放在 `@weapp-stylex/compiler`。
+仓库使用 repoctl `5.10.0`、pnpm `12.10.1` 与 Node.js `^22.22.1 || >=24.11.0`。通过 `corepack pnpm exec repo new <name> --template <key>` 创建包，保持适配器精简，共享编译行为放在 `@weapp-stylex/compiler`。
 
 编译器改动提交前执行完整[验证流程](/zh/examples/)。可发布包的变更使用 `corepack pnpm change`，文档改动不会发布 npm 包。
 
 ## 文档源码
 
-[stylex.weapp.dev](https://stylex.weapp.dev/) 由 repoctl 默认 Nimbus 模板生成，使用 Nimbus `0.17.0` 和 Astro `7.3.8`。内容位于 `apps/docs/src/content/docs/`：英文使用根目录文件名，中文放在 `zh/` 的同名文件。
+[stylex.weapp.dev](https://stylex.weapp.dev/) 起始于 repoctl Nimbus 模板，使用 Nimbus `0.17.0` 和 Astro `7.3.8`，布局与组件由项目维护。内容位于 `apps/docs/src/content/docs/`：英文使用根相对路径，中文放在 `zh/` 下的对应文件；教程与 API 参考使用各自子目录。
 
 ```sh
 corepack pnpm --filter docs dev
 corepack pnpm --filter docs lint
 corepack pnpm --filter docs typecheck
 corepack pnpm --filter docs build
+corepack pnpm --filter docs check:site
+corepack pnpm --filter docs test
 corepack pnpm --filter docs preview
 ```
 
 生产构建生成 Pagefind 搜索。请在生产预览中检查双语路由与语言切换，开发服务器不提供完整搜索索引。
+
+发布新页面前补齐两个语言版本，保持代码行为与公开链接一致。注册传达信息的 MDX 组件时，同时提供 Markdown 文本转换；除了视觉页面，还需检查自定义 tabs/steps 在 Markdown 导出中的内容。[实践教程](/zh/recipes/)应展示真实框架绑定，[API 参考](/zh/api/)应与包导出及源码类型一致。
+
+验收记录保留日期。[2026-10-09 运行记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/ide-validation-2026-10-09.md)区分各产物分别通过与完整 suite 仍待验收，后续文档编辑不能将历史结果改写成没有证据的当前验收成功。
 
 ## 工具读取入口
 

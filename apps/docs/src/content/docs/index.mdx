@@ -1,45 +1,186 @@
 ---
-title: "StyleX for WeChat"
+title: "StyleX for WeChat mini-programs"
 slug: en
-description: "Share typed styles across pages, components and frameworks."
+description: "Define, compose and share typed styles with familiar StyleX APIs. Build native atomic WXSS."
 sidebar:
   order: 0
 ---
 
-<img className="home-mark" src="/logo.svg" width="112" height="112" alt="weapp-stylex logo" />
+<HomeHero title="StyleX for WeChat mini-programs" description="Define, compose and share typed styles with familiar StyleX APIs. Build native atomic WXSS.">
 
-## Write once. Compose everywhere.
+<Tabs label="Framework examples">
 
-Keep the official StyleX API. Move styles into an ordinary module, compose them with `attrs()` or `props()`, and build atomic WXSS for WeChat.
-
-[Get started →](/get-started/) · [Explore examples](/examples/) · [GitHub](https://github.com/weapp-stylex/weapp-stylex)
+<Tab label="styles.ts">
 
 ```ts
-// styles.ts
 import * as stylex from 'weapp-stylex'
 
 export const styles = stylex.create({
-  root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
-  active: { opacity: 0.6 },
-  meter: (width: number) => ({ width, height: 12 }),
+  card: {
+    padding: 16,
+    marginTop: '12rpx',
+    borderRadius: 12,
+    backgroundColor: '#edf7f1',
+  },
 })
-export default styles
 ```
 
-## Choose your framework
+</Tab>
 
-| Framework | Build integration | Guide |
-| --- | --- | --- |
-| Native Page / Component | weapp-vite compiler plugin | [Native WeChat](/native/) |
-| Wevu Vue SFC / JSX | weapp-vite + shared StyleX session | [Wevu](/wevu/) |
-| Taro React | Vite or Webpack 5 | [Taro React](/taro-react/) |
-| Taro Vue 3 | Vite or Webpack 5 | [Taro Vue 3](/taro-vue3/) |
-| uni-app Vue 3 | DCloud Vite plugin | [uni-app](/uni-app/) |
+<Tab label="Native">
 
-## Familiar semantics, native output
+```ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
 
-Shared modules support named and default exports, barrels, aliases and workspace sources. Themes use official tokens; dynamic values use the official runtime. Numeric `16` stays `16px`; write `'16rpx'` when needed.
+Page({
+  data: { card: stylex.attrs(styles.card) },
+})
+```
 
-No CSS layers or runtime stylesheet injection. Build adapters collect and deduplicate rules, write `stylex.wxss`, and connect it to page and component styles.
+```xml
+<view class="{{card.class}}" style="{{card.style}}">
+  StyleX
+</view>
+```
 
-The project currently targets WeChat main packages and ordinary subpackages. See [support boundaries](/faq/) before adopting independent subpackages or another platform.
+</Tab>
+
+<Tab label="Wevu">
+
+```vue
+<script setup lang="ts">
+import * as stylex from 'weapp-stylex'
+import { computed } from 'wevu'
+import { styles } from './styles'
+const card = computed(() => stylex.attrs(styles.card))
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style">StyleX</view>
+</template>
+```
+
+</Tab>
+
+<Tab label="Taro React">
+
+```tsx
+import { View } from '@tarojs/components'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+export default function Card() {
+  return <View {...stylex.props(styles.card)}>StyleX</View>
+}
+```
+
+</Tab>
+
+<Tab label="Taro Vue">
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+const card = computed(() => stylex.attrs(styles.card))
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style">StyleX</view>
+</template>
+```
+
+</Tab>
+
+<Tab label="uni-app">
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+const card = computed(() => stylex.attrs(styles.card))
+</script>
+
+<template>
+  <view :class="card.class" :style="card.style">StyleX</view>
+</template>
+```
+
+</Tab>
+
+</Tabs>
+
+</HomeHero>
+
+## Start with your framework
+
+Share styles across pages, components and ordinary subpackages. Keep your framework and add its compiler adapter.
+
+<CardGrid>
+<LinkCard title="Native WeChat" description="Page / Component · weapp-vite" href="/native/" icon="devices" />
+<LinkCard title="Wevu" description="Vue SFC / JSX · weapp-vite" href="/wevu/" icon="layers" />
+<LinkCard title="Taro React" description="React · Vite / Webpack 5" href="/taro-react/" icon="code" />
+<LinkCard title="Taro Vue 3" description="Vue 3 · Vite / Webpack 5" href="/taro-vue3/" icon="stack" />
+<LinkCard title="uni-app Vue 3" description="DCloud · Vite" href="/uni-app/" icon="globe" />
+</CardGrid>
+
+## From style modules to native WXSS
+
+<div className="home-flow">
+
+<Steps>
+
+<Step title="Define styles">
+
+Use create(), tokens and themes in ordinary TS / JS modules.
+
+</Step>
+
+<Step title="Bind to views">
+
+Connect attrs() class/style or React props() to framework updates.
+
+</Step>
+
+<Step title="Build for WeChat">
+
+The compiler collects and deduplicates rules; adapters connect page and component WXSS.
+
+</Step>
+
+</Steps>
+
+</div>
+
+Numeric `16` stays `16px`; write `'16rpx'` for mini-program relative units. Styles are generated at build time without runtime stylesheet injection.
+
+## Turn everyday needs into reusable styles
+
+<CardGrid>
+<LinkCard title="Conditions and overrides" description="Composition order, nested arrays and null resets." href="/recipes/composition/" icon="layers" />
+<LinkCard title="Dynamic values" description="Dimensions, state and complete class/style bindings." href="/recipes/dynamic-styles/" icon="lightning" />
+<LinkCard title="Tokens and themes" description="Direct token imports, theme switching and isolation." href="/recipes/tokens-themes/" icon="palette" />
+<LinkCard title="Shared modules" description="Named/default exports, barrels, aliases and workspaces." href="/recipes/shared-modules/" icon="stack" />
+<LinkCard title="Components and subpackages" description="Typed style props, components and ordinary subpackages." href="/recipes/components-subpackages/" icon="devices" />
+<LinkCard title="Gradual adoption" description="Start with one page and keep existing styles." href="/recipes/migration/" icon="rocket" />
+</CardGrid>
+
+## An API reference for daily work
+
+<CardGrid>
+<LinkCard title="Runtime" description="Definitions, composition, tokens, themes and boundaries." href="/api/runtime/" icon="code" />
+<LinkCard title="Types" description="Style prop constraints, variables and official type tools." href="/api/types/" icon="book" />
+<LinkCard title="Build adapters" description="Options, defaults and framework registration." href="/api/adapters/" icon="tool" />
+<LinkCard title="Compiler" description="Sessions, host interfaces, diagnostics and WXSS output." href="/api/compiler/" icon="terminal" />
+</CardGrid>
+
+## Need help with an integration?
+
+<CardGrid>
+<LinkCard title="Troubleshooting" description="Trace transform, binding, resolution and output failures." href="/troubleshooting/" icon="tool" />
+<LinkCard title="Examples and verification" description="Explore seven build artifacts and verification commands." href="/examples/" icon="flask" />
+<LinkCard title="Support boundaries" description="Check platform, version and WeChat runtime support." href="/faq/" icon="warning" />
+</CardGrid>

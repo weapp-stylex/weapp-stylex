@@ -1,0 +1,12 @@
+---
+import Icon from './icon.astro'
+
+interface Props { title: string, description: string, href: string, icon?: string }
+const { title, description, href, icon = 'book' } = Astro.props
+---
+
+<a class="link-card" href={href}>
+  <span class="card-icon"><Icon name={icon} size={24} /></span>
+  <span class="card-body"><strong>{title}</strong><span>{description}</span></span>
+  <Icon name="arrow-right" size={18} class="card-arrow" />
+</a>

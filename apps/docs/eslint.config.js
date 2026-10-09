@@ -19,7 +19,7 @@ export default [
   {
     ...mdx.flat,
     files: ['**/*.mdx'],
-    languageOptions: { ...mdx.flat.languageOptions, globals: { Aside: 'readonly' } },
+    languageOptions: { ...mdx.flat.languageOptions, globals: { Aside: 'readonly', ApiTable: 'readonly', Tabs: 'readonly', Tab: 'readonly', Steps: 'readonly', Step: 'readonly', HomeHero: 'readonly', CardGrid: 'readonly', LinkCard: 'readonly' } },
   },
   { ignores: ['.astro/**', '.nimbus/**', 'dist/**', '**/*.css'] },
 ]

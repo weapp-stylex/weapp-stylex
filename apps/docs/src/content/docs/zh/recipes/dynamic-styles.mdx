@@ -1,0 +1,127 @@
+---
+title: "动态样式"
+description: "用运行时输入控制宽度，同时保持声明可编译。"
+sidebar:
+  order: 2
+---
+
+值来自运行时状态时，使用样式函数。声明中保留参数，消费者传入实际值。以下用滑块控制进度条宽度，展示完整的数据流。
+
+## 定义动态值
+
+```ts
+// styles.ts，放在消费者旁边
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  meter: (width: number) => ({
+    width,
+    height: 12,
+    backgroundColor: '#168958',
+    borderRadius: 6,
+  }),
+})
+```
+
+`styles.meter(80)` 表示 `80px` 宽度。动态长度与静态长度遵循同样的单位语义。需要 `rpx` 时，将参数类型改成 `string`，传入 `'160rpx'` 等值。
+
+<Aside type="warning" title="同时绑定行内 style">
+
+动态样式同时使用生成的 class 和行内 CSS 自定义属性。只绑定 class 会丢失运行时值。所选微信基础库需要支持 CSS 自定义属性。
+
+</Aside>
+
+## 从滑块更新宽度
+
+<Tabs>
+  <Tab label="原生微信">
+
+```ts
+// index.ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+Page({
+  data: { width: 80, meter: stylex.attrs(styles.meter(80)) },
+  updateWidth(event: { detail: { value: number } }) {
+    const width = Math.max(40, Math.min(160, event.detail.value))
+    this.setData({ width, meter: stylex.attrs(styles.meter(width)) })
+  },
+})
+```
+
+```xml
+<slider min="40" max="160" value="{{width}}" bindchange="updateWidth" />
+<view class="{{meter.class}}" style="{{meter.style}}" />
+<text>{{width}}px</text>
+```
+
+  </Tab>
+  <Tab label="Taro React">
+
+```tsx
+import { Slider, Text, View } from '@tarojs/components'
+import { useState } from 'react'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+export default function Meter() {
+  const [width, setWidth] = useState(80)
+  return (
+    <View>
+      <Slider min={40} max={160} value={width} onChange={event => setWidth(event.detail.value)} />
+      <View {...stylex.props(styles.meter(width))} />
+      <Text>{width}px</Text>
+    </View>
+  )
+}
+```
+
+`props()` 同时提供两个属性。在展开结果后再传一个 `style` prop 会覆盖原来的对象；追加行内样式时，需要保留其中的动态自定义属性。
+
+  </Tab>
+  <Tab label="Vue 3">
+
+```vue
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+
+const width = ref(80)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+function updateWidth(event: { detail: { value: number } }) {
+  width.value = Math.max(40, Math.min(160, event.detail.value))
+}
+</script>
+
+<template>
+  <slider :min="40" :max="160" :value="width" @change="updateWidth" />
+  <view :class="meter.class" :style="meter.style" />
+  <text>{{ width }}px</text>
+</template>
+```
+
+适用于 Taro Vue 3 与 uni-app Vue 3。
+
+  </Tab>
+  <Tab label="Wevu">
+
+沿用相同 SFC，但从宿主导入响应式 API：
+
+```ts
+import { computed, ref } from 'wevu'
+```
+
+[Wevu 适配器](/zh/wevu/)需同时注册共享工厂的 Vite 和 compiler 字段。
+
+  </Tab>
+</Tabs>
+
+## 验证数据流
+
+将滑块从 80 调到 120，确认文本变化、节点仍有生成的 class，行内 style 包含更新后的自定义属性值。还要在目标运行时检查实际宽度；文本变化只能证明状态变化。
+
+输入校验由应用负责。不要在新的 `create()` 调用中捕获运行时状态：只声明一次参数化样式，在状态变化时调用编译后的样式函数。
+
+外观只有少量固定状态时，[条件组合](/zh/recipes/composition/)通常更清晰。设计系统中共享的值使用 [token 与主题](/zh/recipes/tokens-themes/)。

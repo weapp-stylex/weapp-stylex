@@ -1,0 +1,208 @@
+---
+title: "Runtime 类型"
+description: "所有公开 StyleX 类型、组件输入与 typed variable 类型命名空间。"
+sidebar:
+  order: 32
+---
+
+通过 `import type` 从 `weapp-stylex`、`weapp-stylex/core` 或 `@weapp-stylex/core` 导入。这些官方类型会从 JavaScript 中擦除，不提供微信兼容性检查。函数同名类型别名随 [runtime 值](/zh/api/runtime/)说明。
+
+```ts
+import type { StyleXStyles, StyleXStylesWithout } from 'weapp-stylex'
+type ButtonStyle = StyleXStyles<{ color?: string; padding?: number | string }>
+type LayoutProtectedStyle = StyleXStylesWithout<{ position: 'absolute' }>
+```
+
+组件样式输入优先使用 `StyleXStyles`，样式输出让 `create` 推断。下面的可读签名会说明官方内部约束（如扩展 CSS 形状），不会把它们当作额外的包导出。
+
+<a id="api-CSSProperties"></a>
+## CSSProperties
+
+```ts
+CSSProperties
+```
+
+官方原始 CSS 属性映射，包含各属性的值与条件类型。可用 `CSSProperties['color']` 提取值类型。它不是 `attrs` 接受的编译样式类型。上游浏览器属性也会保留，WXSS 支持需另行确认。
+
+<a id="api-CompiledStyles"></a>
+## CompiledStyles
+
+```ts
+CompiledStyles = /* readonly compiled property classes or a readonly theme class */
+```
+
+组合 API 接受的低层编译表示，包含不透明生成 class 与主题样式。适合宿主/编译接口，不应据此手工构造任意 class 对象。动态结果还会在二元组中携带 `InlineStyles`。
+
+<a id="api-InlineStyles"></a>
+## InlineStyles
+
+```ts
+InlineStyles = { _opaque: /* official unique symbol */ }
+```
+
+动态样式 inline 部分的不透明标记类型，没有泛型默认值，不是供手写的 CSS 字典。调用动态 `create` namespace 获得它，再由 `attrs`/`props` 序列化。
+
+<a id="api-StyleXArray"></a>
+## StyleXArray
+
+```ts
+type StyleXArray<T> = T | ReadonlyArray<StyleXArray<T>>
+```
+
+单个值或任意深度的 readonly 嵌套数组。`T` 必填，没有默认值，可描述 `StyleXArray<CompiledStyles | false | null>` 等可组合输入，组合保留顺序。
+
+<a id="api-StyleXStyles"></a>
+## StyleXStyles
+
+```ts
+StyleXStyles<CSS = /* official extended CSS map */>
+```
+
+应用样式输入类型：支持递归编译样式、动态二元组和 `false`/`null`/`undefined`。`CSS` 限定允许的原始属性名称与值，默认使用官方扩展 CSS 映射。例如 `StyleXStyles<{ color?: string }>` 限制输入为 color 变体。类型错误可暴露禁用属性，它不接受原始样式对象。
+
+<a id="api-StyleXStylesWithout"></a>
+## StyleXStylesWithout
+
+```ts
+StyleXStylesWithout<CSS> = StyleXStyles<Omit</* extended CSS map */, keyof CSS>>
+```
+
+泛型对象的键表示要排除的属性，没有默认值。`StyleXStylesWithout<{ position: 'absolute' }>` 排除整个 `position` 属性，不只是 `absolute` 值。其余样式仍支持动态二元组与嵌套条件，可保护组件自有布局契约。
+
+<a id="api-StaticStyles"></a>
+## StaticStyles
+
+```ts
+StaticStyles<CSS = /* official extended CSS map */>
+```
+
+对应 `StyleXStyles` 的属性受限静态部分，保留嵌套数组与空条件，但不接受动态 inline-style 二元组。CSS 约束默认使用官方扩展 CSS 映射，适合明确只接受静态编译样式的接口。
+
+<a id="api-StaticStylesWithout"></a>
+## StaticStylesWithout
+
+```ts
+StaticStylesWithout<CSS> = StaticStyles<Omit</* extended CSS map */, keyof CSS>>
+```
+
+CSS 键集合必填，没有泛型默认值，从纯静态输入排除这些属性。例如 `StaticStylesWithout<{ position: 'absolute' }>` 阻止 position 变体与所有动态二元组。
+
+<a id="api-MapNamespaces"></a>
+## MapNamespaces
+
+```ts
+MapNamespaces<S>
+```
+
+`S` 接受与 `create` 相同的静态/动态 namespace 形状，没有泛型默认值。静态 namespace 映射为不透明属性 class；动态函数映射为返回 readonly `[编译 namespace, InlineStyles]` 的函数。通常直接使用 `typeof styles` 更容易保留精确推断。
+
+<a id="api-StyleXClassNameFor"></a>
+## StyleXClassNameFor
+
+```ts
+StyleXClassNameFor<K, V> = string & /* opaque key/value brand */
+```
+
+两个泛型必填，是同时标记属性 `K` 与值类型 `V` 的生成 class 字符串。可用于推导声明，不应把任意字符串强制转换成受支持样式。不透明身份属于官方 runtime/compiler。
+
+<a id="api-StyleXVar"></a>
+## StyleXVar
+
+```ts
+StyleXVar<Val> = /* opaque variable reference */ & string
+```
+
+`Val` 必填，是携带 token 原值类型的字符串形状变量引用。通过 `defineVars` 获得，不要重建 hash；需要精确 token 引用类型时使用 `typeof tokens.ink`。
+
+<a id="api-VarGroup"></a>
+## VarGroup
+
+```ts
+VarGroup<Tokens extends Record<string, any>, ID extends symbol = symbol>
+```
+
+将必填 `Tokens` 各键映射为 `StyleXVar<Tokens[key]>`，附带不透明组身份与 token 元数据。`ID` 默认是 `symbol`。由 `defineVars` 推断；内部元数据字段不属于应用 token 名称，主题保留该组关联。
+
+<a id="api-Theme"></a>
+## Theme
+
+```ts
+Theme<T extends VarGroup<{}>, Tag extends symbol = symbol>
+```
+
+基础变量组 `T` 必填，`Tag` 默认 `symbol`。它是 `createTheme` 返回的品牌编译主题，将主题 class 关联到基础 token 组。优先使用 `typeof darkTheme`，值通过 `attrs`/`props` 组合，不要自行修改主题 class。
+
+<a id="api-Keyframes"></a>
+## Keyframes
+
+```ts
+type Keyframes = Readonly<Record<string, CSSProperties>>
+```
+
+没有泛型，将帧名称或百分比映射到 `keyframes` 使用的 CSS 属性，例如 `{ from: { opacity: 0 }, to: { opacity: 1 } }`。类型可接受不代表特定 WXSS 动画属性被支持。
+
+<a id="api-PositionTry"></a>
+## PositionTry
+
+```ts
+PositionTry = Readonly</* optional anchor, inset, margin, size and self-alignment properties */>
+```
+
+没有泛型，是 `positionTry` 专用受限描述，不是整个 CSS 属性表。覆盖 `positionAnchor`/`positionArea`、物理/逻辑 inset 与 margin、物理/逻辑尺寸和 min/max 尺寸，以及 `alignSelf`/`justifySelf`/`placeSelf`。全部字段可选，浏览器 anchor positioning 在微信端尚未验证。
+
+<a id="api-Types"></a>
+<a id="api-Types-CSSSyntax"></a>
+<a id="api-Types-CSSSyntaxType"></a>
+<a id="api-Types-InnerValue"></a>
+<a id="api-Types-ICSSType"></a>
+<a id="api-Types-Angle"></a>
+<a id="api-Types-Color"></a>
+<a id="api-Types-Url"></a>
+<a id="api-Types-Image"></a>
+<a id="api-Types-Integer"></a>
+<a id="api-Types-LengthPercentage"></a>
+<a id="api-Types-Length"></a>
+<a id="api-Types-Percentage"></a>
+<a id="api-Types-Num"></a>
+<a id="api-Types-Resolution"></a>
+<a id="api-Types-Time"></a>
+<a id="api-Types-TransformFunction"></a>
+<a id="api-Types-TransformList"></a>
+<a id="api-Types-CSSType"></a>
+## Types
+
+`Types` 是**仅类型命名空间**，不同于 runtime `types` 对象。例如 `import type { Types } from 'weapp-stylex'` 后可使用 `Types.Color<string>`，不能通过 `new` 调用构造器。当前公开声明可访问以下成员；它们都不是根入口独立具名导出。
+
+| 成员 | 签名 / 形状 | 用途与边界 |
+| --- | --- | --- |
+| `Types.CSSSyntax` | `'*' 或 / or '<length>' … '<transform-list>'` | 官方 CSS syntax 字符串联合，覆盖颜色、图像、URL、整数、角度、时间、分辨率与 custom-ident 等。 |
+| `Types.CSSSyntaxType` | `CSSSyntax` | 当前 namespace 声明可访问的高级别名；应用类型优先使用 CSSSyntax。 |
+| `Types.InnerValue` | `null \| string \| number` | wrapper 的共用约束，无泛型参数。 |
+| `Types.ICSSType` | `ICSSType<T extends InnerValue>` | 泛型必填；readonly value 为条件字符串值，readonly syntax 为 CSSSyntaxType。声明辅助接口，不是应用对象构造器。 |
+| `Types.Angle` | `Angle<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Color` | `Color<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Url` | `Url<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Image` | `Image<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Integer` | `Integer<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.LengthPercentage` | `LengthPercentage<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Length` | `Length<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Percentage` | `Percentage<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Num` | `Num<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Resolution` | `Resolution<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.Time` | `Time<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.TransformFunction` | `TransformFunction<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.TransformList` | `TransformList<T extends InnerValue>` | 泛型必填，无默认值。包含 readonly `value` 与 `syntax`，由对应 runtime `types` helper 推断。 |
+| `Types.CSSType` | `CSSType<T extends InnerValue>` | 上述十三种 wrapper 的联合，泛型必填，无默认值。 |
+
+typed wrapper 描述官方 CSS 注册语义，TypeScript 提供这些类型不能证明 WXSS 支持。优先采用推断结果，不直接读取 wrapper 字段；边界见 [runtime 说明](/zh/api/runtime/#api-types)。
+
+## 推导没有独立导出的输入类型
+
+部分官方函数签名引用的内部类型没有从根入口导出，可以通过公开函数推导参数形状：
+
+```ts
+import * as stylex from 'weapp-stylex'
+type TransitionInput = Parameters<typeof stylex.viewTransitionClass>[0]
+```
+
+这样保留签名且不依赖 runtime 内部文件路径，仍然遵循 view-transition 的支持边界。

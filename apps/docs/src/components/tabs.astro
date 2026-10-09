@@ -1,0 +1,9 @@
+---
+interface Props { label?: string }
+const { label = 'Examples' } = Astro.props
+---
+
+<div class="content-tabs" data-tabs data-tabs-label={label}>
+  <div class="tab-list" data-tab-list hidden></div>
+  <slot />
+</div>

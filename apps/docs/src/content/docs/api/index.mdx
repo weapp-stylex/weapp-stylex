@@ -1,0 +1,47 @@
+---
+title: "API reference"
+description: "Public runtime, types, adapters and shared compiler contracts."
+sidebar:
+  order: 30
+---
+
+The reference follows the package export maps and the installed StyleX 0.19.1 declarations. Start with [runtime](/api/runtime/) and [types](/api/types/) for application code; use [adapters](/api/adapters/) for build configuration and [compiler](/api/compiler/) when implementing a host integration.
+
+## Public entry points
+
+<ApiTable>
+
+| Import | Contract | Reference |
+| --- | --- | --- |
+| `weapp-stylex` | Official named runtime values and types; no default export | [Runtime](/api/runtime/) |
+| `weapp-stylex/core` | Same runtime surface | [Types](/api/types/) |
+| `weapp-stylex/weapp-vite` | `stylexCompiler`, `createStylex`, default compiler, options type | [Adapters](/api/adapters/) |
+| `weapp-stylex/taro` | `stylexTaro`, default plugin, options type | [Adapters](/api/adapters/#api-stylexTaro) |
+| `weapp-stylex/taro/loader` | Named/default `stylexLoader` | [Adapters](/api/adapters/#api-stylexLoader) |
+| `weapp-stylex/uni-app` | `stylexUniApp`, default plugin, options type | [Adapters](/api/adapters/#api-stylexUniApp) |
+| `weapp-stylex/compiler` | Shared transformation, host, diagnostics and WXSS contracts | [Compiler](/api/compiler/) |
+
+</ApiTable>
+
+The corresponding scoped packages are `@weapp-stylex/core`, `@weapp-stylex/weapp-vite`, `@weapp-stylex/taro` (including `/loader`), `@weapp-stylex/uni-app` and `@weapp-stylex/compiler`. They expose the same symbols as their façade entries. The façade provides ESM/CJS and declarations for each code entry; scoped core and weapp-vite entries are ESM.
+
+<a id="api-package-json"></a>
+## Package metadata
+
+`weapp-stylex/package.json` is the exported JSON metadata entry. Its fields describe the published package; it is not a runtime or compiler function. Import JSON using the syntax supported by your Node/bundler environment. Build tools remain behind explicit subpaths, keeping the root runtime entry free of build-tool imports.
+
+## Read the platform boundary
+
+<Aside type="warning" title="Exported does not mean verified on WeChat">
+
+Official StyleX semantics and TypeScript declarations are preserved. A CSS property accepted by TypeScript, or an official helper listed here, does not establish support in WXSS or a particular WeChat base library. Advanced browser APIs and unstable exports have explicit cautions in their entries.
+
+</Aside>
+
+The stable target is WeChat native Page/Component, Wevu, Taro React/Vue 3 with Vite or Webpack 5, and uni-app Vue 3. Ordinary subpackages are supported. Independent subpackages, other mini-program platforms, Vue 2, uni-app x, custom WXML `sx` syntax and stateful HMR remain outside the stable contract. See [examples and acceptance](/examples/) for the evidence attached to each host.
+
+## Conventions
+
+Signatures describe the installed public declarations; long official generic constraints are abbreviated where stated. Type inference remains authoritative. Numeric length units stay unchanged: `16` means `16px`; use `'16rpx'` explicitly. Compile-time helpers require an adapter. Runtime composition uses `attrs()` or `props()` on transformed styles.
+
+Function exports also have same-name official `typeof` type aliases, such as `import type { create } from 'weapp-stylex'`; each alias is documented with its function. `attrs` and `props` are function declarations without those aliases. Types used internally by declarations are not automatically standalone package exports.

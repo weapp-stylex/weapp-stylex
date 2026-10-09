@@ -20,7 +20,15 @@ export default defineConfig({
     },
     markdown: {
       componentMap: {
-        Aside: { revision: '1', render: ({ children }) => children },
+        Aside: { revision: '2', render: ({ attrs, children }) => `\n${attrs.title ? `**${attrs.title}**\n\n` : ''}${children}\n` },
+        ApiTable: { revision: '1', render: ({ attrs, children }) => `\n${attrs.title ? `**${attrs.title}**\n\n` : ''}${children}\n` },
+        Tabs: { revision: '1', render: ({ children }) => children },
+        Tab: { revision: '1', render: ({ attrs, children }) => `\n**${attrs.label}**\n\n${children}\n` },
+        Steps: { revision: '1', render: ({ children }) => children },
+        Step: { revision: '1', render: ({ attrs, children }) => `\n### ${attrs.title}\n\n${children}\n` },
+        HomeHero: { revision: '1', render: ({ attrs, children }) => `\n${attrs.description}\n\n${children}\n` },
+        CardGrid: { revision: '1', render: ({ children }) => children },
+        LinkCard: { revision: '1', render: ({ attrs }) => `\n[${attrs.title}](${attrs.href})\n\n${attrs.description}\n` },
       },
     },
   })],

@@ -1,0 +1,107 @@
+---
+title: "Components and subpackages"
+description: "Bind styles inside isolated components and load them in ordinary subpackages."
+sidebar:
+  order: 5
+---
+
+Share declarations, but let every component manage its own rendered class/style strings. An isolated component needs generated WXSS available to its own entry and an explicit theme class on its root. Ordinary subpackages use the same build graph; independent subpackages are outside the stable contract.
+
+## Create an isolated native component
+
+Reuse `src/styles/card.ts` from the [shared-module recipe](/recipes/shared-modules/) and the token/theme modules from [tokens and themes](/recipes/tokens-themes/). Place the theme modules under `src/styles/`.
+
+```ts
+// src/components/style-card/index.ts
+import * as stylex from 'weapp-stylex'
+import { cardStyles } from '../../styles/card'
+import { darkTheme } from '../../styles/themes'
+
+Component({
+  properties: {
+    active: { type: Boolean, value: false },
+    dark: { type: Boolean, value: false },
+  },
+  data: { card: stylex.attrs(cardStyles.root) },
+  observers: {
+    'active, dark'(active: boolean, dark: boolean) {
+      this.setData({ card: stylex.attrs(
+        cardStyles.root,
+        active && cardStyles.active,
+        dark && darkTheme,
+      ) })
+    },
+  },
+})
+```
+
+For this themed component, change the `backgroundColor` in `cardStyles.root` to `tokens.surface` and add `color: tokens.text`, with a direct `import { tokens } from './tokens.stylex'`. Otherwise the theme class changes variables that the card's static colors do not use.
+
+```xml
+<!-- src/components/style-card/index.wxml -->
+<view class="{{card.class}}" style="{{card.style}}">
+  <slot />
+</view>
+```
+
+In `src/components/style-card/index.json`:
+
+```json
+{ "component": true }
+```
+
+The observer recomputes both strings whenever either property changes. Preserve the component's normal lifecycle and isolation settings. A visual theme class on the parent page is not a substitute for applying the selected theme inside the component.
+
+## Register and drive the component
+
+In `src/pages/index/index.json`:
+
+```json
+{
+  "usingComponents": { "style-card": "/components/style-card/index" }
+}
+```
+
+```ts
+// src/pages/index/index.ts
+Page({
+  data: { active: false, dark: false },
+  toggleActive() { this.setData({ active: !this.data.active }) },
+  toggleTheme() { this.setData({ dark: !this.data.dark }) },
+})
+```
+
+```xml
+<style-card active="{{active}}" dark="{{dark}}">Shared component</style-card>
+<button bindtap="toggleActive">Toggle active</button>
+<button bindtap="toggleTheme">Switch theme</button>
+```
+
+For a React component, receive `active`/`dark` as props and spread `stylex.props(cardStyles.root, active && cardStyles.active, dark && darkTheme)` on its own `View`. For a Vue/Wevu component, derive the same `attrs()` call with `computed()` from component props and bind both results. Import `computed` from the actual host (`vue` or `wevu`).
+
+## Keep ordinary subpackages explicit
+
+For native WeChat, retain your route declaration:
+
+In `src/app.json`:
+
+```json
+{
+  "pages": ["pages/index/index"],
+  "subpackages": [{ "root": "subpackage", "pages": ["detail/index"] }]
+}
+```
+
+The subpackage page can import `../../styles/card`, compose `attrs()` in Page data, and bind the result in WXML. Register `style-card` in that page's `usingComponents` if it uses the component. Keep Taro and uni-app routes in their own framework configuration rather than copying native route files over them.
+
+<Aside type="warning" title="Independent packages">
+
+An ordinary subpackage is the supported case. Do not add `independent: true` and assume this recipe establishes standalone dependency or stylesheet behavior. Independent subpackages require a separate implementation and acceptance plan.
+
+</Aside>
+
+## Verify each output entry
+
+With StyleX rules present, pages/components that have emitted WXML and JavaScript but no local WXSS receive a same-name WXSS companion. The emitter also creates `app.wxss` when needed and writes `stylex.wxss` beside required styles; companions import it automatically. Authored `stylex.wxss` conflicts are rejected.
+
+Open the main page and subpackage route. Toggle the component's properties and inspect its own root class/style and colors. Check the component/page WXSS companions and their imports. The seven [example artifacts](/examples/) cover ordinary subpackage output; the dated runtime record states the actual scope of IDE acceptance.

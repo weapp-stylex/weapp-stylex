@@ -1,5 +1,3 @@
-import type { SidebarItem } from '@cloudflare/nimbus-docs/types'
-
 export function isChinese(path: string) {
   return path === '/zh' || path.startsWith('/zh/')
 }
@@ -14,20 +12,6 @@ export function alternatePath(path: string) {
   return isChinese(path) ? path.slice(3) || '/' : `/zh${path}`
 }
 
-export function localizeSidebar(items: SidebarItem[], chinese: boolean): SidebarItem[] {
-  return items.flatMap((item): SidebarItem[] => {
-    if (item.type !== 'group') {
-      return item.type === 'external' || isChinese(item.href) === chinese ? [item] : []
-    }
-    const children = localizeSidebar(item.children, chinese)
-    const indexHref = item.indexHref && isChinese(item.indexHref) === chinese ? item.indexHref : undefined
-    if (!children.length && !indexHref) {
-      return []
-    }
-    return [{ ...item, indexHref, children }]
-  })
-}
-
 export const labels = {
   en: {
     navigation: 'On this site',
@@ -37,7 +21,7 @@ export const labels = {
     submit: 'Search',
     empty: 'No matching pages.',
     loading: 'Searching…',
-    unavailable: 'Search is unavailable. Try again after building the site.',
+    unavailable: 'Search is temporarily unavailable. Try again in a moment, or use the documentation navigation.',
     markdown: 'Read Markdown',
     index: 'Documentation index',
   },
@@ -49,7 +33,7 @@ export const labels = {
     submit: '搜索',
     empty: '没有找到匹配的页面。',
     loading: '正在搜索…',
-    unavailable: '搜索暂不可用，请构建站点后重试。',
+    unavailable: '搜索暂不可用，请稍后重试，或通过文档导航查找。',
     markdown: '阅读 Markdown',
     index: '文档索引',
   },

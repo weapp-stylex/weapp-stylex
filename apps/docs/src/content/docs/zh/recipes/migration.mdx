@@ -1,0 +1,72 @@
+---
+title: "迁移现有项目"
+description: "逐个组件引入 StyleX，保留原有宿主框架。"
+sidebar:
+  order: 6
+---
+
+从一个小型叶子组件开始。引入编译声明时，保留框架、路由结构与原有样式。试点应覆盖状态变化和干净的生产构建，不能只凭一张静态截图判断成功。
+
+<Steps>
+  <Step title="确认宿主与版本">
+
+确认项目是原生微信、Wevu、Taro React/Vue 3 还是 uni-app Vue 3。按对应的[适配器指南](/zh/api/adapters/)接入，并保留兼容的 builder 版本。仓库的[版本矩阵](/zh/configuration/)是示例测试基线，不能据此给所有框架套用同一套全局 Vite、Vue 或 Babel override。
+
+  </Step>
+  <Step title="安装并注册一个适配器">
+
+```sh
+pnpm add weapp-stylex
+```
+
+原生脚本使用 `stylexCompiler()`。Wevu 同时注册一个 `createStylex()` 工厂的 `vitePlugins` 和 `compilerPlugin`。Taro 用 `require.resolve('weapp-stylex/taro')` 解析插件，uni-app 将插件放在 `uni()` 后。不要注册第二个 session 处理相同产物。
+
+  </Step>
+  <Step title="迁移一小段声明">
+
+```ts
+// card.styles.ts
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: '#f3f6f4' },
+  active: { opacity: 0.6 },
+})
+```
+
+迁移 CSS 时保留原来需要的单位：WXSS 中的 `16rpx` 应写成 `'16rpx'`，不能改成数值 `16`。在模块顶层保留支持的声明，通过[样式函数](/zh/recipes/dynamic-styles/)传入运行时值。
+
+  </Step>
+  <Step title="修改绑定与更新逻辑">
+
+原生 Page/Component 将 `attrs()` 字符串保存到 `data`，通过 `setData()` 重新计算；Taro React 在 `View` 上展开 `props()`；Vue/Wevu 用 computed 计算 `attrs()` 并绑定 class/style。完整示例见[条件组合](/zh/recipes/composition/)。
+
+保留 legacy class 时，将它和生成的 class 一起绑定到需要的节点。手写 CSS 与 StyleX 仍参与平台的 cascade，迁移下一条声明前先检查重叠属性。不要用拼接生成 class 的方式实现 StyleX 自身的属性合并。
+
+  </Step>
+  <Step title="验证后再扩大范围">
+
+检查生成的 WXSS import，测试状态变化，在所选基础库中比较实际布局。叶子组件正常后，再引入[共享模块](/zh/recipes/shared-modules/)和 [token](/zh/recipes/tokens-themes/)。构建或运行异常时，按[排障页](/zh/troubleshooting/)检查各边界。
+
+  </Step>
+</Steps>
+
+## 迁移已有官方 StyleX 代码
+
+根入口转导出官方具名 runtime API 与类型，使用以下导入方式：
+
+```ts
+import * as stylex from 'weapp-stylex'
+// 或：
+import { create, attrs, props } from 'weapp-stylex'
+```
+
+`weapp-stylex` 和 `weapp-stylex/core` 都没有 runtime 默认导出。用户自行编写的样式模块仍可以默认导出编译后的映射。默认也识别直接导入 `@stylexjs/stylex`，因此不必重写所有已有导入。
+
+复用声明和组合语义后，检查依赖 DOM 元素、浏览器伪类、媒体特性或不支持的 WXSS 属性的输出。编译器不提供浏览器运行时，也不模拟这些能力。主题与动态值需要目标基础库支持 CSS 自定义属性。
+
+## 完成试点
+
+确认宿主的宏、生命周期、路由和手写 style block 继续正常工作。检查页面与隔离组件产物；首次没有 StyleX 的构建应保持不变。先保留默认 Babel，基线通过后再启用 `backend: 'auto'`，比较相同交互和 WXSS 产物后接受加速模式。
+
+独立分包、其他小程序平台、Vue 2、uni-app x、WXML `sx` 语法和 stateful HMR 不属于稳定支持边界。扩大范围前阅读[支持范围](/zh/faq/)与[示例验收](/zh/examples/)。

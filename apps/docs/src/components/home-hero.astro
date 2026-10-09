@@ -1,0 +1,25 @@
+---
+import Icon from './icon.astro'
+
+interface Props { title: string, description: string, chinese?: boolean }
+const { title, description, chinese = false } = Astro.props
+const prefix = chinese ? '/zh' : ''
+---
+
+<section class="home-hero">
+  <div class="hero-copy">
+    <p class="hero-eyebrow"><Icon name="devices" />StyleX × {chinese ? '微信小程序' : 'WeChat mini-programs'}</p>
+    <h1>{title}</h1>
+    <p class="hero-description">{description}</p>
+    <div class="hero-actions">
+      <a class="button-primary" href={`${prefix}/get-started/`}>{chinese ? '开始使用' : 'Get started'}<Icon name="arrow-right" /></a>
+      <a class="button-secondary" href={`${prefix}/api/`}><Icon name="code" />{chinese ? '浏览 API' : 'Explore the API'}</a>
+    </div>
+    <a class="hero-guide-link" href={`${prefix}/recipes/migration/`}>{chinese ? '已有项目？查看渐进接入指南' : 'Already have an app? Start with a gradual migration'}<Icon name="arrow-right" size={16} /></a>
+  </div>
+  <div class="hero-demo">
+    <div class="demo-toolbar"><Icon name="code" size={18} /><span>{chinese ? '同一份样式，不同的框架' : 'One style module. Your framework.'}</span><span class="demo-file">styles.ts</span></div>
+    <slot />
+    <div class="demo-footer"><Icon name="check" size={16} />{chinese ? '编译为 WXSS · 保留官方 StyleX 语义' : 'Compiles to WXSS · Official StyleX semantics'}</div>
+  </div>
+</section>

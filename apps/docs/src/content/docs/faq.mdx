@@ -1,15 +1,21 @@
 ---
-title: "Troubleshooting and scope"
-description: "Resolve common binding, theme and output problems."
+title: "FAQ and support scope"
+description: "Understand units, runtime imports, supported hosts and acceptance limits."
 sidebar:
   order: 12
 ---
 
 ## No styles appear
 
-Confirm the adapter is registered, the definition module enters the host build graph, and the output contains generated `stylex.wxss` imports. The source should import `@weapp-stylex/core` or `@stylexjs/stylex`, unless you configured another `importSources` list.
+Confirm the adapter is registered, the definition module enters the host build graph, and the output contains generated `stylex.wxss` imports. Default imports are `weapp-stylex`, `weapp-stylex/core`, `@weapp-stylex/core` and `@stylexjs/stylex`; an explicit `importSources` list replaces them.
 
 For Wevu SFCs, register both fields of the same `createStylex()` factory. Do not use two separate sessions. Bind the result of `attrs()`, not the `create()` mapping, into Page data.
+
+Follow [troubleshooting](/troubleshooting/) for symptoms, diagnostic steps, repairs and acceptance checks.
+
+## Does the runtime have a default export?
+
+`weapp-stylex` and `weapp-stylex/core` forward official named APIs and types with `export *`. Use `import * as stylex from 'weapp-stylex'` or named imports; the root/core runtime has no default export. A user-authored style module may still default-export its compiled mapping. Build adapters have their own [subpath exports](/aggregate-package/).
 
 ## Dynamic values or themes fail
 
@@ -32,6 +38,10 @@ Keep Babel 7 for the StyleX compiler. weapp-vite's Babel 8 requirements must not
 Supported: WeChat main package, pages, components, ordinary subpackages; native, Wevu, Taro React/Vue 3 and uni-app Vue 3.
 
 Not yet a stable contract: independent subpackages, other mini-program platforms, Vue 2, uni-app x, custom WXML `sx` attributes and stateful HMR. WXML cannot call StyleX functions directly, and the compiler does not infer TS modules from templates.
+
+Official StyleX API semantics do not establish that every browser selector, media feature or CSS property is supported by WXSS. Compile-time support, emitted syntax and behavior on a selected WeChat base library are separate checks. Themes and dynamic values depend on CSS custom properties. See the [runtime reference](/api/runtime/) and [practical recipes](/recipes/) for the platform-specific binding contract.
+
+The [2026-10-09 IDE record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/ide-validation-2026-10-09.md) records individual acceptance for seven artifacts and a still-pending complete suite. Treat that as a dated result, not a current blanket pass or minimum-base-library guarantee. [Examples](/examples/) provide the reproducible validation commands.
 
 Report issues with framework versions, config, a minimal shared module and the affected WXSS artifact in [GitHub issues](https://github.com/weapp-stylex/weapp-stylex/issues).
 

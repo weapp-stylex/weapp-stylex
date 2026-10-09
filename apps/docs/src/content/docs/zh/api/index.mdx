@@ -1,0 +1,47 @@
+---
+title: "API 大全"
+description: "公开 runtime、类型、适配器与共享编译器契约。"
+sidebar:
+  order: 30
+---
+
+本参考以包的 export map 和当前安装的 StyleX 0.19.1 类型声明为准。应用代码从 [runtime](/zh/api/runtime/) 与[类型](/zh/api/types/)开始；构建配置查看[适配器](/zh/api/adapters/)，开发宿主集成时查看[编译器](/zh/api/compiler/)。
+
+## 公开入口
+
+<ApiTable>
+
+| 导入路径 | 契约 | 参考 |
+| --- | --- | --- |
+| `weapp-stylex` | 官方具名 runtime 值和类型；没有默认导出 | [Runtime](/zh/api/runtime/) |
+| `weapp-stylex/core` | 相同的 runtime 导出面 | [类型](/zh/api/types/) |
+| `weapp-stylex/weapp-vite` | `stylexCompiler`、`createStylex`、默认 compiler、配置类型 | [适配器](/zh/api/adapters/) |
+| `weapp-stylex/taro` | `stylexTaro`、默认插件、配置类型 | [适配器](/zh/api/adapters/#api-stylexTaro) |
+| `weapp-stylex/taro/loader` | 具名与默认 `stylexLoader` | [适配器](/zh/api/adapters/#api-stylexLoader) |
+| `weapp-stylex/uni-app` | `stylexUniApp`、默认插件、配置类型 | [适配器](/zh/api/adapters/#api-stylexUniApp) |
+| `weapp-stylex/compiler` | 共享转换、宿主、诊断与 WXSS 契约 | [编译器](/zh/api/compiler/) |
+
+</ApiTable>
+
+对应独立包为 `@weapp-stylex/core`、`@weapp-stylex/weapp-vite`、`@weapp-stylex/taro`（含 `/loader`）、`@weapp-stylex/uni-app` 与 `@weapp-stylex/compiler`，符号与聚合包对应入口相同。聚合包所有代码入口提供 ESM/CJS 与声明文件；独立 core 和 weapp-vite 入口为 ESM。
+
+<a id="api-package-json"></a>
+## 包元数据
+
+`weapp-stylex/package.json` 是公开的 JSON 元数据入口，字段描述发布包，不是 runtime 或编译函数。请使用当前 Node/bundler 支持的 JSON 导入语法。构建工具通过显式子路径导入，根 runtime 入口不会引入构建工具。
+
+## 理解微信边界
+
+<Aside type="warning" title="公开导出不代表微信端已验证">
+
+项目保留官方 StyleX 语义与 TypeScript 声明。属性通过类型检查，或官方 helper 出现在这里，都不能证明 WXSS 与特定微信基础库支持它。浏览器高级 API 和 unstable 导出在对应条目中单独说明边界。
+
+</Aside>
+
+稳定目标为微信原生 Page/Component、Wevu、Taro React/Vue 3 的 Vite 与 Webpack 5 构建，以及 uni-app Vue 3。支持普通分包；独立分包、其他小程序平台、Vue 2、uni-app x、自定义 WXML `sx` 语法与 stateful HMR 不在稳定契约内。各宿主的验收证据见[示例与验收](/zh/examples/)。
+
+## 阅读约定
+
+签名依据已安装公开声明；较长的官方泛型约束会明确使用简写，最终以类型推断为准。数值长度遵循 StyleX：`16` 表示 `16px`，`rpx` 请写成 `'16rpx'`。编译期 helper 需要适配器；运行时通过 `attrs()` 或 `props()` 组合已转换的样式。
+
+官方函数导出还提供同名 `typeof` 类型别名，例如 `import type { create } from 'weapp-stylex'`，每个别名随函数说明。`attrs` 与 `props` 是函数声明，没有同名别名。声明使用的内部类型不自动成为顶层公开导出。

@@ -7,7 +7,9 @@ sidebar:
 
 ## Define tokens and themes
 
-Follow the official `tokens.stylex.ts` convention. Definitions, references and `createTheme()` must import the token file directly; do not route tokens through a barrel.
+Define tokens in `tokens.stylex.ts`, following the official naming convention. Style modules and `createTheme()` modules must import that token file directly; do not route tokens through a barrel.
+
+The [tokens/themes recipe](/recipes/tokens-themes/) provides full native, React, Vue and Wevu theme toggles. [`defineVars()` and `createTheme()`](/api/runtime/) describe the API contracts.
 
 ```ts
 // tokens.stylex.ts
@@ -61,8 +63,12 @@ Default token selectors are rewritten from `:root` to `page` for WXSS. Theme cla
 
 A style function such as `styles.meter(80)` produces classes and inline CSS custom properties through the official runtime. Always bind the returned style string as well as the class. React `props()` supplies both.
 
+Recompute the composed result when the input changes. The [dynamic-style recipe](/recipes/dynamic-styles/) follows a slider value through state, binding and computed-width verification.
+
 ## Cross-module identity and watch
 
 The host resolver pre-resolves aliases and workspace paths. The official compiler uses canonical module identities so token definitions and consumers generate matching variable hashes. Token CSS remains tracked even when Babel erases its JavaScript import. Changes to a token invalidate its consumers.
 
 CSS custom properties still depend on the selected WeChat base library's support. The IDE suite should verify themes and dynamic values with your actual AppID and base library.
+
+Raw SFC scripts and theme modules remain on official Babel even in `backend: 'auto'`. Compile support alone does not establish runtime compatibility. Follow [example validation](/examples/) and preserve the dates/scope of its linked IDE records. Missing defaults or isolated-component failures have dedicated [troubleshooting steps](/troubleshooting/).

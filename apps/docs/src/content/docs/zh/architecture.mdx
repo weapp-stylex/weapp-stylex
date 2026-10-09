@@ -11,6 +11,8 @@ sidebar:
 
 `@weapp-stylex/compiler` 管理转换、resolver 身份、SFC sourcemap、metadata 与 WXSS 规划。框架适配器负责宿主 hook、生命周期和资产输出。runtime 保持官方薄封装。
 
+Runtime 根/core 入口采用具名转导出，没有默认导出；JavaScript 负责把编译后的映射组合为 attributes/props，构建工具留在独立子路径。参见[公开入口](/zh/aggregate-package/)与[构建核心参考](/zh/api/compiler/)。
+
 ## Metadata 与模块图生命周期
 
 每个规范化模块 ID 保存规则和依赖，重新转换时替换该模块 metadata。watch 重建保留未变化的缓存模块，变化时使消费者失效，并剔除不再可达的模块。token 的 runtime 导入消失后仍保留依赖记录。
@@ -27,9 +29,13 @@ Vue-loader 会为内联 script、template 和 style 请求重新读取原始 SFC
 
 ## 输出规划
 
-每个原生样式目录生成一份 `stylex.wxss`，同目录样式用 `@import "./stylex.wxss";` 导入。没有本地 WXSS 的页面和组件补充同名文件，没有样式入口则补充 `app.wxss`。
+存在 StyleX 规则时，emitter 在每个需要 WXSS 的目录旁生成聚合的 `stylex.wxss`，同目录样式通过 `@import "./stylex.wxss";` 导入。多个目录可以各有一份相同样式表，并不是每个源码模块单独生成样式表。
+
+同时输出 WXML 和匹配 JavaScript、却没有手写 WXSS 的入口会补齐同名 companion。`app.wxss` 也会按需补齐。这些文件负责加载生成样式，不改变宿主页面/组件注册。参见[组件与普通分包](/zh/recipes/components-subpackages/)。
 
 规则统一聚合、去重。关闭 CSS Layers、浏览器 specificity polyfill 和 runtime 样式注入。默认变量的 `:root` 选择器映射为 `page`。
+
+这是编译与输出边界，不会模拟浏览器选择器、DOM 行为或不支持的 WXSS 属性，目标基础库行为仍需运行验收。[Token 与主题](/zh/recipes/tokens-themes/)展示显式根节点绑定。
 
 输出保持幂等；用户同名文件会明确报错。watch 重建只清理插件拥有的过期文件和 import。首次没有 StyleX 的构建不改变资产。
 

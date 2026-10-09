@@ -1,0 +1,9 @@
+---
+import Icon from './icon.astro'
+interface Props { chinese: boolean }
+const { chinese } = Astro.props
+---
+
+<template data-copy-icon><Icon name="copy" size={16} /></template>
+<template data-check-icon><Icon name="check" size={16} /></template>
+<span class="code-copy-status" role="status" aria-live="polite" data-copy-status data-copied={chinese ? '代码已复制' : 'Code copied'} data-copy-failed={chinese ? '无法复制，请选择代码后手动复制。' : 'Unable to copy. Select the code and copy it manually.'}></span>

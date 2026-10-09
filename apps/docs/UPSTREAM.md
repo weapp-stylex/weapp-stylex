@@ -34,3 +34,12 @@ integration are retained. Optional Content Signals, WebMCP search, request
 rendering, API query versions and starter component replacements are not adopted
 as part of this dependency update. The reviewed baseline was advanced using
 `nimbus-docs migrate --yes --json` after checking these migration requirements.
+
+## Local documentation UI
+
+The homepage, five-group bilingual navigation, article layout, theme selector,
+search dialog and progressive enhancement are maintained by this project.
+Navigation comes from `src/lib/navigation.ts`; Nimbus still owns content loading,
+static routes, Markdown conversion, AI discovery and the production Pagefind index.
+Static SVG icons come from `@phosphor-icons/core@2.1.1`. Authored components and
+styles should be reviewed separately from future Nimbus starter migrations.

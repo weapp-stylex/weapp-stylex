@@ -1,0 +1,36 @@
+---
+import Head from '../components/head.astro'
+import SiteFooter from '../components/site-footer.astro'
+import SiteHeader from '../components/site-header.astro'
+import SiteTools from '../components/site-tools.astro'
+import '../styles/site.css'
+
+interface Props { title: string, description?: string, chinese: boolean, alternate: string, markdownUrl?: string, noindex?: boolean, draft?: boolean, searchable?: boolean }
+const { title, description, chinese, alternate, markdownUrl, noindex, draft, searchable } = Astro.props
+---
+
+<!doctype html>
+<html lang={chinese ? 'zh-CN' : 'en'} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Head title={title} description={description} chinese={chinese} markdownUrl={markdownUrl} noindex={noindex || draft} />
+    <link rel="alternate" hreflang={chinese ? 'en' : 'zh-CN'} href={new URL(alternate, Astro.site)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">{chinese ? '跳转到正文' : 'Skip to content'}</a>
+    <SiteHeader chinese={chinese} alternate={alternate} current={Astro.url.pathname} />
+    <main class="home-page" id="main-content" tabindex="-1" data-pagefind-body={searchable !== false && !noindex && !draft ? '' : undefined}>
+      <slot />
+      {markdownUrl && <div class="home-markdown"><a href={markdownUrl}>{chinese ? '阅读 Markdown' : 'Read Markdown'}</a></div>}
+    </main>
+    <SiteFooter chinese={chinese} />
+    <SiteTools chinese={chinese} />
+  </body>
+</html>
+
+<script>
+  import { mountSite } from '../lib/site-client'
+
+  mountSite()
+</script>

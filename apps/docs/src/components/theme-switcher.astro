@@ -1,0 +1,15 @@
+---
+import Icon from './icon.astro'
+
+interface Props { chinese: boolean }
+const { chinese } = Astro.props
+---
+
+<div class="theme-switcher" data-theme-control hidden>
+  <Icon name="sun" size={18} />
+  <select aria-label={chinese ? '外观主题' : 'Appearance'} data-theme-select>
+    <option value="light">{chinese ? '浅色' : 'Light'}</option>
+    <option value="dark">{chinese ? '深色' : 'Dark'}</option>
+    <option value="system">{chinese ? '跟随系统' : 'System'}</option>
+  </select>
+</div>

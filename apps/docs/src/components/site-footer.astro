@@ -1,0 +1,14 @@
+---
+import Icon from './icon.astro'
+interface Props { chinese: boolean }
+const { chinese } = Astro.props
+---
+
+<footer class="site-footer">
+  <div><a class="footer-brand" href={chinese ? '/zh/' : '/en/'}>weapp-stylex</a><p>{chinese ? '类型安全的样式，原生微信产物。' : 'Typed styles. Native WeChat output.'}</p></div>
+  <nav aria-label={chinese ? '相关资源' : 'Related resources'}>
+    <a href="https://github.com/weapp-stylex/weapp-stylex"><Icon name="github" size={18} />GitHub</a>
+    <a href="https://stylexjs.com/docs/learn">StyleX<Icon name="external" size={16} /></a>
+    <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/">{chinese ? '微信开放文档' : 'WeChat documentation'}<Icon name="external" size={16} /></a>
+  </nav>
+</footer>

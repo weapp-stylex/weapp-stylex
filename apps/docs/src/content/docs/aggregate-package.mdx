@@ -15,6 +15,8 @@ The aggregate package depends on the five scoped packages and forwards their
 public APIs. Existing scoped imports remain supported when those packages are
 installed directly.
 
+This is an installation facade, not another styling engine. Use the [runtime reference](/api/runtime/), [types](/api/types/) and [adapter reference](/api/adapters/) for the underlying public contracts.
+
 | Import | API |
 | --- | --- |
 | `weapp-stylex` / `weapp-stylex/core` | Official StyleX runtime, types and themes |
@@ -27,6 +29,15 @@ installed directly.
 Every entry provides ESM, CJS and corresponding type declarations. The runtime
 entry loads only the official StyleX runtime. Build adapters stay in separate
 subpaths and are not imported into application code.
+
+The root/core runtime has **no default export**. Use a namespace or named imports:
+
+```ts
+import * as stylex from 'weapp-stylex'
+// Or import { create, attrs, props } from 'weapp-stylex'
+```
+
+Default exports on adapter subpaths do not add a default export to the runtime root. Your own ordinary style modules may still default-export their compiled mappings.
 
 ## Shared styles
 
@@ -45,11 +56,13 @@ conditional merging, themes and dynamic styles use the same official semantics.
 An explicit `importSources` option replaces the defaults; include your chosen
 runtime entry when overriding it.
 
+Complete state updates and node bindings are in [practical recipes](/recipes/), including [shared-module exports](/recipes/shared-modules/) and [tokens/themes](/recipes/tokens-themes/).
+
 ## Choose the host
 
 Framework hosts are optional peers, so installing the aggregate package does
 not install every framework. Install the host for your selected adapter and
-retain the [supported toolchain versions](/examples/).
+retain the [host toolchain matrix](/configuration/). Optional peers retain version constraints; they only avoid installing unrelated hosts.
 
 Follow [native WeChat](/native/), [Wevu](/wevu/) or [uni-app](/uni-app/) for
 registration. Taro's plugin resolver does not resolve package subpaths as plugin
@@ -68,3 +81,5 @@ export default defineConfig({
 This also supports `framework: 'vue3'` and `compiler: { type: 'webpack5' }`.
 In a native ESM configuration, create `require` with Node's `createRequire()`.
 See [Taro React](/taro-react/) and [Taro Vue 3](/taro-vue3/).
+
+For an existing project, follow the [migration recipe](/recipes/migration/) and [troubleshooting](/troubleshooting/).

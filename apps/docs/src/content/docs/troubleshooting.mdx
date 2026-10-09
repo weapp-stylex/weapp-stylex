@@ -1,0 +1,112 @@
+---
+title: "Troubleshooting"
+description: "Trace a failure from source imports through compilation, WXSS and runtime binding."
+sidebar:
+  order: 15
+---
+
+Diagnose the first boundary that fails: module resolution → StyleX transformation → WXSS emission → node binding → target runtime. Keep framework versions, the actual adapter configuration and one affected artifact together while checking a failure.
+
+## No styles appear
+
+**Symptom:** the page renders, but its StyleX declarations have no effect.
+
+**Likely causes:** the adapter is not registered, the definition module never enters the host graph, or the node receives the `create()` mapping instead of composed attributes.
+
+<Steps>
+  <Step title="Check registration and imports">
+
+Follow the matching [adapter guide](/api/adapters/). Wevu registers both fields of one `createStylex()` factory. Default recognized imports are `weapp-stylex`, `weapp-stylex/core`, `@weapp-stylex/core` and `@stylexjs/stylex`. An explicit `importSources` list replaces those defaults.
+
+  </Step>
+  <Step title="Inspect the generated artifact">
+
+Build the affected host. Confirm the consumer imports the definition module and that the output includes generated classes, `stylex.wxss` and same-directory WXSS imports. Page/component entries without authored WXSS should receive companions when StyleX rules exist. A source file that is never imported cannot contribute rules.
+
+  </Step>
+  <Step title="Inspect the actual node binding">
+
+Native/Vue binds both `attrs().class` and `attrs().style`; React spreads `props()` on a Taro `View`. Native Page data contains composed strings and updates them with `setData()`. See [conditional composition](/recipes/composition/).
+
+  </Step>
+</Steps>
+
+**Repair and acceptance:** correct the failing boundary, rebuild, and inspect the rendered node's class and its matching WXSS rule. Toggle one state to verify updates as well as initial output.
+
+## The runtime calls create()
+
+**Symptom:** a compiled application still executes a StyleX declaration at runtime, or an inline SFC declaration fails while a shared module works.
+
+**Likely causes:** the script skipped the transform or SFC processing runs after the framework has selected/compiled its script block.
+
+Check the raw script import source, adapter registration and package version. For Wevu, use the shared factory; for Taro Vue/Webpack, retain the adapter's pre-loader and stable loader identity instead of adding a generic loader after Vue-loader. Do not manually exclude every `?vue` Webpack request: Vue-loader rereads raw SFCs for inline blocks. Vite virtual script requests have a different lifecycle and are deliberately skipped after raw SFC processing.
+
+**Repair and acceptance:** use the supported adapter registration, rebuild and check both an inline declaration and an imported style module. The declaration should be compiled before runtime while template-only bindings, macros and authored style blocks remain intact. [Architecture](/architecture/) explains the SFC boundary.
+
+## Dynamic values do not change
+
+**Symptom:** a displayed number updates, but the width or color stays unchanged.
+
+**Likely causes:** only class is bound, the composed result was calculated once, or another inline `style` replaces the dynamic custom properties.
+
+Inspect both class and inline style on the actual node. In native code, recalculate `attrs(styles.meter(value))` in the same `setData()` update as the value. In Vue/Wevu, use `computed()` from the correct host. In React, compute `props()` during rendering and preserve its `style` if adding more inline styles.
+
+**Repair and acceptance:** follow the [dynamic-style recipe](/recipes/dynamic-styles/), change the input, and verify the inline custom-property value and actual computed width. Check CSS custom-property support in the chosen WeChat base library.
+
+## A theme has no effect inside a component
+
+**Symptom:** the page theme changes, but an isolated component retains its colors.
+
+**Likely causes:** the component lacks a theme class on its own root, its styles use fixed colors, or tokens are resolved through a barrel rather than the direct token file.
+
+Import `tokens.stylex.ts` directly in styles and themes. Ensure affected properties reference those tokens. Pass theme selection as component state and recompute the component's own root attributes; check its WXSS import and the default `page` variable rule.
+
+**Repair and acceptance:** use [tokens and themes](/recipes/tokens-themes/) and [component observers](/recipes/components-subpackages/). Verify both default and selected colors on the page and the isolated component, then switch back to defaults.
+
+## stylex.wxss reports a filename conflict
+
+**Symptom:** the build fails because an output path already contains `stylex.wxss`.
+
+**Cause:** that filename is reserved for generated output; an authored file or another plugin claims it.
+
+Locate the reported path in source and host emission. Rename the authored stylesheet and retain its normal page/component WXSS entry. Do not disable the collision check or copy generated rules into every page.
+
+**Repair and acceptance:** rebuild and confirm that the plugin owns `stylex.wxss`, the authored styles remain in their renamed file, and repeated builds do not duplicate imports. Stale-file cleanup removes only plugin-owned output.
+
+## A length uses px instead of rpx
+
+**Symptom:** `padding: 16` compiles to `16px`, including in a framework that normally converts pixels.
+
+**Cause:** this is official StyleX unit semantics. StyleX WXSS is emitted after the host's ordinary dimension conversion.
+
+Use `'16rpx'` when the design requires responsive WeChat units. Numeric unitless properties such as opacity retain their own semantics; do not append `rpx` to every numeric value.
+
+**Acceptance:** inspect generated WXSS and compare the layout on the intended screen width. See [units](/styles/) and the [migration recipe](/recipes/migration/).
+
+## The build has version or import errors
+
+**Symptom:** plugin resolution fails, a Vue compiler API is missing, or a host fails after dependency overrides change.
+
+**Likely causes:** incompatible framework majors were unified, DCloud packages use different channels, or a root runtime default import was assumed.
+
+Compare the [toolchain matrix](/configuration/) with the actual lockfile and adapter peers. Keep StyleX's Babel 7 separate from weapp-vite's Babel 8. Taro uses Vite 4/its Webpack 5 builder; the aligned uni-app channel uses Vite 5 and Vue 3.4. Taro plugin configuration uses `require.resolve('weapp-stylex/taro')`, not a bare subpath plugin name. Native ESM configuration can create `require` with Node's `createRequire()`.
+
+Use `import * as stylex from 'weapp-stylex'` or named imports. The root/core runtime has no default export; build tools are available through [explicit subpaths](/aggregate-package/).
+
+**Repair and acceptance:** restore a compatible per-host dependency group, reinstall using the project's declared package-manager version and lockfile, and build the selected host. Do not repair a framework mismatch with a global major-version override.
+
+## Auto uses Babel, or forced SWC fails
+
+**Symptom:** `backend: 'auto'` reports a compatibility fallback, or `backend: 'swc'` rejects a module.
+
+**Cause:** the module is outside the verified SWC subset, or the optional native dependency is unavailable. Themes/constants, compile-time imports, custom Babel options, rejected runtime subpaths and raw Vue SFC scripts retain Babel. The SFC guard protects template-only bindings from SWC 0.19.0.
+
+Use default Babel or `auto` for that input. If the native package is missing and acceleration is desired, reinstall with optional dependencies using the project's normal package-manager configuration and restart the build. Do not force SWC past an unsupported-input diagnostic. Syntax, resolver and unknown transform errors are real failures, not compatibility fallbacks.
+
+**Acceptance:** check the diagnostic reason and resulting WXSS; compare the same interactions in Babel and auto modes. [Performance](/performance/) describes measurements and their limits.
+
+## Report a reproducible issue
+
+Include the framework/builder versions, Node/package-manager version, adapter config, minimal declaration and consumer, expected behavior, first error and affected WXSS/JavaScript. For runtime issues, include the WeChat IDE/base-library versions and the actual failing interaction. Avoid credentials or private application data.
+
+Use [GitHub issues](https://github.com/weapp-stylex/weapp-stylex/issues). [Validation instructions](/examples/) describe the evidence to collect. Dated records under `docs/` describe those runs only; missing prerequisites or a partial IDE suite remain pending acceptance.

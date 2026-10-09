@@ -14,6 +14,8 @@ pnpm add weapp-stylex
 聚合包依赖五个 scoped 包并转导出其公共 API。原有拆分包仍可独立安装并使用
 `@weapp-stylex/*` 导入。
 
+这是安装门面，不是另一套样式引擎。具体公共契约见 [runtime 参考](/zh/api/runtime/)、[类型参考](/zh/api/types/)与[适配器参考](/zh/api/adapters/)。
+
 | 导入 | API |
 | --- | --- |
 | `weapp-stylex` / `weapp-stylex/core` | 官方 StyleX runtime、类型和主题 |
@@ -25,6 +27,15 @@ pnpm add weapp-stylex
 
 每个入口提供 ESM、CJS 和对应类型声明。根 runtime 入口只加载官方 StyleX
 runtime；构建适配器位于独立子路径，请在构建配置中使用。
+
+根/core runtime **没有默认导出**，使用 namespace 或具名导入：
+
+```ts
+import * as stylex from 'weapp-stylex'
+// 或 import { create, attrs, props } from 'weapp-stylex'
+```
+
+适配器子路径的默认导出不会让 runtime 根入口获得默认导出。你自己的普通样式模块仍可以默认导出编译后的映射。
 
 ## 共享样式
 
@@ -41,10 +52,12 @@ export const styles = stylex.create({
 导入名。共享模块、直接导入 token、条件合并、主题和动态样式沿用官方语义。
 显式设置 `importSources` 会替换默认列表，覆盖时请包含所使用的 runtime 入口。
 
+完整状态更新与节点绑定见[实践教程](/zh/recipes/)，包括[共享模块导出](/zh/recipes/shared-modules/)与 [token/主题](/zh/recipes/tokens-themes/)。
+
 ## 选择宿主
 
 框架宿主为可选 peer，安装聚合包不会同时安装所有框架。请为对应适配器安装
-宿主，并保留其[兼容工具链版本](/zh/examples/)。
+宿主，并保留[工具链矩阵](/zh/configuration/)中的兼容分组。Optional peer 仍保留版本约束，仅避免安装无关宿主。
 
 注册方式参见[原生微信](/zh/native/)、[Wevu](/zh/wevu/)或
 [uni-app](/zh/uni-app/)。Taro 的插件名解析不支持 package 子路径，需在
@@ -63,3 +76,5 @@ export default defineConfig({
 也支持 `framework: 'vue3'` 和 `compiler: { type: 'webpack5' }`。
 原生 ESM 配置通过 Node 的 `createRequire()` 创建 `require`。
 完整示例见 [Taro React](/zh/taro-react/) 和 [Taro Vue 3](/zh/taro-vue3/)。
+
+现有项目按[迁移教程](/zh/recipes/migration/)接入，异常时参考[问题排查](/zh/troubleshooting/)。

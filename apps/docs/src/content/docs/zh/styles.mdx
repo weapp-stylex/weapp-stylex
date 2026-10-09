@@ -9,6 +9,8 @@ sidebar:
 
 样式声明可以放在任意 TS/JS 模块中，普通样式无需 `.stylex.ts` 后缀。
 
+本页介绍模块契约。[共享模块教程](/zh/recipes/shared-modules/)包含完整消费者路径、绑定与 watch 检查，[条件组合](/zh/recipes/composition/)介绍响应式状态。
+
 ```ts
 // styles.ts
 import * as stylex from 'weapp-stylex'
@@ -39,6 +41,8 @@ const active = stylex.attrs(styles.root, styles.active)
 
 定义模块会被编译，导出的样式映射仍供消费者使用。官方 runtime 处理条件组合和属性覆盖，同一属性以后面生效的条目为准。
 
+上面的默认导出属于用户编写的样式模块。`weapp-stylex` 根/core runtime 没有默认导出，请使用 namespace 或具名 runtime 导入。参见[包入口](/zh/aggregate-package/)。
+
 ## 路径别名与 workspace 模块
 
 在框架 resolver 中配置别名，然后按普通方式导入。workspace 源码包需要进入宿主构建模块图。编译器使用宿主 resolver 和规范化物理模块身份；不要为同一产物注册第二个独立编译 session。
@@ -52,8 +56,12 @@ const props = stylex.props(styles.root, active && styles.active)
 
 原生/Vue 使用 `attrs()`，React 使用 `props()`。StyleX 样式映射不是 Page data 的序列化契约，data 中只保存结果里的 class/style 字符串。
 
+状态变化后重新计算：原生使用 `setData()`，Vue/Wevu 使用宿主的 `computed()`，React 在下一次渲染计算。始终绑定返回的两个属性。[Runtime 参考](/zh/api/runtime/)介绍组合 API。
+
 ## 单位
 
 数值遵循官方 StyleX 语义，包括 opacity 等无单位属性。长度 `16` 输出 `16px`，微信响应式单位显式写 `'16rpx'`。输出 CSS 不再经过框架的 px-to-rpx 转换。
 
 主题 token 文件有单独的命名与直接导入要求，参见[主题与动态值](/zh/themes/)。
+
+编译后的 CSS 仍受目标 WXSS/基础库能力约束，适配器不模拟浏览器选择器或属性。参见[支持范围](/zh/faq/)与[问题排查](/zh/troubleshooting/)。

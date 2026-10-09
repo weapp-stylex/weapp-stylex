@@ -1,0 +1,146 @@
+---
+title: "Tokens and themes"
+description: "Share design values and switch themes on explicit component roots."
+sidebar:
+  order: 3
+---
+
+Tokens supply defaults; a theme supplies another value set for the same tokens. Keep their identity stable with direct imports from `tokens.stylex.ts`. Ordinary style modules can use barrels, but token definitions follow the compile-time import contract.
+
+## Create three modules
+
+```ts
+// tokens.stylex.ts
+import * as stylex from 'weapp-stylex'
+
+export const tokens = stylex.defineVars({
+  surface: '#ffffff',
+  text: '#17352a',
+  accent: '#168958',
+})
+```
+
+```ts
+// themes.ts
+import * as stylex from 'weapp-stylex'
+import { tokens } from './tokens.stylex'
+
+export const darkTheme = stylex.createTheme(tokens, {
+  surface: '#17352a',
+  text: '#f3f6f4',
+  accent: '#86e0b5',
+})
+```
+
+```ts
+// styles.ts
+import * as stylex from 'weapp-stylex'
+import { tokens } from './tokens.stylex'
+
+export const styles = stylex.create({
+  root: { padding: 16, backgroundColor: tokens.surface, color: tokens.text },
+  accent: { color: tokens.accent },
+})
+```
+
+Both `styles.ts` and `themes.ts` import the token file directly. The compiler resolves that physical module through the host and keeps its CSS/watch dependencies even if Babel removes a JavaScript token import.
+
+## Toggle the selected theme
+
+Place these modules beside the consumer in this example.
+
+<Tabs>
+  <Tab label="Native WeChat">
+
+```ts
+// index.ts
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+Page({
+  data: { dark: false, root: stylex.attrs(styles.root) },
+  toggleTheme() {
+    const dark = !this.data.dark
+    this.setData({ dark, root: stylex.attrs(styles.root, dark && darkTheme) })
+  },
+})
+```
+
+```xml
+<view class="{{root.class}}" style="{{root.style}}">
+  <text>{{dark ? 'Dark theme' : 'Default theme'}}</text>
+  <button bindtap="toggleTheme">Switch theme</button>
+</view>
+```
+
+  </Tab>
+  <Tab label="Taro React">
+
+```tsx
+import { Button, Text, View } from '@tarojs/components'
+import { useState } from 'react'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+export default function ThemePreview() {
+  const [dark, setDark] = useState(false)
+  return (
+    <View {...stylex.props(styles.root, dark && darkTheme)}>
+      <Text>{dark ? 'Dark theme' : 'Default theme'}</Text>
+      <Button onClick={() => setDark(!dark)}>Switch theme</Button>
+    </View>
+  )
+}
+```
+
+  </Tab>
+  <Tab label="Vue 3">
+
+```vue
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import * as stylex from 'weapp-stylex'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+const dark = ref(false)
+const root = computed(() => stylex.attrs(styles.root, dark.value && darkTheme))
+</script>
+
+<template>
+  <view :class="root.class" :style="root.style">
+    <text>{{ dark ? 'Dark theme' : 'Default theme' }}</text>
+    <button @tap="dark = !dark">Switch theme</button>
+  </view>
+</template>
+```
+
+  </Tab>
+  <Tab label="Wevu">
+
+Use the same SFC with `computed` and `ref` imported from `wevu`:
+
+```ts
+import { computed, ref } from 'wevu'
+```
+
+  </Tab>
+</Tabs>
+
+## Handle component isolation
+
+The compiler rewrites default variable selectors from `:root` to `page`; theme class selectors remain intact. An isolated component should receive the selected theme as application state and apply its own `attrs(styles.root, dark && darkTheme)` result to its root. Do not depend on a page class crossing style isolation. The [component recipe](/recipes/components-subpackages/) shows the native property observer.
+
+## Verify defaults and switching
+
+Inspect `stylex.wxss` for default variables under `page` and the separate theme selector. Start in the default theme, switch to dark, then switch back. Verify actual background/text colors and repeat inside an isolated component.
+
+<Aside type="note" title="Compilation and runtime support">
+
+Theme modules remain on official Babel in `backend: 'auto'`. CSS custom properties still need support in the selected WeChat base library. The dated [2026-10-09 IDE record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/ide-validation-2026-10-09.md) records individual artifact acceptance and the still-pending full-suite run; it is not a promise for every device or base-library version.
+
+</Aside>
+
+See [`defineVars()` and `createTheme()`](/api/runtime/) for the API contract and [troubleshooting](/troubleshooting/) for missing-variable diagnostics.

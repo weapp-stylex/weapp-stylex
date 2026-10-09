@@ -20,7 +20,14 @@ Use the [aggregate package](/aggregate-package/) for one-package installation. S
 
 ## Runtime
 
-`@weapp-stylex/core` re-exports `@stylexjs/stylex`, including `create`, `attrs`, `props`, `defineVars`, `createTheme` and types. Direct `@stylexjs/stylex` imports are recognized by default too.
+`weapp-stylex`, `weapp-stylex/core` and `@weapp-stylex/core` re-export official named runtime APIs and types from `@stylexjs/stylex`. The root/core runtime has no default export. Use a namespace or named import; the package root never loads build adapters. Direct `@stylexjs/stylex` imports are recognized by default too.
+
+```ts
+import * as stylex from 'weapp-stylex'
+// Or import { create, attrs, props } from 'weapp-stylex'
+```
+
+See the [runtime reference](/api/runtime/) for exports and the [type reference](/api/types/) for style contracts. Native/Vue uses `attrs()` class/style strings; Taro React spreads `props()` on `View`.
 
 ## Adapter entry points
 
@@ -30,6 +37,24 @@ Use the [aggregate package](/aggregate-package/) for one-package installation. S
 | weapp-vite | `createStylex(options?)` | Register both `vitePlugins` and `compilerPlugin` |
 | Taro | default export | Taro `plugins` configuration |
 | uni-app | `stylexUniApp(options?)` | Spread returned plugins after `uni()` |
+
+Complete signatures and registration examples are in the [adapter reference](/api/adapters/).
+
+## Toolchain matrix
+
+These are the repository's example versions, not a promise that every release in the same major is verified. Adapter peer declarations define installation constraints; real runtime acceptance has its own [dated records](/examples/).
+
+| Host | Example baseline | Builder |
+| --- | --- | --- |
+| Native WeChat | weapp-vite 7.4.0 | Vite 8.3.4 |
+| Wevu | wevu 7.4.0 + weapp-vite 7.4.0 | Vite 8.3.4 |
+| Taro React | Taro 4.3.0 + React 18.3.1 | Vite 4.5.14 or Webpack 5.91.0 |
+| Taro Vue 3 | Taro 4.3.0 + Vue 3.5.43 | Vite 4.5.14 or Webpack 5.91.0 |
+| uni-app Vue 3 | DCloud `3.0.0-alpha-5030120260930001` + Vue 3.4.21 | Vite 5.2.8 |
+
+The weapp-vite adapter declares `>=7.4.0 <8`; the Taro adapter declares `@tarojs/service >=4.3.0 <4.4.0` and `webpack ^5.91.0`; the uni-app adapter pins the DCloud plugin channel above. Optional peers mean unused hosts are not installed automatically, not that a selected host can be omitted.
+
+Official StyleX runtime/plugin is 0.19.1. The shared compiler uses Babel 7; weapp-vite keeps its own Babel 8. Keep the incompatible Vite/Vue/Babel groups separate instead of unifying them with global overrides. DCloud runtime/plugin packages must use the matching channel and its SFC parser.
 
 ## Common options
 
@@ -55,6 +80,8 @@ Platform settings are enforced: `classNamePrefix: 'sx'`, `debug: false`, `dev: f
 
 Adapter authors can use `StylexSession`, `createVitePlugins`, `WxssEmitter`, `processRules` and `sourceId`. Applications should use the framework adapter. See the [architecture guide](/architecture/) and the [source](https://github.com/weapp-stylex/weapp-stylex/tree/main/packages/compiler/src) for host and output contracts.
 
+The [compiler reference](/api/compiler/) documents public classes, host types and lifecycle ownership; [shared-module recipes](/recipes/shared-modules/) show application-level usage without direct session management.
+
 ## Backend selection
 
 The default `backend: 'babel'` uses official Babel 7 with AST reuse and session caching. `backend: 'auto'` selects SWC for the verified subset and reports compatibility fallbacks once per reason per session. `backend: 'swc'` requires SWC and fails explicitly when unsupported or unavailable.
@@ -72,3 +99,5 @@ SWC supports static styles, simple local dynamic styles, conditional merges, com
 `@stylexswc/rs-compiler@0.19.0` is an optional, lazy native dependency. Rust is unnecessary. Omitting optional dependencies keeps Babel usable; `auto` warns and uses Babel, while `swc` explains how to reinstall. Default Babel and the runtime entry never load the addon. Syntax, resolver and unknown compiler errors are reported rather than silently retried.
 
 Host authors may provide `TransformHost.diagnostic(diagnostic)` to receive structured warnings/errors with source location and repair hints. Vite, weapp-vite and Webpack adapters forward them through native diagnostics; SFC positions refer to the `.vue` file. See [performance and scope](/performance/).
+
+If a build fails, follow [troubleshooting](/troubleshooting/) before changing backend or dependency constraints. [Migration](/recipes/migration/) explains a baseline-first rollout.

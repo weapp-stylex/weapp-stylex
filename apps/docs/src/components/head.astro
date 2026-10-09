@@ -43,3 +43,14 @@ const structuredData = JSON.stringify({
 <meta property="og:image" content={new URL('/logo.png', Astro.site)} />
 <meta name="theme-color" content="#087f58" />
 <script type="application/ld+json" set:html={structuredData} />
+
+<script is:inline>
+  try {
+    const choice = localStorage.getItem('weapp-stylex:theme')
+    const dark = choice === 'dark' || (choice === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+  }
+  catch {
+    document.documentElement.dataset.theme = 'light'
+  }
+</script>

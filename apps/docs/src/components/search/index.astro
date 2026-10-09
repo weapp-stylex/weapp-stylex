@@ -1,23 +1,34 @@
 ---
 import { labels } from '../../lib/locale'
+import Icon from '../icon.astro'
 
 interface Props { chinese: boolean }
 const { chinese } = Astro.props
 const text = labels[chinese ? 'zh' : 'en']
 ---
 
-<details class="search-panel" data-search data-base={import.meta.env.BASE_URL} data-loading={text.loading} data-empty={text.empty} data-unavailable={text.unavailable}>
-  <summary>{text.search}</summary>
-  <form role="search">
-    <label for="docs-search">{text.search}</label>
-    <div class="search-controls">
-      <input id="docs-search" name="query" type="search" required autocomplete="off" />
-      <button type="submit">{text.submit}</button>
+<div data-search data-base={import.meta.env.BASE_URL} data-loading={text.loading} data-empty={text.empty} data-unavailable={text.unavailable}>
+  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-controls="docs-search-dialog" aria-label={text.search} hidden>
+    <Icon name="search" size={18} /><span>{chinese ? '搜索文档' : 'Search docs'}</span><kbd data-search-shortcut>⌘ K</kbd>
+  </button>
+  <noscript><a href={chinese ? '/zh/llms.txt' : '/llms.txt'}>{text.index}</a></noscript>
+  <dialog class="search-dialog" id="docs-search-dialog" aria-labelledby="docs-search-title">
+    <div class="search-dialog-header">
+      <strong id="docs-search-title">{text.search}</strong>
+      <button class="icon-button" type="button" data-search-close aria-label={chinese ? '关闭搜索' : 'Close search'}><Icon name="close" /></button>
     </div>
-  </form>
-  <p role="status" aria-live="polite"></p>
-  <ul class="search-results"></ul>
-</details>
+    <form role="search">
+      <label for="docs-search">{chinese ? '输入关键词' : 'Enter a keyword'}</label>
+      <div class="search-controls">
+        <input id="docs-search" name="query" type="search" autocomplete="off" placeholder={chinese ? 'API、主题、框架…' : 'API, themes, frameworks…'} />
+        <button type="submit">{text.submit}</button>
+      </div>
+    </form>
+    <p class="search-status" role="status" aria-live="polite"></p>
+    <ul class="search-results" aria-label={chinese ? '搜索结果' : 'Search results'}></ul>
+    <p class="search-hint">{chinese ? '搜索当前语言的文档 · 按 Esc 关闭' : 'Search documentation in this language · Esc to close'}</p>
+  </dialog>
+</div>
 
 <script>
   import { mountSearch } from './client'
