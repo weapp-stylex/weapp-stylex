@@ -67,6 +67,3 @@ allowBuilds:
   '@tarojs/cli': true
   core-js: false
   core-js-pure: false
-patchedDependencies:
-  '@icebreakers/monorepo-templates@2.3.1': patches/@icebreakers__monorepo-templates@2.3.1.patch
-  '@icebreakers/monorepo@5.9.0': patches/@icebreakers__monorepo@5.9.0.patch

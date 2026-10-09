@@ -53,11 +53,15 @@ WEAPP_STYLEX_TEST_REGISTRY_VERSION=0.1.0 corepack pnpm exec node scripts/test-pa
 
 仓库需允许 Actions 创建 Release PR。工作流使用 GitHub hosted runner、`id-token: write`、支持 trusted publishing 的 npm CLI 及公开 `publishConfig.access`。受管配置通过 repoctl 维护。
 
-## 发布阶段与临时补丁
+## 发布阶段与上游收敛
 
 Actions 将发布拆成 plan、verify、prepare、upload、confirm、finalize 六个步骤，
 无触发的提交在 plan 后跳过。OIDC 工作流不设置 setup-node 的 `registry-url`，
 避免生成缺少 `NODE_AUTH_TOKEN` 的静态认证占位符。
 
-当前通过精确版本 pnpm 补丁接入 repoctl 上游 PR；来源、可见性查询策略、阶段
-恢复规则、验证结果及稳定版发布后的移除步骤见[维护记录](./release-stages-patch.md)。
+2026-10-09 曾通过精确版本 pnpm 补丁接入 repoctl 上游改进；2026-10-10 已升级到
+正式 `repoctl@5.10.0` 与模板 `2.3.2` 并移除两个补丁。
+上游 [PR #1056](https://github.com/icelib/repoctl/pull/1056) 的
+[发布运行](https://github.com/icelib/repoctl/actions/runs/37969332933) 已成功。
+来源、registry 查询策略、阶段恢复规则、历史证据与本轮验证入口见
+[维护记录](./release-stages-patch.md)。
