@@ -88,6 +88,14 @@ runner 来跳过验证。`repoctl-ci-progress.json` 是诊断产物，不是验�
 test:examples、repo deps check、repo doctor、repo check --full 和 change check
 通过；构建包含七份微信产物。已有 7 条非阻塞 lint 警告仍保留。
 
+推送提交 `4a35091` 后的[线上 Release 验证](https://github.com/weapp-stylex/weapp-stylex/actions/runs/37921477963)
+成功：六个阶段分别显示，plan 判断无触发后正确跳过其余五步。保存的进度为
+`action: skip`、`publish: false`、`done: [plan]`，plan 耗时 193 ms；
+完整日志中缺失 token 的配置替换警告为 0。
+[独立 OIDC audit](https://github.com/weapp-stylex/weapp-stylex/actions/runs/37921593571)
+也成功，六个包均返回 HTTP 201，确认当前工作流身份可以交换发布认证，且同样没有
+上述警告。这次验证没有上传包；不能把认证检查解释为新的正式发布验收。
+
 ## 重新生成与移除
 
 如需重建补丁，检出上述上游提交，按上游指引安装、构建并同步模板；用对应精确
