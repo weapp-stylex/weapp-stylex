@@ -1,5 +1,14 @@
 # @weapp-stylex/weapp-vite
 
+## 0.2.1
+
+### Patch Changes
+
+- 识别 weapp-stylex 聚合入口的样式与主题导入；宿主框架 peer 改为可选，Taro 插件和 loader 增加具名导出供双格式聚合入口复用。
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.1.1
+
 ## 0.2.0
 
 ### Minor Changes
