@@ -1,8 +1,14 @@
 # weapp-stylex
 
+<p align="center">
+  <img src="assets/brand/logo.svg" width="160" alt="weapp-stylex logo" />
+</p>
+
 把官方 StyleX 编译为微信小程序 WXSS。支持原生 Page/Component、Wevu、Taro React、Taro Vue 3 和 uni-app Vue 3；Taro 可使用 Vite 或 Webpack 5。
 
 样式可以定义在普通 `styles.ts` 中，通过具名导出、默认导出、barrel、路径别名或 workspace 源码包复用。编译后保留导出的样式映射，多个消费者继续调用官方 `attrs()` / `props()` 合并样式。
+
+标识采用 A「双轨环抱」；全部设计方案、SVG、PNG 和交互预览见 [品牌素材](assets/brand/README.md)。
 
 ## 包与接入方式
 

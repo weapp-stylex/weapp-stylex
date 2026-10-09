@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>weapp-stylex · Logo 候选</title>
+    <style>
+      :root {
+        --paper: #f8faf9;
+        --ink: #12252e;
+        --muted: #607873;
+        --line: #d9e5df;
+        --green: #07974e;
+        --preview: #f8faf9;
+        --icon-size: 160px;
+        color-scheme: light;
+        font-family: 'Helvetica Neue', 'PingFang SC', Arial, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1380px;
+        margin: auto;
+        padding: 40px 48px 24px;
+      }
+      header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 32px;
+        padding-bottom: 28px;
+        border-bottom: 1px solid var(--line);
+      }
+      h1 {
+        font-size: 38px;
+        letter-spacing: -1.8px;
+        margin: 0 0 12px;
+        font-weight: 700;
+      }
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+      }
+      .source-label {
+        font-size: 12px;
+        letter-spacing: 1.6px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .controls {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 24px 0;
+      }
+      .control-groups {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .label {
+        font-size: 13px;
+        color: var(--muted);
+        margin-right: 4px;
+      }
+      button,
+      select,
+      a {
+        font: inherit;
+      }
+      button,
+      select {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        border-radius: 7px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      button:hover,
+      a:hover {
+        color: var(--green);
+      }
+      button[aria-pressed='true'] {
+        border-color: var(--green);
+        background: #eaf6ef;
+        color: #05783e;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      a:focus-visible {
+        outline: 3px solid #5bd3f3;
+        outline-offset: 4px;
+      }
+      #selection {
+        font-size: 13px;
+        color: var(--green);
+        min-height: 20px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0;
+      }
+      .concept {
+        padding: 24px 28px 30px;
+        position: relative;
+        border-top: 1px solid var(--line);
+      }
+      .concept:not(:nth-child(3n)) {
+        border-right: 1px solid var(--line);
+      }
+      .concept.chosen {
+        box-shadow: inset 0 0 0 2px var(--green);
+      }
+      .title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .letter {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        background: #e8eeea;
+        border-radius: 50%;
+        font-size: 15px;
+        font-weight: 650;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 0;
+        font-weight: 600;
+        letter-spacing: -0.4px;
+      }
+      .english {
+        font-size: 12px;
+        display: block;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .stage {
+        height: 202px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--preview);
+        border-radius: 12px;
+        margin: 18px 0 16px;
+      }
+      .stage img {
+        width: var(--icon-size);
+        height: var(--icon-size);
+        object-fit: contain;
+      }
+      .description {
+        font-size: 14px;
+        line-height: 1.65;
+        color: #48615b;
+        margin: 0;
+        min-height: 47px;
+      }
+      .note {
+        font-size: 12px;
+        color: var(--green);
+        margin: 10px 0 18px;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .actions a {
+        font-size: 12px;
+        color: var(--muted);
+        text-decoration: none;
+        border-bottom: 1px solid #b6c9c0;
+      }
+      .pick {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+      .reference .stage {
+        gap: 20px;
+      }
+      .reference .stage img {
+        width: 100px;
+        height: 100px;
+      }
+      .plus {
+        font-size: 22px;
+        color: #95aaa1;
+      }
+      .reference p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #48615b;
+      }
+      .reference strong {
+        font-weight: 600;
+      }
+      .footer {
+        border-top: 1px solid var(--line);
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+        padding: 22px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .footer a {
+        color: inherit;
+      }
+      .checker .stage {
+        background-color: #fff;
+        background-image:
+          linear-gradient(45deg, #e7eeea 25%, transparent 25%), linear-gradient(-45deg, #e7eeea 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #e7eeea 75%), linear-gradient(-45deg, transparent 75%, #e7eeea 75%);
+        background-size: 20px 20px;
+        background-position:
+          0 0,
+          0 10px,
+          10px -10px,
+          -10px 0;
+      }
+      @media (max-width: 1050px) {
+        main {
+          padding: 30px 24px;
+        }
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .concept:not(:nth-child(3n)) {
+          border-right: 0;
+        }
+        .concept:nth-child(odd) {
+          border-right: 1px solid var(--line);
+        }
+        .source-label {
+          display: none;
+        }
+        .controls {
+          align-items: start;
+        }
+        .control-groups {
+          gap: 12px;
+        }
+        .concept {
+          padding: 24px;
+        }
+      }
+      @media (max-width: 620px) {
+        main {
+          padding: 26px 18px;
+        }
+        h1 {
+          font-size: 31px;
+        }
+        header p {
+          font-size: 14px;
+          line-height: 1.6;
+        }
+        .controls {
+          display: block;
+        }
+        .control-groups {
+          display: block;
+        }
+        .group {
+          margin: 12px 0;
+        }
+        #selection {
+          margin-top: 16px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .concept:nth-child(odd) {
+          border-right: 0;
+        }
+        .concept {
+          padding: 24px 8px;
+        }
+        .stage {
+          height: 230px;
+        }
+        .description {
+          min-height: 0;
+        }
+        .footer {
+          display: block;
+          line-height: 1.8;
+        }
+        .footer span {
+          display: block;
+          margin-top: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>weapp-stylex</h1>
+          <p>小程序 × StyleX · 5 个构图不同的 logo 方向</p>
+        </div>
+        <span class="source-label">LOGO EXPLORATIONS / 2026.10.09</span>
+      </header>
+      <div class="controls">
+        <div class="control-groups">
+          <div class="group">
+            <span class="label">预览背景</span><button data-bg="light" aria-pressed="true">浅色</button
+            ><button data-bg="dark" aria-pressed="false">深色</button
+            ><button data-bg="checker" aria-pressed="false">透明</button>
+          </div>
+          <div class="group">
+            <label class="label" for="size">图标尺寸</label
+            ><select id="size">
+              <option value="160">160 px</option>
+              <option value="96">96 px</option>
+              <option value="64">64 px</option>
+              <option value="32">32 px</option>
+            </select>
+          </div>
+        </div>
+        <div id="selection" role="status" aria-live="polite">选一个方向，继续精修</div>
+      </div>
+      <section class="grid" aria-label="五个 logo 方案">
+        <article class="concept" id="a">
+          <div class="title">
+            <span class="letter">A</span>
+            <div>
+              <h2>双轨环抱</h2>
+              <span class="english">Orbit</span>
+            </div>
+          </div>
+          <div class="stage"><img src="a-orbit.svg" alt="双轨环抱 logo" /></div>
+          <p class="description">原始小程序圆标置于 StyleX 双轨中心，两个来源都清晰可见。</p>
+          <p class="note">识别最直接 · 推荐</p>
+          <div class="actions">
+            <button class="pick" data-pick="a" aria-pressed="false">选这个方向</button
+            ><a download href="a-orbit.svg">SVG</a><a download href="a-orbit.png">PNG</a>
+          </div>
+        </article>
+        <article class="concept" id="b">
+          <div class="title">
+            <span class="letter">B</span>
+            <div>
+              <h2>负形合印</h2>
+              <span class="english">Cutout</span>
+            </div>
+          </div>
+          <div class="stage"><img src="b-cutout.svg" alt="负形合印 logo" /></div>
+          <p class="description">将官方 X 与小程序曲线化为白色负形，收拢进一个微信绿圆章。</p>
+          <p class="note">单色友好 · 适合头像</p>
+          <div class="actions">
+            <button class="pick" data-pick="b" aria-pressed="false">选这个方向</button
+            ><a download href="b-cutout.svg">SVG</a><a download href="b-cutout.png">PNG</a>
+          </div>
+        </article>
+        <article class="concept" id="c">
+          <div class="title">
+            <span class="letter">C</span>
+            <div>
+              <h2>曲线交织</h2>
+              <span class="english">Interlace</span>
+            </div>
+          </div>
+          <div class="stage"><img src="c-interlace.svg" alt="曲线交织 logo" /></div>
+          <p class="description">去掉外圆，让小程序内部曲线与官方 X 并置交织，保留开放轮廓。</p>
+          <p class="note">更轻盈 · 适合项目字标</p>
+          <div class="actions">
+            <button class="pick" data-pick="c" aria-pressed="false">选这个方向</button
+            ><a download href="c-interlace.svg">SVG</a><a download href="c-interlace.png">PNG</a>
+          </div>
+        </article>
+        <article class="concept" id="d">
+          <div class="title">
+            <span class="letter">D</span>
+            <div>
+              <h2>叠合徽章</h2>
+              <span class="english">Badge</span>
+            </div>
+          </div>
+          <div class="stage"><img src="d-badge.svg" alt="叠合徽章 logo" /></div>
+          <p class="description">保留完整小程序标识，StyleX X 作为右上徽章，表达适配器的关系。</p>
+          <p class="note">原标保留最多 · 组合清楚</p>
+          <div class="actions">
+            <button class="pick" data-pick="d" aria-pressed="false">选这个方向</button
+            ><a download href="d-badge.svg">SVG</a><a download href="d-badge.png">PNG</a>
+          </div>
+        </article>
+        <article class="concept" id="e">
+          <div class="title">
+            <span class="letter">E</span>
+            <div>
+              <h2>几何双环</h2>
+              <span class="english">Geometric</span>
+            </div>
+          </div>
+          <div class="stage"><img src="e-geometric.svg" alt="几何双环 logo" /></div>
+          <p class="description">按 StyleX 双轨语言重绘等宽椭圆，围绕原始小程序圆标，强化小尺寸表现。</p>
+          <p class="note">轨道更粗 · 适合 favicon</p>
+          <div class="actions">
+            <button class="pick" data-pick="e" aria-pressed="false">选这个方向</button
+            ><a download href="e-geometric.svg">SVG</a><a download href="e-geometric.png">PNG</a>
+          </div>
+        </article>
+        <article class="concept reference">
+          <div class="title">
+            <span class="letter">↗</span>
+            <div>
+              <h2>参考与建议</h2>
+              <span class="english">Source marks</span>
+            </div>
+          </div>
+          <div class="stage">
+            <img src="sources/wechat-miniprogram.svg" alt="用户提供的小程序标识" /><span class="plus">+</span
+            ><img src="sources/stylex-official.svg" alt="StyleX 官方 X 标识" />
+          </div>
+          <p><strong>优先看 A。</strong>两个来源都保留得很清楚，适合作为 GitHub 组织头像。</p>
+          <p>喜欢更开放的图形看 C；希望轨道在小尺寸下更粗、更稳，看 E。</p>
+          <p>A–D 使用原始路径；E 参考官方双轨语言重新绘制。</p>
+        </article>
+      </section>
+      <div class="footer">
+        <div>
+          全部提供可编辑 SVG 与 1024 px 透明 PNG。<br /><a href="comparison.png">查看静态对比图</a> ·
+          <a href="weapp-stylex-logo-concepts.zip" download>下载全部方案</a>
+        </div>
+        <span
+          >StyleX 标识来自
+          <a href="https://stylexjs.com/" target="_blank" rel="noreferrer">stylexjs.com</a>；绿色标识来自你提供的
+          Vector.svg。</span
+        >
+      </div>
+    </main>
+    <script>
+      const names = { a: '双轨环抱', b: '负形合印', c: '曲线交织', d: '叠合徽章', e: '几何双环' }
+      for (const button of document.querySelectorAll('[data-bg]'))
+        button.addEventListener('click', () => {
+          const mode = button.dataset.bg
+          document.body.classList.toggle('checker', mode === 'checker')
+          document.documentElement.style.setProperty('--preview', mode === 'dark' ? '#14232c' : '#f8faf9')
+          for (const other of document.querySelectorAll('[data-bg]'))
+            other.setAttribute('aria-pressed', String(other === button))
+        })
+      document
+        .querySelector('#size')
+        .addEventListener('change', (event) =>
+          document.documentElement.style.setProperty('--icon-size', event.target.value + 'px'),
+        )
+      for (const button of document.querySelectorAll('[data-pick]'))
+        button.addEventListener('click', () => {
+          const key = button.dataset.pick
+          for (const other of document.querySelectorAll('[data-pick]')) {
+            const selected = other === button
+            other.setAttribute('aria-pressed', String(selected))
+            other.closest('article').classList.toggle('chosen', selected)
+          }
+          document.querySelector('#selection').textContent = '当前选择：' + key.toUpperCase() + ' / ' + names[key]
+          history.replaceState(null, '', '#' + key)
+        })
+    </script>
+  </body>
+</html>
