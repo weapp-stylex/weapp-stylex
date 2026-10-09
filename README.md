@@ -14,7 +14,16 @@
 | `@weapp-stylex/taro`       | Taro 默认插件，自动接入当前 builder；ESM/CJS，独立 `./loader` 入口        |
 | `@weapp-stylex/uni-app`    | `stylexUniApp()`，在 `uni()` 后注册                                       |
 
-这些包尚未发布 npm。本仓库的示例通过 `workspace:*` 使用本地包，不需要发布即可构建。
+应用项目安装 runtime 和对应构建适配器：
+
+```bash
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/weapp-vite # 或 @weapp-stylex/taro / @weapp-stylex/uni-app
+```
+
+本仓库的示例通过 `workspace:*` 使用本地包，不需要发布即可构建。公开包通过 GitHub Actions 的 `release.yml` 使用 npm OIDC trusted publishing 发布，并生成 provenance。
+
+版本、OIDC 配置及恢复流程见 [npm 发布](docs/npm-release.md)。
 
 ## 共享样式与官方 runtime
 
@@ -233,4 +242,4 @@ IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DE
 
 本轮限微信主包、页面、组件和普通分包。独立分包、其他平台、Vue 2、uni-app x、WXML `sx` 属性和 stateful HMR 留给后续版本。token 文件需遵循官方命名与直接导入约定；编译器不解析 WXML，也不从模板反推样式。
 
-MIT License。本轮提交不发布 npm。
+MIT License。
