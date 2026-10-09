@@ -1,0 +1,90 @@
+---
+title: "Quick start"
+description: "Install the runtime and select a build adapter."
+sidebar:
+  order: 1
+---
+
+## Prerequisites
+
+Use Node.js `^22.22.1 || >=24.11.0` and your framework's supported toolchain. This project adapts StyleX to **WeChat mini-programs**, with StyleX runtime/compiler `0.19.1`.
+
+## Install
+
+For a native weapp-vite project:
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/weapp-vite
+```
+
+For Taro, replace the build adapter with `@weapp-stylex/taro`. For uni-app, use `@weapp-stylex/uni-app`. Keep your framework's Vite, Vue and Babel versions; do not force one version across all frameworks.
+
+## Register the adapter
+
+```ts
+// vite.config.ts
+import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { defineConfig } from 'weapp-vite/config'
+
+export default defineConfig({
+  weapp: { srcRoot: 'src', compilerPlugins: [stylexCompiler()] },
+})
+```
+
+Wevu SFCs need both fields from `createStylex()`; follow the [Wevu guide](/wevu/).
+
+## Define shared styles
+
+Create `src/styles.ts`:
+
+```ts
+// styles.ts
+import * as stylex from '@weapp-stylex/core'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
+  active: { opacity: 0.6 },
+  meter: (width: number) => ({ width, height: 12 }),
+})
+export default styles
+```
+
+## Bind the result
+
+```ts
+// pages/index/index.ts
+import * as stylex from '@weapp-stylex/core'
+import { styles } from '../../styles'
+
+Page({
+  data: {
+    active: false,
+    sx: stylex.attrs(styles.root),
+    meter: stylex.attrs(styles.meter(80)),
+  },
+  toggle() {
+    const active = !this.data.active
+    this.setData({
+      active,
+      sx: stylex.attrs(styles.root, active && styles.active),
+    })
+  },
+})
+```
+
+```xml
+<!-- pages/index/index.wxml -->
+<view class="{{sx.class}}" style="{{sx.style}}" bindtap="toggle">
+  <text>StyleX in WeChat</text>
+  <view class="{{meter.class}}" style="{{meter.style}}" />
+</view>
+```
+
+`attrs()` returns class/style strings that can be stored in page data. Recompute the result when your conditions change. Do not put the `stylex.create()` result directly into Page data.
+
+## Build and inspect
+
+Run your normal framework build, then open the output directory in WeChat DevTools. The adapter emits `stylex.wxss` and relative imports automatically. Do not create a user-owned file with that name.
+
+Continue with [shared styles](/styles/) or your [framework example](/examples/).

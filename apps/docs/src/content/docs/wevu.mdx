@@ -1,0 +1,60 @@
+---
+title: "Wevu"
+description: "Compile StyleX before Wevu processes Vue SFCs."
+sidebar:
+  order: 3
+---
+
+## Register both integration fields
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/weapp-vite
+```
+
+```ts
+import { createStylex } from '@weapp-stylex/weapp-vite'
+import { defineConfig } from 'weapp-vite/config'
+
+const stylex = createStylex()
+export default defineConfig({
+  plugins: stylex.vitePlugins,
+  weapp: { srcRoot: 'src', compilerPlugins: [stylex.compilerPlugin] },
+})
+```
+
+Both fields share one session. Do not register an additional `stylexCompiler()` instance. The Vite side processes raw SFC scripts; the compiler side writes native WXSS.
+
+## Reactive bindings
+
+Import `computed` and `ref` from **wevu**. Define styles in an ordinary module, then compose them in the consumer:
+
+```vue
+<script setup lang="ts">
+import * as stylex from '@weapp-stylex/core'
+import { computed, ref } from 'wevu'
+import { styles } from './styles'
+
+const active = ref(false)
+const width = ref(80)
+const attrs = computed(() =>
+  stylex.attrs(styles.root, active.value && styles.active),
+)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+</script>
+
+<template>
+  <view :class="attrs.class" :style="attrs.style" @tap="active = !active">
+    <text>Shared StyleX</text>
+    <view :class="meter.class" :style="meter.style" />
+  </view>
+</template>
+```
+
+Bind both `.class` and `.style`: dynamic values can produce inline CSS custom properties. Templates, macros, lifecycle hooks and `<style>` remain Wevu's responsibility.
+
+## JSX and external modules
+
+JSX/TSX consumers can use the official runtime too. Raw `<script>` and `<script setup>` are transformed before SFC compilation, sourcemaps are composed, and virtual script requests are skipped to avoid double transformation. Shared external TS styles are processed as modules.
+
+Explore [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu), including Vue SFC, a JSX component, themes and a subpackage.

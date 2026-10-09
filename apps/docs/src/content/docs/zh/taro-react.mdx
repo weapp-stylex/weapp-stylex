@@ -1,0 +1,62 @@
+---
+title: "Taro React"
+description: "用同一适配器接入 Taro Vite 与 Webpack 5。"
+sidebar:
+  order: 4
+---
+
+## 安装与配置
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/taro
+```
+
+```ts
+// config/index.ts
+import { defineConfig } from '@tarojs/cli'
+
+export default defineConfig({
+  projectName: 'my-stylex-app',
+  sourceRoot: 'src',
+  outputRoot: 'dist',
+  framework: 'react',
+  compiler: { type: 'vite' }, // or webpack5
+  plugins: ['@weapp-stylex/taro'],
+})
+```
+
+将 `compiler.type` 改为 `webpack5` 即可使用 Webpack。插件通过 Taro 公开 hook 选择 builder，无需手动注册 loader。需要配置选项时使用 `plugins: [['@weapp-stylex/taro', { importSources: ['@weapp-stylex/core', '@stylexjs/stylex'] }]]`。
+
+## 组合共享样式
+
+按[样式指南](/zh/styles/)创建共享模块，再绑定结果：
+
+```tsx
+import { useState } from 'react'
+import { View } from '@tarojs/components'
+import * as stylex from '@weapp-stylex/core'
+import { styles } from './styles'
+
+export default function Card() {
+  const [active, setActive] = useState(false)
+  return (
+    <View
+      {...stylex.props(styles.root, active && styles.active)}
+      onClick={() => setActive(!active)}
+    >
+      <View {...stylex.props(styles.meter(80))}>Shared styles</View>
+    </View>
+  )
+}
+```
+
+`props()` 返回 React 使用的 className 和 style，展开到 Taro View 上即可。
+
+## Builder 版本与单位
+
+示例验证 Taro `4.3.0`、React `18` / Vue `3`、Vite `4` 与 Webpack `5.91.0`。全部 `@tarojs/*` 包保持同版本，不要用全局 Vite 或 Babel override 替换 Taro 的工具链。
+
+StyleX WXSS 在 Taro 尺寸转换之后输出。数值 `16` 保持 `16px`，需要时显式写 `'16rpx'`。Webpack 在模块 `buildInfo` 保存 StyleX metadata，filesystem cache 命中仍会收集 CSS。
+
+[taro-react 示例](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react)顺序构建两份独立产物，覆盖共享样式、多消费者、主题切换、动态值与普通分包。

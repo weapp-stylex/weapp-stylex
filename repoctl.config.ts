@@ -37,7 +37,7 @@ export default {
     },
     eslint: {
       astro: true,
-      ignores: ['**/fixtures/**'],
+      ignores: ['**/fixtures/**', '.repoctl/template-baselines/**'],
       svelte: true,
       vue: true,
     },

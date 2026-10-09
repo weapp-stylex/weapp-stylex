@@ -1,0 +1,68 @@
+---
+title: "主题与动态值"
+description: "使用官方 token、主题 class 与动态 StyleX 函数。"
+sidebar:
+  order: 8
+---
+
+## 定义 token 与主题
+
+遵循官方 `tokens.stylex.ts` 约定。定义、引用与 `createTheme()` 都应直接导入 token 文件，不要通过 barrel 转导出 token。
+
+```ts
+// tokens.stylex.ts
+import * as stylex from '@weapp-stylex/core'
+
+export const tokens = stylex.defineVars({
+  surface: 'white',
+  text: '#172033',
+})
+```
+
+```ts
+// themes.ts
+import * as stylex from '@weapp-stylex/core'
+import { tokens } from './tokens.stylex'
+
+export const darkTheme = stylex.createTheme(tokens, {
+  surface: '#172033',
+  text: 'white',
+})
+```
+
+```ts
+// styles.ts
+import * as stylex from '@weapp-stylex/core'
+import { tokens } from './tokens.stylex'
+
+export const styles = stylex.create({
+  root: { backgroundColor: tokens.surface, color: tokens.text, padding: 16 },
+  meter: (width: number) => ({ width, height: 12 }),
+})
+```
+
+```ts
+// consumer.ts
+import * as stylex from '@weapp-stylex/core'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+const root = stylex.attrs(darkTheme, styles.root)
+const meter = stylex.attrs(styles.meter(80))
+```
+
+## 将主题绑定到根节点
+
+把主题和样式一起传给 `attrs()` / `props()`。原生/Vue 绑定 `root.class` 与 `root.style`，React 在 View 展开 `props()`。切换主题时用 `dark && darkTheme` 重新计算。
+
+WXSS 中默认 token 的 `:root` 选择器映射为 `page`，主题 class 选择器保留。隔离组件应把选中的主题 class 也绑定到自身根节点，不能依赖页面 class 穿透样式隔离。
+
+## 动态值
+
+`styles.meter(80)` 等样式函数通过官方 runtime 生成 class 和行内 CSS 自定义属性。因此需要同时绑定结果里的 style 字符串与 class；React 的 `props()` 同时提供两者。
+
+## 跨模块身份与 watch
+
+宿主 resolver 预解析别名和 workspace 路径，官方编译器使用规范化模块身份，使定义端与消费者生成一致的变量哈希。Babel 移除 JavaScript token 导入后，默认变量 CSS 仍受依赖记录管理。token 变化会使消费者失效重编译。
+
+CSS 自定义属性仍依赖所选微信基础库的支持。请用实际 AppID 和基础库执行 IDE suite，验证主题与动态值。

@@ -1,0 +1,70 @@
+---
+title: "Native WeChat"
+description: "Use Page, Component, WXML and WXSS with weapp-vite."
+sidebar:
+  order: 2
+---
+
+## Configure weapp-vite
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/weapp-vite
+```
+
+```ts
+// vite.config.ts
+import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { defineConfig } from 'weapp-vite/config'
+
+export default defineConfig({
+  weapp: { srcRoot: 'src', compilerPlugins: [stylexCompiler()] },
+})
+```
+
+`stylexCompiler()` supports native JS, TS, JSX and TSX source modules. Use `createStylex()` when your project also contains Vue SFCs.
+
+## Bind class and style explicitly
+
+Import shared declarations from `src/styles.ts` using the [shared module pattern](/styles/).
+
+```ts
+// pages/index/index.ts
+import * as stylex from '@weapp-stylex/core'
+import { styles } from '../../styles'
+
+Page({
+  data: {
+    active: false,
+    sx: stylex.attrs(styles.root),
+    meter: stylex.attrs(styles.meter(80)),
+  },
+  toggle() {
+    const active = !this.data.active
+    this.setData({
+      active,
+      sx: stylex.attrs(styles.root, active && styles.active),
+    })
+  },
+})
+```
+
+```xml
+<!-- pages/index/index.wxml -->
+<view class="{{sx.class}}" style="{{sx.style}}" bindtap="toggle">
+  <text>StyleX in WeChat</text>
+  <view class="{{meter.class}}" style="{{meter.style}}" />
+</view>
+```
+
+The same pattern works in a `Component`: store the initial `attrs()` result in `data`, then use `this.setData()` in component methods or observers when props change. Apply the theme class to an isolated component's own root.
+
+## Pages and components without local WXSS
+
+The compiler adds a same-name WXSS companion for pages and isolated components that have no local stylesheet. Each style output directory gets `stylex.wxss`; its siblings import it via `./stylex.wxss`. A build with no StyleX leaves output unchanged.
+
+## Ordinary subpackages
+
+Keep your existing `app.json` subpackage declarations. Shared modules can be used by the main package and ordinary subpackages. Independent subpackages are outside the stable support contract.
+
+See the runnable [wechat-native example](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native), including shared styles, themes, components and a subpackage route.

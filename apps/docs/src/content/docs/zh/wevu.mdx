@@ -1,0 +1,60 @@
+---
+title: "Wevu"
+description: "在 Wevu 处理 Vue SFC 之前编译 StyleX。"
+sidebar:
+  order: 3
+---
+
+## 同时注册两个入口
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/weapp-vite
+```
+
+```ts
+import { createStylex } from '@weapp-stylex/weapp-vite'
+import { defineConfig } from 'weapp-vite/config'
+
+const stylex = createStylex()
+export default defineConfig({
+  plugins: stylex.vitePlugins,
+  weapp: { srcRoot: 'src', compilerPlugins: [stylex.compilerPlugin] },
+})
+```
+
+两个字段共享同一个 session，不要额外注册另一个 `stylexCompiler()`。Vite 入口处理原始 SFC 脚本，compiler 入口输出原生 WXSS。
+
+## 响应式绑定
+
+从 **wevu** 导入 `computed` 与 `ref`。把声明写在普通模块中，在消费者里组合：
+
+```vue
+<script setup lang="ts">
+import * as stylex from '@weapp-stylex/core'
+import { computed, ref } from 'wevu'
+import { styles } from './styles'
+
+const active = ref(false)
+const width = ref(80)
+const attrs = computed(() =>
+  stylex.attrs(styles.root, active.value && styles.active),
+)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+</script>
+
+<template>
+  <view :class="attrs.class" :style="attrs.style" @tap="active = !active">
+    <text>Shared StyleX</text>
+    <view :class="meter.class" :style="meter.style" />
+  </view>
+</template>
+```
+
+同时绑定 `.class` 和 `.style`：动态值可能产生行内 CSS 自定义属性。模板、宏、生命周期和 `<style>` 继续由 Wevu 处理。
+
+## JSX 与外部模块
+
+JSX/TSX 消费者同样使用官方 runtime。原始 `<script>` 与 `<script setup>` 在 SFC 编译前处理，并组合 sourcemap；跳过虚拟 script 请求以避免重复转换。外部共享 TS 样式按普通模块处理。
+
+[wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) 包含 Vue SFC、JSX 组件、主题与分包示例。

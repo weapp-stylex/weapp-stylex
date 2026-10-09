@@ -1,0 +1,54 @@
+---
+title: "包与配置 API"
+description: "公开入口、配置选项和平台固定约束。"
+sidebar:
+  order: 9
+---
+
+## 已发布的包
+
+| 包 | 发布版本 | 用途 |
+| --- | --- | --- |
+| `@weapp-stylex/core` | 0.1.1 | 官方 runtime API 与类型 |
+| `@weapp-stylex/compiler` | 0.1.0 | 共享构建核心，ESM/CJS |
+| `@weapp-stylex/weapp-vite` | 0.2.0 | 原生与 Wevu 适配器 |
+| `@weapp-stylex/taro` | 0.1.0 | Taro 插件，ESM/CJS 与 loader 导出 |
+| `@weapp-stylex/uni-app` | 0.1.0 | DCloud Vue 3 适配器 |
+
+这是文档首次上线时的已发布版本，后续版本以 npm 为准。
+
+## Runtime
+
+`@weapp-stylex/core` 重新导出 `@stylexjs/stylex`，包含 `create`、`attrs`、`props`、`defineVars`、`createTheme` 与类型。默认也识别直接导入 `@stylexjs/stylex` 的写法。
+
+## 适配器入口
+
+| 适配器 | 入口 | 注册位置 |
+| --- | --- | --- |
+| weapp-vite | `stylexCompiler(options?)` | 原生脚本使用 `weapp.compilerPlugins` |
+| weapp-vite | `createStylex(options?)` | 同时注册 `vitePlugins` 与 `compilerPlugin` |
+| Taro | 默认导出 | Taro `plugins` 配置 |
+| uni-app | `stylexUniApp(options?)` | 在 `uni()` 后展开返回的插件 |
+
+## 通用选项
+
+```ts
+interface StylexCompilerOptions {
+  importSources?: readonly string[]
+  babel?: Partial<Options> // @stylexjs/babel-plugin Options
+}
+```
+
+`importSources` 会**替换**默认列表 `['@weapp-stylex/core', '@stylexjs/stylex']`，增加来源时请保留默认项。`babel` 传给官方 StyleX 插件，并不是通用 Babel pipeline 配置。
+
+```ts
+const stylex = createStylex({
+  importSources: ['@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
+})
+```
+
+平台固定使用 `classNamePrefix: 'sx'`、`debug: false`、`dev: false`、`test: false`、`runtimeInjection: false` 和 `styleResolution: 'application-order'`。规则聚合固定 `legacyDisableLayers: true` 与 `useLayers: false`。不要覆盖 custom module resolution，它负责将跨模块主题连接到宿主 resolver。
+
+## 构建核心 API
+
+适配器作者可以使用 `StylexSession`、`createVitePlugins`、`WxssEmitter`、`processRules` 与 `sourceId`。应用项目优先使用框架适配器。宿主和输出契约参见[架构指南](/zh/architecture/)与[源码](https://github.com/weapp-stylex/weapp-stylex/tree/main/packages/compiler/src)。

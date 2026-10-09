@@ -1,0 +1,68 @@
+---
+title: "Themes and dynamic values"
+description: "Use official tokens, theme classes and dynamic StyleX functions."
+sidebar:
+  order: 8
+---
+
+## Define tokens and themes
+
+Follow the official `tokens.stylex.ts` convention. Definitions, references and `createTheme()` must import the token file directly; do not route tokens through a barrel.
+
+```ts
+// tokens.stylex.ts
+import * as stylex from '@weapp-stylex/core'
+
+export const tokens = stylex.defineVars({
+  surface: 'white',
+  text: '#172033',
+})
+```
+
+```ts
+// themes.ts
+import * as stylex from '@weapp-stylex/core'
+import { tokens } from './tokens.stylex'
+
+export const darkTheme = stylex.createTheme(tokens, {
+  surface: '#172033',
+  text: 'white',
+})
+```
+
+```ts
+// styles.ts
+import * as stylex from '@weapp-stylex/core'
+import { tokens } from './tokens.stylex'
+
+export const styles = stylex.create({
+  root: { backgroundColor: tokens.surface, color: tokens.text, padding: 16 },
+  meter: (width: number) => ({ width, height: 12 }),
+})
+```
+
+```ts
+// consumer.ts
+import * as stylex from '@weapp-stylex/core'
+import { styles } from './styles'
+import { darkTheme } from './themes'
+
+const root = stylex.attrs(darkTheme, styles.root)
+const meter = stylex.attrs(styles.meter(80))
+```
+
+## Bind the theme to the root
+
+Pass the theme and style to `attrs()` / `props()`. Bind `root.class` and `root.style` in native/Vue templates, or spread `props()` on a React View. For a toggle, recompute using `dark && darkTheme`.
+
+Default token selectors are rewritten from `:root` to `page` for WXSS. Theme class selectors remain intact. An isolated component should bind the selected theme class on its own root, since it cannot rely on a page's class selector crossing the isolation boundary.
+
+## Dynamic values
+
+A style function such as `styles.meter(80)` produces classes and inline CSS custom properties through the official runtime. Always bind the returned style string as well as the class. React `props()` supplies both.
+
+## Cross-module identity and watch
+
+The host resolver pre-resolves aliases and workspace paths. The official compiler uses canonical module identities so token definitions and consumers generate matching variable hashes. Token CSS remains tracked even when Babel erases its JavaScript import. Changes to a token invalidate its consumers.
+
+CSS custom properties still depend on the selected WeChat base library's support. The IDE suite should verify themes and dynamic values with your actual AppID and base library.

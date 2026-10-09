@@ -1,0 +1,36 @@
+---
+title: "排障与支持边界"
+description: "排查绑定、主题和产物问题，了解当前支持范围。"
+sidebar:
+  order: 12
+---
+
+## 样式没有生效
+
+确认适配器已经注册，定义模块进入宿主构建模块图，产物包含生成的 `stylex.wxss` import。源码应导入 `@weapp-stylex/core` 或 `@stylexjs/stylex`，除非配置了其他 `importSources`。
+
+Wevu SFC 应注册同一个 `createStylex()` 工厂的两个字段，不要使用两个独立 session。Page data 绑定 `attrs()` 的结果，不是 `create()` 的映射对象。
+
+## 动态值或主题不生效
+
+同时绑定 class 与 style。token 定义命名为 `tokens.stylex.ts`，样式/主题直接导入它。隔离组件根节点绑定主题 class。确认所选微信基础库支持产物使用的 CSS 自定义属性。
+
+## stylex.wxss 文件名冲突
+
+`stylex.wxss` 由插件管理。重命名手写文件，保留常规 WXSS 入口，插件会自动注入 import。不要取消冲突检查或将生成 CSS 复制到每个页面。
+
+## 为什么 16 仍是 16px？
+
+这是官方 StyleX 的单位语义。微信响应式单位请写 `'16rpx'`。StyleX 产物在框架尺寸转换之后输出，不会二次转换。
+
+## 工具链版本不匹配
+
+StyleX 编译器保留 Babel 7，不要把 weapp-vite 的 Babel 8 要求全局套用。Taro 使用 Vite 4、uni-app 使用 Vite 5、当前 weapp-vite 使用 Vite 8，应按 workspace 隔离。
+
+## 当前支持范围
+
+已支持：微信主包、页面、组件和普通分包；原生、Wevu、Taro React/Vue 3 与 uni-app Vue 3。
+
+尚未形成稳定契约：独立分包、其他小程序平台、Vue 2、uni-app x、自定义 WXML `sx` 属性和 stateful HMR。WXML 不能直接调用 StyleX 函数，编译器也不会从模板反推 TS 模块。
+
+提交 [GitHub issue](https://github.com/weapp-stylex/weapp-stylex/issues)时请附框架版本、配置、最小共享模块和相关 WXSS 产物。

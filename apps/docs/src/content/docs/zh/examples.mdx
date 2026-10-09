@@ -1,0 +1,53 @@
+---
+title: "示例与验证"
+description: "五个示例 workspace、七份微信产物与可重复验证。"
+sidebar:
+  order: 11
+---
+
+## 示例矩阵
+
+| Workspace | 工具链 | 产物 |
+| --- | --- | --- |
+| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.4 / Vite 8 | `dist` |
+| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu / Vite 8，SFC + JSX | `dist` |
+| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3 / React 18 | `dist/weapp-vite`、`dist/weapp-webpack` |
+| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3 / Vue 3 | `dist/weapp-vite`、`dist/weapp-webpack` |
+| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 CLI | `dist/build/mp-weixin` |
+
+全部示例覆盖共享模块、多消费者、条件合并、主题、动态值和普通分包，保留少量内联声明作为对照。
+
+## 从源码构建
+
+```sh
+git clone https://github.com/weapp-stylex/weapp-stylex.git
+cd weapp-stylex
+corepack enable
+corepack pnpm install --frozen-lockfile
+corepack pnpm build
+corepack pnpm test:examples
+```
+
+`build` 先构建包，再构建依赖这些包的示例。Taro 的两个 builder 顺序输出到不同目录。`test:examples` 检查全部七份产物，并通过 `@mpcore/test` 运行原生/Wevu headless 交互。
+
+## 自动检查
+
+```sh
+corepack pnpm lint
+corepack pnpm typecheck
+corepack pnpm test
+corepack pnpm test:deps
+corepack pnpm test:integration
+```
+
+集成测试使用真实模块图、Vite watcher 与 Webpack filesystem cache，覆盖共享导出、别名、主题、缓存保留、过期规则清理、WXSS import、单位语义与冲突。
+
+## 微信开发者工具
+
+```sh
+WEAPP_STYLEX_APPID=your-real-appid WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH=/path/to/wechat/cli corepack pnpm test:ide
+```
+
+使用真实 AppID、选定的官方稳定版 IDE，完成登录并开启服务端口。suite 全局串行，每份产物只启动一次 automator，使用 `reLaunch` 切页，先结构断言后截图。IDE/基础库版本、截图、日志和本任务资源清理记录保存在 `artifacts/ide`。
+
+缺少 IDE 前提时记为待验收，不视为通过。Taro/uni-app 运行行为需要真实 IDE 验证，静态构建检查无法替代。实际验收状态参见[验证记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-framework-validation.md)。

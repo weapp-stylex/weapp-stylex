@@ -1,0 +1,41 @@
+---
+title: "Contributing and docs"
+description: "Develop, verify and update the bilingual documentation."
+sidebar:
+  order: 13
+---
+
+## Workspace workflow
+
+This repository uses repoctl `5.9.0`, pnpm `12.10.1` and Node.js `^22.22.1 || >=24.11.0`. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
+
+Run the full [validation workflow](/examples/) before submitting compiler changes. Use `corepack pnpm change` for publishable package changes; documentation changes do not publish npm packages.
+
+## Documentation source
+
+The site at [stylex.weapp.dev](https://stylex.weapp.dev/) is generated from the default repoctl Nimbus template, using Nimbus `0.16.0` and Astro `7.3.7`. Content lives in `apps/docs/src/content/docs/`. English pages use root filenames; matching Chinese pages use `zh/`.
+
+```sh
+corepack pnpm --filter docs dev
+corepack pnpm --filter docs lint
+corepack pnpm --filter docs typecheck
+corepack pnpm --filter docs build
+corepack pnpm --filter docs preview
+```
+
+Production builds generate Pagefind search. Check both language routes and switching on a production preview, rather than expecting search to work in the dev server.
+
+## Read with tools
+
+Each page exposes `/index.md` and `/index.mdx`. `/llms.txt` lists the documentation, `/zh/llms.txt` lists Chinese pages, and `/llms-full.txt` includes the complete public text. These are generated from the same content as the site.
+
+## Deployment
+
+Cloudflare Workers Static Assets serves the static `dist/` directory. `apps/docs/wrangler.jsonc` owns the `stylex.weapp.dev` custom domain, including automatic DNS/TLS management. All canonical and language alternate links use this origin.
+
+```sh
+corepack pnpm --filter docs deploy:dry-run
+corepack pnpm --filter docs deploy
+```
+
+Authenticate locally with Wrangler before deploying. Never commit credentials. See the [deployment runbook](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/site-deployment.md) for checks and rollback.

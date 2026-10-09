@@ -1,0 +1,47 @@
+{
+  "name": "docs",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "description": "weapp-stylex bilingual documentation at stylex.weapp.dev",
+  "author": "ice breaker <1324318532@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "apps/docs"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
+  "engines": {
+    "node": "^22.22.1 || >=24.11.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "corepack pnpm check:locales && astro build",
+    "deploy": "corepack pnpm build && wrangler deploy",
+    "deploy:dry-run": "corepack pnpm build && wrangler deploy --dry-run",
+    "preview": "astro preview",
+    "typecheck": "astro check && tsc --noEmit",
+    "lint": "eslint . && stylelint \"src/styles/**/*.css\" && nimbus-docs lint",
+    "lint:docs": "nimbus-docs lint",
+    "lint:docs:fix": "nimbus-docs lint --fix",
+    "check:locales": "node scripts/check-locales.mjs",
+    "check:site": "node scripts/check-site.mjs"
+  },
+  "dependencies": {
+    "@cloudflare/nimbus-docs": "0.16.0",
+    "astro": "7.3.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/language-server": "2.17.2",
+    "astro-eslint-parser": "^3.2.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "eslint-plugin-mdx": "^3.8.1",
+    "pagefind": "^1.5.2",
+    "typescript": "6.0.3",
+    "wrangler": "^4.149.0"
+  }
+}

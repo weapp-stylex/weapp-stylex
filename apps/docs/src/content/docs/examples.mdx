@@ -1,0 +1,53 @@
+---
+title: "Examples and validation"
+description: "Five workspaces, seven WeChat artifacts and repeatable checks."
+sidebar:
+  order: 11
+---
+
+## Example matrix
+
+| Workspace | Toolchain | Artifacts |
+| --- | --- | --- |
+| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.4 / Vite 8 | `dist` |
+| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu / Vite 8, SFC + JSX | `dist` |
+| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3 / React 18 | `dist/weapp-vite`, `dist/weapp-webpack` |
+| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3 / Vue 3 | `dist/weapp-vite`, `dist/weapp-webpack` |
+| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 CLI | `dist/build/mp-weixin` |
+
+Examples include shared modules, multiple consumers, conditional composition, themes, dynamic values and ordinary subpackages. A few inline declarations provide a comparison.
+
+## Build from source
+
+```sh
+git clone https://github.com/weapp-stylex/weapp-stylex.git
+cd weapp-stylex
+corepack enable
+corepack pnpm install --frozen-lockfile
+corepack pnpm build
+corepack pnpm test:examples
+```
+
+`build` builds packages before dependent examples. The two Taro builders run sequentially into separate directories. `test:examples` checks all seven outputs and runs native/Wevu headless interactions through `@mpcore/test`.
+
+## Automated checks
+
+```sh
+corepack pnpm lint
+corepack pnpm typecheck
+corepack pnpm test
+corepack pnpm test:deps
+corepack pnpm test:integration
+```
+
+Integration tests use real module graphs, Vite watchers and Webpack filesystem cache. They cover shared exports, aliases, themes, cache retention, stale rule removal, WXSS imports, unit semantics and conflicts.
+
+## WeChat DevTools
+
+```sh
+WEAPP_STYLEX_APPID=your-real-appid WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH=/path/to/wechat/cli corepack pnpm test:ide
+```
+
+Use a real AppID, the selected official stable IDE, login and an enabled service port. The suite is globally serial: one automator per artifact, `reLaunch` between pages, structural assertions before screenshots. It records IDE/base-library versions, screenshots, logs and owned-resource cleanup in `artifacts/ide`.
+
+Missing IDE prerequisites are reported as pending, not passed. Taro/uni-app runtime behavior requires this real IDE check; static build validation does not replace it. See the [validation record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-framework-validation.md) for the actual acceptance status.

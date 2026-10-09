@@ -1,0 +1,65 @@
+---
+title: "Taro Vue 3"
+description: "Use the same adapter with Taro Vite and Webpack 5."
+sidebar:
+  order: 5
+---
+
+## Install and configure
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/taro
+```
+
+```ts
+// config/index.ts
+import { defineConfig } from '@tarojs/cli'
+
+export default defineConfig({
+  projectName: 'my-stylex-app',
+  sourceRoot: 'src',
+  outputRoot: 'dist',
+  framework: 'vue3',
+  compiler: { type: 'vite' }, // or webpack5
+  plugins: ['@weapp-stylex/taro'],
+})
+```
+
+Set `compiler.type` to `webpack5` to use Webpack. The plugin selects the builder through public Taro hooks; no manual loader registration is required. To pass options, use `plugins: [['@weapp-stylex/taro', { importSources: ['@weapp-stylex/core', '@stylexjs/stylex'] }]]`.
+
+## Compose shared styles
+
+Create a shared module using the [styles guide](/styles/), then bind its result:
+
+```vue
+<script setup lang="ts">
+import * as stylex from '@weapp-stylex/core'
+import { computed, ref } from 'vue'
+import { styles } from './styles'
+
+const active = ref(false)
+const width = ref(80)
+const attrs = computed(() =>
+  stylex.attrs(styles.root, active.value && styles.active),
+)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+</script>
+
+<template>
+  <view :class="attrs.class" :style="attrs.style" @tap="active = !active">
+    <text>Shared StyleX</text>
+    <view :class="meter.class" :style="meter.style" />
+  </view>
+</template>
+```
+
+Import reactive APIs from vue, and bind both class and style explicitly. SFC scripts run through the shared compiler before Taro compiles the template.
+
+## Builder versions and units
+
+The examples verify Taro `4.3.0`, React `18` / Vue `3`, Vite `4` and Webpack `5.91.0`. Keep all `@tarojs/*` packages on the same version. Avoid global Vite or Babel overrides that replace Taro's toolchain.
+
+StyleX WXSS is emitted after Taro's dimension transforms. Numeric `16` remains `16px`; use `'16rpx'` explicitly. Webpack stores StyleX metadata in module `buildInfo` so filesystem cache hits still contribute CSS.
+
+The [taro-vue3 example](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) builds two separate artifacts sequentially, with shared styles, multiple consumers, theme switching, dynamic values and ordinary subpackages.

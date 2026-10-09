@@ -1,0 +1,36 @@
+---
+title: "Troubleshooting and scope"
+description: "Resolve common binding, theme and output problems."
+sidebar:
+  order: 12
+---
+
+## No styles appear
+
+Confirm the adapter is registered, the definition module enters the host build graph, and the output contains generated `stylex.wxss` imports. The source should import `@weapp-stylex/core` or `@stylexjs/stylex`, unless you configured another `importSources` list.
+
+For Wevu SFCs, register both fields of the same `createStylex()` factory. Do not use two separate sessions. Bind the result of `attrs()`, not the `create()` mapping, into Page data.
+
+## Dynamic values or themes fail
+
+Bind both class and style. Name token definitions `tokens.stylex.ts` and import them directly from styles/themes. Apply theme classes on isolated component roots. Confirm the chosen WeChat base library supports the CSS custom properties used in your output.
+
+## stylex.wxss filename conflict
+
+`stylex.wxss` is plugin-owned. Rename your authored file and keep your regular WXSS entry; the plugin injects imports automatically. Do not remove collision checks or copy generated CSS into every page.
+
+## Why did 16 stay 16px?
+
+This preserves official StyleX semantics. For WeChat responsive units, write `'16rpx'`. StyleX output runs after the framework's dimension conversion, so it is not transformed a second time.
+
+## Toolchain mismatch
+
+Keep Babel 7 for the StyleX compiler. weapp-vite's Babel 8 requirements must not replace it globally. Taro uses Vite 4, uni-app uses Vite 5, while current weapp-vite uses Vite 8; resolve them per workspace.
+
+## Current support
+
+Supported: WeChat main package, pages, components, ordinary subpackages; native, Wevu, Taro React/Vue 3 and uni-app Vue 3.
+
+Not yet a stable contract: independent subpackages, other mini-program platforms, Vue 2, uni-app x, custom WXML `sx` attributes and stateful HMR. WXML cannot call StyleX functions directly, and the compiler does not infer TS modules from templates.
+
+Report issues with framework versions, config, a minimal shared module and the affected WXSS artifact in [GitHub issues](https://github.com/weapp-stylex/weapp-stylex/issues).

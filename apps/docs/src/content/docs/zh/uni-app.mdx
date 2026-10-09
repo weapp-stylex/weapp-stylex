@@ -1,0 +1,64 @@
+---
+title: "uni-app Vue 3"
+description: "接入 DCloud 官方 Vue 3 CLI 工具链。"
+sidebar:
+  order: 6
+---
+
+## 安装
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/uni-app
+```
+
+## 在 uni() 之后注册
+
+```ts
+// vite.config.ts
+import uniImport from '@dcloudio/vite-plugin-uni'
+import { stylexUniApp } from '@weapp-stylex/uni-app'
+import { defineConfig } from 'vite'
+
+const uni
+  = (uniImport as unknown as { default?: typeof uniImport }).default ?? uniImport
+export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
+```
+
+该 fallback 处理 ESM 配置中可能嵌套一层的 CommonJS default 导出。适配器解析 DCloud 自己的 Vue SFC parser，使编译器版本与 uni-app 保持一致。
+
+## 响应式绑定
+
+```vue
+<script setup lang="ts">
+import * as stylex from '@weapp-stylex/core'
+import { computed, ref } from 'vue'
+import { styles } from './styles'
+
+const active = ref(false)
+const width = ref(80)
+const attrs = computed(() =>
+  stylex.attrs(styles.root, active.value && styles.active),
+)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+</script>
+
+<template>
+  <view :class="attrs.class" :style="attrs.style" @tap="active = !active">
+    <text>Shared StyleX</text>
+    <view :class="meter.class" :style="meter.style" />
+  </view>
+</template>
+```
+
+使用普通共享 TS 模块，动态值同时绑定 class 与 style。使用主题时，将主题 class 也绑定到隔离组件自身根节点。
+
+## 构建微信小程序
+
+```sh
+pnpm exec uni build -p mp-weixin
+```
+
+插件拒绝其他 `UNI_PLATFORM`。Vue 2 与 uni-app x 不在支持范围内。
+
+[uni-vue3 示例](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3)固定官方 Vue 3 通道 `3.0.0-alpha-5030120260930001`。DCloud 包保持同版本，Vite 为 `5.2.8`，Vue 为 `3.4.21`。这些固定版本来自框架兼容要求，不应强制应用到其他 workspace。

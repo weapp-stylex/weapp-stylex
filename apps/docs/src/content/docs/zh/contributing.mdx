@@ -1,0 +1,41 @@
+---
+title: "贡献与文档维护"
+description: "开发、验证并维护中英文文档。"
+sidebar:
+  order: 13
+---
+
+## Workspace 工作流
+
+仓库使用 repoctl `5.9.0`、pnpm `12.10.1` 与 Node.js `^22.22.1 || >=24.11.0`。通过 `corepack pnpm exec repo new <name> --template <key>` 创建包，保持适配器精简，共享编译行为放在 `@weapp-stylex/compiler`。
+
+编译器改动提交前执行完整[验证流程](/zh/examples/)。可发布包的变更使用 `corepack pnpm change`，文档改动不会发布 npm 包。
+
+## 文档源码
+
+[stylex.weapp.dev](https://stylex.weapp.dev/) 由 repoctl 默认 Nimbus 模板生成，使用 Nimbus `0.16.0` 和 Astro `7.3.7`。内容位于 `apps/docs/src/content/docs/`：英文使用根目录文件名，中文放在 `zh/` 的同名文件。
+
+```sh
+corepack pnpm --filter docs dev
+corepack pnpm --filter docs lint
+corepack pnpm --filter docs typecheck
+corepack pnpm --filter docs build
+corepack pnpm --filter docs preview
+```
+
+生产构建生成 Pagefind 搜索。请在生产预览中检查双语路由与语言切换，开发服务器不提供完整搜索索引。
+
+## 工具读取入口
+
+每页提供 `/index.md` 和 `/index.mdx`。`/llms.txt` 列出文档，`/zh/llms.txt` 列出中文页面，`/llms-full.txt` 包含完整公开文本。它们与网站使用同一内容源生成。
+
+## 部署
+
+Cloudflare Workers Static Assets 托管静态 `dist/`。`apps/docs/wrangler.jsonc` 管理 `stylex.weapp.dev` custom domain，DNS 与 TLS 自动配置。canonical 与语言 alternate 链接统一使用这个主域名。
+
+```sh
+corepack pnpm --filter docs deploy:dry-run
+corepack pnpm --filter docs deploy
+```
+
+本地先完成 Wrangler 认证，不要提交凭据。验证与回滚参见[部署手册](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/site-deployment.md)。

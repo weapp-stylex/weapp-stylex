@@ -1,0 +1,90 @@
+---
+title: "快速开始"
+description: "安装 runtime，选择对应的构建适配器。"
+sidebar:
+  order: 1
+---
+
+## 环境要求
+
+使用 Node.js `^22.22.1 || >=24.11.0` 和框架支持的工具链。本项目面向**微信小程序**，使用 StyleX runtime/compiler `0.19.1`。
+
+## 安装
+
+原生 weapp-vite 项目：
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/weapp-vite
+```
+
+Taro 项目将构建适配器换为 `@weapp-stylex/taro`，uni-app 使用 `@weapp-stylex/uni-app`。保留各框架兼容的 Vite、Vue 和 Babel 版本，不要强制全仓统一版本。
+
+## 注册适配器
+
+```ts
+// vite.config.ts
+import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { defineConfig } from 'weapp-vite/config'
+
+export default defineConfig({
+  weapp: { srcRoot: 'src', compilerPlugins: [stylexCompiler()] },
+})
+```
+
+Wevu SFC 需要同时注册 `createStylex()` 的两个字段，参见 [Wevu 指南](/zh/wevu/)。
+
+## 定义共享样式
+
+创建 `src/styles.ts`：
+
+```ts
+// styles.ts
+import * as stylex from '@weapp-stylex/core'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
+  active: { opacity: 0.6 },
+  meter: (width: number) => ({ width, height: 12 }),
+})
+export default styles
+```
+
+## 绑定结果
+
+```ts
+// pages/index/index.ts
+import * as stylex from '@weapp-stylex/core'
+import { styles } from '../../styles'
+
+Page({
+  data: {
+    active: false,
+    sx: stylex.attrs(styles.root),
+    meter: stylex.attrs(styles.meter(80)),
+  },
+  toggle() {
+    const active = !this.data.active
+    this.setData({
+      active,
+      sx: stylex.attrs(styles.root, active && styles.active),
+    })
+  },
+})
+```
+
+```xml
+<!-- pages/index/index.wxml -->
+<view class="{{sx.class}}" style="{{sx.style}}" bindtap="toggle">
+  <text>StyleX in WeChat</text>
+  <view class="{{meter.class}}" style="{{meter.style}}" />
+</view>
+```
+
+`attrs()` 返回可放进页面 data 的 class/style 字符串。条件变化时重新计算结果，不要直接把 `stylex.create()` 的结果放进 Page data。
+
+## 构建与检查
+
+执行框架的常规构建，在微信开发者工具打开产物目录。适配器会自动生成 `stylex.wxss` 和相对导入，请不要自己创建同名文件。
+
+接着阅读[共享样式](/zh/styles/)或对应的[框架示例](/zh/examples/)。

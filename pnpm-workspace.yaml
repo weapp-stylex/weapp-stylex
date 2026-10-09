@@ -29,6 +29,9 @@ versioning:
   changelog:
     storage: repository
 packageExtensions:
+  '@dcloudio/uni-mp-vite@3.0.0-alpha-5030120260930001':
+    dependencies:
+      estree-walker: 2.0.2
   weapp-vite@7.4.0:
     dependencies:
       '@babel/core': ^8.0.7

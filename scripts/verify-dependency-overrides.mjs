@@ -51,6 +51,19 @@ async function main() {
   )
   assert.equal(uniRequire('vite/package.json').version, '5.2.8')
   assert.equal(uniRequire('vue/package.json').version, '3.4.21')
+  const platformRequire = createRequire(
+    uniRequire.resolve('@dcloudio/uni-mp-weixin/package.json'),
+  )
+  const mpRequire = createRequire(
+    platformRequire.resolve('@dcloudio/uni-mp-vite/package.json'),
+  )
+  // DCloud's CommonJS plugin imports this without declaring it upstream.
+  // Keep its resolver independent of Nimbus's ESM-only estree-walker 3.
+  const visited = []
+  mpRequire('estree-walker').walk({ type: 'Identifier', name: 'stylex' }, {
+    enter(node) { visited.push(node.type) },
+  })
+  assert.deepEqual(visited, ['Identifier'])
   for (const name of [
     'uni-app',
     'uni-components',

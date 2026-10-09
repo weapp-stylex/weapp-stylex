@@ -1,0 +1,44 @@
+---
+title: "StyleX for WeChat"
+description: "Share typed styles across pages, components and frameworks."
+sidebar:
+  order: 0
+---
+
+<img className="home-mark" src="/logo.svg" width="112" height="112" alt="weapp-stylex logo" />
+
+## Write once. Compose everywhere.
+
+Keep the official StyleX API. Move styles into an ordinary module, compose them with `attrs()` or `props()`, and build atomic WXSS for WeChat.
+
+[Get started →](/get-started/) · [Explore examples](/examples/) · [GitHub](https://github.com/weapp-stylex/weapp-stylex)
+
+```ts
+// styles.ts
+import * as stylex from '@weapp-stylex/core'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
+  active: { opacity: 0.6 },
+  meter: (width: number) => ({ width, height: 12 }),
+})
+export default styles
+```
+
+## Choose your framework
+
+| Framework | Build integration | Guide |
+| --- | --- | --- |
+| Native Page / Component | weapp-vite compiler plugin | [Native WeChat](/native/) |
+| Wevu Vue SFC / JSX | weapp-vite + shared StyleX session | [Wevu](/wevu/) |
+| Taro React | Vite or Webpack 5 | [Taro React](/taro-react/) |
+| Taro Vue 3 | Vite or Webpack 5 | [Taro Vue 3](/taro-vue3/) |
+| uni-app Vue 3 | DCloud Vite plugin | [uni-app](/uni-app/) |
+
+## Familiar semantics, native output
+
+Shared modules support named and default exports, barrels, aliases and workspace sources. Themes use official tokens; dynamic values use the official runtime. Numeric `16` stays `16px`; write `'16rpx'` when needed.
+
+No CSS layers or runtime stylesheet injection. Build adapters collect and deduplicate rules, write `stylex.wxss`, and connect it to page and component styles.
+
+The project currently targets WeChat main packages and ordinary subpackages. See [support boundaries](/faq/) before adopting independent subpackages or another platform.

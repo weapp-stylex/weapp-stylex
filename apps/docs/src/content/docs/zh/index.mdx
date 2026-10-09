@@ -1,0 +1,44 @@
+---
+title: "把 StyleX 带进微信小程序"
+description: "在页面、组件和不同框架之间，复用同一份类型安全样式。"
+sidebar:
+  order: 0
+---
+
+<img className="home-mark" src="/logo.svg" width="112" height="112" alt="weapp-stylex 标识" />
+
+## 定义一次，组合使用
+
+保留官方 StyleX API。把样式写进普通模块，用 `attrs()` 或 `props()` 组合，再编译成微信小程序的原子 WXSS。
+
+[快速开始 →](/zh/get-started/) · [查看示例](/zh/examples/) · [GitHub](https://github.com/weapp-stylex/weapp-stylex)
+
+```ts
+// styles.ts
+import * as stylex from '@weapp-stylex/core'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
+  active: { opacity: 0.6 },
+  meter: (width: number) => ({ width, height: 12 }),
+})
+export default styles
+```
+
+## 选择你的框架
+
+| 框架 | 构建接入 | 指南 |
+| --- | --- | --- |
+| 原生 Page / Component | weapp-vite 编译插件 | [原生微信](/zh/native/) |
+| Wevu Vue SFC / JSX | weapp-vite + 共享 StyleX session | [Wevu](/zh/wevu/) |
+| Taro React | Vite 或 Webpack 5 | [Taro React](/zh/taro-react/) |
+| Taro Vue 3 | Vite 或 Webpack 5 | [Taro Vue 3](/zh/taro-vue3/) |
+| uni-app Vue 3 | DCloud Vite 插件 | [uni-app](/zh/uni-app/) |
+
+## 熟悉的语义，原生产物
+
+共享模块支持具名导出、默认导出、barrel、路径别名和 workspace 源码。主题沿用官方 token，动态值交给官方 runtime。数值 `16` 保持 `16px`，需要时显式写 `'16rpx'`。
+
+无需 CSS Layers 或运行时样式注入。构建适配器收集、去重规则，输出 `stylex.wxss`，再接入页面与组件样式。
+
+当前支持微信主包和普通分包。接入独立分包或其他平台之前，请先查看[支持边界](/zh/faq/)。

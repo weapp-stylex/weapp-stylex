@@ -1,0 +1,54 @@
+---
+title: "Packages and configuration"
+description: "Public entry points, options and enforced platform settings."
+sidebar:
+  order: 9
+---
+
+## Published packages
+
+| Package | Published version | Purpose |
+| --- | --- | --- |
+| `@weapp-stylex/core` | 0.1.1 | Official runtime API and types |
+| `@weapp-stylex/compiler` | 0.1.0 | Shared build core, ESM/CJS |
+| `@weapp-stylex/weapp-vite` | 0.2.0 | Native and Wevu adapters |
+| `@weapp-stylex/taro` | 0.1.0 | Taro plugin, ESM/CJS and loader export |
+| `@weapp-stylex/uni-app` | 0.1.0 | DCloud Vue 3 adapter |
+
+These are the versions published at the initial documentation launch. npm is the source of truth for later releases.
+
+## Runtime
+
+`@weapp-stylex/core` re-exports `@stylexjs/stylex`, including `create`, `attrs`, `props`, `defineVars`, `createTheme` and types. Direct `@stylexjs/stylex` imports are recognized by default too.
+
+## Adapter entry points
+
+| Adapter | Entry | Registration |
+| --- | --- | --- |
+| weapp-vite | `stylexCompiler(options?)` | `weapp.compilerPlugins` for native scripts |
+| weapp-vite | `createStylex(options?)` | Register both `vitePlugins` and `compilerPlugin` |
+| Taro | default export | Taro `plugins` configuration |
+| uni-app | `stylexUniApp(options?)` | Spread returned plugins after `uni()` |
+
+## Common options
+
+```ts
+interface StylexCompilerOptions {
+  importSources?: readonly string[]
+  babel?: Partial<Options> // @stylexjs/babel-plugin Options
+}
+```
+
+`importSources` **replaces** the default list `['@weapp-stylex/core', '@stylexjs/stylex']`. Include the defaults when adding another source. Babel options are passed to the official StyleX plugin, not to a general-purpose Babel pipeline.
+
+```ts
+const stylex = createStylex({
+  importSources: ['@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
+})
+```
+
+Platform settings are enforced: `classNamePrefix: 'sx'`, `debug: false`, `dev: false`, `test: false`, `runtimeInjection: false`, and `styleResolution: 'application-order'`. Rule aggregation fixes `legacyDisableLayers: true` and `useLayers: false`. Do not override custom module resolution; it connects cross-module themes to the host resolver.
+
+## Build-core API
+
+Adapter authors can use `StylexSession`, `createVitePlugins`, `WxssEmitter`, `processRules` and `sourceId`. Applications should use the framework adapter. See the [architecture guide](/architecture/) and the [source](https://github.com/weapp-stylex/weapp-stylex/tree/main/packages/compiler/src) for host and output contracts.

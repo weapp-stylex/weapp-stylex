@@ -1,0 +1,4 @@
+.astro/
+.nimbus/
+.wrangler/
+worker-configuration.d.ts

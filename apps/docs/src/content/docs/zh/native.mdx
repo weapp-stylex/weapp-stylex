@@ -1,0 +1,70 @@
+---
+title: "原生微信"
+description: "用 weapp-vite 接入 Page、Component、WXML 与 WXSS。"
+sidebar:
+  order: 2
+---
+
+## 配置 weapp-vite
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/weapp-vite
+```
+
+```ts
+// vite.config.ts
+import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { defineConfig } from 'weapp-vite/config'
+
+export default defineConfig({
+  weapp: { srcRoot: 'src', compilerPlugins: [stylexCompiler()] },
+})
+```
+
+`stylexCompiler()` 支持原生 JS、TS、JSX、TSX 源码模块。项目同时含 Vue SFC 时改用 `createStylex()`。
+
+## 显式绑定 class 与 style
+
+按[共享模块写法](/zh/styles/)从 `src/styles.ts` 导入声明。
+
+```ts
+// pages/index/index.ts
+import * as stylex from '@weapp-stylex/core'
+import { styles } from '../../styles'
+
+Page({
+  data: {
+    active: false,
+    sx: stylex.attrs(styles.root),
+    meter: stylex.attrs(styles.meter(80)),
+  },
+  toggle() {
+    const active = !this.data.active
+    this.setData({
+      active,
+      sx: stylex.attrs(styles.root, active && styles.active),
+    })
+  },
+})
+```
+
+```xml
+<!-- pages/index/index.wxml -->
+<view class="{{sx.class}}" style="{{sx.style}}" bindtap="toggle">
+  <text>StyleX in WeChat</text>
+  <view class="{{meter.class}}" style="{{meter.style}}" />
+</view>
+```
+
+`Component` 采用相同方式：在 `data` 保存初始 `attrs()` 结果，属性变化时在方法或 observer 中调用 `this.setData()` 更新。隔离组件应把主题 class 绑定到自身根节点。
+
+## 没有本地 WXSS 的页面和组件
+
+编译器为没有本地样式的页面、隔离组件补充同名 WXSS。每个样式输出目录生成 `stylex.wxss`，同目录产物通过 `./stylex.wxss` 导入。首次没有 StyleX 的构建不会改变产物。
+
+## 普通分包
+
+保留原有 `app.json` 分包声明。主包和普通分包都可以使用共享模块；独立分包不在稳定支持范围内。
+
+可运行的 [wechat-native 示例](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native)覆盖共享样式、主题、组件和分包页面。

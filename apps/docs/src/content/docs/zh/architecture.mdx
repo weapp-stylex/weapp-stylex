@@ -1,0 +1,34 @@
+---
+title: "编译架构"
+description: "共享模块如何转成去重后的 WXSS。"
+sidebar:
+  order: 10
+---
+
+## 编译链
+
+源码模块 → 官方 StyleX Babel 7 插件 → 模块 metadata → 规则聚合 → WXSS 输出规划 → 宿主资产输出。
+
+`@weapp-stylex/compiler` 管理转换、resolver 身份、SFC sourcemap、metadata 与 WXSS 规划。框架适配器负责宿主 hook、生命周期和资产输出。runtime 保持官方薄封装。
+
+## Metadata 与模块图生命周期
+
+每个规范化模块 ID 保存规则和依赖，重新转换时替换该模块 metadata。watch 重建保留未变化的缓存模块，变化时使消费者失效，并剔除不再可达的模块。token 的 runtime 导入消失后仍保留依赖记录。
+
+`closeBundle` 不会清空仍在运行的 watcher，最终关闭 watcher 时才释放 session。当前不承诺 stateful HMR 补丁，优先保证产物一致。
+
+## Vue 与 Webpack
+
+SFC 预处理只修改脚本内容并组合 sourcemap，模板编译与框架宏留给宿主。虚拟 script 请求会跳过。uni-app 使用自身兼容的 parser。
+
+Taro 的 Webpack pre-loader 在 Babel/Vue 之前执行，将 metadata 存入模块 `buildInfo`。`processAssets` 收集缓存规则，在宿主完成样式转换后注入 WXSS。
+
+## 输出规划
+
+每个原生样式目录生成一份 `stylex.wxss`，同目录样式用 `@import "./stylex.wxss";` 导入。没有本地 WXSS 的页面和组件补充同名文件，没有样式入口则补充 `app.wxss`。
+
+规则统一聚合、去重。关闭 CSS Layers、浏览器 specificity polyfill 和 runtime 样式注入。默认变量的 `:root` 选择器映射为 `page`。
+
+输出保持幂等；用户同名文件会明确报错。watch 重建只清理插件拥有的过期文件和 import。首次没有 StyleX 的构建不改变资产。
+
+新增资产优先使用宿主 emission API。weapp-vite `7.4` 的 bundle 对新增 key 只读，因此其适配器采用已记录的文件输出兼容路径。

@@ -1,0 +1,65 @@
+---
+title: "Taro Vue 3"
+description: "用同一适配器接入 Taro Vite 与 Webpack 5。"
+sidebar:
+  order: 5
+---
+
+## 安装与配置
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/taro
+```
+
+```ts
+// config/index.ts
+import { defineConfig } from '@tarojs/cli'
+
+export default defineConfig({
+  projectName: 'my-stylex-app',
+  sourceRoot: 'src',
+  outputRoot: 'dist',
+  framework: 'vue3',
+  compiler: { type: 'vite' }, // or webpack5
+  plugins: ['@weapp-stylex/taro'],
+})
+```
+
+将 `compiler.type` 改为 `webpack5` 即可使用 Webpack。插件通过 Taro 公开 hook 选择 builder，无需手动注册 loader。需要配置选项时使用 `plugins: [['@weapp-stylex/taro', { importSources: ['@weapp-stylex/core', '@stylexjs/stylex'] }]]`。
+
+## 组合共享样式
+
+按[样式指南](/zh/styles/)创建共享模块，再绑定结果：
+
+```vue
+<script setup lang="ts">
+import * as stylex from '@weapp-stylex/core'
+import { computed, ref } from 'vue'
+import { styles } from './styles'
+
+const active = ref(false)
+const width = ref(80)
+const attrs = computed(() =>
+  stylex.attrs(styles.root, active.value && styles.active),
+)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+</script>
+
+<template>
+  <view :class="attrs.class" :style="attrs.style" @tap="active = !active">
+    <text>Shared StyleX</text>
+    <view :class="meter.class" :style="meter.style" />
+  </view>
+</template>
+```
+
+从 vue 导入响应式 API，显式绑定 class 与 style。SFC 脚本在 Taro 编译模板之前经过共享编译器。
+
+## Builder 版本与单位
+
+示例验证 Taro `4.3.0`、React `18` / Vue `3`、Vite `4` 与 Webpack `5.91.0`。全部 `@tarojs/*` 包保持同版本，不要用全局 Vite 或 Babel override 替换 Taro 的工具链。
+
+StyleX WXSS 在 Taro 尺寸转换之后输出。数值 `16` 保持 `16px`，需要时显式写 `'16rpx'`。Webpack 在模块 `buildInfo` 保存 StyleX metadata，filesystem cache 命中仍会收集 CSS。
+
+[taro-vue3 示例](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3)顺序构建两份独立产物，覆盖共享样式、多消费者、主题切换、动态值与普通分包。

@@ -1,0 +1,59 @@
+---
+title: "共享样式模块"
+description: "通过导出、barrel、别名和 workspace 源码复用样式。"
+sidebar:
+  order: 7
+---
+
+## 普通文件
+
+样式声明可以放在任意 TS/JS 模块中，普通样式无需 `.stylex.ts` 后缀。
+
+```ts
+// styles.ts
+import * as stylex from '@weapp-stylex/core'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
+  active: { opacity: 0.6 },
+  meter: (width: number) => ({ width, height: 12 }),
+})
+export default styles
+```
+
+## 具名、默认与 barrel 导出
+
+```ts
+// styles/index.ts
+export { default, styles } from '../styles'
+```
+
+```ts
+// consumer.ts
+import * as stylex from '@weapp-stylex/core'
+import sharedStyles, { styles } from './styles/index'
+
+const base = stylex.attrs(sharedStyles.root)
+const active = stylex.attrs(styles.root, styles.active)
+```
+
+定义模块会被编译，导出的样式映射仍供消费者使用。官方 runtime 处理条件组合和属性覆盖，同一属性以后面生效的条目为准。
+
+## 路径别名与 workspace 模块
+
+在框架 resolver 中配置别名，然后按普通方式导入。workspace 源码包需要进入宿主构建模块图。编译器使用宿主 resolver 和规范化物理模块身份；不要为同一产物注册第二个独立编译 session。
+
+## 条件组合
+
+```ts
+const attrs = stylex.attrs(styles.root, active && styles.active)
+const props = stylex.props(styles.root, active && styles.active)
+```
+
+原生/Vue 使用 `attrs()`，React 使用 `props()`。StyleX 样式映射不是 Page data 的序列化契约，data 中只保存结果里的 class/style 字符串。
+
+## 单位
+
+数值遵循官方 StyleX 语义，包括 opacity 等无单位属性。长度 `16` 输出 `16px`，微信响应式单位显式写 `'16rpx'`。输出 CSS 不再经过框架的 px-to-rpx 转换。
+
+主题 token 文件有单独的命名与直接导入要求，参见[主题与动态值](/zh/themes/)。

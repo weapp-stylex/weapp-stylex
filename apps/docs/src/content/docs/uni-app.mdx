@@ -1,0 +1,64 @@
+---
+title: "uni-app Vue 3"
+description: "Integrate with the official DCloud Vue 3 CLI."
+sidebar:
+  order: 6
+---
+
+## Install
+
+```sh
+pnpm add @weapp-stylex/core
+pnpm add -D @weapp-stylex/uni-app
+```
+
+## Register after uni()
+
+```ts
+// vite.config.ts
+import uniImport from '@dcloudio/vite-plugin-uni'
+import { stylexUniApp } from '@weapp-stylex/uni-app'
+import { defineConfig } from 'vite'
+
+const uni
+  = (uniImport as unknown as { default?: typeof uniImport }).default ?? uniImport
+export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
+```
+
+The fallback unwraps a nested CommonJS default export in an ESM config. The adapter resolves DCloud's own Vue SFC parser to keep the compiler version aligned with uni-app.
+
+## Reactive bindings
+
+```vue
+<script setup lang="ts">
+import * as stylex from '@weapp-stylex/core'
+import { computed, ref } from 'vue'
+import { styles } from './styles'
+
+const active = ref(false)
+const width = ref(80)
+const attrs = computed(() =>
+  stylex.attrs(styles.root, active.value && styles.active),
+)
+const meter = computed(() => stylex.attrs(styles.meter(width.value)))
+</script>
+
+<template>
+  <view :class="attrs.class" :style="attrs.style" @tap="active = !active">
+    <text>Shared StyleX</text>
+    <view :class="meter.class" :style="meter.style" />
+  </view>
+</template>
+```
+
+Use normal shared TS modules; bind class and style together for dynamic values. Apply a theme class to each isolated component root when using themes.
+
+## Build for WeChat
+
+```sh
+pnpm exec uni build -p mp-weixin
+```
+
+The plugin rejects other `UNI_PLATFORM` targets. Vue 2 and uni-app x are outside the support contract.
+
+The [uni-vue3 example](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) pins the official Vue 3 channel `3.0.0-alpha-5030120260930001`. DCloud packages share that version; Vite is `5.2.8`, Vue is `3.4.21`. These are framework compatibility pins, not a recommendation to force them on other workspaces.

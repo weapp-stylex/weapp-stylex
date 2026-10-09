@@ -1,0 +1,34 @@
+---
+title: "Compiler architecture"
+description: "How shared modules become deduplicated WXSS."
+sidebar:
+  order: 10
+---
+
+## Pipeline
+
+Source modules → official StyleX Babel 7 plugin → module metadata → rule aggregation → WXSS output planning → host asset emission.
+
+`@weapp-stylex/compiler` owns transforms, resolver identity, SFC maps, metadata and WXSS planning. Framework adapters handle host hooks, lifecycle and emission. The runtime facade stays a thin official re-export.
+
+## Metadata and graph lifetime
+
+Each normalized module ID owns rules and dependencies. A transform replaces that module's metadata. Watch rebuilds retain unchanged cached modules, invalidate dependents on change, and prune modules that are no longer reachable. Token dependencies remain tracked even when their runtime imports disappear.
+
+`closeBundle` does not clear an active watcher. Final watcher shutdown releases session state. Stateful HMR patches are not part of the current contract; output consistency takes priority.
+
+## Vue and Webpack
+
+SFC preprocessing changes script contents only and composes sourcemaps. Template compilation and framework macros stay with the host. Virtual script requests are skipped. uni-app uses its own compatible parser.
+
+Taro's Webpack pre-loader runs before Babel/Vue processing and records metadata in module `buildInfo`. `processAssets` collects cached rules and injects WXSS after the host finishes its own styles.
+
+## Output planning
+
+Every native style directory receives one generated `stylex.wxss`. Sibling styles import it using `@import "./stylex.wxss";`. Pages and components without local WXSS receive companions; a build with no style entry gets `app.wxss` as fallback.
+
+Rules are aggregated and deduplicated. CSS layers, browser specificity polyfills and runtime stylesheet injection are disabled. Default variable `:root` selectors map to `page`.
+
+Output is idempotent. User-owned filename collisions fail with an explicit error. Watch rebuilds remove only plugin-owned stale files/imports. An initial build without StyleX does not change assets.
+
+New assets use host emission APIs where available. weapp-vite `7.4` exposes a read-only bundle for new keys, so its adapter uses the documented file-output compatibility path.
