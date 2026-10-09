@@ -1,7 +1,16 @@
+import { createRequire } from 'node:module'
+import path from 'node:path'
 import process from 'node:process'
 import { execa } from 'execa'
+import { ensureTaroConfig } from './taro/config.mjs'
 
 const [builder, watch] = process.argv.slice(2)
+const hostRequire = createRequire(path.join(process.cwd(), 'package.json'))
+const { getUserHomeDir, TARO_CONFIG_FOLDER, TARO_BASE_CONFIG } = hostRequire('@tarojs/helper')
+const userHome = getUserHomeDir()
+if (userHome) {
+  await ensureTaroConfig(path.join(userHome, TARO_CONFIG_FOLDER, TARO_BASE_CONFIG))
+}
 await execa(
   'taro',
   ['build', '--type', 'weapp', ...(watch ? ['--watch'] : [])],

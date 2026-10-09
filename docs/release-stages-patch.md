@@ -166,3 +166,16 @@ corepack pnpm change check
 升级 PR 及合并提交的 Checks 记录 CI/CD 结果；发布工作流验收六阶段 plan/skip、
 进度 artifact 和静态认证占位符警告。独立 OIDC audit 随合并后验收，其认证成功仍不能
 解释为上传成功或新的正式发布验收，不为验证流程制造版本。
+
+## 合并后发现的 Taro 初始化竞态
+
+[合并后 CI](https://github.com/weapp-stylex/weapp-stylex/actions/runs/37972256214) 的
+Node 24 构建暴露了 Taro 的首次配置初始化竞态：React 与 Vue 示例并行启动时，
+`@tarojs/plugin-doctor` 先创建空的 `~/.taro4.0/index.json`，再异步写入 JSON；
+另一进程在中间读到空文件，导致 `Unexpected end of JSON input`。
+
+共享 Taro 构建入口在启动 CLI 前原子初始化缺失配置：先在同目录写完整的 `{}`，
+再以独占 hard link 创建目标。已有配置保留原字节，无需目录写权限；临时文件由
+创建者清理，I/O 错误正常传播。doctor 继续使用内部默认值并执行配置校验，watch
+也不持有长期锁。
+独立进程的并发初始化、已有配置保留、临时文件清理和错误传播纳入 CI 回归。
