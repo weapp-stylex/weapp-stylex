@@ -2,9 +2,21 @@
 
 核心域名：<https://stylex.weapp.dev/>，根地址由客户端自动选择语言：手动保存的选择优先，其次按系统时区推断地区（中国时区进入 `/zh/`，其他有效时区进入 `/en/`），时区不可用时回退到浏览器首选语言。英文首页位于 `/en/`，其他英文指南沿用根目录路由。所有 canonical、hreflang、sitemap 和 Markdown/AI 入口都使用该域名。
 
-## 创建与升级记录
+## 2026-10-10 repoctl 正式版收敛
 
-2026-10-09 查询 npm 的最新 repoctl 为 **5.9.0**，从 5.8.1 升级。模板依赖仍为 **2.3.1**。执行 `repo upgrade --dry-run --json` 审查差异后，使用 `--no-overwrite` 的计划应用，结果为 unchanged。保留微信专用 CI，以及 Taro Vite 4、uni-app Vite 5、weapp-vite Vite 8 的版本隔离；未采用模板新增的全局 major override。
+上游 [PR #1056](https://github.com/icelib/repoctl/pull/1056) 的
+[正式发布运行](https://github.com/icelib/repoctl/actions/runs/37969332933) 已成功。
+本项目升级到 `repoctl@5.10.0` 与模板 `2.3.2`，移除两个临时补丁。受管同步采用
+`repo upgrade --dry-run --json --no-overwrite` 计划及 `--apply <plan.json>`，保留微信
+专用 CI、gitignore 定制、intentional dependency groups 和框架版本隔离；历史 root
+asset baseline 继续记录原来源版本。
+
+本轮验证命令与 CI/CD 入口见[发布维护记录](./release-stages-patch.md)。Cloudflare
+生产版本及浏览器验收仍以各次真实部署记录为准。
+
+## 创建与升级记录（2026-10-09）
+
+2026-10-09 查询时，npm 的最新 repoctl 为 **5.9.0**，从 5.8.1 升级。模板依赖仍为 **2.3.1**。执行 `repo upgrade --dry-run --json` 审查差异后，使用 `--no-overwrite` 的计划应用，结果为 unchanged。保留微信专用 CI，以及 Taro Vite 4、uni-app Vite 5、weapp-vite Vite 8 的版本隔离；未采用模板新增的全局 major override。
 
 通过 `corepack pnpm exec repo new docs --template nimbus` 创建 `apps/docs`，保留模板实例与基线。使用默认 Nimbus 0.16.0 / Astro 7.3.7，不替换成 VitePress。
 
