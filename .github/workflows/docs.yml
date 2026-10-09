@@ -26,3 +26,4 @@ jobs:
       - run: pnpm --filter docs typecheck
       - run: pnpm --filter docs build
       - run: pnpm --filter docs check:site
+      - run: pnpm --filter docs test

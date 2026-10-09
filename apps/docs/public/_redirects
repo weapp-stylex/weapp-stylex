@@ -1,5 +1,2 @@
-# Serve the default language at the edge, including clients without JavaScript.
-/ /zh/ 302
-/index.html /zh/ 302
 # Preserve the previously published English homepage MDX URL.
 /index.mdx /en/index.mdx 301

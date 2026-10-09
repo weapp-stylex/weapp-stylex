@@ -4,14 +4,19 @@ import path from 'node:path'
 
 const output = new URL('../dist/', import.meta.url)
 const origin = 'https://stylex.weapp.dev'
+const deployment = JSON.parse(await readFile(new URL('../wrangler.jsonc', import.meta.url), 'utf8'))
+assert.equal(deployment.main, undefined, 'Language detection must not add a Worker script')
+assert.equal(deployment.assets.run_worker_first, undefined, 'Language detection must stay in the client')
 const files = await readdir(output, { recursive: true })
 const sources = await readdir(new URL('../src/content/docs/', import.meta.url), { recursive: true })
 const pages = files.filter(file => file.endsWith('index.html') && file !== 'index.html' && !file.startsWith('pagefind/'))
 assert.equal(pages.length, sources.filter(file => /\.mdx?$/.test(file)).length, 'Every documentation source should have a published page')
 const root = await readFile(new URL('index.html', output), 'utf8')
-assert.match(root, /http-equiv="refresh"[^>]*\/zh\//, 'Static preview must redirect the root to Chinese')
+assert.doesNotMatch(root, /http-equiv="refresh"/i, 'The root must let the client select a language')
+assert.ok(root.includes('href="/zh/"') && root.includes('href="/en/"'), 'The root must provide both languages without JavaScript')
+assert.ok(root.includes('hreflang="x-default"'), 'The root is the default language selection entry')
 const redirects = await readFile(new URL('_redirects', output), 'utf8')
-assert.match(redirects, /^\/\s+\/zh\/\s+302\s*$/m, 'Cloudflare must redirect the root to Chinese before serving assets')
+assert.doesNotMatch(redirects, /^\/(?:index\.html)?\s+/m, 'Edge redirects must not override client language selection')
 assert.match(redirects, /^\/index\.mdx\s+\/en\/index\.mdx\s+301\s*$/m, 'Keep the previous English MDX URL reachable')
 
 async function checkLink(href, current) {

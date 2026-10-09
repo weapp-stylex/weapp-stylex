@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config'
 
 export default defineConfig({
   output: 'static',
-  redirects: { '/': { destination: '/zh/', status: 302 } },
   // Keep the Pagefind loader external so Vite finalizes dynamic imports before Astro renders it.
   vite: { build: { assetsInlineLimit: 0 } },
   integrations: [nimbus(defineNimbusConfig({

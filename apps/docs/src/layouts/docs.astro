@@ -33,7 +33,7 @@ const indexUrl = withBase(chinese ? '/zh/llms.txt' : '/llms.txt', base)
       </a>
       <div class="header-links">
         <a href="https://github.com/weapp-stylex/weapp-stylex">GitHub ↗</a>
-        <a class="language-link" href={withBase(alternate, base)} lang={chinese ? 'en' : 'zh-CN'}>{chinese ? 'English' : '简体中文'}</a>
+        <a class="language-link" href={withBase(alternate, base)} lang={chinese ? 'en' : 'zh-CN'} data-language={chinese ? 'en' : 'zh'}>{chinese ? 'English' : '简体中文'}</a>
       </div>
     </header>
     <div class="docs-grid">
@@ -78,6 +78,16 @@ const indexUrl = withBase(chinese ? '/zh/llms.txt' : '/llms.txt', base)
 </html>
 
 <script>
+  import { isLocale, rememberLanguage } from '../lib/language-preference'
+
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-language]')) {
+    link.addEventListener('click', () => {
+      const locale = link.dataset.language
+      if (isLocale(locale)) {
+        rememberLanguage(locale)
+      }
+    })
+  }
   const navigation = document.querySelector<HTMLDetailsElement>('.site-navigation')
   if (navigation && window.matchMedia('(max-width: 48rem)').matches) {
     navigation.open = false

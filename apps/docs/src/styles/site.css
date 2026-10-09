@@ -55,7 +55,7 @@
   list-style: none;
 }
 
-.not-found {
+.not-found, .language-entry {
   padding: 4rem 1.5rem;
   margin: auto;
 }

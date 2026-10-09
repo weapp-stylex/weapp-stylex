@@ -1,0 +1,42 @@
+---
+import '../styles/site.css'
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>weapp-stylex · 中文 / English</title>
+    <meta name="description" content="StyleX for WeChat mini-programs · 微信小程序的 StyleX 编译方案" />
+    <link rel="canonical" href="https://stylex.weapp.dev/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://stylex.weapp.dev/zh/" />
+    <link rel="alternate" hreflang="en" href="https://stylex.weapp.dev/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://stylex.weapp.dev/" />
+  </head>
+  <body>
+    <main class="language-entry">
+      <img src="/logo.svg" width="96" height="96" alt="" />
+      <h1>weapp-stylex</h1>
+      <p lang="zh-CN">正在选择文档语言…</p>
+      <p>Selecting your documentation language…</p>
+      <p>
+        <a href="/zh/" lang="zh-CN" data-language="zh">中文文档</a>
+        {' · '}
+        <a href="/en/" lang="en" data-language="en">English documentation</a>
+      </p>
+      <noscript><p lang="zh-CN">请选择语言。 / Please choose a language.</p></noscript>
+    </main>
+  </body>
+</html>
+
+<script>
+  import { deviceRegionLocale, preferredLocale, readLanguagePreference } from '../lib/language-preference'
+
+  const locale = preferredLocale(
+    readLanguagePreference(),
+    deviceRegionLocale(),
+    navigator.languages?.length ? navigator.languages : [navigator.language],
+  )
+  window.location.replace(`/${locale}/${window.location.search}${window.location.hash}`)
+</script>
