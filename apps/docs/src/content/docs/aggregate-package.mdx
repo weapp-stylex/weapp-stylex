@@ -1,0 +1,70 @@
+---
+title: "Aggregate package"
+description: "Install one package and choose a runtime or framework adapter entry."
+sidebar:
+  order: 2
+---
+
+## Install
+
+```sh
+pnpm add weapp-stylex
+```
+
+The aggregate package depends on the five scoped packages and forwards their
+public APIs. Existing scoped imports remain supported when those packages are
+installed directly.
+
+| Import | API |
+| --- | --- |
+| `weapp-stylex` / `weapp-stylex/core` | Official StyleX runtime, types and themes |
+| `weapp-stylex/weapp-vite` | `stylexCompiler()` / `createStylex()` |
+| `weapp-stylex/taro` | Default Taro plugin / `stylexTaro` |
+| `weapp-stylex/uni-app` | `stylexUniApp()` |
+| `weapp-stylex/compiler` | Shared compiler sessions and WXSS tools |
+| `weapp-stylex/taro/loader` | Webpack loader |
+
+Every entry provides ESM, CJS and corresponding type declarations. The runtime
+entry loads only the official StyleX runtime. Build adapters stay in separate
+subpaths and are not imported into application code.
+
+## Shared styles
+
+```ts
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx' },
+  active: { opacity: 0.6 },
+})
+```
+
+The compiler recognizes both `weapp-stylex` and `weapp-stylex/core` by default,
+alongside the original runtime imports. Shared modules, direct token imports,
+conditional merging, themes and dynamic styles use the same official semantics.
+An explicit `importSources` option replaces the defaults; include your chosen
+runtime entry when overriding it.
+
+## Choose the host
+
+Framework hosts are optional peers, so installing the aggregate package does
+not install every framework. Install the host for your selected adapter and
+retain the [supported toolchain versions](/examples/).
+
+Follow [native WeChat](/native/), [Wevu](/wevu/) or [uni-app](/uni-app/) for
+registration. Taro's plugin resolver does not resolve package subpaths as plugin
+names; use an absolute path in `config/index.ts`:
+
+```ts
+import { defineConfig } from '@tarojs/cli'
+
+export default defineConfig({
+  framework: 'react',
+  compiler: { type: 'vite' },
+  plugins: [require.resolve('weapp-stylex/taro')],
+})
+```
+
+This also supports `framework: 'vue3'` and `compiler: { type: 'webpack5' }`.
+In a native ESM configuration, create `require` with Node's `createRequire()`.
+See [Taro React](/taro-react/) and [Taro Vue 3](/taro-vue3/).

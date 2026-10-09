@@ -8,13 +8,12 @@ sidebar:
 ## 配置 weapp-vite
 
 ```sh
-pnpm add @weapp-stylex/core
-pnpm add -D @weapp-stylex/weapp-vite
+pnpm add weapp-stylex
 ```
 
 ```ts
 // vite.config.ts
-import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { stylexCompiler } from 'weapp-stylex/weapp-vite'
 import { defineConfig } from 'weapp-vite/config'
 
 export default defineConfig({
@@ -30,7 +29,7 @@ export default defineConfig({
 
 ```ts
 // pages/index/index.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { styles } from '../../styles'
 
 Page({

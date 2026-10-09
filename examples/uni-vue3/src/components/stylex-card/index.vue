@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
 import { computed } from 'vue'
+import * as stylex from 'weapp-stylex'
 import { darkTheme, lightTheme, styles } from '../../styles'
 
 const props = defineProps<{ dark: boolean }>()

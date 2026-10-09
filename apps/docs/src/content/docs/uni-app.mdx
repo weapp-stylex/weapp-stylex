@@ -8,8 +8,7 @@ sidebar:
 ## Install
 
 ```sh
-pnpm add @weapp-stylex/core
-pnpm add -D @weapp-stylex/uni-app
+pnpm add weapp-stylex
 ```
 
 ## Register after uni()
@@ -17,7 +16,7 @@ pnpm add -D @weapp-stylex/uni-app
 ```ts
 // vite.config.ts
 import uniImport from '@dcloudio/vite-plugin-uni'
-import { stylexUniApp } from '@weapp-stylex/uni-app'
+import { stylexUniApp } from 'weapp-stylex/uni-app'
 import { defineConfig } from 'vite'
 
 const uni
@@ -31,7 +30,7 @@ The fallback unwraps a nested CommonJS default export in an ESM config. The adap
 
 ```vue
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { computed, ref } from 'vue'
 import { styles } from './styles'
 

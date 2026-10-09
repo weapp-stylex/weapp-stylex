@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { createStylex } from '@weapp-stylex/weapp-vite'
+import { createStylex } from 'weapp-stylex/weapp-vite'
 import { defineConfig } from 'weapp-vite/config'
 
 const sx = createStylex()

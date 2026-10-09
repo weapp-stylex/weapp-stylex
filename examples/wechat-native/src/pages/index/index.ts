@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import styles, { darkTheme, lightTheme } from '../../styles'
 
 const inline = stylex.create({ subtitle: { marginTop: 8, color: '#65708a' } })

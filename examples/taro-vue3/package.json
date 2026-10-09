@@ -36,8 +36,8 @@
     "@tarojs/runtime": "4.3.0",
     "@tarojs/shared": "4.3.0",
     "@tarojs/taro": "4.3.0",
-    "@weapp-stylex/core": "workspace:*",
-    "vue": "^3.5.43"
+    "vue": "^3.5.43",
+    "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
@@ -50,7 +50,6 @@
     "@types/node": "^26.6.4",
     "@vitejs/plugin-vue": "^4.6.2",
     "@vue/babel-plugin-jsx": "^1.5.0",
-    "@weapp-stylex/taro": "workspace:*",
     "babel-preset-taro": "4.3.0",
     "less": "^4.9.1",
     "sass": "^1.105.1",

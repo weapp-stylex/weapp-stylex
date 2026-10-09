@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { darkTheme, lightTheme, styles } from '../../styles'
 
 Component({

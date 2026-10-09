@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components'
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { lightTheme, styles } from '../../styles'
 
 export default function Detail() {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { computed } from 'wevu'
 import { darkTheme, lightTheme, styles } from '../../styles'
 

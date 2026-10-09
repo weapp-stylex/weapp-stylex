@@ -11,20 +11,19 @@ Use Node.js `^22.22.1 || >=24.11.0` and your framework's supported toolchain. Th
 
 ## Install
 
-For a native weapp-vite project:
+Install the aggregate package:
 
 ```sh
-pnpm add @weapp-stylex/core
-pnpm add -D @weapp-stylex/weapp-vite
+pnpm add weapp-stylex
 ```
 
-For Taro, replace the build adapter with `@weapp-stylex/taro`. For uni-app, use `@weapp-stylex/uni-app`. Keep your framework's Vite, Vue and Babel versions; do not force one version across all frameworks.
+Use `weapp-stylex` for the runtime and select the adapter's subpath. Framework hosts are optional peers; install the framework you use and keep its supported Vite, Vue and Babel versions. See the [aggregate package](/aggregate-package/) for every entry. Existing `@weapp-stylex/*` packages remain available for separate installation.
 
 ## Register the adapter
 
 ```ts
 // vite.config.ts
-import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { stylexCompiler } from 'weapp-stylex/weapp-vite'
 import { defineConfig } from 'weapp-vite/config'
 
 export default defineConfig({
@@ -40,7 +39,7 @@ Create `src/styles.ts`:
 
 ```ts
 // styles.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 
 export const styles = stylex.create({
   root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
@@ -54,7 +53,7 @@ export default styles
 
 ```ts
 // pages/index/index.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { styles } from '../../styles'
 
 Page({

@@ -37,6 +37,11 @@
   "peerDependencies": {
     "weapp-vite": ">=7.4.0 <8"
   },
+  "peerDependenciesMeta": {
+    "weapp-vite": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@weapp-stylex/compiler": "workspace:*"
   },

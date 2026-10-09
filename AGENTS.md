@@ -58,6 +58,10 @@ This workspace adapts official StyleX to WeChat mini-programs: native
 Page/Component, Wevu, Taro React/Vue 3 (Vite and Webpack 5), and uni-app Vue 3.
 The shared `@weapp-stylex/compiler` owns transformation, module metadata,
 resolver identities, SFC maps and WXSS planning. Keep adapters thin.
+The public `weapp-stylex` facade exposes runtime APIs at the root and adapters
+through explicit subpaths. Keep build tools out of the root runtime entry;
+framework host peers remain optional but retain their supported version ranges.
+The private root workspace is named `weapp-stylex-workspace`.
 
 ## Development
 

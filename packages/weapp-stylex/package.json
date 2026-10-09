@@ -1,0 +1,139 @@
+{
+  "name": "weapp-stylex",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Official StyleX runtime and WeChat mini-program adapters for native, Wevu, Taro and uni-app",
+  "author": "ice breaker <1324318532@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weapp-stylex/weapp-stylex.git",
+    "directory": "packages/weapp-stylex"
+  },
+  "bugs": {
+    "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
+  },
+  "keywords": [
+    "stylex",
+    "wechat",
+    "miniprogram",
+    "weapp-vite",
+    "wevu",
+    "taro",
+    "uni-app"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./core": {
+      "import": {
+        "types": "./dist/core.d.mts",
+        "default": "./dist/core.mjs"
+      },
+      "require": {
+        "types": "./dist/core.d.cts",
+        "default": "./dist/core.cjs"
+      }
+    },
+    "./compiler": {
+      "import": {
+        "types": "./dist/compiler.d.mts",
+        "default": "./dist/compiler.mjs"
+      },
+      "require": {
+        "types": "./dist/compiler.d.cts",
+        "default": "./dist/compiler.cjs"
+      }
+    },
+    "./weapp-vite": {
+      "import": {
+        "types": "./dist/weapp-vite.d.mts",
+        "default": "./dist/weapp-vite.mjs"
+      },
+      "require": {
+        "types": "./dist/weapp-vite.d.cts",
+        "default": "./dist/weapp-vite.cjs"
+      }
+    },
+    "./taro": {
+      "import": {
+        "types": "./dist/taro.d.mts",
+        "default": "./dist/taro.mjs"
+      },
+      "require": {
+        "types": "./dist/taro.d.cts",
+        "default": "./dist/taro.cjs"
+      }
+    },
+    "./taro/loader": {
+      "import": {
+        "types": "./dist/taro/loader.d.mts",
+        "default": "./dist/taro/loader.mjs"
+      },
+      "require": {
+        "types": "./dist/taro/loader.d.cts",
+        "default": "./dist/taro/loader.cjs"
+      }
+    },
+    "./uni-app": {
+      "import": {
+        "types": "./dist/uni-app.d.mts",
+        "default": "./dist/uni-app.mjs"
+      },
+      "require": {
+        "types": "./dist/uni-app.d.cts",
+        "default": "./dist/uni-app.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "^22.22.1 || >=24.11.0"
+  },
+  "scripts": {
+    "dev": "tsdown -w",
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:dev": "vitest",
+    "release": "pnpm publish",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "tsd": "pnpm build && tsd --files test-d/**/*.test-d.ts"
+  },
+  "dependencies": {
+    "@weapp-stylex/compiler": "workspace:*",
+    "@weapp-stylex/core": "workspace:*",
+    "@weapp-stylex/taro": "workspace:*",
+    "@weapp-stylex/uni-app": "workspace:*",
+    "@weapp-stylex/weapp-vite": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4"
+  },
+  "tsd": {
+    "compilerOptions": {
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext"
+    }
+  }
+}

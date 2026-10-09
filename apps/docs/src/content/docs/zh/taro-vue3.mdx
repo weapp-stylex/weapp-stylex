@@ -8,8 +8,7 @@ sidebar:
 ## 安装与配置
 
 ```sh
-pnpm add @weapp-stylex/core
-pnpm add -D @weapp-stylex/taro
+pnpm add weapp-stylex
 ```
 
 ```ts
@@ -22,11 +21,11 @@ export default defineConfig({
   outputRoot: 'dist',
   framework: 'vue3',
   compiler: { type: 'vite' }, // or webpack5
-  plugins: ['@weapp-stylex/taro'],
+  plugins: [require.resolve('weapp-stylex/taro')],
 })
 ```
 
-将 `compiler.type` 改为 `webpack5` 即可使用 Webpack。插件通过 Taro 公开 hook 选择 builder，无需手动注册 loader。需要配置选项时使用 `plugins: [['@weapp-stylex/taro', { importSources: ['@weapp-stylex/core', '@stylexjs/stylex'] }]]`。
+将 `compiler.type` 改为 `webpack5` 即可使用 Webpack。插件通过 Taro 公开 hook 选择 builder，无需手动注册 loader。需要配置选项时使用 `plugins: [[require.resolve('weapp-stylex/taro'), { importSources: ['weapp-stylex', '@weapp-stylex/core', '@stylexjs/stylex'] }]]`。
 
 ## 组合共享样式
 
@@ -34,7 +33,7 @@ export default defineConfig({
 
 ```vue
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { computed, ref } from 'vue'
 import { styles } from './styles'
 

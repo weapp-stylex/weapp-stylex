@@ -14,6 +14,18 @@
 
 ## 包与接入方式
 
+推荐安装聚合包，再按框架从独立子路径导入：
+
+```bash
+pnpm add weapp-stylex
+```
+
+`weapp-stylex` / `weapp-stylex/core` 导出官方 runtime；`weapp-stylex/weapp-vite`、
+`weapp-stylex/taro`、`weapp-stylex/uni-app` 导出构建适配器；
+`weapp-stylex/compiler` 与 `weapp-stylex/taro/loader` 提供底层构建入口。
+所有入口包含 ESM/CJS 和对应类型声明。根入口只加载 runtime，框架宿主作为可选
+peer，使用对应适配器时安装其支持的宿主版本。七份示例均使用聚合入口。
+
 | 包                         | 用途                                                                      |
 | -------------------------- | ------------------------------------------------------------------------- |
 | `@weapp-stylex/core`       | 薄封装官方 runtime，导出 API、类型和主题能力                              |
@@ -22,7 +34,7 @@
 | `@weapp-stylex/taro`       | Taro 默认插件，自动接入当前 builder；ESM/CJS，独立 `./loader` 入口        |
 | `@weapp-stylex/uni-app`    | `stylexUniApp()`，在 `uni()` 后注册                                       |
 
-应用项目安装 runtime 和对应构建适配器：
+也可以只安装需要的拆分包，继续使用原有 `@weapp-stylex/*` 导入：
 
 ```bash
 pnpm add @weapp-stylex/core
@@ -39,7 +51,7 @@ pnpm add -D @weapp-stylex/weapp-vite # 或 @weapp-stylex/taro / @weapp-stylex/un
 
 ```ts
 // styles.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 
 export const styles = stylex.create({
   root: { padding: 16, marginTop: '12rpx' },
@@ -56,7 +68,7 @@ export { default, styles } from '../styles'
 
 ```ts
 // 页面/组件
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { styles } from './styles'
 
 const attrs = stylex.attrs(styles.root, active && styles.active)
@@ -69,14 +81,14 @@ const meter = stylex.attrs(styles.meter(80))
 
 ```ts
 // tokens.stylex.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 
 export const tokens = stylex.defineVars({ surface: 'white', text: '#172033' })
 ```
 
 ```ts
 // themes.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { tokens } from './tokens.stylex'
 
 export const darkTheme = stylex.createTheme(tokens, {
@@ -94,7 +106,7 @@ export const darkTheme = stylex.createTheme(tokens, {
 只使用原生 TS/JS 时，原有 API 保持可用：
 
 ```ts
-import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { stylexCompiler } from 'weapp-stylex/weapp-vite'
 import { defineConfig } from 'weapp-vite/config'
 
 export default defineConfig({
@@ -105,7 +117,7 @@ export default defineConfig({
 Wevu Vue SFC 使用工厂的两个入口，让 Vite 在 SFC 编译前处理脚本，并让 compilerPlugin 输出 WXSS：
 
 ```ts
-import { createStylex } from '@weapp-stylex/weapp-vite'
+import { createStylex } from 'weapp-stylex/weapp-vite'
 import { defineConfig } from 'weapp-vite/config'
 
 const stylex = createStylex()
@@ -120,7 +132,7 @@ export default defineConfig({
 原生 WXML 显式绑定 data：
 
 ```ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { styles } from './styles'
 
 Page({
@@ -141,7 +153,7 @@ Wevu 从 `wevu` 导入 `computed` / `ref`；Taro Vue 与 uni-app 从 `vue` 导�
 
 ```vue
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { computed, ref } from 'wevu'
 import { styles } from './styles'
 
@@ -160,13 +172,15 @@ const attrs = computed(() =>
 
 在 Taro 配置中注册插件，`compiler.type` 可为 `vite` 或 `webpack5`：
 
+Taro 插件名解析不支持 package 子路径，需通过 `require.resolve()` 传入绝对路径。
+
 ```ts
 import { defineConfig } from '@tarojs/cli'
 
 export default defineConfig({
   framework: 'react', // 或 vue3
   compiler: { type: 'vite' },
-  plugins: ['@weapp-stylex/taro'],
+  plugins: [require.resolve('weapp-stylex/taro')],
 })
 ```
 
@@ -174,7 +188,7 @@ React 使用官方 `props()`：
 
 ```tsx
 import { View } from '@tarojs/components'
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { styles } from './styles'
 
 export function Card({ active }: { active: boolean }) {
@@ -190,8 +204,8 @@ Vue 使用上面的 `computed`、`:class`、`:style` 写法，并从 `vue` 导�
 
 ```ts
 import uniImport from '@dcloudio/vite-plugin-uni'
-import { stylexUniApp } from '@weapp-stylex/uni-app'
 import { defineConfig } from 'vite'
+import { stylexUniApp } from 'weapp-stylex/uni-app'
 
 // 官方 CLI 的 CommonJS default 在 ESM 配置中可能嵌套一层。
 const uni

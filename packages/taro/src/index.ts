@@ -6,7 +6,7 @@ import { createVitePlugins, StylexSession } from '@weapp-stylex/compiler'
 import { StylexWebpackPlugin } from './webpack.js'
 
 export type { StylexCompilerOptions } from '@weapp-stylex/compiler'
-export default function stylexTaro(
+export function stylexTaro(
   ctx: IPluginContext,
   options: StylexCompilerOptions = {},
 ): void {
@@ -37,3 +37,5 @@ export default function stylexTaro(
       .options(options)
   })
 }
+
+export default stylexTaro

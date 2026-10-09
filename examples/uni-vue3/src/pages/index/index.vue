@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
 import { computed, ref } from 'vue'
+import * as stylex from 'weapp-stylex'
 import StylexCard from '../../components/stylex-card/index.vue'
 import styles, { darkTheme, lightTheme } from '../../styles'
 

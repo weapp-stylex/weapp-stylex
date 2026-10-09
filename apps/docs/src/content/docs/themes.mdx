@@ -11,7 +11,7 @@ Follow the official `tokens.stylex.ts` convention. Definitions, references and `
 
 ```ts
 // tokens.stylex.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 
 export const tokens = stylex.defineVars({
   surface: 'white',
@@ -21,7 +21,7 @@ export const tokens = stylex.defineVars({
 
 ```ts
 // themes.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { tokens } from './tokens.stylex'
 
 export const darkTheme = stylex.createTheme(tokens, {
@@ -32,7 +32,7 @@ export const darkTheme = stylex.createTheme(tokens, {
 
 ```ts
 // styles.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { tokens } from './tokens.stylex'
 
 export const styles = stylex.create({
@@ -43,7 +43,7 @@ export const styles = stylex.create({
 
 ```ts
 // consumer.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { styles } from './styles'
 import { darkTheme } from './themes'
 

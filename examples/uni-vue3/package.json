@@ -33,14 +33,13 @@
     "@dcloudio/uni-app": "3.0.0-alpha-5030120260930001",
     "@dcloudio/uni-components": "3.0.0-alpha-5030120260930001",
     "@dcloudio/uni-mp-weixin": "3.0.0-alpha-5030120260930001",
-    "@weapp-stylex/core": "workspace:*",
-    "vue": "3.4.21"
+    "vue": "3.4.21",
+    "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
     "@dcloudio/types": "3.4.31",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001",
     "@types/node": "^26.6.4",
-    "@weapp-stylex/uni-app": "workspace:*",
     "vite": "5.2.8",
     "vue-tsc": "^3.3.12"
   }

@@ -5,17 +5,18 @@ sidebar:
   order: 9
 ---
 
-## Published packages
+## Package entries
 
-| Package | Published version | Purpose |
-| --- | --- | --- |
-| `@weapp-stylex/core` | 0.1.1 | Official runtime API and types |
-| `@weapp-stylex/compiler` | 0.1.0 | Shared build core, ESM/CJS |
-| `@weapp-stylex/weapp-vite` | 0.2.0 | Native and Wevu adapters |
-| `@weapp-stylex/taro` | 0.1.0 | Taro plugin, ESM/CJS and loader export |
-| `@weapp-stylex/uni-app` | 0.1.0 | DCloud Vue 3 adapter |
+| Package | Purpose |
+| --- | --- |
+| `weapp-stylex` | Aggregate runtime, types and framework adapter subpaths |
+| `@weapp-stylex/core` | Official runtime API and types |
+| `@weapp-stylex/compiler` | Shared build core, ESM/CJS |
+| `@weapp-stylex/weapp-vite` | Native and Wevu adapters |
+| `@weapp-stylex/taro` | Taro plugin, ESM/CJS and loader export |
+| `@weapp-stylex/uni-app` | DCloud Vue 3 adapter |
 
-These are the versions published at the initial documentation launch. npm is the source of truth for later releases.
+Use the [aggregate package](/aggregate-package/) for one-package installation. See [npm](https://www.npmjs.com/package/weapp-stylex) for the current published version.
 
 ## Runtime
 
@@ -39,11 +40,11 @@ interface StylexCompilerOptions {
 }
 ```
 
-`importSources` **replaces** the default list `['@weapp-stylex/core', '@stylexjs/stylex']`. Include the defaults when adding another source. Babel options are passed to the official StyleX plugin, not to a general-purpose Babel pipeline.
+`importSources` **replaces** the default list `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`. Include the defaults when adding another source. Babel options are passed to the official StyleX plugin, not to a general-purpose Babel pipeline.
 
 ```ts
 const stylex = createStylex({
-  importSources: ['@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
+  importSources: ['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
 })
 ```
 

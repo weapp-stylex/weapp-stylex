@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { defineComponent } from 'wevu'
 import { lightTheme, styles } from '../../styles'
 

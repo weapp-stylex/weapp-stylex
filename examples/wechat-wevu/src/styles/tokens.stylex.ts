@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 
 export const tokens = stylex.defineVars({
   surface: '#ffffff',

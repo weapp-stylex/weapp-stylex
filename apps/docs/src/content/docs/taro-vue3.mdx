@@ -8,8 +8,7 @@ sidebar:
 ## Install and configure
 
 ```sh
-pnpm add @weapp-stylex/core
-pnpm add -D @weapp-stylex/taro
+pnpm add weapp-stylex
 ```
 
 ```ts
@@ -22,11 +21,11 @@ export default defineConfig({
   outputRoot: 'dist',
   framework: 'vue3',
   compiler: { type: 'vite' }, // or webpack5
-  plugins: ['@weapp-stylex/taro'],
+  plugins: [require.resolve('weapp-stylex/taro')],
 })
 ```
 
-Set `compiler.type` to `webpack5` to use Webpack. The plugin selects the builder through public Taro hooks; no manual loader registration is required. To pass options, use `plugins: [['@weapp-stylex/taro', { importSources: ['@weapp-stylex/core', '@stylexjs/stylex'] }]]`.
+Set `compiler.type` to `webpack5` to use Webpack. The plugin selects the builder through public Taro hooks; no manual loader registration is required. To pass options, use `plugins: [[require.resolve('weapp-stylex/taro'), { importSources: ['weapp-stylex', '@weapp-stylex/core', '@stylexjs/stylex'] }]]`.
 
 ## Compose shared styles
 
@@ -34,7 +33,7 @@ Create a shared module using the [styles guide](/styles/), then bind its result:
 
 ```vue
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { computed, ref } from 'vue'
 import { styles } from './styles'
 

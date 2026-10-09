@@ -1,6 +1,6 @@
 # npm 发布
 
-五个公开包由 `weapp-stylex/weapp-stylex` 的 `.github/workflows/release.yml` 发布。每个包的 npm trusted publisher 均绑定该仓库及工作流文件名；不使用持久 npm token。
+六个公开包（`weapp-stylex` 聚合包及五个 `@weapp-stylex/*` 拆分包）由 `weapp-stylex/weapp-stylex` 的 `.github/workflows/release.yml` 发布。npm trusted publisher 绑定该仓库及工作流文件名；新包按下述首次注册流程接入，不使用持久 npm token。
 
 ## 版本与发布流程
 

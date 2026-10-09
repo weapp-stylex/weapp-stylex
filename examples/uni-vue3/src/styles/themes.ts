@@ -1,4 +1,4 @@
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { tokens } from './tokens.stylex'
 
 export const lightTheme = stylex.createTheme(tokens, {

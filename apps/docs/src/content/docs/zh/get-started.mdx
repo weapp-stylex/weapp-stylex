@@ -11,20 +11,19 @@ sidebar:
 
 ## 安装
 
-原生 weapp-vite 项目：
+安装聚合包：
 
 ```sh
-pnpm add @weapp-stylex/core
-pnpm add -D @weapp-stylex/weapp-vite
+pnpm add weapp-stylex
 ```
 
-Taro 项目将构建适配器换为 `@weapp-stylex/taro`，uni-app 使用 `@weapp-stylex/uni-app`。保留各框架兼容的 Vite、Vue 和 Babel 版本，不要强制全仓统一版本。
+使用 `weapp-stylex` 导入 runtime，从子路径选择对应适配器。框架宿主为可选 peer，请安装自己使用的框架并保留其兼容的 Vite、Vue 和 Babel 版本。全部入口见[聚合包](/zh/aggregate-package/)。原有 `@weapp-stylex/*` 拆分包仍可独立安装。
 
 ## 注册适配器
 
 ```ts
 // vite.config.ts
-import { stylexCompiler } from '@weapp-stylex/weapp-vite'
+import { stylexCompiler } from 'weapp-stylex/weapp-vite'
 import { defineConfig } from 'weapp-vite/config'
 
 export default defineConfig({
@@ -40,7 +39,7 @@ Wevu SFC 需要同时注册 `createStylex()` 的两个字段，参见 [Wevu 指�
 
 ```ts
 // styles.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 
 export const styles = stylex.create({
   root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
@@ -54,7 +53,7 @@ export default styles
 
 ```ts
 // pages/index/index.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { styles } from '../../styles'
 
 Page({

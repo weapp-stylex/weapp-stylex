@@ -59,6 +59,11 @@
   "peerDependencies": {
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001"
   },
+  "peerDependenciesMeta": {
+    "@dcloudio/vite-plugin-uni": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@weapp-stylex/compiler": "workspace:*"
   },

@@ -1,0 +1,65 @@
+---
+title: "聚合包"
+description: "只安装一个包，通过独立入口使用 runtime 和各框架适配器。"
+sidebar:
+  order: 2
+---
+
+## 安装
+
+```sh
+pnpm add weapp-stylex
+```
+
+聚合包依赖五个 scoped 包并转导出其公共 API。原有拆分包仍可独立安装并使用
+`@weapp-stylex/*` 导入。
+
+| 导入 | API |
+| --- | --- |
+| `weapp-stylex` / `weapp-stylex/core` | 官方 StyleX runtime、类型和主题 |
+| `weapp-stylex/weapp-vite` | `stylexCompiler()` / `createStylex()` |
+| `weapp-stylex/taro` | Taro 默认插件 / `stylexTaro` |
+| `weapp-stylex/uni-app` | `stylexUniApp()` |
+| `weapp-stylex/compiler` | 共享编译 session 和 WXSS 工具 |
+| `weapp-stylex/taro/loader` | Webpack loader |
+
+每个入口提供 ESM、CJS 和对应类型声明。根 runtime 入口只加载官方 StyleX
+runtime；构建适配器位于独立子路径，请在构建配置中使用。
+
+## 共享样式
+
+```ts
+import * as stylex from 'weapp-stylex'
+
+export const styles = stylex.create({
+  root: { padding: 16, marginTop: '12rpx' },
+  active: { opacity: 0.6 },
+})
+```
+
+编译器默认识别 `weapp-stylex` 和 `weapp-stylex/core`，同时保留原来的 runtime
+导入名。共享模块、直接导入 token、条件合并、主题和动态样式沿用官方语义。
+显式设置 `importSources` 会替换默认列表，覆盖时请包含所使用的 runtime 入口。
+
+## 选择宿主
+
+框架宿主为可选 peer，安装聚合包不会同时安装所有框架。请为对应适配器安装
+宿主，并保留其[兼容工具链版本](/zh/examples/)。
+
+注册方式参见[原生微信](/zh/native/)、[Wevu](/zh/wevu/)或
+[uni-app](/zh/uni-app/)。Taro 的插件名解析不支持 package 子路径，需在
+`config/index.ts` 中传入绝对路径：
+
+```ts
+import { defineConfig } from '@tarojs/cli'
+
+export default defineConfig({
+  framework: 'react',
+  compiler: { type: 'vite' },
+  plugins: [require.resolve('weapp-stylex/taro')],
+})
+```
+
+也支持 `framework: 'vue3'` 和 `compiler: { type: 'webpack5' }`。
+原生 ESM 配置通过 Node 的 `createRequire()` 创建 `require`。
+完整示例见 [Taro React](/zh/taro-react/) 和 [Taro Vue 3](/zh/taro-vue3/)。

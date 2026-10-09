@@ -11,7 +11,7 @@ Style declarations may live in any TS/JS module. Ordinary styles do not require 
 
 ```ts
 // styles.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 
 export const styles = stylex.create({
   root: { padding: 16, marginTop: '12rpx', backgroundColor: 'white' },
@@ -30,7 +30,7 @@ export { default, styles } from '../styles'
 
 ```ts
 // consumer.ts
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import sharedStyles, { styles } from './styles/index'
 
 const base = stylex.attrs(sharedStyles.root)

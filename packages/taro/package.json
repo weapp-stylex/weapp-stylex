@@ -71,6 +71,9 @@
     "webpack": "^5.91.0"
   },
   "peerDependenciesMeta": {
+    "@tarojs/service": {
+      "optional": true
+    },
     "webpack": {
       "optional": true
     }

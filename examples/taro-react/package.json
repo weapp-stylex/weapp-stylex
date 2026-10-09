@@ -37,9 +37,9 @@
     "@tarojs/runtime": "4.3.0",
     "@tarojs/shared": "4.3.0",
     "@tarojs/taro": "4.3.0",
-    "@weapp-stylex/core": "workspace:*",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
@@ -54,7 +54,6 @@
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.7.0",
-    "@weapp-stylex/taro": "workspace:*",
     "babel-preset-taro": "4.3.0",
     "less": "^4.9.1",
     "sass": "^1.105.1",

@@ -8,12 +8,11 @@ sidebar:
 ## 同时注册两个入口
 
 ```sh
-pnpm add @weapp-stylex/core
-pnpm add -D @weapp-stylex/weapp-vite
+pnpm add weapp-stylex
 ```
 
 ```ts
-import { createStylex } from '@weapp-stylex/weapp-vite'
+import { createStylex } from 'weapp-stylex/weapp-vite'
 import { defineConfig } from 'weapp-vite/config'
 
 const stylex = createStylex()
@@ -31,7 +30,7 @@ export default defineConfig({
 
 ```vue
 <script setup lang="ts">
-import * as stylex from '@weapp-stylex/core'
+import * as stylex from 'weapp-stylex'
 import { computed, ref } from 'wevu'
 import { styles } from './styles'
 

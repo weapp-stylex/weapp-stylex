@@ -7,7 +7,7 @@ import type { LoaderContext } from 'webpack'
 interface Context extends LoaderContext<StylexCompilerOptions> {
   stylexSession: StylexSession
 }
-export default function stylexLoader(this: Context, code: string): void {
+export function stylexLoader(this: Context, code: string): void {
   this.cacheable()
   const callback = this.async()
   this.stylexSession
@@ -39,3 +39,5 @@ export default function stylexLoader(this: Context, code: string): void {
     })
     .catch((error: Error) => callback(error))
 }
+
+export default stylexLoader

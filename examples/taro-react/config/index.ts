@@ -13,7 +13,7 @@ export default defineConfig({
   outputRoot: `dist/weapp-${builder === 'vite' ? 'vite' : 'webpack'}`,
   framework: 'react',
   compiler: { type: builder, prebundle: { enable: false } },
-  plugins: ['@weapp-stylex/taro'],
+  plugins: [require.resolve('weapp-stylex/taro')],
   alias: { '@styles': path.resolve(__dirname, '../src/styles') },
   mini: { postcss: { pxtransform: { enable: true, config: {} } } },
 })

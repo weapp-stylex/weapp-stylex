@@ -10,10 +10,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit --pretty false"
   },
   "dependencies": {
-    "@weapp-stylex/core": "workspace:*"
+    "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
-    "@weapp-stylex/weapp-vite": "workspace:*",
     "weapp-vite": "7.4.0"
   }
 }

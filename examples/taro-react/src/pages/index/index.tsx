@@ -1,7 +1,7 @@
 import styles, { darkTheme, lightTheme } from '@styles/index'
 import { Button, Text, View } from '@tarojs/components'
-import * as stylex from '@weapp-stylex/core'
 import { useState } from 'react'
+import * as stylex from 'weapp-stylex'
 import StylexCard from '../../components/stylex-card'
 
 const inline = stylex.create({ label: { marginTop: 8, fontSize: 14 } })

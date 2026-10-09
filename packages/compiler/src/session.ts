@@ -115,6 +115,8 @@ export class StylexSession {
     readonly parseSfc: SfcParser = parse,
   ) {
     this.importSources = options.importSources ?? [
+      'weapp-stylex',
+      'weapp-stylex/core',
       '@weapp-stylex/core',
       '@stylexjs/stylex',
     ]

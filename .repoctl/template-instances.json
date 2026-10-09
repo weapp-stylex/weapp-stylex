@@ -208,6 +208,32 @@
         "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
         "rendered": "bae1c3dd46f3632d24f7713027129e02c032d2c359a3757f9144b8826845cb80"
       }
+    },
+    {
+      "id": "dfb38117326ae236116f8bc2",
+      "target": "packages/weapp-stylex",
+      "template": "tsdown",
+      "provenance": "created",
+      "source": {
+        "kind": "package",
+        "packageName": "@icebreakers/monorepo-templates",
+        "version": "2.3.1",
+        "templatePath": "templates/tsdown",
+        "digest": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9"
+      },
+      "generator": {
+        "profile": "repo-new-v1",
+        "version": "5.9.0"
+      },
+      "parameters": {
+        "packageName": "weapp-stylex",
+        "renameJson": false
+      },
+      "baseline": {
+        "status": "available",
+        "original": "48f02f9958e335e8fa400eca09bc622ad5f3acffb71f58969743e1066bcd16e9",
+        "rendered": "94a46519feaf4f783a74cdf84bdb05c03f5ddddca96fb32cb5651ba9fa95fa8d"
+      }
     }
   ]
 }

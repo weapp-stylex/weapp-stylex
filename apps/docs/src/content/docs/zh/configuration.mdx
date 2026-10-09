@@ -5,17 +5,18 @@ sidebar:
   order: 9
 ---
 
-## 已发布的包
+## 包入口
 
-| 包 | 发布版本 | 用途 |
-| --- | --- | --- |
-| `@weapp-stylex/core` | 0.1.1 | 官方 runtime API 与类型 |
-| `@weapp-stylex/compiler` | 0.1.0 | 共享构建核心，ESM/CJS |
-| `@weapp-stylex/weapp-vite` | 0.2.0 | 原生与 Wevu 适配器 |
-| `@weapp-stylex/taro` | 0.1.0 | Taro 插件，ESM/CJS 与 loader 导出 |
-| `@weapp-stylex/uni-app` | 0.1.0 | DCloud Vue 3 适配器 |
+| 包 | 用途 |
+| --- | --- |
+| `weapp-stylex` | 聚合 runtime、类型和各框架适配器子路径 |
+| `@weapp-stylex/core` | 官方 runtime API 与类型 |
+| `@weapp-stylex/compiler` | 共享构建核心，ESM/CJS |
+| `@weapp-stylex/weapp-vite` | 原生与 Wevu 适配器 |
+| `@weapp-stylex/taro` | Taro 插件，ESM/CJS 与 loader 导出 |
+| `@weapp-stylex/uni-app` | DCloud Vue 3 适配器 |
 
-这是文档首次上线时的已发布版本，后续版本以 npm 为准。
+推荐使用[聚合包](/zh/aggregate-package/)，最新发布版本以 [npm](https://www.npmjs.com/package/weapp-stylex) 为准。
 
 ## Runtime
 
@@ -39,11 +40,11 @@ interface StylexCompilerOptions {
 }
 ```
 
-`importSources` 会**替换**默认列表 `['@weapp-stylex/core', '@stylexjs/stylex']`，增加来源时请保留默认项。`babel` 传给官方 StyleX 插件，并不是通用 Babel pipeline 配置。
+`importSources` 会**替换**默认列表 `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`，增加来源时请保留默认项。`babel` 传给官方 StyleX 插件，并不是通用 Babel pipeline 配置。
 
 ```ts
 const stylex = createStylex({
-  importSources: ['@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
+  importSources: ['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex', 'my-stylex-facade'],
 })
 ```
 
