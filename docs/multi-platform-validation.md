@@ -41,25 +41,30 @@ weapp-vite 7.4 CLI 的开发编排路径曾返回就绪但未启动 HTTP 服务�
 | 验证                                                                               | 状态 | 权威日志或报告                                                                                            |
 | ---------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------------------- |
 | Babel 四目标、七条框架/builder 链路，共 28 份生产产物                              | 通过 | `artifacts/build-babel-final.log`、`artifacts/examples-babel-final.log`                                   |
-| Babel 与 auto 微信原生/Wevu headless 交互                                          | 通过 | `artifacts/examples-babel-final.log`、`artifacts/examples-auto-final.log`                                 |
-| Babel 七条 H5 链路的生产与开发浏览器交互，共 14 组                                 | 通过 | `artifacts/h5-babel-final.log`、`artifacts/h5/babel/report.json`                                          |
+| Babel 与 auto 微信原生/Wevu headless 交互                                          | 通过 | `artifacts/examples-babel-final.log`、`artifacts/examples-auto-followup.log`                              |
+| Babel 七条 H5 链路的生产与开发浏览器交互，共 14 组                                 | 通过 | `artifacts/h5-babel-followup.log`、`artifacts/h5/babel/report.json`                                       |
 | 92 项单元测试                                                                      | 通过 | `artifacts/test-final.log`                                                                                |
-| 14 项 Node 脚本测试                                                                | 通过 | `artifacts/node-tests-final.log`                                                                          |
-| Babel 与 auto 集成：三小程序目标、Vue-loader、watch/cache、H5 生命周期、打包消费者 | 通过 | `artifacts/integration-babel-final.log`、`artifacts/integration-auto-final.log`                           |
-| auto 四目标共 28 份生产产物，逐产物 CSS 与 Babel 完全一致                          | 通过 | `artifacts/build-auto-final.log`、`artifacts/examples-auto-final.log`                                     |
-| auto 七条 H5 生产/开发浏览器交互，共 14 组                                         | 通过 | `artifacts/h5-auto-final.log`、`artifacts/h5/auto/report.json`                                            |
+| 18 项 Node 脚本测试                                                                | 通过 | `artifacts/node-tests-followup.log`                                                                       |
+| Babel 与 auto 集成：三小程序目标、Vue-loader、watch/cache、H5 生命周期、打包消费者 | 通过 | `artifacts/integration-babel-followup.log`、`artifacts/integration-auto-followup.log`                     |
+| auto 四目标共 28 份生产产物，逐产物 CSS 与 Babel 完全一致                          | 通过 | `artifacts/build-auto-final.log`、`artifacts/examples-auto-followup.log`                                  |
+| auto 七条 H5 生产/开发浏览器交互，共 14 组                                         | 通过 | `artifacts/h5-auto-followup.log`、`artifacts/h5/auto/report.json`                                         |
+| auto 微信七份产物在同一完整、串行真实 IDE suite 中运行                             | 通过 | `artifacts/ide-auto-ready-2026-10-12.log`、`artifacts/ide/run-1791798851471/report.json`                  |
 | 双语文档 build、lint、typecheck、API/站点验证                                      | 通过 | `artifacts/docs-build-multiplatform.log`、`artifacts/docs-api-final.log`、`artifacts/docs-site-final.log` |
 
 Babel 与 auto H5 报告均包含原生、Wevu、Taro React/Vue 3 各两个 builder 以及 uni-app 七条链路，每种后端全部 production/development 为 `passed`，共 28 组浏览器验收；浏览器为 headless，两份报告的静态服务、浏览器和七个开发服务的 `resources.closed` 均为 `true`。验收覆盖首次样式、条件合并、主题切换、Shadow DOM 主题继承、动态值、静态 rpx 与数值 px、分包导航、样式及 token 编辑恢复、生产子路径部署。结束后复核 shared/token 源码恢复，未残留测试修改。
+
+最终修正后又分别重建七份 H5 并完整复跑浏览器验收：Babel 于 2026-10-12 **09:58:02.529 UTC** 开始，auto 于 **09:59:56.644 UTC** 开始，两轮各 14 组交互全部通过、九个资源全部关闭。使用 Playwright 安装的 Chromium 并显式保持 headless。Babel/auto integration 同步复跑通过，18 项 Node 脚本测试涵盖新增 IDE 应用就绪屏障。本地结果不代表本轮修复推送后的远端 CI 已通过。
+
+初轮提交 `6f05093` 的远端 CI 失败来自验收脚本的异步同步与宿主 API 使用：H5 导航现等待公开页面栈与 `wx.reLaunch` 就绪，watch fixture 通过公开 watcher registry 确认初始扫描完成，并以稳定写入边界同步连续修改。此次增强保持实际错误断言，本地 Babel/auto 的 H5 与集成复测已通过；最新 auto 再次检查 28 份产物、逐份 CSS 一致及原生/Wevu headless 交互。远端结果以修复推送后的 CI 独立结论为准。
 
 28 份产物检查在 Babel 和 auto 两种模式均覆盖目标扩展名、token、共享 class、单位、分包和平台资产隔离；auto 的 28 份 CSS 与保存的 Babel 基线逐份完全一致。Taro 与 uni-app H5 均交付非空 hash CSS 与 HTML link。文档最新检查为 29 对双语页面、58 个页面、13 个公开入口、83 个 API 导出和两语言各 144 个 API 章节。上述本地日志不将构建或浏览器通过提升为小程序 IDE、真机或远端 CI 通过。
 
 根级冻结依赖安装、lint（0 错误、8 项既有警告）、typecheck、`test:deps`、`repo deps check`、`repo check` 与 `repo check --full` 均通过；doctor 结果为 118 pass、140 suggestions、0 fail，`git diff --check` 通过。对应日志依次为 `artifacts/install-final.log`、`artifacts/lint-final.log`、`artifacts/typecheck-final.log`、`artifacts/deps-final.log`、`artifacts/repo-deps-final.log`、`artifacts/repo-check-final.log`、`artifacts/repo-check-full-final.log`、`artifacts/doctor-final.log`。最新 docs API/站点重跑仍通过：13 公开入口、83 导出、每语言 144 API 章节与 58 页面。
 
-## IDE 与设备待验收
+## IDE 与设备验收范围
 
 本机已安装支付宝开发者工具 3.10.10（`com.ant.miniprogram`）和抖音开发者工具 4.5.6（`ide.micro.app.bytedance`）。当前会话未配置这些平台的真实项目 AppID、身份与项目授权，因此支付宝/抖音 IDE 和设备运行验收仍待完成。需要验证组件属性更新、隔离样式与主题、动态 CSS 变量、分包导航及宿主基础库兼容性。
 
-微信七份产物继续使用 `test:ide` 的全局串行 automator 流程，需要真实 `WEAPP_STYLEX_APPID`、显式 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`、登录和服务端口。本轮未用 tourist mode 替代真实项目验收。缺少项目或身份前提记录为 pending；历史单份通过不提升为本轮完整 suite 通过。
+微信七份产物已在 2026-10-12 使用真实 AppID、官方 Stable 2.02.2608080 和实际基础库 3.17.4 完成同一轮完整 auto suite。每份只启动一次 automator，先确认 index 页面及 `#stylex-root` 就绪，再通过 `reLaunch` 串联主页与分包，覆盖共享/内联/组件 class、8px 单位、条件状态、主题和动态 120px。14 张截图与七份无运行错误日志均已保存，七个专属端口及窗口已核对关闭。证据、启动屏障和前三次失败保留见[本轮微信 IDE 记录](ide-validation-2026-10-12.md)及[结构化摘要](validation/ide-2026-10-12.json)。本轮未使用 tourist mode；真机验收仍不在该通过结论内。
 
 本轮使用 `corepack pnpm change` 记录 compiler、三个适配器与 facade 的 minor 变更意图，不手动修改版本、不发布 npm。其余小程序平台、独立分包、Vue 2、uni-app x、WXML `sx` 语法和 stateful HMR 继续留在后续范围。

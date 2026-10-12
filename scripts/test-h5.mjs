@@ -95,6 +95,25 @@ async function cssText(page) {
   })
 }
 
+async function reLaunchWeappPage(page, url) {
+  // HTML load can finish before the host's async page modules register routes.
+  await page.waitForFunction(() => typeof globalThis.wx?.reLaunch === 'function'
+    && typeof globalThis.getCurrentPages === 'function'
+    && globalThis.getCurrentPages().length > 0)
+  await page.evaluate(async (targetUrl) => {
+    try {
+      await globalThis.wx.reLaunch({ url: targetUrl })
+    }
+    catch (error) {
+      if (error instanceof Error || !error || typeof error !== 'object') {
+        throw error
+      }
+      // The host rejects failed navigation with a plain { errMsg } object.
+      throw new Error(`reLaunch ${targetUrl} rejected: ${JSON.stringify(error)}`)
+    }
+  }, url)
+}
+
 async function interactions(page, url, example) {
   await page.setViewportSize({ width: 375, height: 812 })
   await page.goto(url)
@@ -130,7 +149,7 @@ async function interactions(page, url, example) {
     assert.ok(wideMargin > narrowMargin, 'Host responsive rpx did not follow viewport changes')
   }
   if (example.cssDelivery === 'weapp-web') {
-    await page.evaluate(() => globalThis.wx.reLaunch({ url: '/subpackage/detail/index' }))
+    await reLaunchWeappPage(page, '/subpackage/detail/index')
   }
   else {
     await page.goto(`${url.replace(/\/$/, '')}/#/subpackage/detail/index`)
@@ -138,7 +157,7 @@ async function interactions(page, url, example) {
   await poll(async () => await computed(page, '#stylex-detail', 'paddingTop') === '16px', 'subpackage route style')
   await page.goto(url, { waitUntil: 'load' })
   if (example.cssDelivery === 'weapp-web') {
-    await page.evaluate(() => globalThis.wx.reLaunch({ url: '/pages/index/index' }))
+    await reLaunchWeappPage(page, '/pages/index/index')
   }
   await poll(async () => await computed(page, '#stylex-root', 'paddingTop') === '16px', 'return to main route')
 }
@@ -211,6 +230,13 @@ async function devChecks(page, example, name) {
     resource.failure = await page.evaluate(async () => {
       const root = document.querySelector('#stylex-root')
       return {
+        runtime: {
+          reLaunch: typeof globalThis.wx?.reLaunch,
+          getCurrentPages: typeof globalThis.getCurrentPages,
+          routes: typeof globalThis.getCurrentPages === 'function'
+            ? globalThis.getCurrentPages().map(page => page.route)
+            : [],
+        },
         root: root?.outerHTML.slice(0, 3000),
         padding: root ? getComputedStyle(root).paddingTop : undefined,
         styles: await Promise.all([...document.querySelectorAll('link[data-weapp-stylex]')].map(async (link) => {

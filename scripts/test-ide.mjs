@@ -18,8 +18,10 @@ const officialSource
 const cliPath = process.env.WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH
 const appid = process.env.WEAPP_STYLEX_APPID
 const startAt = Number(process.env.WEAPP_STYLEX_IDE_START_AT ?? 0)
-// A connected automation socket is not proof that the native simulator is ready.
-// On macOS, observe the owned page before enabling automation in the same window.
+// A connected automation socket is not proof that the application is ready.
+// On macOS, first observe the owned simulator before enabling automation in the
+// same window. Automation can recompile it; an application structure barrier is
+// also required before the first reLaunch.
 const preopen = process.env.WEAPP_STYLEX_IDE_PREOPEN === '1'
   || (process.platform === 'darwin' && process.env.WEAPP_STYLEX_IDE_PREOPEN !== '0')
 const reportPath = path.join(artifacts, startAt ? `partial-${startAt}.json` : 'report.json')
@@ -97,6 +99,38 @@ async function until(check, message, timeout = 15000) {
     await delay(150)
   } while (Date.now() < deadline)
   throw new Error(message)
+}
+function assertRuntimeLogs(logs) {
+  assert.ok(
+    !logs.some(
+      log => log.type === 'exception' || log.message?.type === 'error' || log.message?.level === 'error',
+    ),
+    'Runtime errors captured in IDE logs',
+  )
+}
+export async function waitForAppReady(mini, { logs = [], timeout = 45000 } = {}) {
+  const started = Date.now()
+  let ready
+  await until(async () => {
+    assertRuntimeLogs(logs)
+    // reLaunch first calls currentPage(), whose host metadata is absent while
+    // compilation is in progress. Read the page stack without changing routes.
+    const stack = await mini.pageStack()
+    const page = stack.at(-1)
+    if (page?.path.replace(/^\//, '') !== 'pages/index/index') {
+      return false
+    }
+    // Page.$ catches every protocol error and returns null. $$ distinguishes
+    // an absent root from a real host/runtime failure, which must still fail.
+    const nodes = await page.$$('#stylex-root')
+    assertRuntimeLogs(logs)
+    if (!nodes.length) {
+      return false
+    }
+    ready = { pageId: page.id, path: page.path, selector: '#stylex-root', elapsedMs: Date.now() - started }
+    return true
+  }, 'Application index structure did not become ready before route automation', timeout)
+  return ready
 }
 async function element(page, id) {
   let node
@@ -368,13 +402,11 @@ async function main() {
           resource.nativeWindow = await journal.read()
           assert.ok(resource.nativeWindow.windowId, 'Cannot identify owned native window in DevTools journal')
         }
+        await phase('application readiness')
+        record.applicationReady = await waitForAppReady(mini, { logs })
+        await save()
         await bounded(() => assertions(mini, target, phase), 'Runtime assertions', 90000)
-        assert.ok(
-          !logs.some(
-            log => log.type === 'exception' || log.message?.type === 'error' || log.message?.level === 'error',
-          ),
-          'Runtime errors captured in IDE logs',
-        )
+        assertRuntimeLogs(logs)
         record.status = 'passed'
       }
       catch (error) {

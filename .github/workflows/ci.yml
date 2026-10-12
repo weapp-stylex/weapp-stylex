@@ -25,8 +25,8 @@ jobs:
         run: pnpm --filter './packages/*' --filter docs build
       - run: pnpm typecheck
       - run: pnpm test
-      - name: Verify build initialization and IDE resource ownership
-        run: pnpm exec node --test scripts/taro/*.test.mjs scripts/ide-native-journal.test.mjs
+      - name: Verify build initialization, IDE application readiness and resource ownership
+        run: pnpm exec node --test scripts/taro/*.test.mjs scripts/ide-*.test.mjs
       - run: pnpm test:deps
       - run: pnpm test:integration
       - name: Verify mixed backend module graphs and filesystem caches

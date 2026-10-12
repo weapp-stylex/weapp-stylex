@@ -1,0 +1,632 @@
+{
+  "date": "2026-10-12",
+  "runtimeAssertions": "passed for all seven artifacts in one serial run",
+  "fullSuite": "passed",
+  "scope": "full",
+  "backend": "auto",
+  "startup": "open-before-auto",
+  "checkedAt": "2026-10-12T09:54:11.239Z",
+  "appid": "wx6ffee4673b257014",
+  "appidSource": "weapp-tailwindcss/starter/weapp-vite/project.config.json; same user-authorized project as 2026-10-09",
+  "cliPath": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli",
+  "installedVersion": "2.02.2608080",
+  "latestStable": "2.02.2608080",
+  "officialSource": "https://devtools.wxqcloud.qq.com.cn/WechatWebDev/nightly/versions/config.json",
+  "officialDownloadPage": "https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html",
+  "officialChecks": [
+    {
+      "checkedAt": "2026-10-12T09:38Z",
+      "precision": "minute",
+      "evidence": "artifacts/ide/official-versions-2026-10-12.json"
+    },
+    {
+      "checkedAt": "2026-10-12T09:54:11.239Z",
+      "precision": "millisecond",
+      "evidence": "artifacts/ide/run-1791798851471/report.json"
+    }
+  ],
+  "environment": {
+    "node": "24.18.0",
+    "pnpm": "12.10.1",
+    "platform": "macOS arm64",
+    "loggedIn": true,
+    "servicePort": 19355,
+    "SDKVersion": "3.17.4",
+    "doctorEvidence": "artifacts/ide/doctor-2026-10-12.json",
+    "SDKVersionSource": "Tool.getInfo and systemInfo for each artifact"
+  },
+  "selectedArtifacts": [
+    {
+      "name": "wechat-native",
+      "directory": "dist",
+      "status": "passed",
+      "stage": "subpackage route",
+      "applicationReady": {
+        "pageId": 2,
+        "path": "pages/index/index",
+        "selector": "#stylex-root",
+        "elapsedMs": 13
+      },
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "SDKVersion": "3.17.4",
+        "platform": "devtools",
+        "model": "iPhone 12/13 (Pro)"
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      },
+      "screenshots": [
+        "artifacts/ide/run-1791798851471/0-wechat-native/index.png",
+        "artifacts/ide/run-1791798851471/0-wechat-native/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791798851471/0-wechat-native/console.json",
+      "openLog": "artifacts/ide/run-1791798851471/0-wechat-native/open.log",
+      "runtimeLogSummary": {
+        "entries": 2,
+        "errors": 0,
+        "exceptions": 0,
+        "warnings": 2
+      }
+    },
+    {
+      "name": "wechat-wevu",
+      "directory": "dist",
+      "status": "passed",
+      "stage": "subpackage route",
+      "applicationReady": {
+        "pageId": 2,
+        "path": "pages/index/index",
+        "selector": "#stylex-root",
+        "elapsedMs": 8
+      },
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "SDKVersion": "3.17.4",
+        "platform": "devtools",
+        "model": "iPhone 12/13 (Pro)"
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      },
+      "screenshots": [
+        "artifacts/ide/run-1791798851471/1-wechat-wevu/index.png",
+        "artifacts/ide/run-1791798851471/1-wechat-wevu/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791798851471/1-wechat-wevu/console.json",
+      "openLog": "artifacts/ide/run-1791798851471/1-wechat-wevu/open.log",
+      "runtimeLogSummary": {
+        "entries": 2,
+        "errors": 0,
+        "exceptions": 0,
+        "warnings": 2
+      }
+    },
+    {
+      "name": "taro-react",
+      "directory": "dist/weapp-webpack",
+      "status": "passed",
+      "stage": "subpackage route",
+      "applicationReady": {
+        "pageId": 2,
+        "path": "pages/index/index",
+        "selector": "#stylex-root",
+        "elapsedMs": 7
+      },
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "SDKVersion": "3.17.4",
+        "platform": "devtools",
+        "model": "iPhone 12/13 (Pro)"
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      },
+      "screenshots": [
+        "artifacts/ide/run-1791798851471/2-taro-react/index.png",
+        "artifacts/ide/run-1791798851471/2-taro-react/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791798851471/2-taro-react/console.json",
+      "openLog": "artifacts/ide/run-1791798851471/2-taro-react/open.log",
+      "runtimeLogSummary": {
+        "entries": 2,
+        "errors": 0,
+        "exceptions": 0,
+        "warnings": 2
+      }
+    },
+    {
+      "name": "taro-react",
+      "directory": "dist/weapp-vite",
+      "status": "passed",
+      "stage": "subpackage route",
+      "applicationReady": {
+        "pageId": 2,
+        "path": "pages/index/index",
+        "selector": "#stylex-root",
+        "elapsedMs": 7
+      },
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "SDKVersion": "3.17.4",
+        "platform": "devtools",
+        "model": "iPhone 12/13 (Pro)"
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      },
+      "screenshots": [
+        "artifacts/ide/run-1791798851471/3-taro-react/index.png",
+        "artifacts/ide/run-1791798851471/3-taro-react/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791798851471/3-taro-react/console.json",
+      "openLog": "artifacts/ide/run-1791798851471/3-taro-react/open.log",
+      "runtimeLogSummary": {
+        "entries": 2,
+        "errors": 0,
+        "exceptions": 0,
+        "warnings": 2
+      }
+    },
+    {
+      "name": "taro-vue3",
+      "directory": "dist/weapp-webpack",
+      "status": "passed",
+      "stage": "subpackage route",
+      "applicationReady": {
+        "pageId": 2,
+        "path": "pages/index/index",
+        "selector": "#stylex-root",
+        "elapsedMs": 7
+      },
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "SDKVersion": "3.17.4",
+        "platform": "devtools",
+        "model": "iPhone 12/13 (Pro)"
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      },
+      "screenshots": [
+        "artifacts/ide/run-1791798851471/4-taro-vue3/index.png",
+        "artifacts/ide/run-1791798851471/4-taro-vue3/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791798851471/4-taro-vue3/console.json",
+      "openLog": "artifacts/ide/run-1791798851471/4-taro-vue3/open.log",
+      "runtimeLogSummary": {
+        "entries": 2,
+        "errors": 0,
+        "exceptions": 0,
+        "warnings": 2
+      }
+    },
+    {
+      "name": "taro-vue3",
+      "directory": "dist/weapp-vite",
+      "status": "passed",
+      "stage": "subpackage route",
+      "applicationReady": {
+        "pageId": 2,
+        "path": "pages/index/index",
+        "selector": "#stylex-root",
+        "elapsedMs": 7
+      },
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "SDKVersion": "3.17.4",
+        "platform": "devtools",
+        "model": "iPhone 12/13 (Pro)"
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      },
+      "screenshots": [
+        "artifacts/ide/run-1791798851471/5-taro-vue3/index.png",
+        "artifacts/ide/run-1791798851471/5-taro-vue3/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791798851471/5-taro-vue3/console.json",
+      "openLog": "artifacts/ide/run-1791798851471/5-taro-vue3/open.log",
+      "runtimeLogSummary": {
+        "entries": 2,
+        "errors": 0,
+        "exceptions": 0,
+        "warnings": 2
+      }
+    },
+    {
+      "name": "uni-vue3",
+      "directory": "dist/build/mp-weixin",
+      "status": "passed",
+      "stage": "subpackage route",
+      "applicationReady": {
+        "pageId": 2,
+        "path": "pages/index/index",
+        "selector": "#stylex-root",
+        "elapsedMs": 7
+      },
+      "toolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersion": "3.17.4"
+      },
+      "systemInfo": {
+        "SDKVersion": "3.17.4",
+        "platform": "devtools",
+        "model": "iPhone 12/13 (Pro)"
+      },
+      "account": {
+        "miniProgram": {
+          "appId": "wx6ffee4673b257014",
+          "envVersion": "develop",
+          "version": ""
+        }
+      },
+      "screenshots": [
+        "artifacts/ide/run-1791798851471/6-uni-vue3/index.png",
+        "artifacts/ide/run-1791798851471/6-uni-vue3/subpackage.png"
+      ],
+      "logs": "artifacts/ide/run-1791798851471/6-uni-vue3/console.json",
+      "openLog": "artifacts/ide/run-1791798851471/6-uni-vue3/open.log",
+      "runtimeLogSummary": {
+        "entries": 2,
+        "errors": 0,
+        "exceptions": 0,
+        "warnings": 2
+      }
+    }
+  ],
+  "selectedResources": [
+    {
+      "projectPath": "artifacts/ide/run-1791798851471/0-wechat-native/project",
+      "port": 56418,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s73",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791798851471/0-wechat-native/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791798851471/1-wechat-wevu/project",
+      "port": 57056,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s74",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791798851471/1-wechat-wevu/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791798851471/2-taro-react/project",
+      "port": 57528,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s75",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791798851471/2-taro-react/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791798851471/3-taro-react/project",
+      "port": 57954,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s76",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791798851471/3-taro-react/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791798851471/4-taro-vue3/project",
+      "port": 58422,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s77",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791798851471/4-taro-vue3/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791798851471/5-taro-vue3/project",
+      "port": 58817,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s78",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791798851471/5-taro-vue3/native.log"
+    },
+    {
+      "projectPath": "artifacts/ide/run-1791798851471/6-uni-vue3/project",
+      "port": 59243,
+      "createdByTask": true,
+      "launches": 1,
+      "closed": true,
+      "nativeWindow": {
+        "windowId": "s79",
+        "windowClosed": true,
+        "webContentsDestroyed": true
+      },
+      "readyBeforeAutomator": true,
+      "endpointClosed": true,
+      "nativeLogs": "artifacts/ide/run-1791798851471/6-uni-vue3/native.log"
+    }
+  ],
+  "sourceReports": [
+    "artifacts/ide/run-1791798851471/report.json",
+    "artifacts/ide/report.json"
+  ],
+  "suiteLog": "artifacts/ide-auto-ready-2026-10-12.log",
+  "readiness": {
+    "phase": "application readiness",
+    "route": "pages/index/index",
+    "selector": "#stylex-root",
+    "APIs": [
+      "MiniProgram.pageStack()",
+      "Page.$$()"
+    ],
+    "timeoutMs": 45000,
+    "navigationRetries": 0,
+    "protocolErrorsPropagate": true,
+    "runtimeErrorsFail": true
+  },
+  "assertions": [
+    "shared page class",
+    "inline StyleX class and margin-top 8px",
+    "shared component class",
+    "conditional opacity 0.6",
+    "theme background change",
+    "dynamic width 120px",
+    "ordinary subpackage class"
+  ],
+  "routePlan": [
+    "/pages/index/index",
+    "/subpackage/detail/index"
+  ],
+  "cleanup": {
+    "allOwnedResourcesClosed": true,
+    "launchesPerArtifact": 1,
+    "suiteLockReleased": true,
+    "evidence": [
+      "endpointClosed",
+      "native-window-closed",
+      "webcontents-destroyed"
+    ],
+    "globalHostShutdown": false,
+    "unrelatedProjectsPreserved": true,
+    "manualWindowPreserved": true,
+    "manualWindowVerification": "read-only native application accessibility tree inspection after suite cleanup"
+  },
+  "failedAttempts": [
+    {
+      "sourceReport": "artifacts/ide/run-1791797995180/report.json",
+      "checkedAt": "2026-10-12T09:39:55.027Z",
+      "status": "failed",
+      "scope": "full",
+      "diagnostic": "Taro React Webpack did not reach native simulator page readiness before automator launch; no product-code cause confirmed",
+      "artifacts": [
+        {
+          "name": "wechat-native",
+          "directory": "dist",
+          "status": "passed",
+          "stage": "subpackage route",
+          "logs": "artifacts/ide/run-1791797995180/0-wechat-native/console.json",
+          "openLog": "artifacts/ide/run-1791797995180/0-wechat-native/open.log"
+        },
+        {
+          "name": "wechat-wevu",
+          "directory": "dist",
+          "status": "passed",
+          "stage": "subpackage route",
+          "logs": "artifacts/ide/run-1791797995180/1-wechat-wevu/console.json",
+          "openLog": "artifacts/ide/run-1791797995180/1-wechat-wevu/open.log"
+        },
+        {
+          "name": "taro-react",
+          "directory": "dist/weapp-webpack",
+          "status": "failed",
+          "stage": "open project before automation",
+          "error": "Error: Owned project did not reach native page readiness before automation",
+          "logs": "artifacts/ide/run-1791797995180/2-taro-react/console.json",
+          "openLog": "artifacts/ide/run-1791797995180/2-taro-react/open.log"
+        }
+      ],
+      "resources": [
+        {
+          "projectPath": "artifacts/ide/run-1791797995180/0-wechat-native/project",
+          "port": 49755,
+          "createdByTask": true,
+          "launches": 1,
+          "closed": true,
+          "nativeWindow": {
+            "windowId": "s68",
+            "windowClosed": true,
+            "webContentsDestroyed": true
+          },
+          "readyBeforeAutomator": true,
+          "endpointClosed": true,
+          "nativeLogs": "artifacts/ide/run-1791797995180/0-wechat-native/native.log"
+        },
+        {
+          "projectPath": "artifacts/ide/run-1791797995180/1-wechat-wevu/project",
+          "port": 50289,
+          "createdByTask": true,
+          "launches": 1,
+          "closed": true,
+          "nativeWindow": {
+            "windowId": "s69",
+            "windowClosed": true,
+            "webContentsDestroyed": true
+          },
+          "readyBeforeAutomator": true,
+          "endpointClosed": true,
+          "nativeLogs": "artifacts/ide/run-1791797995180/1-wechat-wevu/native.log"
+        },
+        {
+          "projectPath": "artifacts/ide/run-1791797995180/2-taro-react/project",
+          "port": 50795,
+          "createdByTask": true,
+          "launches": 0,
+          "closed": true,
+          "nativeWindow": {
+            "windowId": "s70",
+            "windowClosed": true,
+            "webContentsDestroyed": true
+          },
+          "endpointClosed": true,
+          "nativeLogs": "artifacts/ide/run-1791797995180/2-taro-react/native.log"
+        }
+      ]
+    },
+    {
+      "sourceReport": "artifacts/ide/run-1791798218387/report.json",
+      "checkedAt": "2026-10-12T09:43:38.277Z",
+      "status": "failed",
+      "scope": "partial: artifacts 3–7",
+      "diagnostic": "Partial Taro React Webpack diagnosis: first reLaunch queried currentPage before application compilation completed; host page metadata was null",
+      "artifacts": [
+        {
+          "name": "taro-react",
+          "directory": "dist/weapp-webpack",
+          "status": "failed",
+          "stage": "index route",
+          "error": "Error: Cannot destructure property 'rawPath' of 't.getPageMetaByWebviewId(...)' as it is null.",
+          "logs": "artifacts/ide/run-1791798218387/2-taro-react/console.json",
+          "openLog": "artifacts/ide/run-1791798218387/2-taro-react/open.log",
+          "failureScreenshot": "artifacts/ide/run-1791798218387/2-taro-react/failure.png"
+        }
+      ],
+      "resources": [
+        {
+          "projectPath": "artifacts/ide/run-1791798218387/2-taro-react/project",
+          "port": 52047,
+          "createdByTask": true,
+          "launches": 1,
+          "closed": true,
+          "nativeWindow": {
+            "windowId": "s71",
+            "windowClosed": true,
+            "webContentsDestroyed": true
+          },
+          "readyBeforeAutomator": true,
+          "endpointClosed": true,
+          "nativeLogs": "artifacts/ide/run-1791798218387/2-taro-react/native.log"
+        }
+      ]
+    },
+    {
+      "sourceReport": "artifacts/ide/run-1791798330973/report.json",
+      "checkedAt": "2026-10-12T09:45:30.887Z",
+      "status": "failed",
+      "scope": "partial: artifacts 4–7",
+      "diagnostic": "Partial Taro React Vite diagnosis reproduced the same pre-navigation currentPage metadata failure",
+      "artifacts": [
+        {
+          "name": "taro-react",
+          "directory": "dist/weapp-vite",
+          "status": "failed",
+          "stage": "index route",
+          "error": "Error: Cannot destructure property 'rawPath' of 't.getPageMetaByWebviewId(...)' as it is null.",
+          "logs": "artifacts/ide/run-1791798330973/3-taro-react/console.json",
+          "openLog": "artifacts/ide/run-1791798330973/3-taro-react/open.log",
+          "failureScreenshot": "artifacts/ide/run-1791798330973/3-taro-react/failure.png"
+        }
+      ],
+      "resources": [
+        {
+          "projectPath": "artifacts/ide/run-1791798330973/3-taro-react/project",
+          "port": 53122,
+          "createdByTask": true,
+          "launches": 1,
+          "closed": true,
+          "nativeWindow": {
+            "windowId": "s72",
+            "windowClosed": true,
+            "webContentsDestroyed": true
+          },
+          "readyBeforeAutomator": true,
+          "endpointClosed": true,
+          "nativeLogs": "artifacts/ide/run-1791798330973/3-taro-react/native.log"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Only the auto backend was exercised by this real IDE suite; Babel/auto builds and browser validation are recorded separately",
+    "Alipay and Douyin real IDE/device acceptance remains pending project AppID, identity and authorization",
+    "No physical-device acceptance is claimed",
+    "2026-10-09 historical evidence is unchanged"
+  ]
+}

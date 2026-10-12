@@ -609,13 +609,67 @@ async function runWebViteLifecycle() {
 
   await writeFile(path.join(cwd, 'entry.js'), entry)
   const devSession = new StylexSession({ ...compilerOptions, target: 'web' })
+  let watcherReady
   const server = await createServer({
     ...config,
-    plugins: makePlugins(devSession),
+    plugins: [
+      ...makePlugins(devSession),
+      {
+        name: 'fixture-watch-ready',
+        configureServer({ watcher }) {
+          watcherReady = (async () => {
+            // Vite starts Chokidar before async environment initialization.
+            // Its one-time ready event may already have fired, so use the
+            // public registry to recognize our fully registered sources.
+            const sources = ['entry.js', 'shared.js', 'tokens.stylex.js']
+            const registered = watcher.getWatched()[cwd] ?? []
+            if (!sources.every(file => registered.includes(file))) {
+              await new Promise((resolve, reject) => {
+                let timer
+                let onReady
+                let onError
+                const cleanup = () => {
+                  clearTimeout(timer)
+                  watcher.off('ready', onReady)
+                  watcher.off('error', onError)
+                }
+                onReady = () => {
+                  cleanup()
+                  resolve()
+                }
+                onError = (error) => {
+                  cleanup()
+                  reject(error)
+                }
+                timer = setTimeout(() => onError(new Error('H5 watcher initial scan timed out')), 10000)
+                watcher.once('ready', onReady)
+                watcher.once('error', onError)
+              })
+            }
+            const watched = watcher.getWatched()[cwd] ?? []
+            for (const file of sources) {
+              assert.ok(watched.includes(file), `H5 fixture source was not registered with the watcher: ${file}`)
+            }
+          })()
+          // Await below inside the server ownership boundary, even if the
+          // initial scan fails before createServer has returned its instance.
+          void watcherReady.catch(() => {})
+        },
+      },
+    ],
     optimizeDeps: { noDiscovery: true, include: [] },
-    server: { host: '127.0.0.1', port: 0, fs: { allow: [root] } },
+    server: {
+      host: '127.0.0.1',
+      port: 0,
+      fs: { allow: [root] },
+      // Chokidar's Node/Linux path suppresses duplicate change events for
+      // 50ms. A write-finish event is a real stable write boundary, so the next
+      // same-file edit is observed instead of falling inside that window.
+      watch: { awaitWriteFinish: { stabilityThreshold: 50, pollInterval: 10 } },
+    },
   })
   try {
+    await watcherReady
     await server.listen()
     const address = server.httpServer.address()
     const origin = `http://127.0.0.1:${address.port}`
