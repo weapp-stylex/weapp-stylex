@@ -4,7 +4,7 @@ import { rm } from 'node:fs/promises'
 import path from 'node:path'
 import { formatDiagnostic } from './diagnostics.js'
 import { sourceId } from './session.js'
-import { WxssEmitter } from './wxss.js'
+import { MiniProgramStyleEmitter } from './wxss.js'
 
 export interface PluginHost {
   resolve: (
@@ -27,10 +27,22 @@ export interface PluginHost {
 }
 /** Structural hooks accepted by Vite 4/5/8; no Vite runtime is bundled. */
 export function createVitePlugins(
-  session: StylexSession,
-  options: { sfcOnly?: boolean, emitStyles?: boolean } = {},
+  session: StylexSession | (() => StylexSession),
+  options: {
+    sfcOnly?: boolean | (() => boolean)
+    emitStyles?: boolean | (() => boolean)
+    sourceId?: (id: string) => string
+  } = {},
 ) {
-  const emitter = new WxssEmitter()
+  const current = () => typeof session === 'function' ? session() : session
+  const enabled = (value: boolean | (() => boolean) | undefined, fallback: boolean) => typeof value === 'function' ? value() : value ?? fallback
+  const emitters = new Map<string, MiniProgramStyleEmitter>()
+  const clearEmitters = () => {
+    for (const emitter of emitters.values()) {
+      emitter.clear()
+    }
+    emitters.clear()
+  }
   let outputRoot: string | undefined
   let watching = false
   return [
@@ -38,39 +50,68 @@ export function createVitePlugins(
       name: 'weapp-stylex:source',
       enforce: 'pre' as const,
       buildStart() {
-        session.beginBuild()
+        current().beginBuild()
       },
-      async transform(this: PluginHost, code: string, id: string) {
-        if (options.sfcOnly && (!id.endsWith('.vue') || id.includes('?'))) {
-          return null
-        }
-        const result = await session.transform(code, id, {
-          resolve: async (source, importer) => {
-            const resolved = await this.resolve(source, importer, {
-              skipSelf: true,
-            })
-            return resolved && !resolved.external ? resolved.id : undefined
-          },
-          addWatchFile: dependency => this.addWatchFile(dependency),
-          diagnostic: (diagnostic) => {
-            if (diagnostic.level === 'warning') {
-              this.warn(formatDiagnostic(diagnostic))
-            }
-            else {
-              this.error({ message: formatDiagnostic(diagnostic), id: diagnostic.file, loc: diagnostic.line ? { line: diagnostic.line, column: (diagnostic.column ?? 1) - 1 } : undefined })
-            }
-          },
-        })
-        return result ? { code: result.code, map: result.map } : null
+      transform: {
+        order: 'pre' as const,
+        async handler(this: PluginHost, code: string, id: string) {
+          id = options.sourceId?.(id) ?? id
+          if (enabled(options.sfcOnly, false) && (!id.endsWith('.vue') || id.includes('?'))) {
+            return null
+          }
+          const result = await current().transform(code, id, {
+            resolve: async (source, importer) => {
+              const resolved = await this.resolve(source, importer, {
+                skipSelf: true,
+              })
+              return resolved && !resolved.external ? resolved.id : undefined
+            },
+            addWatchFile: dependency => this.addWatchFile(dependency),
+            diagnostic: (diagnostic) => {
+              if (diagnostic.level === 'warning') {
+                this.warn(formatDiagnostic(diagnostic))
+              }
+              else {
+                this.error({ message: formatDiagnostic(diagnostic), id: diagnostic.file, loc: diagnostic.line ? { line: diagnostic.line, column: (diagnostic.column ?? 1) - 1 } : undefined })
+              }
+            },
+          })
+          return result ? { code: result.code, map: result.map } : null
+        },
       },
       shouldTransformCachedModule({ id }: { id: string }) {
-        return session.dirty.has(sourceId(id))
+        return current().dirty.has(sourceId(id))
       },
       watchChange(id: string, change: { event: string }) {
-        session.change(id, change.event === 'delete')
+        current().change(id, change.event === 'delete')
+      },
+      handleHotUpdate<T>(context: {
+        file: string
+        modules: T[]
+        server: { moduleGraph: {
+          getModulesByFile: (id: string) => Set<T> | undefined
+          invalidateModule: (module: T) => void
+        } }
+      }) {
+        const active = current()
+        active.change(context.file)
+        const affected = new Set(context.modules)
+        for (const id of active.dirty) {
+          for (const module of context.server.moduleGraph.getModulesByFile(id) ?? []) {
+            context.server.moduleGraph.invalidateModule(module)
+            affected.add(module)
+          }
+        }
+        return [...affected]
+      },
+      configureServer(server: { httpServer?: { once: (event: string, callback: () => void) => void } | null }) {
+        server.httpServer?.once('close', () => {
+          current().clear()
+          clearEmitters()
+        })
       },
       closeWatcher() {
-        session.clear()
+        current().clear()
       },
     },
     {
@@ -81,13 +122,13 @@ export function createVitePlugins(
         watching = config.command === 'serve' || Boolean(config.build.watch)
       },
       closeBundle() {
-        if (options.emitStyles !== false && !watching) {
-          session.clear()
-          emitter.clear()
+        if (enabled(options.emitStyles, true) && !watching) {
+          current().clear()
+          clearEmitters()
         }
       },
       closeWatcher() {
-        emitter.clear()
+        clearEmitters()
       },
       generateBundle: {
         order: 'post' as const,
@@ -96,9 +137,20 @@ export function createVitePlugins(
           _options: unknown,
           bundle: StyleBundle,
         ) {
-          session.prune(this.getModuleIds())
-          if (options.emitStyles !== false) {
-            await emitter.generate(bundle, session.css(), {
+          const active = current()
+          active.prune(this.getModuleIds())
+          if (enabled(options.emitStyles, true)) {
+            const target = active.options.target ?? 'weapp'
+            if (target === 'web') {
+              throw new Error('Use createWebStylePlugins for the web target and disable mini-program style emission.')
+            }
+            const outputKey = `${target}\0${outputRoot ?? ''}`
+            let emitter = emitters.get(outputKey)
+            if (!emitter) {
+              emitter = new MiniProgramStyleEmitter(target)
+              emitters.set(outputKey, emitter)
+            }
+            await emitter.generate(bundle, active.css(), {
               emit: (fileName, source) => {
                 this.emitFile({ type: 'asset', fileName, source })
               },

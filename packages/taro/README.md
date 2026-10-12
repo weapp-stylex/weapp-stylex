@@ -1,6 +1,6 @@
 # @weapp-stylex/taro
 
-Taro 4.3 微信小程序的 StyleX 插件，支持 React / Vue 3 与 Vite / Webpack 5。提供 ESM、CommonJS 及独立 `./loader` 入口。
+Taro 4.3 微信/支付宝/抖音小程序与 H5 的 StyleX 插件，支持 React / Vue 3 与 Vite / Webpack 5。提供 ESM、CommonJS 及独立 `./loader` 入口。
 
 ```bash
 pnpm add @weapp-stylex/core
@@ -24,3 +24,7 @@ React 在 `View` 上使用 `stylex.props()`；Vue 3 使用 computed 及显式 `:
 完整配置与双 builder 示例见 [weapp-stylex](https://github.com/weapp-stylex/weapp-stylex)。
 
 MIT License。
+
+## Platforms
+
+The adapter infers WeChat (`weapp`), Alipay (`alipay`), Douyin (`tt`) or H5 (`h5`) from Taro, for both Vite and Webpack 5. Mini-programs emit matching platform style companions. H5 emits an external CSS asset with a content hash and an owned HTML stylesheet link. Numeric/px values keep official semantics; static rpx follows Taro's H5 dimensions and dynamic values use browser units. Optional compiler `target` must match the active host.

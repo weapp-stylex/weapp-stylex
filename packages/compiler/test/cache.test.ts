@@ -63,6 +63,42 @@ it('revalidates changed token files between builds even without watch events', a
   session.beginBuild()
   await expect(session.transform(code, file, host)).rejects.toThrow()
 })
+it('watches only existing canonical identity manifests in nested source directories', async () => {
+  const { root, host, watched } = await fixture()
+  const session = new StylexSession({ target: 'web' })
+  await session.transform(`${prefix}export const tokens=stylex.defineVars({accent:'red'})`, path.join(root, 'src/components/tokens.stylex.ts'), host)
+  expect([...watched].filter(id => id.endsWith('package.json'))).toEqual([path.join(root, 'package.json')])
+})
+it.each(['babel', 'auto'] as const)('finishes cached host SFC scripts with canonical metadata and Babel under %s', async (backend) => {
+  const { root, token, host, watched } = await fixture()
+  const session = new StylexSession({ target: 'web', backend })
+  const file = path.join(root, 'page.vue')
+  const script = `${prefix}import {tokens} from './tokens.stylex';const inline=stylex.create({root:{color:tokens.accent,padding:16}});const attrs=stylex.attrs(inline.root);`
+  await session.transform(`<script setup lang="ts">${script}</script><template><view :class="attrs.class" /></template>`, file, host)
+  const rawCss = session.css()
+  // The host scanner cached this script before the raw SFC pre-transform.
+  const generated = `${prefix}import {tokens} from './tokens.stylex';registerWebWevuComponent({setup(){const inline=stylex.create({root:{color:tokens.accent,padding:16}});return {attrs:stylex.attrs(inline.root)}}},{kind:'page'});`
+  const result = await session.transformCompiledSfcScript(generated, `${file}?weapp-web-component`, host)
+  expect(result?.code).not.toContain('stylex.create')
+  expect(session.css()).toBe(rawCss)
+  expect([...session.modules.keys()]).toEqual([file])
+  expect(JSON.parse(result!.map!).sources).toEqual([file])
+  expect(watched.has(token)).toBe(true)
+  expect([...watched].some(id => id.includes('.vue.stylex-script-'))).toBe(false)
+  expect(session.getStats().swcTransforms).toBe(0)
+  // Hosts that do honor raw preprocessing must keep its already compiled rules.
+  await session.transformCompiledSfcScript(`${prefix}registerWebWevuComponent({setup(){return {attrs:stylex.attrs({})}}},{kind:'page'});`, file, host)
+  expect(session.css()).toBe(rawCss)
+  await writeFile(token, `${prefix}export const tokens=stylex.defineVars({accent:'purple'});`)
+  session.change(token)
+  await session.transform(`<script setup lang="ts">${script}</script>`, file, host)
+  await session.transformCompiledSfcScript(generated, file, host)
+  expect(session.css()).toContain(':purple')
+  expect(session.css()).not.toContain(':red')
+  await session.transform('<script setup>const attrs={class:"local"}</script>', file, host)
+  await session.transformCompiledSfcScript('registerWebWevuComponent({setup(){return {attrs:{class:"local"}}}},{kind:"page"});', file, host)
+  expect(session.css()).toBe('')
+})
 it('invalidates dependents and canonical identities on manifest changes', async () => {
   const { root, host, watched } = await fixture()
   const session = new StylexSession()

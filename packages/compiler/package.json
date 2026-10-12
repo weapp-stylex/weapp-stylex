@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.2.0",
   "private": false,
-  "description": "Shared StyleX compiler for WeChat mini-programs: transform JavaScript, TypeScript and Vue SFC styles into atomic WXSS",
+  "description": "Shared StyleX compiler for WeChat, Alipay, Douyin and H5: JavaScript, TypeScript, Vue SFC and atomic styles",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
   "funding": {
@@ -74,17 +74,18 @@
     "@ampproject/remapping": "^2.3.0",
     "@babel/core": "^7.29.7",
     "@stylexjs/babel-plugin": "0.19.1",
+    "@types/babel__core": "^7.20.5",
     "@vue/compiler-sfc": "^3.5.43",
     "magic-string": "^1.4.3",
     "postcss": "^8.5.29",
-    "postcss-selector-parser": "^7.1.6"
+    "postcss-selector-parser": "^7.1.6",
+    "postcss-value-parser": "^4.2.0"
   },
   "optionalDependencies": {
     "@stylexswc/rs-compiler": "0.19.0"
   },
   "devDependencies": {
     "@jridgewell/trace-mapping": "^0.3.31",
-    "@types/babel__core": "^7.20.5",
     "@types/node": "^26.6.4"
   }
 }

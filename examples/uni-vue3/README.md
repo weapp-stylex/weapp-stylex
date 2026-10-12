@@ -22,3 +22,10 @@ corepack pnpm --filter uni-vue3 typecheck
 配置默认为 Babel；`WEAPP_STYLEX_BACKEND=auto` 为符合条件的 TS/JS 样式启用可选 SWC。主题和原始 SFC 脚本保留 Babel。
 
 The default is Babel. Set `WEAPP_STYLEX_BACKEND=auto` for eligible TS/JS style modules; themes and raw SFC scripts stay on Babel.
+
+## 多平台构建
+
+`corepack pnpm build` 顺序构建微信、支付宝、抖音和 H5。可单独运行 `build:weapp`、`build:alipay`、`build:tt`、`build:h5`。`dev:h5` 启动浏览器开发服务，`WEAPP_STYLEX_PORT` 指定端口；Taro 的 `dev:h5:webpack` 使用另一个 builder。微信输出路径保持不变。
+
+输出为 `dist/build/mp-weixin`、`dist/build/mp-alipay`、`dist/build/mp-toutiao` 和 `dist/build/h5`。所有 DCloud runtime/platform/plugin 包保持同一版本通道。
+H5 静态 rpx 按宿主转换，数值/px 不转换；动态值使用浏览器标准单位。浏览器交互验证不替代小程序 IDE/真机验收。

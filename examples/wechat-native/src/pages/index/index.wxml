@@ -2,6 +2,7 @@
   <text class="{{sx.title.class}}">原子化样式，直接生成 WXSS</text>
   <text id="stylex-inline" class="{{sx.subtitle.class}}">共享样式文件 · 条件合并 · 主题变量</text>
   <stylex-card id="stylex-card" dark="{{dark}}" />
+  <inherited-card id="stylex-inherited-card" />
   <view id="stylex-toggle" class="{{sx.button.class}}" bindtap="onTapButton">点击查看条件样式</view>
   <button id="stylex-theme" bindtap="onToggleTheme">切换主题</button>
   <button id="stylex-grow" bindtap="onGrow">动态尺寸</button>

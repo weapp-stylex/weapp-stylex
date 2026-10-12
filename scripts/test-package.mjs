@@ -10,6 +10,7 @@ import { promisify } from 'node:util'
 
 const run = promisify(execFile)
 const root = fileURLToPath(new URL('..', import.meta.url))
+const tooling = createRequire(new URL('../package.json', import.meta.url))
 const directory = await mkdtemp(path.join(tmpdir(), 'weapp-stylex-package-'))
 try {
   const registryVersion = process.env.WEAPP_STYLEX_TEST_REGISTRY_VERSION
@@ -30,7 +31,7 @@ try {
     assert.equal(packages.length, 6)
   }
   await writeFile(path.join(directory, 'package.json'), '{"name":"packed-facade-consumer","private":true,"type":"module"}')
-  await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', ...packages], {
+  await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', ...packages, `typescript@${tooling('typescript/package.json').version}`], {
     cwd: directory,
     timeout: 120000,
     maxBuffer: 4 * 1024 * 1024,
@@ -100,9 +101,53 @@ if(missing) await assert.rejects(new StylexSession({backend:'swc'}).transform(so
     }
   }
   await writeFile(path.join(directory, 'consumer.ts'), `import * as stylex from 'weapp-stylex';const styles=stylex.create({root:{padding:16}});const className:string|undefined=stylex.attrs(styles.root).class;void className;`)
-  const tooling = createRequire(new URL('../package.json', import.meta.url))
   await run(process.execPath, [tooling.resolve('typescript/bin/tsc'), '--noEmit', '--strict', '--skipLibCheck', 'false', '--module', 'NodeNext', '--target', 'ES2022', 'consumer.ts'], { cwd: directory })
-  process.stdout.write(`${registryVersion ? `Published weapp-stylex@${registryVersion}` : 'Packed facade'}: isolated install, optional hosts, runtime isolation, ESM/CJS exports, StyleX compilation and TypeScript passed\n`)
+  if (!registryVersion) {
+    const compilerTypes = `
+import {createWebStylePlugins, MiniProgramStyleEmitter, miniProgramExtensions, StylexSession, type StylexCompilerOptions, type StylexTarget, type WebStyleOptions} from 'weapp-stylex/compiler'
+export const targets: StylexTarget[] = ['weapp', 'alipay', 'tt', 'web']
+export const options: StylexCompilerOptions = {target: 'web', backend: 'auto'}
+export const session = new StylexSession(options)
+export const compiledSfc = (code: string) => session.transformCompiledSfcScript(code, '/project/page.vue', {resolve: async () => undefined, addWatchFile() {}})
+export const miniEmitter = new MiniProgramStyleEmitter('alipay', miniProgramExtensions('alipay'))
+export const webOptions: WebStyleOptions = {
+  delivery: 'shadow',
+  transformCss: async css => css,
+  transformShadowCss: css => ({pageCss: css, componentCss: css}),
+  policyKey: () => 'host-units',
+}
+export const webPlugins = createWebStylePlugins(session, webOptions)
+// @ts-expect-error Unsupported platforms must fail at the public boundary.
+new StylexSession({target: 'swan'})
+// @ts-expect-error H5 must use CSS delivery rather than a mini-program emitter.
+new MiniProgramStyleEmitter('web')
+`
+    const adapterTypes = `
+import {createStylex, type StylexTarget} from 'weapp-stylex/weapp-vite'
+import {stylexTaro, taroStylexTarget} from 'weapp-stylex/taro'
+import {stylexUniApp, uniStylexTarget} from 'weapp-stylex/uni-app'
+export const nativeIntegration = createStylex({target: 'alipay', backend: 'babel'})
+export const nativeWebIntegration = createStylex({target: 'web'})
+export const taroPlugin: typeof stylexTaro = stylexTaro
+export const taroOptions: NonNullable<Parameters<typeof stylexTaro>[1]> = {target: 'tt'}
+export const taroTarget: StylexTarget = taroStylexTarget('h5')
+export const uniPlugins = stylexUniApp({target: 'web'})
+export const uniTarget: StylexTarget = uniStylexTarget('mp-alipay')
+// @ts-expect-error Each adapter retains the shared target union.
+createStylex({target: 'swan'})
+// @ts-expect-error Unsupported targets are rejected by uni-app as well.
+stylexUniApp({target: 'qq'})
+`
+    for (const extension of ['mts', 'cts']) {
+      await writeFile(path.join(directory, `compiler-types.${extension}`), compilerTypes)
+      await run(process.execPath, [tooling.resolve('typescript/bin/tsc'), '--noEmit', '--strict', '--skipLibCheck', 'false', '--module', 'NodeNext', '--target', 'ES2022', `compiler-types.${extension}`], { cwd: directory })
+      await writeFile(path.join(directory, `adapter-types.${extension}`), adapterTypes)
+      // Optional host peers deliberately stay absent; check consumer types and
+      // inferred declaration portability without checking those host libraries.
+      await run(process.execPath, [tooling.resolve('typescript/bin/tsc'), '--declaration', '--emitDeclarationOnly', '--strict', '--skipLibCheck', 'true', '--module', 'NodeNext', '--target', 'ES2022', '--outDir', 'consumer-types', `adapter-types.${extension}`], { cwd: directory })
+    }
+  }
+  process.stdout.write(`${registryVersion ? `Published weapp-stylex@${registryVersion}` : 'Packed facade'}: isolated install, optional hosts, runtime isolation, ESM/CJS exports, StyleX compilation and TypeScript${registryVersion ? '' : ' public compiler/adapter types'} passed\n`)
 }
 finally {
   await rm(directory, { recursive: true, force: true })

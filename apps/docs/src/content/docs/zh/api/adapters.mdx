@@ -11,6 +11,7 @@ sidebar:
 
 | 选项 | 默认值 | 契约 |
 | --- | --- | --- |
+| `target` | 宿主自动推断 | `weapp | alipay | tt | web`; 显式配置必须匹配宿主。 |
 | `backend` | `'babel'` | `'auto'` 为已验证子集使用 SWC；`'swc'` 在不支持或不可用时拒绝。 |
 | `importSources` | 四个官方/聚合来源 | 替换整个列表，增加 façade 时保留默认项。 |
 | `babel` | 无自定义选项 | 官方 StyleX plugin 的 Partial options，不是通用 Babel 配置。 |
@@ -72,7 +73,7 @@ export default {
 }
 ```
 
-只支持 `TARO_ENV=weapp`，其他目标明确报配置错误。覆盖已验证 Vite/Webpack 5 宿主上的 Taro React/Vue 3。插件负责注入 Webpack session、稳定 loader 身份与缓存 metadata，无需手配 loader。`StylexWebpackPlugin` 不是公开包导出。
+支持 TARO_ENV=weapp、alipay、tt、h5，h5 映射为 compiler web；未知目标与显式 target 冲突明确报错。覆盖已验证 Vite/Webpack 5 宿主上的 Taro React/Vue 3。插件负责注入 Webpack session、稳定 loader 身份与缓存 metadata，无需手配 loader。`StylexWebpackPlugin` 不是公开包导出。
 
 <a id="api-stylexLoader"></a>
 ## stylexLoader
@@ -106,7 +107,7 @@ const uni = (uniImport as unknown as { default?: typeof uniImport }).default ?? 
 export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 ```
 
-只支持 `UNI_PLATFORM=mp-weixin`，config hook 拒绝其他平台。缺少或错配 DCloud parser 依赖会在 factory 初始化时失败。Vue 2 与 uni-app x 不在稳定契约内。
+支持 UNI_PLATFORM=mp-weixin、mp-alipay、mp-toutiao 和 h5，h5 映射为 compiler web；config hook 拒绝未知平台与显式 target 冲突。缺少或错配 DCloud parser 依赖会在 factory 初始化时失败。Vue 2 与 uni-app x 不在稳定契约内。
 
 ## 宿主版本与验收边界
 
@@ -119,3 +120,9 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 | uni-app | `@dcloudio/vite-plugin-uni 3.0.0-alpha-5030120260930001` | 对应 vue3 channel，Vue 3.4.21 / Vite 5.2.8 |
 
 Node 需要满足 `^22.22.1 || >=24.11.0`，CI 覆盖 22.22.1 与 24.18.0。不要用全局 override 合并不兼容的宿主 Vite/Vue/Babel 版本。共享 StyleX 编译保持 Babel 7。静态构建、headless 交互与真实微信 IDE 证据属于不同检查，当前验收记录见[示例](/zh/examples/)。
+
+<a id="api-taroStylexTarget"></a>
+<a id="api-uniStylexTarget"></a>
+## taroStylexTarget 与 uniStylexTarget
+
+`taroStylexTarget(platform: string | undefined)` 将 `weapp`、`alipay`、`tt`、`h5` 映射为共享 `StylexTarget`，`h5` 对应 `web`。`uniStylexTarget(platform: string | undefined)` 对应接受 `mp-weixin`、`mp-alipay`、`mp-toutiao`、`h5`。未知或缺失平台会报错。它们供宿主集成作者复用，应用无需主动调用。

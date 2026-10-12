@@ -1,3 +1,6 @@
+import type { MiniProgramExtensions, StylexTarget } from './target.js'
+import { miniProgramExtensions } from './target.js'
+
 export interface StyleAsset {
   type: 'asset'
   fileName: string
@@ -19,10 +22,22 @@ export function assetText(asset: StyleAsset): string {
     ? asset.source
     : new TextDecoder().decode(asset.source)
 }
-const IMPORT = '@import "./stylex.wxss";\n'
-
 /** Owns only generated assets/imports; user styles are never deleted. */
-export class WxssEmitter {
+export class MiniProgramStyleEmitter {
+  readonly extensions: MiniProgramExtensions
+  constructor(
+    readonly target: Exclude<StylexTarget, 'web'> = 'weapp',
+    extensions?: MiniProgramExtensions,
+  ) {
+    const defaults = miniProgramExtensions(target)
+    this.extensions = extensions ?? defaults
+    for (const extension of Object.values(this.extensions)) {
+      if (!/^[a-z][a-z0-9]*$/i.test(extension)) {
+        throw new Error(`Invalid mini-program output extension: ${extension}`)
+      }
+    }
+  }
+
   private assets = new Map<string, { source: string, asset?: StyleAsset | ScriptChunk }>()
   private imports = new Set<string>()
   clear(): void {
@@ -35,6 +50,11 @@ export class WxssEmitter {
     css: string,
     sink: AssetSink,
   ): Promise<void> {
+    const styleExtension = `.${this.extensions.style}`
+    const templateExtension = `.${this.extensions.template}`
+    const stylexName = `stylex${styleExtension}`
+    const appStyle = `app${styleExtension}`
+    const styleImport = `@import "./${stylexName}";\n`
     if (!css.trim() && !this.assets.size && !this.imports.size) {
       return
     }
@@ -49,27 +69,27 @@ export class WxssEmitter {
       (output): output is StyleAsset =>
         output.type === 'asset'
         && !owned(output.fileName)
-        && output.fileName.endsWith('.wxss')
-        && !/(?:^|\/)stylex\.wxss$/.test(output.fileName),
+        && output.fileName.endsWith(styleExtension)
+        && output.fileName.split('/').pop() !== stylexName,
     )
     const companions = new Set<string>()
     if (css.trim()) {
       for (const output of Object.values(bundle)) {
-        if (output.fileName.endsWith('.wxml')) {
-          const stem = output.fileName.slice(0, -5)
+        if (output.fileName.endsWith(templateExtension)) {
+          const stem = output.fileName.slice(0, -templateExtension.length)
           if (
             bundle[`${stem}.js`]
-            && (!bundle[`${stem}.wxss`] || owned(`${stem}.wxss`))
+            && (!bundle[`${stem}${styleExtension}`] || owned(`${stem}${styleExtension}`))
           ) {
-            companions.add(`${stem}.wxss`)
+            companions.add(`${stem}${styleExtension}`)
           }
         }
       }
       if (
-        (!bundle['app.wxss'] || owned('app.wxss'))
+        (!bundle[appStyle] || owned(appStyle))
         && (bundle['app.js'] || styles.length === 0)
       ) {
-        companions.add('app.wxss')
+        companions.add(appStyle)
       }
     }
     const directories = new Set<string>()
@@ -86,12 +106,12 @@ export class WxssEmitter {
       }
     }
     const desired = new Set(
-      [...directories].map(directory => `${directory}stylex.wxss`),
+      [...directories].map(directory => `${directory}${stylexName}`),
     )
     for (const name of desired) {
       if (companions.has(name) || (bundle[name] && !owned(name))) {
         throw new Error(
-          `StyleX WXSS 文件名冲突：构建输出已存在 ${name}。请重命名项目中的同名文件。`,
+          `StyleX ${this.extensions.style.toUpperCase()} 文件名冲突：构建输出已存在 ${name}。请重命名项目中的同名文件。`,
         )
       }
     }
@@ -108,12 +128,12 @@ export class WxssEmitter {
     const imports = new Set<string>()
     for (const style of styles) {
       let source = assetText(style)
-      if (this.imports.has(style.fileName) && source.startsWith(IMPORT)) {
-        source = source.slice(IMPORT.length)
+      if (this.imports.has(style.fileName) && source.startsWith(styleImport)) {
+        source = source.slice(styleImport.length)
       }
       if (css.trim()) {
-        if (!source.includes(IMPORT.trim())) {
-          source = IMPORT + source
+        if (!source.includes(styleImport.trim())) {
+          source = styleImport + source
           imports.add(style.fileName)
         }
         else if (this.imports.has(style.fileName)) {
@@ -126,12 +146,18 @@ export class WxssEmitter {
       await sink.emit(name, css)
     }
     for (const name of companions) {
-      await sink.emit(name, IMPORT)
+      await sink.emit(name, styleImport)
     }
     this.assets = new Map([...desired].map(name => [name, { source: css, asset: bundle[name] }]))
     for (const name of companions) {
-      this.assets.set(name, { source: IMPORT, asset: bundle[name] })
+      this.assets.set(name, { source: styleImport, asset: bundle[name] })
     }
     this.imports = imports
+  }
+}
+/** Backwards-compatible WeChat emitter. */
+export class WxssEmitter extends MiniProgramStyleEmitter {
+  constructor() {
+    super('weapp')
   }
 }

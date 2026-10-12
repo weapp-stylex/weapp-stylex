@@ -21,13 +21,14 @@ type StylexBackend = 'babel' | 'auto' | 'swc'
 
 ```ts
 interface StylexCompilerOptions {
+  target?: StylexTarget
   backend?: StylexBackend
   importSources?: readonly string[]
   babel?: Partial<Options> // 官方 @stylexjs/babel-plugin Options
 }
 ```
 
-全部字段可选，adapter/session 配置默认 `{}`。backend 默认 `'babel'`；importSources 默认 `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`，自定义列表会**替换**默认项。babel 默认无自定义配置，配置官方 StyleX plugin，不是任意 Babel transform。
+全部字段可选，adapter/session 配置默认 `{}`。直接 session 的 target 默认 weapp；适配器自动推断活动宿主目标，显式配置冲突时报错。backend 默认 `'babel'`；importSources 默认 `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`，自定义列表会**替换**默认项。babel 默认无自定义配置，配置官方 StyleX plugin，不是任意 Babel transform。
 
 ```ts
 const options: StylexCompilerOptions = {
@@ -167,6 +168,17 @@ transform(code: string, id: string, host: TransformHost): Promise<SourceTransfor
 
 参数全部必填。这是常规、负责 metadata 的转换入口，接受脚本/原始 `.vue`，跳过不适用或重复 virtual 请求，替换模块 metadata，返回 code/map/rules/dependencies 或 null。跳过时保留原代码；编译/token/parser 错误 reject 并带结构化编译信息。
 
+<a id="api-StylexSession-transformCompiledSfcScript"></a>
+### transformCompiledSfcScript
+
+```ts
+transformCompiledSfcScript(code: string, id: string, host: TransformHost): Promise<SourceTransform | null>
+```
+
+参数全部必填。此宿主集成入口处理已经生成的 SFC script，适用于宿主在原始源码预处理前扫描并缓存 `.vue` 的情况。非 `.vue` 身份或不含配置的 StyleX 导入时返回 null。metadata 仍归属规范化后的物理 `.vue`；生成脚本未添加规则时保留已有原始 SFC 规则，重放 watch 依赖，并通过 generation 检查避免旧任务覆盖新状态。序列化 map 交给宿主与输入 script map 组合；诊断定位到 `.vue` 源文件。
+
+生成脚本遵循与原始 SFC 相同的模板绑定保护：默认及 `auto` 使用 Babel，显式 `swc` 拒绝此输入。仅转换生成脚本，模板、宏、生命周期以及独立 style/template 模块交给宿主。应用项目使用选择该入口的适配器，无需在每次普通 `transform()` 后重复调用。
+
 <a id="api-StylexSession-transformScript"></a>
 ### transformScript
 
@@ -222,7 +234,7 @@ const SCRIPT_RE: RegExp = /\.[cm]?[jt]sx?$/i
 <a id="api-processRules"></a>
 ## processRules
 
-`processRules(rules: Rule[]): string` 接收必填官方规则，关闭 layers 聚合，再将 :root 改为 page，保留主题 class（.theme:root → page.theme）。返回 CSS 文本，空输入得到空文本。不转换 px→rpx，不验证 WXSS 能力，规则/解析错误向上传递。
+`processRules(rules: Rule[], target: StylexTarget = 'weapp'): string` 接收必填官方规则，关闭 layers 聚合，小程序将 :root 改为 page，web 保留 :root，保留主题 class（.theme:root → page.theme）。返回 CSS 文本，空输入得到空文本。不转换 px→rpx，不验证 WXSS 能力，规则/解析错误向上传递。
 
 <a id="api-PluginHost"></a>
 ## PluginHost
@@ -247,13 +259,16 @@ interface PluginHost {
 ## createVitePlugins
 
 ```ts
-createVitePlugins(session: StylexSession, options: {
-  sfcOnly?: boolean
-  emitStyles?: boolean
+createVitePlugins(session: StylexSession | (() => StylexSession), options: {
+  sfcOnly?: boolean | (() => boolean)
+  emitStyles?: boolean | (() => boolean)
+  sourceId?: (id: string) => string
 } = {}): /* pre-source 与 post-output plugin 数组 */
 ```
 
-session 必填，options 默认 `{}`。省略 sfcOnly 时不限制为 SFC；true 仅接受不含 query 的原始 .vue 请求。emitStyles 除显式 false 外默认启用。返回 pre-source/post-output plugins，包含 cache/watch、prune、诊断与输出 hooks。例如 `createVitePlugins(new StylexSession(), { emitStyles: true })`。
+session 或 getter 必填，options 默认 `{}`；getter 选项用于在宿主配置解析后选择目标。省略 sfcOnly 时不限制为 SFC；true 仅接受不含 query 的原始 .vue 请求。emitStyles 除显式 false 外默认启用。返回 pre-source/post-output plugins，包含 cache/watch、prune、诊断与输出 hooks。例如 `createVitePlugins(new StylexSession(), { emitStyles: true })`。
+
+可选 `sourceId` 在源码过滤和转换前将宿主请求映射为源码身份；未配置时沿用原请求 ID。适配器可用它将宿主所属的原始 Web component 请求映射为 `.vue` 身份，不应映射无关 virtual script/template/style 请求。
 
 框架编译前转换原始 SFC，跳过重复 virtual 请求。非 watch 最终关闭清理状态，watch 保留到 shutdown。该通用桥接不替代框架原生输出兼容路径，应用使用适配器。
 
@@ -374,3 +389,114 @@ await emitter.generate(bundle, session.css(), {
 ## 公开 API 与实现细节
 
 只通过上述 package barrel/export map 入口导入。原生 backend loader、fingerprint helper、AST 分析类型与 Taro Webpack 实现没有公开子路径。签名中引用的类型仍可能是内部类型；通过公开函数推导精确类型，不导入实现文件。
+
+
+<a id="api-StylexTarget"></a>
+## StylexTarget
+
+```ts
+type StylexTarget = 'weapp' | 'alipay' | 'tt' | 'web'
+```
+
+compiler 的规范目标名。Taro h5 与 uni-app h5 映射为 web；默认 weapp，适配器从宿主推断，未知目标拒绝。
+
+<a id="api-MiniProgramExtensions"></a>
+<a id="api-miniProgramExtensions"></a>
+## Mini-program extensions
+
+```ts
+interface MiniProgramExtensions { template: string; style: string }
+miniProgramExtensions(target: Exclude<StylexTarget, 'web'>): MiniProgramExtensions
+```
+
+MiniProgramExtensions 的 template/style 不含点号。miniProgramExtensions 返回新描述符：weapp 为 wxml/wxss，alipay 为 axml/acss，tt 为 ttml/ttss；web 使用浏览器交付，不允许调用该小程序 helper。
+
+<a id="api-assertStylexTarget"></a>
+<a id="api-resolveStylexTarget"></a>
+## Target validation
+
+```ts
+assertStylexTarget(target: string): asserts target is StylexTarget
+resolveStylexTarget<T extends { target?: StylexTarget }>(options: T, target: StylexTarget): T & { target: StylexTarget }
+```
+
+assertStylexTarget 接收必填名称并拒绝未知目标。resolveStylexTarget 接收必填配置和宿主目标，返回填入 target 的新对象；显式 target 与宿主冲突时报错，不静默覆盖。
+
+<a id="api-MiniProgramStyleEmitter"></a>
+## MiniProgramStyleEmitter
+
+```ts
+new MiniProgramStyleEmitter(target: Exclude<StylexTarget, 'web'> = 'weapp', extensions?: MiniProgramExtensions)
+```
+
+共享小程序输出器，默认微信，也接受宿主扩展名描述符。保留 ownership、同目录 import、缺失 companion、用户冲突和过期输出清理契约。web 使用 createWebStylePlugins，不使用该输出器。WxssEmitter 仍是无参数的微信兼容包装。
+
+<a id="api-MiniProgramStyleEmitter-target"></a>
+<a id="api-WxssEmitter-target"></a>
+### target
+
+readonly target 为创建时选择的小程序目标；WxssEmitter 的 target 固定 weapp。
+
+<a id="api-MiniProgramStyleEmitter-extensions"></a>
+<a id="api-WxssEmitter-extensions"></a>
+### extensions
+
+readonly extensions 包含 template 与 style，默认来自目标描述符；WxssEmitter 使用 wxml/wxss。
+
+<a id="api-MiniProgramStyleEmitter-generate"></a>
+### generate
+
+`generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>`
+
+generate 的输入必填，按目标生成 stylex.wxss/stylex.acss/stylex.ttss 及相对 import。与 WxssEmitter.generate 共享初次空构建不变、冲突报错和只删除所属过期产物的契约。
+
+<a id="api-MiniProgramStyleEmitter-clear"></a>
+### clear
+
+clear(): void 无参数，释放 ownership 记录，本身不删除文件。只在最终 watcher 关闭时清理。
+
+<a id="api-WebStyleOptions"></a>
+## WebStyleOptions
+
+```ts
+interface WebStyleOptions {
+  enabled?: boolean | (() => boolean)
+  delivery?: 'document' | 'shadow'
+  transformCss(css: string): string | Promise<string>
+  transformShadowCss?(css: string): { pageCss: string; componentCss: string } | Promise<{ pageCss: string; componentCss: string }>
+  policyKey?: string | (() => string)
+}
+```
+
+WebStyleOptions 供宿主作者使用。enabled 默认 true，delivery 默认 document；transformCss 必填并接入宿主静态单位策略。shadow 可用 transformShadowCss 分别返回页面与组件样式。policyKey 参与交付内容身份。应用项目使用适配器。
+
+<a id="api-WebModuleNode"></a>
+<a id="api-WebServer"></a>
+<a id="api-WebPluginHost"></a>
+## WebModuleNode、WebServer 与 WebPluginHost
+
+这些类型描述 Web 样式插件需要的最小宿主接口，不导出运行时值。`WebModuleNode` 包含 `id: string | null` 和 `importedModules: Set<WebModuleNode>`。`WebServer` 提供 middleware 注册、WebSocket 通知、可选 HTTP 关闭事件和通过 ID/URL 查找模块的 moduleGraph。`WebPluginHost` 提供 `getModuleIds()`、`emitFile()` 和 `error()`，分别读取可达模块、交付 CSS asset 和报告构建错误。
+
+<a id="api-createWebStylePlugins"></a>
+## createWebStylePlugins
+
+`createWebStylePlugins(session: StylexSession | (() => StylexSession), options: WebStyleOptions)`
+
+createWebStylePlugins 返回共享 H5 生命周期插件。模块加载后聚合规则，document 生产构建生成带 hash 的外部 CSS 并链接 HTML；shadow 将最终聚合 CSS 写入虚拟模块的页面/组件 metadata。开发服务通过状态与 CSS endpoint 消除首次加载和后续新增模块时序问题，允许完整刷新。关闭时清理所属状态。
+
+<a id="api-WEB_CSS_ID"></a>
+<a id="api-webCssHash"></a>
+<a id="api-webAssetUrl"></a>
+<a id="api-injectWebStyleLink"></a>
+## Browser asset helpers
+
+- `WEB_CSS_ID = 'virtual:weapp-stylex/web-css'`：Shadow CSS 虚拟模块标识。
+- `webCssHash(css: string): string`：CSS 内容的稳定短 hash。
+- `webAssetUrl(base: string, fileName: string, htmlFileName = 'index.html'): string`：根据 Vite base 与 HTML 位置计算引用地址。
+- `injectWebStyleLink(html: string, href: string): string`：在应用样式前插入受管 link，转义地址，保留 data-weapp-stylex ownership；重复标记或缺少 head 时失败。
+
+<a id="api-createRpxOnlyPostcssTransformer"></a>
+<a id="api-createCssValueTransformer"></a>
+## Host unit converters
+
+createRpxOnlyPostcssTransformer(plugin, from) 返回异步 CSS 转换函数：保护 px，只将静态 rpx 交给宿主 PostCSS converter。存在 rpx 却缺少 converter，或 converter 保留不支持的 rpx 时明确报错。createCssValueTransformer(convert) 返回同步 CSS 转换函数，对声明值与 at-rule 参数应用宿主 unit-only converter。两者不修改官方 runtime，也不转换运行时动态 style。

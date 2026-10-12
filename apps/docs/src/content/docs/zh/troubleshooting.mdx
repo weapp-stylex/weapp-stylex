@@ -110,3 +110,7 @@ sidebar:
 包含框架/builder、Node/包管理器版本、适配器配置、最小声明与消费者、预期行为、首个错误和受影响 WXSS/JavaScript。运行时问题还需包含微信 IDE/基础库版本及实际失败交互，避免提交凭据或应用私有数据。
 
 通过 [GitHub issues](https://github.com/weapp-stylex/weapp-stylex/issues)报告。[验收说明](/zh/examples/)介绍需要收集的证据。`docs/` 中保留日期的记录只描述那些运行；缺少前置条件或仅局部通过的 IDE suite 仍待验收。
+
+## 跨平台与 H5
+
+上述微信示例也可通过宿主选择支付宝、抖音或 H5，具体命令和目标映射见[平台配置](/zh/configuration/#平台与自动推断)。适配器自动推断目标；可选 `target` 必须匹配宿主。小程序生成对应的 `stylex.wxss`、`stylex.acss` 或 `stylex.ttss`。H5 使用浏览器 CSS，原生/Wevu 注册 `createStylex()` 的两个入口并准备 Web `index.html`。H5 默认变量保留 `:root`，weapp-vite Shadow DOM 接入页面默认值并让组件继承主题。静态 rpx 跟随宿主策略，数值/px 不变，动态值使用浏览器标准单位。开发更新允许完整刷新；生产和 dev 浏览器交互由 `test:h5` 验证。

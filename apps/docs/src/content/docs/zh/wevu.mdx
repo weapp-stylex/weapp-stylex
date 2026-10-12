@@ -57,3 +57,9 @@ const meter = computed(() => stylex.attrs(styles.meter(width.value)))
 JSX/TSX 消费者同样使用官方 runtime。原始 `<script>` 与 `<script setup>` 在 SFC 编译前处理，并组合 sourcemap；跳过虚拟 script 请求以避免重复转换。外部共享 TS 样式按普通模块处理。
 
 [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) 包含 Vue SFC、JSX 组件、主题与分包示例。
+
+## 跨平台与 H5
+
+上述微信示例也可通过宿主选择支付宝、抖音或 H5，具体命令和目标映射见[平台配置](/zh/configuration/#平台与自动推断)。适配器自动推断目标；可选 `target` 必须匹配宿主。小程序生成对应的 `stylex.wxss`、`stylex.acss` 或 `stylex.ttss`。H5 使用浏览器 CSS，原生/Wevu 注册 `createStylex()` 的两个入口并准备 Web `index.html`。H5 默认变量保留 `:root`，weapp-vite Shadow DOM 接入页面默认值并让组件继承主题。静态 rpx 跟随宿主策略，数值/px 不变，动态值使用浏览器标准单位。开发更新允许完整刷新；生产和 dev 浏览器交互由 `test:h5` 验证。
+
+weapp-vite 7.4 的 Web runtime 仍属实验性，当前不编译 Wevu JSX 渲染函数。示例通过宿主组件 resolver 为 H5 选择等价 SFC，小程序仍使用原 TSX fixture；StyleX 的共享模块、主题与动态值契约相同。

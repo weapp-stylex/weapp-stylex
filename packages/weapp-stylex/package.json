@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.2.0",
   "private": false,
-  "description": "StyleX runtime and build adapters for WeChat mini-programs: native, Wevu, Taro React/Vue 3 and uni-app Vue 3",
+  "description": "StyleX runtime and build adapters for WeChat, Alipay, Douyin and H5: native, Wevu, Taro and uni-app",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
   "funding": {

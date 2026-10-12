@@ -4,15 +4,22 @@ import { createRequire } from 'node:module'
 import path from 'node:path'
 import process from 'node:process'
 import { execa } from 'execa'
-import { examples } from './example-matrix.mjs'
+import { examples, targets } from './example-matrix.mjs'
 
 const require = createRequire(new URL('../packages/compiler/package.json', import.meta.url))
+const babel = require('@babel/core')
 const postcss = require('postcss')
 
-async function files(directory) {
+const target = process.env.WEAPP_STYLEX_TARGET
+if (target && !Object.hasOwn(targets, target)) {
+  throw new Error('WEAPP_STYLEX_TARGET must be weapp, alipay, tt or h5')
+}
+const matrix = target ? examples.filter(example => example.target === target) : examples
+
+async function files(directory, excluded = new Set()) {
   return (
     await Promise.all(
-      (await readdir(directory, { withFileTypes: true })).map(entry =>
+      (await readdir(directory, { withFileTypes: true })).filter(entry => !excluded.has(entry.name)).map(entry =>
         entry.isDirectory()
           ? files(path.join(directory, entry.name))
           : [path.join(directory, entry.name)],
@@ -20,25 +27,76 @@ async function files(directory) {
     )
   ).flat()
 }
+
+// weapp-vite's Web runtime embeds page/component style metadata in JavaScript.
+// Read string literals through the parser: bundle hashes and variable names are
+// intentionally unstable, and matching escaped JavaScript text is not CSS QA.
+async function shadowStyles(output) {
+  const styles = new Set()
+  for (const file of output.filter(file => /\.[cm]?js$/.test(file))) {
+    const ast = babel.parseSync(await readFile(file, 'utf8'), { babelrc: false, configFile: false })
+    const accept = (value) => {
+      if (!/\.sx[a-z0-9]+[\s.{:#]/.test(value)) {
+        return
+      }
+      try {
+        const root = postcss.parse(value)
+        let atomic = false
+        root.walkRules((rule) => {
+          atomic ||= /\.sx[a-z0-9]+/.test(rule.selector)
+        })
+        if (atomic) {
+          styles.add(value)
+        }
+      }
+      catch {
+        // Other runtime strings may mention class names without containing CSS.
+      }
+    }
+    babel.traverse(ast, {
+      StringLiteral(node) { accept(node.node.value) },
+      TemplateLiteral(node) {
+        if (!node.node.expressions.length) {
+          accept(node.node.quasis[0].value.cooked ?? node.node.quasis[0].value.raw)
+        }
+      },
+    })
+  }
+  return [...styles].sort()
+}
+
 const summaries = {}
-for (const example of examples) {
-  const output = await files(example.project)
-  const styles = output.filter(file => file.endsWith('stylex.wxss'))
+for (const example of matrix) {
+  const excluded = example.target === 'weapp' && ['wechat-native', 'wechat-wevu'].includes(example.name)
+    ? new Set(['alipay', 'tt', 'web'])
+    : new Set()
+  const output = await files(example.project, excluded)
+  const web = example.target === 'h5'
+  const shadow = example.cssDelivery === 'weapp-web'
+  const styles = output.filter(file => web
+    ? /(?:^|\/)stylex-[\da-f]+\.css$/.test(file)
+    : file.endsWith(`stylex${example.styleExtension}`))
+  const cssParts = shadow
+    ? await shadowStyles(output)
+    : await Promise.all(styles.toSorted().map(file => readFile(file, 'utf8')))
   assert.ok(
-    styles.length,
-    `${example.name}/${example.directory}: missing StyleX WXSS`,
+    cssParts.length,
+    `${example.name}/${example.directory}: missing StyleX styles`,
   )
-  const css = (
-    await Promise.all(styles.toSorted().map(file => readFile(file, 'utf8')))
-  ).join('\n')
-  summaries[`${example.name}/${example.directory}`] = { paths: styles.map(file => path.relative(example.project, file)).sort(), css }
+  const css = cssParts.join('\n')
+  summaries[`${example.name}/${example.directory}`] = { paths: shadow ? ['page/component style metadata'] : styles.map(file => path.relative(example.project, file)).sort(), css }
   assert.match(css, /padding:16px/)
   assert.match(css, /margin-top:8px/)
-  assert.match(css, /margin-top:12rpx/)
+  if (web) {
+    assert.doesNotMatch(css, /(?:^|[^\w-])12rpx\b/)
+  }
+  else {
+    assert.match(css, /margin-top:12rpx/)
+  }
   assert.match(css, /--sx/)
   let hasDefaultVariables = false
   postcss.parse(css).walkRules((rule) => {
-    if (rule.selectors.includes('page')) {
+    if (rule.selectors.includes(shadow ? ':host' : example.rootSelector)) {
       hasDefaultVariables ||= rule.nodes.some(node =>
         node.type === 'decl'
         && node.prop.startsWith('--sx')
@@ -46,33 +104,50 @@ for (const example of examples) {
       )
     }
   })
-  assert.ok(hasDefaultVariables, `${example.name}: missing default page variables`)
-  assert.doesNotMatch(css, /@layer|:not\(#|:root/)
-  for (const file of output.filter(
-    file => file.endsWith('.wxss') && !file.endsWith('stylex.wxss'),
-  )) {
+  assert.ok(hasDefaultVariables, `${example.name}: missing default root variables`)
+  assert.doesNotMatch(css, /@layer|:not\(#/)
+  if (!web) {
+    assert.doesNotMatch(css, /:root/)
+  }
+  for (const file of web
+    ? []
+    : output.filter(
+        file => file.endsWith(example.styleExtension) && !file.endsWith(`stylex${example.styleExtension}`),
+      )) {
     const content = await readFile(file, 'utf8')
-    assert.match(content, /@import "\.\/stylex.wxss";/, file)
+    assert.ok(content.includes(`@import "./stylex${example.styleExtension}";`), file)
     assert.ok(
-      output.includes(path.join(path.dirname(file), 'stylex.wxss')),
+      output.includes(path.join(path.dirname(file), `stylex${example.styleExtension}`)),
       file,
     )
   }
-  const app = JSON.parse(
-    await readFile(path.join(example.project, 'app.json'), 'utf8'),
-  )
-  assert.ok(app.pages.includes('pages/index/index'))
-  assert.ok(
-    (app.subPackages ?? app.subpackages).some(
-      pkg => pkg.root === 'subpackage',
-    ),
-  )
-  for (const route of ['pages/index/index', 'subpackage/detail/index']) {
-    for (const extension of ['js', 'wxml', 'wxss']) {
-      assert.ok(
-        output.includes(path.join(example.project, `${route}.${extension}`)),
-        `${route}.${extension}`,
-      )
+  if (web) {
+    const html = await readFile(path.join(example.project, 'index.html'), 'utf8')
+    if (!shadow) {
+      assert.match(html, /<link\s[^>]*data-weapp-stylex[^>]*>/)
+      for (const style of styles) {
+        assert.ok(html.includes(path.relative(example.project, style).replaceAll('\\', '/')), 'H5 entry does not reference its StyleX stylesheet')
+      }
+    }
+    assert.ok(!output.some(file => /\.(?:wxml|wxss|axml|acss|ttml|ttss)$/.test(file)), 'H5 output contains mini-program assets')
+  }
+  else {
+    const app = JSON.parse(
+      await readFile(path.join(example.project, 'app.json'), 'utf8'),
+    )
+    assert.ok(app.pages.includes('pages/index/index'))
+    assert.ok(
+      (app.subPackages ?? app.subpackages).some(
+        pkg => pkg.root === 'subpackage',
+      ),
+    )
+    for (const route of ['pages/index/index', 'subpackage/detail/index']) {
+      for (const extension of ['.js', example.templateExtension, example.styleExtension]) {
+        assert.ok(
+          output.includes(path.join(example.project, `${route}${extension}`)),
+          `${route}${extension}`,
+        )
+      }
     }
   }
   const js = (
@@ -89,17 +164,17 @@ for (const example of examples) {
   )
 }
 if (process.env.WEAPP_STYLEX_COMPARE_BACKENDS === '1') {
-  const baseline = new URL('../artifacts/example-babel-css.json', import.meta.url)
+  const baseline = new URL(`../artifacts/example-babel-css${target ? `-${target}` : ''}.json`, import.meta.url)
   if (process.env.WEAPP_STYLEX_BACKEND === 'auto') {
-    assert.deepEqual(summaries, JSON.parse(await readFile(baseline, 'utf8')), 'Auto WXSS differs from the official Babel artifacts')
-    process.stdout.write('All seven auto WXSS artifacts match Babel exactly\n')
+    assert.deepEqual(summaries, JSON.parse(await readFile(baseline, 'utf8')), 'Auto CSS differs from the official Babel artifacts')
+    process.stdout.write(`All ${matrix.length} auto CSS artifacts match Babel exactly\n`)
   }
   else {
     await mkdir(new URL('../artifacts/', import.meta.url), { recursive: true })
     await writeFile(baseline, JSON.stringify(summaries))
   }
 }
-for (const name of ['wechat-native', 'wechat-wevu']) {
+for (const name of !target || target === 'weapp' ? ['wechat-native', 'wechat-wevu'] : []) {
   await execa('corepack', ['pnpm', '--filter', name, 'test:headless'], {
     stdio: 'inherit',
   })

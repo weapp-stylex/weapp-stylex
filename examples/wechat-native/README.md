@@ -22,3 +22,11 @@ corepack pnpm --filter wechat-native typecheck
 配置默认为 Babel；`WEAPP_STYLEX_BACKEND=auto` 为符合条件的 TS/JS 样式启用可选 SWC。主题和原始 SFC 脚本保留 Babel。
 
 The default is Babel. Set `WEAPP_STYLEX_BACKEND=auto` for eligible TS/JS style modules; themes and raw SFC scripts stay on Babel.
+
+## 多平台构建
+
+`corepack pnpm build` 顺序构建微信、支付宝、抖音和 H5。可单独运行 `build:weapp`、`build:alipay`、`build:tt`、`build:web`。`dev:h5` 启动浏览器开发服务，`WEAPP_STYLEX_PORT` 指定端口；Taro 的 `dev:h5:webpack` 使用另一个 builder。微信输出路径保持不变。
+
+其余目标输出 `dist/alipay`、`dist/tt`、`dist/web`。宿主各平台项目配置独立，不把微信 `project.config.json` 复制到支付宝、抖音或 H5。
+支付宝原生组件启用 Component2，使用 `props` 与 `deriveDataFromProps(nextProps)` 在创建和属性更新前同步 StyleX `attrs()`；微信、抖音保留 `properties` observer。各分支均在 `data` 中提供初始样式。
+H5 静态 rpx 按宿主转换，数值/px 不转换；动态值使用浏览器标准单位。浏览器交互验证不替代小程序 IDE/真机验收。

@@ -1,6 +1,6 @@
 # @weapp-stylex/compiler
 
-weapp-stylex 的共享构建核心：使用官方 StyleX Babel 插件转换模块，维护模块规则和主题依赖，预处理 Vue SFC，并规划 WXSS 产物。提供 ESM 和 CommonJS 入口。
+weapp-stylex 的共享构建核心：使用官方 StyleX Babel 插件转换模块，维护模块规则和主题依赖，预处理 Vue SFC，并规划跨平台小程序样式与 H5 CSS 产物。提供 ESM 和 CommonJS 入口。
 
 应用项目优先使用 `@weapp-stylex/weapp-vite`、`@weapp-stylex/taro` 或 `@weapp-stylex/uni-app`；本包供构建适配器使用。
 
@@ -20,3 +20,7 @@ const plugins = createVitePlugins(session)
 要求 Node.js `^22.22.1 || >=24.11.0`。API、生命周期和适配器契约见 [weapp-stylex](https://github.com/weapp-stylex/weapp-stylex)。
 
 MIT License。
+
+## Platforms
+
+`StylexSession({ target })` accepts `weapp`, `alipay`, `tt` or `web` and defaults to `weapp`. Mini-program targets map default variables to `page`; Web retains `:root`. `MiniProgramStyleEmitter` plans platform template/style companions, while `WxssEmitter` preserves the existing WeChat API. Web helpers provide host-owned CSS delivery and static rpx conversion. See the [compiler API](https://stylex.weapp.dev/api/compiler/) for the host integration contract.

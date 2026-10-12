@@ -72,3 +72,7 @@ The host resolver pre-resolves aliases and workspace paths. The official compile
 CSS custom properties still depend on the selected WeChat base library's support. The IDE suite should verify themes and dynamic values with your actual AppID and base library.
 
 Raw SFC scripts and theme modules remain on official Babel even in `backend: 'auto'`. Compile support alone does not establish runtime compatibility. Follow [example validation](/examples/) and preserve the dates/scope of its linked IDE records. Missing defaults or isolated-component failures have dedicated [troubleshooting steps](/troubleshooting/).
+
+## Other platforms and H5
+
+The WeChat examples above also accept Alipay, Douyin and H5 through the host. See [platform configuration](/configuration/#platforms-and-host-inference) for commands and mappings. Adapters infer the target; an optional `target` must match it. Mini-programs receive `stylex.wxss`, `stylex.acss` or `stylex.ttss`. H5 uses browser CSS; native/Wevu registers both `createStylex()` fields and supplies the Web `index.html`. H5 preserves `:root`; weapp-vite page Shadow DOM receives defaults while components inherit themes. Static rpx follows host policy, numeric/px values remain unchanged, and dynamic values use browser-standard units. Development updates may reload the page. `test:h5` validates production and development browser interactions.

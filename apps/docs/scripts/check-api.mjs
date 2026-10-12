@@ -48,7 +48,7 @@ const pages = {
     'VarGroup',
     'PositionTry',
   ],
-  adapters: ['stylexCompiler', 'createStylex', 'stylexTaro', 'stylexLoader', 'stylexUniApp'],
+  adapters: ['stylexCompiler', 'createStylex', 'stylexTaro', 'stylexLoader', 'stylexUniApp', 'taroStylexTarget', 'uniStylexTarget'],
   compiler: [
     'StylexBackend',
     'backendBuildDependencies',
@@ -73,6 +73,23 @@ const pages = {
     'AssetSink',
     'assetText',
     'WxssEmitter',
+    'StylexTarget',
+    'MiniProgramExtensions',
+    'assertStylexTarget',
+    'miniProgramExtensions',
+    'resolveStylexTarget',
+    'MiniProgramStyleEmitter',
+    'WebStyleOptions',
+    'WebModuleNode',
+    'WebServer',
+    'WebPluginHost',
+    'WEB_CSS_ID',
+    'webCssHash',
+    'webAssetUrl',
+    'injectWebStyleLink',
+    'createWebStylePlugins',
+    'createRpxOnlyPostcssTransformer',
+    'createCssValueTransformer',
   ],
 }
 const pageForSymbol = new Map(Object.entries(pages).flatMap(([page, names]) => names.map(name => [name, page])))
@@ -166,7 +183,7 @@ for (const entry of entries) {
   }
 }
 
-for (const [owner, page] of [['types', 'runtime'], ['when', 'runtime'], ['Types', 'types'], ['StylexSession', 'compiler'], ['WxssEmitter', 'compiler']]) {
+for (const [owner, page] of [['types', 'runtime'], ['when', 'runtime'], ['Types', 'types'], ['StylexSession', 'compiler'], ['WxssEmitter', 'compiler'], ['MiniProgramStyleEmitter', 'compiler']]) {
   const symbol = symbols.get(owner)
   assert.ok(symbol, `Missing public ${owner} export`)
   let members

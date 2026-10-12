@@ -2,7 +2,7 @@
   "name": "@weapp-stylex/core",
   "type": "module",
   "version": "0.1.2",
-  "description": "StyleX runtime APIs, types and theme helpers for WeChat mini-programs",
+  "description": "Official StyleX runtime APIs, types and theme helpers for mini-programs and H5",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
   "funding": {

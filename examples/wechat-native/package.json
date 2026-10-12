@@ -4,10 +4,16 @@
   "version": "0.1.3",
   "private": true,
   "scripts": {
-    "build": "weapp-vite build && node scripts/copy-project-config.mjs",
+    "build": "corepack pnpm build:weapp && corepack pnpm build:alipay && corepack pnpm build:tt && corepack pnpm build:web",
     "test:headless": "node test/headless.mjs",
-    "dev": "weapp-vite dev",
-    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false"
+    "dev": "weapp-vite dev -p weapp",
+    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false",
+    "build:weapp": "weapp-vite build -p weapp --outDir dist && node ../../scripts/project-config.mjs dist wechat-native weapp",
+    "build:alipay": "weapp-vite build -p alipay --outDir dist/alipay",
+    "build:tt": "weapp-vite build -p tt --outDir dist/tt",
+    "build:web": "weapp-vite build -p web --outDir dist/web",
+    "dev:web": "node scripts/dev-web.mjs",
+    "dev:h5": "node scripts/dev-web.mjs"
   },
   "dependencies": {
     "weapp-stylex": "workspace:*"

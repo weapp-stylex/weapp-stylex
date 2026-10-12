@@ -21,13 +21,14 @@ No generic parameters. The option defaults to `babel`, using official Babel 7. `
 
 ```ts
 interface StylexCompilerOptions {
+  target?: StylexTarget
   backend?: StylexBackend
   importSources?: readonly string[]
   babel?: Partial<Options> // official @stylexjs/babel-plugin Options
 }
 ```
 
-All fields are optional; adapter/session options default to `{}`. `backend` defaults to `'babel'`. `importSources` defaults to `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`. A supplied list **replaces** the defaults. `babel` defaults to no custom options and configures the official StyleX plugin, not arbitrary Babel transforms.
+All fields are optional; adapter/session options default to `{}`. `target` defaults to `weapp` for direct sessions; adapters infer the active host target and reject explicit conflicts. `backend` defaults to `'babel'`. `importSources` defaults to `['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core', '@stylexjs/stylex']`. A supplied list **replaces** the defaults. `babel` defaults to no custom options and configures the official StyleX plugin, not arbitrary Babel transforms.
 
 ```ts
 const options: StylexCompilerOptions = {
@@ -167,6 +168,17 @@ transform(code: string, id: string, host: TransformHost): Promise<SourceTransfor
 
 All arguments are required. This normal metadata-owning transform accepts scripts/raw `.vue`, skips ineligible or duplicate virtual requests, replaces module metadata and returns code/map/rules/dependencies or `null`. Retain original source when skipped. Compiler/token/parser errors reject with structured compile information.
 
+<a id="api-StylexSession-transformCompiledSfcScript"></a>
+### transformCompiledSfcScript
+
+```ts
+transformCompiledSfcScript(code: string, id: string, host: TransformHost): Promise<SourceTransform | null>
+```
+
+All arguments are required. This host integration hook completes an already-generated SFC script when the host scanned and cached its `.vue` source before raw-source preprocessing. It returns `null` for non-`.vue` identities or code without a configured StyleX import. It keeps metadata under the canonical physical `.vue` identity, preserves previous raw-SFC rules when the generated script adds none, replays watched dependencies and guards commits against stale generations. Its serialized map composes with the host's incoming script map; diagnostics refer to the `.vue` source.
+
+Generated SFC scripts retain the same template-binding guard as raw SFCs: default/`auto` use Babel, while explicit `swc` rejects this input. The hook transforms the generated script only; templates, macros, lifecycle and separate style/template modules remain with the host. Application projects use the adapter that selects this hook, rather than calling it alongside every normal `transform()` request.
+
 <a id="api-StylexSession-transformScript"></a>
 ### transformScript
 
@@ -222,7 +234,7 @@ Extension matcher, without arguments/defaults. Use `SCRIPT_RE.test(sourceId(id))
 <a id="api-processRules"></a>
 ## processRules
 
-`processRules(rules: Rule[]): string` requires official rules. Aggregates with layers disabled and rewrites `:root` to `page`, preserving theme classes (`.theme:root` becomes `page.theme`). Returns CSS text, empty for empty input. It does not convert px to rpx or validate WXSS features. Rule/parse errors propagate.
+`processRules(rules: Rule[], target: StylexTarget = 'weapp'): string` requires official rules. Aggregates with layers disabled and rewrites `:root` to `page` for mini-programs and preserves `:root` for `web`, retaining theme classes (`.theme:root` becomes `page.theme`). Returns CSS text, empty for empty input. It does not convert px to rpx or validate WXSS features. Rule/parse errors propagate.
 
 <a id="api-PluginHost"></a>
 ## PluginHost
@@ -247,13 +259,16 @@ Structural hook context shared across Vite 4/5/8; no Vite runtime is bundled. Al
 ## createVitePlugins
 
 ```ts
-createVitePlugins(session: StylexSession, options: {
-  sfcOnly?: boolean
-  emitStyles?: boolean
+createVitePlugins(session: StylexSession | (() => StylexSession), options: {
+  sfcOnly?: boolean | (() => boolean)
+  emitStyles?: boolean | (() => boolean)
+  sourceId?: (id: string) => string
 } = {}): /* pre-source and post-output plugin array */
 ```
 
-Session is required; options default `{}`. Omitted `sfcOnly` does not restrict to SFCs; true accepts only raw `.vue` requests without queries. `emitStyles` is enabled unless false. Returns pre-source/post-output plugins with cache/watch, prune, diagnostics and emission hooks. Example: `createVitePlugins(new StylexSession(), { emitStyles: true })`.
+Session or a session getter is required; options default `{}`. Getter options allow the host target to resolve during configuration. Omitted `sfcOnly` does not restrict to SFCs; true accepts only raw `.vue` requests without queries. `emitStyles` is enabled unless false. Returns pre-source/post-output plugins with cache/watch, prune, diagnostics and emission hooks. Example: `createVitePlugins(new StylexSession(), { emitStyles: true })`.
+
+`sourceId` optionally maps a host request to its source identity before source filtering and transformation; without it, the request ID is unchanged. An adapter may map a host-owned raw Web component request to its `.vue` identity. Avoid applying this mapping to unrelated virtual script/template/style requests.
 
 Raw SFCs are transformed before framework compilation; duplicate virtual requests are skipped. Final non-watch close clears state; watch preserves it until shutdown. This generic bridge does not replace a framework's native emission compatibility path. Applications use adapters.
 
@@ -374,3 +389,114 @@ This illustrates a mutable in-memory bundle. Real adapters use host APIs; weapp-
 ## Public API versus implementation detail
 
 Only the package barrel/export-map surface above supports imports. Native backend loaders, fingerprint helpers, AST analysis types and the Taro Webpack implementation have no public subpaths. A type referenced by a signature may remain internal; derive exact types through the public function instead of importing implementation files.
+
+
+<a id="api-StylexTarget"></a>
+## StylexTarget
+
+```ts
+type StylexTarget = 'weapp' | 'alipay' | 'tt' | 'web'
+```
+
+Canonical compiler target names. Taro h5 and uni-app h5 map to web. Direct compiler usage defaults to weapp; adapters infer the active host and reject unsupported targets.
+
+<a id="api-MiniProgramExtensions"></a>
+<a id="api-miniProgramExtensions"></a>
+## Mini-program extensions
+
+```ts
+interface MiniProgramExtensions { template: string; style: string }
+miniProgramExtensions(target: Exclude<StylexTarget, 'web'>): MiniProgramExtensions
+```
+
+MiniProgramExtensions holds template/style extensions without leading dots. miniProgramExtensions returns a fresh descriptor: wxml/wxss for weapp, axml/acss for alipay, ttml/ttss for tt. web requires browser CSS delivery and is rejected by this helper.
+
+<a id="api-assertStylexTarget"></a>
+<a id="api-resolveStylexTarget"></a>
+## Target validation
+
+```ts
+assertStylexTarget(target: string): asserts target is StylexTarget
+resolveStylexTarget<T extends { target?: StylexTarget }>(options: T, target: StylexTarget): T & { target: StylexTarget }
+```
+
+assertStylexTarget requires a name and rejects unsupported targets. resolveStylexTarget requires options and the host target, returning a new options object with target resolved. An explicit mismatch throws instead of silently overriding application configuration.
+
+<a id="api-MiniProgramStyleEmitter"></a>
+## MiniProgramStyleEmitter
+
+```ts
+new MiniProgramStyleEmitter(target: Exclude<StylexTarget, 'web'> = 'weapp', extensions?: MiniProgramExtensions)
+```
+
+Shared mini-program emitter, defaulting to WeChat and optionally accepting host extensions. Preserves ownership, sibling imports, missing companions, user collision detection and stale output cleanup. Use createWebStylePlugins for web. WxssEmitter remains the no-argument WeChat compatibility wrapper.
+
+<a id="api-MiniProgramStyleEmitter-target"></a>
+<a id="api-WxssEmitter-target"></a>
+### target
+
+readonly target is the selected mini-program target. WxssEmitter target is fixed to weapp.
+
+<a id="api-MiniProgramStyleEmitter-extensions"></a>
+<a id="api-WxssEmitter-extensions"></a>
+### extensions
+
+readonly extensions contains template and style, defaulting to the target descriptor. WxssEmitter uses wxml/wxss.
+
+<a id="api-MiniProgramStyleEmitter-generate"></a>
+### generate
+
+`generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>`
+
+generate requires all inputs and emits stylex.wxss/stylex.acss/stylex.ttss with sibling imports for the target. It shares WxssEmitter.generate’s initial-empty-build, collision and owned-only stale cleanup contracts.
+
+<a id="api-MiniProgramStyleEmitter-clear"></a>
+### clear
+
+clear(): void releases ownership records without deleting files. Clear only at final watcher shutdown.
+
+<a id="api-WebStyleOptions"></a>
+## WebStyleOptions
+
+```ts
+interface WebStyleOptions {
+  enabled?: boolean | (() => boolean)
+  delivery?: 'document' | 'shadow'
+  transformCss(css: string): string | Promise<string>
+  transformShadowCss?(css: string): { pageCss: string; componentCss: string } | Promise<{ pageCss: string; componentCss: string }>
+  policyKey?: string | (() => string)
+}
+```
+
+WebStyleOptions is for host authors. enabled defaults to true and delivery to document. Required transformCss applies the host static unit policy. Shadow delivery may use transformShadowCss for separate page/component CSS. policyKey participates in delivery identity. Applications should use adapters.
+
+<a id="api-WebModuleNode"></a>
+<a id="api-WebServer"></a>
+<a id="api-WebPluginHost"></a>
+## WebModuleNode, WebServer and WebPluginHost
+
+These types describe the minimal host interfaces used by Web style plugins; they have no runtime exports. `WebModuleNode` contains `id: string | null` and `importedModules: Set<WebModuleNode>`. `WebServer` supplies middleware registration, WebSocket notifications, an optional HTTP close event and moduleGraph lookups by ID/URL. `WebPluginHost` supplies `getModuleIds()`, `emitFile()` and `error()` to inspect reachable modules, deliver CSS assets and report build errors.
+
+<a id="api-createWebStylePlugins"></a>
+## createWebStylePlugins
+
+`createWebStylePlugins(session: StylexSession | (() => StylexSession), options: WebStyleOptions)`
+
+createWebStylePlugins returns shared H5 lifecycle plugins. It aggregates after module loading, emits hashed external CSS linked from HTML for production document delivery, and finalizes virtual-module page/component metadata for shadow delivery. Development state/CSS endpoints handle initial loading and later modules; full reload is allowed. Final shutdown releases owned state.
+
+<a id="api-WEB_CSS_ID"></a>
+<a id="api-webCssHash"></a>
+<a id="api-webAssetUrl"></a>
+<a id="api-injectWebStyleLink"></a>
+## Browser asset helpers
+
+- `WEB_CSS_ID = 'virtual:weapp-stylex/web-css'`: virtual identifier for Shadow CSS metadata.
+- `webCssHash(css: string): string`: stable short content hash.
+- `webAssetUrl(base: string, fileName: string, htmlFileName = 'index.html'): string`: computes an asset reference from base and the HTML location.
+- `injectWebStyleLink(html: string, href: string): string`: inserts an escaped owned link before application styles; rejects an existing data-weapp-stylex marker or missing head.
+
+<a id="api-createRpxOnlyPostcssTransformer"></a>
+<a id="api-createCssValueTransformer"></a>
+## Host unit converters
+
+createRpxOnlyPostcssTransformer(plugin, from) returns an asynchronous CSS converter that protects px and delegates only static rpx to the host PostCSS converter. It rejects rpx without a converter or rpx left unsupported by host policy. createCssValueTransformer(convert) returns a synchronous converter applying a host unit-only function to declaration values and at-rule parameters. Neither changes official runtime behavior or dynamic inline style values.

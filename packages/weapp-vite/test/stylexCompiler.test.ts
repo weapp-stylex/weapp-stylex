@@ -5,7 +5,7 @@ interface TestContext {
   root: string
   srcRoot: string
   platform: string
-  outputExtensions: { wxss: string }
+  outputExtensions: { wxss: string, wxml: string }
   isDev: boolean
   resolvedConfig?: { build: { watch: unknown } }
   addWatchFile: (id: string) => void
@@ -33,8 +33,8 @@ function makeContext(overrides: Partial<TestContext> = {}): TestContext {
   return {
     root: '/project',
     srcRoot: '/project/src',
-    platform: 'wechat',
-    outputExtensions: { wxss: 'wxss' },
+    platform: 'weapp',
+    outputExtensions: { wxss: 'wxss', wxml: 'wxml' },
     isDev: false,
     addWatchFile: () => undefined,
     warn: () => undefined,
@@ -65,6 +65,40 @@ async function compile(code: string, id = '/project/src/pages/index/index.ts') {
 }
 
 describe('stylexCompiler', () => {
+  it.each([
+    ['alipay', 'axml', 'acss'],
+    ['tt', 'ttml', 'ttss'],
+  ])('uses the %s host extensions and generates missing style companions', async (platform, template, style) => {
+    const plugin = stylexCompiler()
+    if (typeof plugin === 'function') {
+      throw new TypeError('Expected provider')
+    }
+    const context = makeContext({ platform, outputExtensions: { wxml: template!, wxss: style! } })
+    const controller = await plugin.create(context as never)
+    await controller.transformSource?.({
+      id: '/project/src/page.ts',
+      kind: 'script',
+      code: `import * as stylex from '@weapp-stylex/core';export const styles=stylex.create({root:{padding:16}})`,
+    })
+    const bundle: TestBundle = {
+      'pages/index.js': { type: 'chunk', fileName: 'pages/index.js', code: '' },
+      [`pages/index.${template}`]: { type: 'asset', fileName: `pages/index.${template}`, source: '<view />' },
+    }
+    await controller.generateBundle?.(bundle as never, context as never)
+    expect(bundle[`pages/index.${style}`]?.source).toBe(`@import "./stylex.${style}";\n`)
+    expect(bundle[`pages/stylex.${style}`]?.source).toContain('padding:16px')
+    expect(Object.keys(bundle).some(name => name.endsWith('.wxss'))).toBe(false)
+  })
+
+  it('rejects unsupported host targets and explicit target conflicts', () => {
+    const plugin = stylexCompiler({ target: 'tt' })
+    if (typeof plugin === 'function') {
+      throw new TypeError('Expected provider')
+    }
+    expect(() => plugin.create(makeContext() as never)).toThrow('conflicts')
+    expect(() => plugin.create(makeContext({ platform: 'swan' }) as never)).toThrow('Unsupported StyleX target')
+  })
+
   it('retains rules across watch closeBundle disposal and forgets an import removed from an active module', async () => {
     const plugin = stylexCompiler()
     if (typeof plugin === 'function') {

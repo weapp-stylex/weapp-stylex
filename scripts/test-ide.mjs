@@ -7,10 +7,11 @@ import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { execa } from 'execa'
 import automator from 'miniprogram-automator'
-import { examples } from './example-matrix.mjs'
+import { examples as artifactMatrix } from './example-matrix.mjs'
 import { nativeJournal } from './ide-native-journal.mjs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
+const examples = artifactMatrix.filter(example => example.target === 'weapp')
 const artifacts = path.join(root, 'artifacts/ide')
 const officialSource
   = 'https://devtools.wxqcloud.qq.com.cn/WechatWebDev/nightly/versions/config.json'

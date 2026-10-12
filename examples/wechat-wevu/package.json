@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.3",
   "private": true,
-  "description": "Runnable WeChat StyleX integration example",
+  "description": "Runnable multi-platform StyleX integration example",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
   "repository": {
@@ -20,15 +20,20 @@
     "library",
     "template"
   ],
-  "sideEffects": false,
   "engines": {
     "node": "^22.22.1 || >=24.11.0"
   },
   "scripts": {
-    "build": "weapp-vite build && node ../../scripts/project-config.mjs dist wechat-wevu",
-    "dev": "weapp-vite dev",
-    "typecheck": "weapp-vite prepare && vue-tsc -p tsconfig.json --noEmit",
-    "test:headless": "node test/headless.mjs"
+    "build": "corepack pnpm build:weapp && corepack pnpm build:alipay && corepack pnpm build:tt && corepack pnpm build:web",
+    "dev": "weapp-vite dev -p weapp",
+    "typecheck": "weapp-vite prepare -p weapp && vue-tsc -p tsconfig.json --noEmit",
+    "test:headless": "node test/headless.mjs",
+    "build:weapp": "weapp-vite build -p weapp --outDir dist && node ../../scripts/project-config.mjs dist wechat-wevu weapp",
+    "build:alipay": "weapp-vite build -p alipay --outDir dist/alipay",
+    "build:tt": "weapp-vite build -p tt --outDir dist/tt",
+    "build:web": "weapp-vite build -p web --outDir dist/web",
+    "dev:web": "node ../wechat-native/scripts/dev-web.mjs",
+    "dev:h5": "node ../wechat-native/scripts/dev-web.mjs"
   },
   "dependencies": {
     "weapp-stylex": "workspace:*",

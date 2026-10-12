@@ -1,6 +1,7 @@
 import type { Options, Rule } from '@stylexjs/babel-plugin'
 import type { BackendResult, StylexBackend } from './backend.js'
 import type { StylexDiagnostic } from './diagnostics.js'
+import type { StylexTarget } from './target.js'
 import { createHash } from 'node:crypto'
 import { readFileSync, realpathSync } from 'node:fs'
 import { readFile, stat } from 'node:fs/promises'
@@ -15,10 +16,12 @@ import selectorParser from 'postcss-selector-parser'
 import { analyzeScript } from './analysis.js'
 import { compilerFingerprint, NativeBackendUnavailable, swcUnsupported, transformBabel, transformSwc } from './backend.js'
 import { compileError, StylexCompileError } from './diagnostics.js'
+import { assertStylexTarget } from './target.js'
 
 export type SfcParser = typeof parse
 
 export interface StylexCompilerOptions {
+  target?: StylexTarget
   backend?: StylexBackend
   importSources?: readonly string[]
   babel?: Partial<Options>
@@ -61,9 +64,10 @@ function canonicalPath(filename: string, dependencies: Set<string>): string {
   while (true) {
     try {
       const manifest = path.join(directory, 'package.json')
+      const content = readFileSync(manifest, 'utf8')
       dependencies.add(manifest)
       const pkg = JSON.parse(
-        readFileSync(manifest, 'utf8'),
+        content,
       ) as { name?: string }
       if (pkg.name) {
         return `${pkg.name}:${path.relative(directory, file).replaceAll('\\', '/')}`
@@ -80,13 +84,17 @@ function canonicalPath(filename: string, dependencies: Set<string>): string {
   }
 }
 
-export function processRules(rules: Rule[]): string {
+export function processRules(rules: Rule[], target: StylexTarget = 'weapp'): string {
+  assertStylexTarget(target)
   const root = postcss.parse(
     stylexPlugin.processStylexRules(rules, {
       legacyDisableLayers: true,
       useLayers: false,
     }),
   )
+  if (target === 'web') {
+    return root.toString()
+  }
   root.walkRules((rule) => {
     if (!rule.selector.includes(':root')) {
       return
@@ -126,10 +134,11 @@ export class StylexSession {
     readonly options: StylexCompilerOptions = {},
     readonly parseSfc: SfcParser = parse,
   ) {
+    assertStylexTarget(options.target ?? 'weapp')
     if (options.backend && !['babel', 'auto', 'swc'].includes(options.backend)) {
       throw new Error(`Unknown StyleX backend: ${options.backend}`)
     }
-    this.fingerprint = compilerFingerprint(options)
+    this.fingerprint = compilerFingerprint({ ...options, target: options.target ?? 'weapp' })
     this.importSources = options.importSources ?? [
       'weapp-stylex',
       'weapp-stylex/core',
@@ -434,6 +443,50 @@ export class StylexSession {
     }
   }
 
+  /** Finish host-cached SFC scripts while retaining raw-SFC rules and source ownership. */
+  async transformCompiledSfcScript(code: string, id: string, host: TransformHost): Promise<SourceTransform | null> {
+    const filename = this.remember(id)
+    if (!filename.endsWith('.vue') || !this.hasImport(code)) {
+      return null
+    }
+    const revision = this.revision
+    const request = this.request(filename)
+    // Keep generated SFC scripts on Babel too: native compilation can discard
+    // bindings used only by the host's separately generated template module.
+    const scriptFilename = `${filename}.stylex-script-web.ts`
+    try {
+      const result = await this.transformScript(code, scriptFilename, {
+        resolve: source => host.resolve(source, filename),
+        addWatchFile: dependency => host.addWatchFile(dependency === scriptFilename ? filename : dependency),
+      })
+      const previous = this.modules.get(filename)
+      const metadata = {
+        rules: result.rules.length ? result.rules : previous?.rules ?? [],
+        dependencies: [...new Set([
+          filename,
+          ...(result.rules.length ? [] : previous?.dependencies ?? []),
+          ...result.dependencies.filter(dependency => dependency !== scriptFilename),
+        ])],
+      }
+      if (revision === this.revision && this.requests.get(filename) === request) {
+        this.modules.set(filename, metadata)
+        this.dirty.delete(filename)
+      }
+      return {
+        ...metadata,
+        code: result.code,
+        // Vite composes this generated-script map with the incoming host map.
+        map: result.map ? JSON.stringify({ ...result.map, sources: [filename], sourcesContent: [code] }) : undefined,
+      }
+    }
+    catch (cause) {
+      const diagnostic = compileError(cause, scriptFilename).diagnostic
+      const error = new StylexCompileError({ ...diagnostic, file: diagnostic.file === scriptFilename ? filename : diagnostic.file }, cause)
+      host.diagnostic?.(error.diagnostic)
+      throw error
+    }
+  }
+
   private async transformSource(
     code: string,
     id: string,
@@ -674,6 +727,7 @@ export class StylexSession {
   css(): string {
     return processRules(
       [...this.modules.values()].flatMap(module => module.rules),
+      this.options.target,
     )
   }
 

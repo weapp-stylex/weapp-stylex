@@ -1,6 +1,6 @@
 # @weapp-stylex/uni-app
 
-uni-app Vue 3 微信小程序的 StyleX Vite 适配器。提供 ESM 和 CommonJS 入口。
+uni-app Vue 3 微信/支付宝/抖音小程序与 H5 的 StyleX Vite 适配器。提供 ESM 和 CommonJS 入口。
 
 ```bash
 pnpm add @weapp-stylex/core
@@ -26,3 +26,7 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 完整示例和支持边界见 [weapp-stylex](https://github.com/weapp-stylex/weapp-stylex)。
 
 MIT License。
+
+## Platforms
+
+The adapter infers `mp-weixin`, `mp-alipay`, `mp-toutiao` or `h5` from uni-app. Mini-programs emit matching platform style companions. H5 emits an external CSS asset with a content hash and an owned HTML stylesheet link. Numeric/px values keep official semantics; static rpx follows DCloud's H5 policy and dynamic values use browser units. Optional compiler `target` must match the active host.

@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.3",
   "private": true,
-  "description": "Runnable WeChat StyleX integration example",
+  "description": "Runnable multi-platform StyleX integration example",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
   "repository": {
@@ -25,13 +25,21 @@
     "node": "^22.22.1 || >=24.11.0"
   },
   "scripts": {
-    "build": "uni build -p mp-weixin && node ../../scripts/project-config.mjs dist/build/mp-weixin uni-vue3",
+    "build": "corepack pnpm build:weapp && corepack pnpm build:alipay && corepack pnpm build:tt && corepack pnpm build:h5",
     "dev": "uni -p mp-weixin",
-    "typecheck": "vue-tsc -p tsconfig.json --noEmit"
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit",
+    "build:weapp": "uni build -p mp-weixin && node ../../scripts/project-config.mjs dist/build/mp-weixin uni-vue3 weapp",
+    "build:alipay": "uni build -p mp-alipay",
+    "build:tt": "uni build -p mp-toutiao",
+    "build:h5": "uni build -p h5",
+    "dev:h5": "uni -p h5"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-5030120260930001",
     "@dcloudio/uni-components": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-h5": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-mp-alipay": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-mp-toutiao": "3.0.0-alpha-5030120260930001",
     "@dcloudio/uni-mp-weixin": "3.0.0-alpha-5030120260930001",
     "vue": "3.4.21",
     "weapp-stylex": "workspace:*"

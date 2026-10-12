@@ -5,6 +5,23 @@ sidebar:
   order: 9
 ---
 
+## 平台与自动推断
+
+现有原生、Wevu、Taro React/Vue 3 和 uni-app Vue 3 适配器均支持微信、支付宝、抖音与 H5。平台从活动宿主推断，通常不需要设置 `target`。可选 `target` 使用 compiler 的统一名称 `weapp | alipay | tt | web`；与宿主不一致时构建报错。直接创建 compiler session 时默认 `weapp`。
+
+| 目标 | weapp-vite CLI | Taro CLI | uni-app CLI | 模板 / 样式 |
+| --- | --- | --- | --- | --- |
+| 微信 | `-p weapp` | `--type weapp` | `-p mp-weixin` | `.wxml` / `.wxss` |
+| 支付宝 | `-p alipay` | `--type alipay` | `-p mp-alipay` | `.axml` / `.acss` |
+| 抖音 | `-p tt` | `--type tt` | `-p mp-toutiao` | `.ttml` / `.ttss` |
+| H5 | `-p web` | `--type h5` | `-p h5` | 浏览器 CSS |
+
+原生与 Wevu 的跨端配置统一使用 `createStylex()`，同时注册返回的 `vitePlugins` 与 `compilerPlugin`；H5 在项目根目录提供引用 `/@weapp-vite/web/entry` 的 `index.html`。`stylexCompiler()` 保留原生小程序的兼容入口。各小程序平台使用自己的项目配置，不复制微信配置到其他目标。
+
+小程序默认变量选择器为 `page`；H5 保留 `:root`，weapp-vite 页面 Shadow DOM 使用 `:host` 默认值，组件继承页面主题。Taro/uni-app H5 生产构建生成带 hash 的独立 CSS 并引用到 HTML；weapp-vite 将 CSS 放入页面/组件的 Web metadata。开发服务会更新样式，允许完整刷新。原子规则仍全局聚合排序，官方 runtime CSS injection 保持关闭。
+
+数值和 `px` 保持 StyleX 原义；H5 静态 `rpx` 遵循宿主转换策略，动态值使用浏览器标准单位。不将 H5 编译或浏览器验证视为支付宝/抖音 IDE 或真机已验收。
+
 ## 包入口
 
 | 包 | 用途 |
@@ -60,6 +77,7 @@ weapp-vite 适配器声明 `>=7.4.0 <8`；Taro 适配器声明 `@tarojs/service 
 
 ```ts
 interface StylexCompilerOptions {
+  target?: 'weapp' | 'alipay' | 'tt' | 'web'
   backend?: 'babel' | 'auto' | 'swc'
   importSources?: readonly string[]
   babel?: Partial<Options> // @stylexjs/babel-plugin Options

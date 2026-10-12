@@ -11,6 +11,7 @@ Every adapter re-exports the [`StylexCompilerOptions`](/api/compiler/#api-Stylex
 
 | Option | Default | Contract |
 | --- | --- | --- |
+| `target` | Inferred from host | `weapp | alipay | tt | web`; explicit configuration must match the host. |
 | `backend` | `'babel'` | `'auto'` uses the verified SWC subset; `'swc'` rejects unsupported/unavailable inputs. |
 | `importSources` | Four official/façade sources | Replaces the list; include the defaults when adding a façade. |
 | `babel` | No custom options | Partial official StyleX plugin options, not general Babel configuration. |
@@ -55,7 +56,7 @@ export default defineConfig({
 })
 ```
 
-The Vite half transforms raw SFC scripts before framework compilation with `sfcOnly: true` and `emitStyles: false`; the native half owns WXSS emission. Raw SFCs stay on Babel even in `auto`, protecting template-only bindings. This factory is the Wevu/Vue SFC path, not a browser CSS injector.
+The Vite half transforms raw SFC scripts before framework compilation with `sfcOnly: true` and `emitStyles: false`; the native half owns WXSS emission. Raw SFCs stay on Babel even in `auto`, protecting template-only bindings. Use this factory for Wevu/SFC and native H5. H5 uses host page/component CSS metadata; official runtime CSS injection stays disabled.
 
 <a id="api-stylexTaro"></a>
 ## stylexTaro
@@ -72,7 +73,7 @@ export default {
 }
 ```
 
-Only `TARO_ENV=weapp` is supported; another target raises an explicit configuration error. Supports Taro React/Vue 3 on the verified Vite/Webpack 5 hosts. The plugin injects Webpack session state, stable loader identity and cache metadata; no manual loader recipe is required. `StylexWebpackPlugin` is not a public package export.
+Supported TARO_ENV values are weapp, alipay, tt and h5; h5 maps to compiler web. Unknown targets and explicit target conflicts fail. Supports Taro React/Vue 3 on the verified Vite/Webpack 5 hosts. The plugin injects Webpack session state, stable loader identity and cache metadata; no manual loader recipe is required. `StylexWebpackPlugin` is not a public package export.
 
 <a id="api-stylexLoader"></a>
 ## stylexLoader
@@ -106,7 +107,7 @@ const uni = (uniImport as unknown as { default?: typeof uniImport }).default ?? 
 export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 ```
 
-Only `UNI_PLATFORM=mp-weixin` is supported; the config hook rejects another platform. Missing/mismatched DCloud parser dependencies can fail during factory setup. Vue 2 and uni-app x are outside the stable contract.
+Supported UNI_PLATFORM values are mp-weixin, mp-alipay, mp-toutiao and h5; h5 maps to compiler web. The config hook rejects unsupported platforms and explicit target conflicts. Missing/mismatched DCloud parser dependencies can fail during factory setup. Vue 2 and uni-app x are outside the stable contract.
 
 ## Host versions and validation boundary
 
@@ -119,3 +120,9 @@ The framework peers are optional on adapters: install the host used by your appl
 | uni-app | `@dcloudio/vite-plugin-uni 3.0.0-alpha-5030120260930001` | Matching vue3 channel, Vue 3.4.21 / Vite 5.2.8 |
 
 Node must satisfy `^22.22.1 || >=24.11.0`; CI covers 22.22.1 and 24.18.0. Avoid global overrides that unify incompatible host Vite/Vue/Babel versions. Shared StyleX compilation remains on Babel 7. Static builds, headless interaction and real WeChat IDE evidence are distinct checks; consult [examples](/examples/) for the current acceptance records.
+
+<a id="api-taroStylexTarget"></a>
+<a id="api-uniStylexTarget"></a>
+## taroStylexTarget and uniStylexTarget
+
+`taroStylexTarget(platform: string | undefined)` maps `weapp`, `alipay`, `tt` and `h5` to the shared `StylexTarget`; `h5` maps to `web`. `uniStylexTarget(platform: string | undefined)` accepts `mp-weixin`, `mp-alipay`, `mp-toutiao` and `h5`. Unknown or missing platforms throw. These helpers are for host integration authors; applications do not need to call them.

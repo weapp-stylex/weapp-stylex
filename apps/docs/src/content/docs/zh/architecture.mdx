@@ -21,7 +21,9 @@ Runtime 根/core 入口采用具名转导出，没有默认导出；JavaScript �
 
 ## Vue 与 Webpack
 
-SFC 预处理只修改脚本内容并组合 sourcemap，模板编译与框架宏留给宿主。Vite 虚拟 script 请求会跳过。uni-app 使用自身兼容的 parser。
+SFC 预处理只修改脚本内容并组合 sourcemap，模板编译与框架宏留给宿主。重复的 Vite 虚拟 script 请求会跳过。uni-app 使用自身兼容的 parser。
+
+weapp-vite Web runtime 可能在 Vite 原始源码 hook 前扫描并缓存 SFC。适配器识别宿主所属的 Web component 请求，在宿主编译后通过 `StylexSession.transformCompiledSfcScript()` 完成仍保留的 StyleX 调用。共享 compiler 保持原物理 `.vue` metadata 身份，保留原始预处理的规则、重放依赖并组合 script map；默认及 `auto` 保留 Babel，保护仅供模板使用的绑定。这条明确的宿主路径让生成模板、宏和生命周期代码继续由宿主管理。
 
 Taro 的 Webpack pre-loader 在 Babel/Vue 之前执行，将 metadata 存入模块 `buildInfo`。`processAssets` 收集缓存规则，在宿主完成样式转换后注入 WXSS。
 
@@ -48,3 +50,7 @@ Vue-loader 会为内联 script、template 和 style 请求重新读取原始 SFC
 仅预解析参与 StyleX 编译期求值的导入，普通组件和运行时样式依赖交给宿主模块图。Session 合并并发源码与 token 任务，在一轮构建中复用文件系统与 resolver 信息；转换缓存保存物理 ID、源码哈希、编译器和选项指纹、实际后端及依赖签名。非空自定义 Babel 配置停用转换缓存，因为回调可能读取外部状态。
 
 文件变更使依赖结果失效，配置与 manifest 变更重新校验身份和缓存。构建代次与每模块请求检查阻止旧异步任务恢复已移除的 metadata。活动 watcher 保留缓存，按图剔除不可达模块，最终关闭时释放。Webpack 将指纹追加到宿主 cache version，并追加编译器 buildDependencies；保留宿主设置和 buildInfo 中的规则。
+
+## 跨平台与 H5
+
+上述微信示例也可通过宿主选择支付宝、抖音或 H5，具体命令和目标映射见[平台配置](/zh/configuration/#平台与自动推断)。适配器自动推断目标；可选 `target` 必须匹配宿主。小程序生成对应的 `stylex.wxss`、`stylex.acss` 或 `stylex.ttss`。H5 使用浏览器 CSS，原生/Wevu 注册 `createStylex()` 的两个入口并准备 Web `index.html`。H5 默认变量保留 `:root`，weapp-vite Shadow DOM 接入页面默认值并让组件继承主题。静态 rpx 跟随宿主策略，数值/px 不变，动态值使用浏览器标准单位。开发更新允许完整刷新；生产和 dev 浏览器交互由 `test:h5` 验证。

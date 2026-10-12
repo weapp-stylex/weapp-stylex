@@ -1,23 +1,34 @@
 import type {
+  PluginHost,
   StyleBundle,
   StylexCompilerOptions,
+  StylexTarget,
 } from '@weapp-stylex/compiler'
 import type { WeappCompilerPluginOption } from 'weapp-vite'
 import { mkdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import {
+  assertStylexTarget,
   createVitePlugins,
   formatDiagnostic,
+  MiniProgramStyleEmitter,
+  resolveStylexTarget,
   SCRIPT_RE,
   StylexSession,
-  WxssEmitter,
 } from '@weapp-stylex/compiler'
+import { createShadowStylePlugins } from './web.js'
 
-export type { StylexCompilerOptions } from '@weapp-stylex/compiler'
+export type { StylexCompilerOptions, StylexTarget } from '@weapp-stylex/compiler'
+
+function hostTarget(platform: string): StylexTarget {
+  const target = platform === 'wechat' ? 'weapp' : platform === 'h5' ? 'web' : platform
+  assertStylexTarget(target)
+  return target
+}
 
 function provider(
   options: StylexCompilerOptions,
-  session = new StylexSession(options),
+  sessionFor = (target: StylexTarget) => new StylexSession(resolveStylexTarget(options, target)),
 ): WeappCompilerPluginOption {
   return {
     name: 'weapp-stylex',
@@ -30,7 +41,15 @@ function provider(
       hmr: true,
     },
     create(context) {
-      const emitter = new WxssEmitter()
+      const target = hostTarget(context.platform)
+      if (target === 'web') {
+        throw new Error('Use createStylex() with both returned fields for weapp-vite Web builds.')
+      }
+      const session = sessionFor(target)
+      const emitter = new MiniProgramStyleEmitter(target, {
+        template: context.outputExtensions.wxml,
+        style: context.outputExtensions.wxss,
+      })
       return {
         buildStart() {
           session.beginBuild()
@@ -134,15 +153,75 @@ export function stylexCompiler(
 ): WeappCompilerPluginOption {
   return provider(options)
 }
-/** Use both returned fields to preprocess Vue SFCs and emit native WXSS. */
+/** Use both returned fields for native/Wevu mini-programs and the host Web runtime. */
 export function createStylex(options: StylexCompilerOptions = {}) {
-  const session = new StylexSession(options)
+  const sessions = new Map<StylexTarget, StylexSession>()
+  let target: StylexTarget = options.target ?? 'weapp'
+  let watching = false
+  const sessionFor = (active: StylexTarget) => {
+    let session = sessions.get(active)
+    if (!session) {
+      session = new StylexSession(resolveStylexTarget(options, active))
+      sessions.set(active, session)
+    }
+    return session
+  }
+  const current = () => sessionFor(target)
+  const web = () => target === 'web'
   return {
-    vitePlugins: createVitePlugins(session, {
-      sfcOnly: true,
-      emitStyles: false,
-    }),
-    compilerPlugin: provider(options, session),
+    vitePlugins: [
+      {
+        name: 'weapp-stylex:host',
+        enforce: 'pre' as const,
+        configResolved(config: {
+          command?: string
+          build?: { watch?: unknown }
+          weappVite?: { name: string, runtime: string, platform?: string }
+          weapp?: { platform?: string }
+        }) {
+          const host = config.weappVite
+          target = hostTarget(host?.runtime === 'web' ? 'web' : host?.platform ?? config.weapp?.platform ?? options.target ?? 'weapp')
+          resolveStylexTarget(options, target)
+          watching = config.command === 'serve' || Boolean(config.build?.watch)
+        },
+        closeBundle() {
+          if (web() && !watching) {
+            current().clear()
+          }
+        },
+      },
+      ...createVitePlugins(current, {
+        sfcOnly: () => !web(),
+        emitStyles: false,
+        sourceId: id => web() && new URLSearchParams(id.split('?')[1]).has('weapp-web-component') ? id.split('?')[0]! : id,
+      }),
+      {
+        name: 'weapp-stylex:web-sfc-script',
+        enforce: 'post' as const,
+        async transform(this: PluginHost, code: string, id: string) {
+          const [filename, query] = id.split('?')
+          if (!web() || !filename?.endsWith('.vue') || (query && !new URLSearchParams(query).has('weapp-web-component'))) {
+            return null
+          }
+          // Web 1.6 scans/caches SFCs before Vite's raw source transforms.
+          // Complete that cached script without touching the host template,
+          // macros, lifecycle, or its separate style/template modules.
+          const result = await current().transformCompiledSfcScript(code, id, {
+            resolve: async (source, importer) => {
+              const resolved = await this.resolve(source, importer, { skipSelf: true })
+              return resolved && !resolved.external ? resolved.id : undefined
+            },
+            addWatchFile: dependency => this.addWatchFile(dependency),
+            diagnostic: diagnostic => diagnostic.level === 'warning'
+              ? this.warn(formatDiagnostic(diagnostic))
+              : this.error({ message: formatDiagnostic(diagnostic), id: diagnostic.file }),
+          })
+          return result ? { code: result.code, map: result.map } : null
+        },
+      },
+      ...createShadowStylePlugins(current, web),
+    ],
+    compilerPlugin: provider(options, sessionFor),
   }
 }
 export default stylexCompiler

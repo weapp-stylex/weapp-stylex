@@ -54,10 +54,10 @@ pnpm exec repo check
 
 ## Scope
 
-This workspace adapts official StyleX to WeChat mini-programs: native
+This workspace adapts official StyleX to WeChat, Alipay, Douyin and H5: native
 Page/Component, Wevu, Taro React/Vue 3 (Vite and Webpack 5), and uni-app Vue 3.
 The shared `@weapp-stylex/compiler` owns transformation, module metadata,
-resolver identities, SFC maps and WXSS planning. Keep adapters thin.
+resolver identities, SFC maps and platform stylesheet planning. Keep adapters thin.
 The public `weapp-stylex` facade exposes runtime APIs at the root and adapters
 through explicit subpaths. Keep build tools out of the root runtime entry;
 framework host peers remain optional but retain their supported version ranges.
@@ -69,10 +69,13 @@ The private root workspace is named `weapp-stylex-workspace`.
 - Run `corepack pnpm install --frozen-lockfile` before verification.
 - Run `corepack pnpm lint`, `build`, `typecheck`, `test`, `test:deps`,
   `test:integration`, and `test:examples` from the root.
-- `build` produces seven WeChat artifacts. Taro's two builders run in sequence
+- `build` produces 28 artifacts: seven per target (WeChat, Alipay, Douyin, H5). Taro's two builders run in sequence
   into separate directories. CI tests Node 22.22.1 and 24.18.0.
 - `test:examples` checks all artifacts and runs native/Wevu headless interactions.
-- `test:ide` is a globally serial suite. Supply a real `WEAPP_STYLEX_APPID` and
+- `test:h5` validates seven production and development browser artifacts headlessly.
+  Static rpx follows each host policy; numeric/px values remain px and dynamic values
+  use browser-standard units. Do not enable official runtime CSS injection.
+- `test:ide` filters the matrix to WeChat and is a globally serial suite. Supply a real `WEAPP_STYLEX_APPID` and
   explicit `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`. Check the official stable version,
   login and service port. Use one automator per artifact, `reLaunch` between
   routes, structure assertions before screenshots, and close only owned
@@ -87,7 +90,8 @@ The private root workspace is named `weapp-stylex-workspace`.
   the host and canonicalize physical module identities before hashing.
 - Preserve StyleX units: numeric 16 is 16px; write '16rpx' explicitly.
 - Disable layers, specificity polyfills and runtime CSS injection. Rewrite
-  default :root variable selectors to page, retaining theme classes.
+  default :root variable selectors to page only for mini-programs; retain :root on
+  H5 and host-specific Shadow DOM inheritance, retaining theme classes.
 - Native WXML binds attrs class/style through Page/Component data. Wevu and Vue
   use computed plus explicit :class/:style. Taro React uses props() on View.
 - Process raw SFC scripts before framework compilation; retain templates,
@@ -100,7 +104,7 @@ The private root workspace is named `weapp-stylex-workspace`.
   prune unreachable graph nodes, and release session state on final watcher
   shutdown. closeBundle alone must not clear an active watcher.
 - Use host emission APIs; weapp-vite 7.4 uses a file-output compatibility path
-  for new bundle keys. Generate missing page/component WXSS companions, track
+  for new bundle keys. Generate missing page/component native stylesheet companions, track
   ownership, reject user filename conflicts and remove only owned stale files
   and imports. An initial build with no StyleX must remain unchanged.
 
@@ -129,5 +133,5 @@ incompatible major versions with global overrides. See docs for audit limits.
 
 Use `corepack pnpm change` to record package changes; do not hand-increment
 versions or publish npm as part of implementation tasks. Independent
-subpackages, other platforms, Vue 2, uni-app x, WXML sx syntax and stateful HMR
+subpackages, platforms beyond WeChat/Alipay/Douyin/H5, Vue 2, uni-app x, WXML sx syntax and stateful HMR
 remain future work.

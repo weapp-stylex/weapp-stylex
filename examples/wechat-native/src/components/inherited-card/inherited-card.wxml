@@ -1,0 +1,1 @@
+<view id="stylex-inherited-root" class="{{sx.class}}" style="{{sx.style}}">继承页面主题</view>

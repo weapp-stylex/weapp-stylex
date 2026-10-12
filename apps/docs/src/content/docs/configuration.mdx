@@ -5,6 +5,23 @@ sidebar:
   order: 9
 ---
 
+## Platforms and host inference
+
+Native, Wevu, Taro React/Vue 3 and uni-app Vue 3 adapters support WeChat, Alipay, Douyin and H5. The active host supplies the target; normally omit `target`. The optional compiler target is `weapp | alipay | tt | web` and must match the host. A directly constructed compiler session defaults to `weapp`.
+
+| Target | weapp-vite CLI | Taro CLI | uni-app CLI | Template / stylesheet |
+| --- | --- | --- | --- | --- |
+| WeChat | `-p weapp` | `--type weapp` | `-p mp-weixin` | `.wxml` / `.wxss` |
+| Alipay | `-p alipay` | `--type alipay` | `-p mp-alipay` | `.axml` / `.acss` |
+| Douyin | `-p tt` | `--type tt` | `-p mp-toutiao` | `.ttml` / `.ttss` |
+| H5 | `-p web` | `--type h5` | `-p h5` | Browser CSS |
+
+Use `createStylex()` and both returned fields for native/Wevu across targets. H5 also needs a project-root `index.html` importing `/@weapp-vite/web/entry`. `stylexCompiler()` remains the compatible native mini-program entry. Keep each platform's project configuration separate; do not copy WeChat configuration to other targets.
+
+Mini-program default variables use `page`; H5 retains `:root`. weapp-vite page Shadow DOM receives `:host` defaults while components inherit page themes. Taro/uni-app production builds generate a hashed external CSS asset linked from HTML; weapp-vite delivers CSS through page/component Web metadata. Development updates styles and may reload the page. Atomic rules retain global ordering and official runtime CSS injection stays disabled.
+
+Numeric and px values retain official StyleX semantics. Static H5 rpx follows the host conversion policy; dynamic values use browser-standard units. H5 builds and browser tests do not establish Alipay/Douyin IDE or device acceptance.
+
 ## Package entries
 
 | Package | Purpose |
@@ -60,6 +77,7 @@ Official StyleX runtime/plugin is 0.19.1. The shared compiler uses Babel 7; weap
 
 ```ts
 interface StylexCompilerOptions {
+  target?: 'weapp' | 'alipay' | 'tt' | 'web'
   backend?: 'babel' | 'auto' | 'swc'
   importSources?: readonly string[]
   babel?: Partial<Options> // @stylexjs/babel-plugin Options

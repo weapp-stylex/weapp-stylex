@@ -13,6 +13,7 @@
     "backgroundColor": "#f6f7fb"
   },
   "usingComponents": {
-    "stylex-card": "components/stylex-card/stylex-card"
+    "stylex-card": "/components/stylex-card/stylex-card",
+    "inherited-card": "/components/inherited-card/inherited-card"
   }
 }

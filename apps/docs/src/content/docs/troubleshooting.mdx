@@ -110,3 +110,7 @@ Use default Babel or `auto` for that input. If the native package is missing and
 Include the framework/builder versions, Node/package-manager version, adapter config, minimal declaration and consumer, expected behavior, first error and affected WXSS/JavaScript. For runtime issues, include the WeChat IDE/base-library versions and the actual failing interaction. Avoid credentials or private application data.
 
 Use [GitHub issues](https://github.com/weapp-stylex/weapp-stylex/issues). [Validation instructions](/examples/) describe the evidence to collect. Dated records under `docs/` describe those runs only; missing prerequisites or a partial IDE suite remain pending acceptance.
+
+## Other platforms and H5
+
+The WeChat examples above also accept Alipay, Douyin and H5 through the host. See [platform configuration](/configuration/#platforms-and-host-inference) for commands and mappings. Adapters infer the target; an optional `target` must match it. Mini-programs receive `stylex.wxss`, `stylex.acss` or `stylex.ttss`. H5 uses browser CSS; native/Wevu registers both `createStylex()` fields and supplies the Web `index.html`. H5 preserves `:root`; weapp-vite page Shadow DOM receives defaults while components inherit themes. Static rpx follows host policy, numeric/px values remain unchanged, and dynamic values use browser-standard units. Development updates may reload the page. `test:h5` validates production and development browser interactions.

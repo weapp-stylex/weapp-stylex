@@ -59,3 +59,7 @@ The examples verify Taro `4.3.0`, React `18` / Vue `3`, Vite `4` and Webpack `5.
 StyleX WXSS is emitted after Taro's dimension transforms. Numeric `16` remains `16px`; use `'16rpx'` explicitly. Webpack stores StyleX metadata in module `buildInfo` so filesystem cache hits still contribute CSS.
 
 The [taro-react example](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) builds two separate artifacts sequentially, with shared styles, multiple consumers, theme switching, dynamic values and ordinary subpackages.
+
+## Other platforms and H5
+
+The WeChat examples above also accept Alipay, Douyin and H5 through the host. See [platform configuration](/configuration/#platforms-and-host-inference) for commands and mappings. Adapters infer the target; an optional `target` must match it. Mini-programs receive `stylex.wxss`, `stylex.acss` or `stylex.ttss`. H5 uses browser CSS; native/Wevu registers both `createStylex()` fields and supplies the Web `index.html`. H5 preserves `:root`; weapp-vite page Shadow DOM receives defaults while components inherit themes. Static rpx follows host policy, numeric/px values remain unchanged, and dynamic values use browser-standard units. Development updates may reload the page. `test:h5` validates production and development browser interactions.

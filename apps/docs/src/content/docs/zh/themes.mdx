@@ -72,3 +72,7 @@ WXSS 中默认 token 的 `:root` 选择器映射为 `page`，主题 class 选择
 CSS 自定义属性仍依赖所选微信基础库的支持。请用实际 AppID 和基础库执行 IDE suite，验证主题与动态值。
 
 即使启用 `backend: 'auto'`，原始 SFC 脚本和主题模块仍使用官方 Babel。编译支持不能代替运行兼容性验收。按[示例验收](/zh/examples/)执行，并保留其链接的 IDE 记录日期与范围。默认值缺失或隔离组件异常时，按对应[排障步骤](/zh/troubleshooting/)检查。
+
+## 跨平台与 H5
+
+上述微信示例也可通过宿主选择支付宝、抖音或 H5，具体命令和目标映射见[平台配置](/zh/configuration/#平台与自动推断)。适配器自动推断目标；可选 `target` 必须匹配宿主。小程序生成对应的 `stylex.wxss`、`stylex.acss` 或 `stylex.ttss`。H5 使用浏览器 CSS，原生/Wevu 注册 `createStylex()` 的两个入口并准备 Web `index.html`。H5 默认变量保留 `:root`，weapp-vite Shadow DOM 接入页面默认值并让组件继承主题。静态 rpx 跟随宿主策略，数值/px 不变，动态值使用浏览器标准单位。开发更新允许完整刷新；生产和 dev 浏览器交互由 `test:h5` 验证。

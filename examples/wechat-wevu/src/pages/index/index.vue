@@ -6,7 +6,7 @@ import styles, { darkTheme, lightTheme } from '../../styles'
 definePageJson({
   usingComponents: {
     'stylex-card': '../../components/stylex-card/index',
-    'jsx-card': '../../components/jsx-card/index',
+    'inherited-card': '../../components/inherited-card/index',
   },
 })
 const active = ref(false)
@@ -47,6 +47,7 @@ function grow() {
       独立文件 · Vue SFC 内联 · 动态尺寸
     </view>
     <stylex-card id="stylex-card" :dark="dark" />
+    <inherited-card id="stylex-inherited-card" />
     <jsx-card />
     <view id="stylex-toggle" :class="button.class" @tap="toggle">
       点击查看条件样式

@@ -2,7 +2,7 @@
   "name": "@weapp-stylex/weapp-vite",
   "type": "module",
   "version": "0.3.0",
-  "description": "StyleX compiler integration for native WeChat and Wevu mini-programs built with weapp-vite",
+  "description": "StyleX compiler integration for native and Wevu mini-programs and the weapp-vite Web runtime",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
   "funding": {
@@ -63,7 +63,9 @@
     }
   },
   "dependencies": {
-    "@weapp-stylex/compiler": "workspace:*"
+    "@babel/core": "^7.29.7",
+    "@weapp-stylex/compiler": "workspace:*",
+    "postcss": "^8.5.29"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.5",

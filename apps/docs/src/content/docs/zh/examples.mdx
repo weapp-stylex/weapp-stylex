@@ -1,6 +1,6 @@
 ---
 title: "示例与验证"
-description: "五个示例 workspace、七份微信产物与可重复验证。"
+description: "五个示例 workspace、28 份跨平台产物与可重复验证。"
 sidebar:
   order: 11
 ---
@@ -9,13 +9,15 @@ sidebar:
 
 | Workspace | 工具链 | 产物 |
 | --- | --- | --- |
-| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.4 / Vite 8 | `dist` |
-| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu / Vite 8，SFC + JSX | `dist` |
-| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3 / React 18 | `dist/weapp-vite`、`dist/weapp-webpack` |
-| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3 / Vue 3 | `dist/weapp-vite`、`dist/weapp-webpack` |
-| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 CLI | `dist/build/mp-weixin` |
+| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.4 / Vite 8 | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
+| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu / Vite 8，SFC + JSX | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
+| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3 / React 18 | `dist/<platform>-<builder>` |
+| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3 / Vue 3 | `dist/<platform>-<builder>` |
+| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 CLI | `dist/build/<platform>` |
 
 全部示例覆盖共享模块、多消费者、条件合并、主题、动态值和普通分包，保留少量内联声明作为对照。
+
+每个示例的 `build` 顺序构建微信、支付宝、抖音和 H5，Taro 每个平台再顺序构建两个 builder。H5 可通过 `dev:h5` 启动，Taro Webpack 使用 `dev:h5:webpack`，端口由 `WEAPP_STYLEX_PORT` 指定。`test:h5` 对七份 H5 生产与开发产物运行 headless 浏览器交互，并覆盖继承主题与样式变更。`test:ide` 仅处理七份微信产物；支付宝/抖音 IDE 与真机验收单独记录。
 
 ## 从源码构建
 
@@ -28,7 +30,9 @@ corepack pnpm build
 corepack pnpm test:examples
 ```
 
-`build` 先构建包，再构建依赖这些包的示例。Taro 的两个 builder 顺序输出到不同目录。`test:examples` 检查全部七份产物，并通过 `@mpcore/test` 运行原生/Wevu headless 交互。
+`build` 先构建包，再构建依赖这些包的示例。Taro 的两个 builder 顺序输出到不同目录。`test:examples` 检查全部 28 份产物，并通过 `@mpcore/test` 运行原生/Wevu headless 交互。
+
+CI 按 Node 22/24 与 `weapp`、`alipay`、`tt`、`h5` 拆分目标任务。单目标可运行 `corepack pnpm exec node scripts/build-examples.mjs alipay`，随后用 `WEAPP_STYLEX_TARGET=alipay corepack pnpm test:examples` 仅验证该目标。
 
 ## 自动检查
 
@@ -38,6 +42,7 @@ corepack pnpm typecheck
 corepack pnpm test
 corepack pnpm test:deps
 corepack pnpm test:integration
+corepack pnpm test:h5
 ```
 
 集成测试使用真实模块图、Vite watcher 与 Webpack filesystem cache，覆盖共享导出、别名、主题、缓存保留、过期规则清理、WXSS import、单位语义与冲突。
@@ -50,7 +55,7 @@ WEAPP_STYLEX_APPID=your-real-appid WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH=/path/to/wec
 
 使用真实 AppID、选定的官方稳定版 IDE，完成登录并开启服务端口。suite 全局串行，每份产物只启动一次 automator，使用 `reLaunch` 切页，先结构断言后截图。IDE/基础库版本、截图、日志和本任务资源清理记录保存在 `artifacts/ide`。
 
-缺少 IDE 前提时记为待验收，不视为通过。Taro/uni-app 运行行为需要真实 IDE 验证，静态构建检查无法替代。实际验收状态参见[验证记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-framework-validation.md)。
+缺少 IDE 前提时记为待验收，不视为通过。Taro/uni-app 运行行为需要真实 IDE 验证，静态构建检查无法替代。实际验收状态参见[验证记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-platform-validation.md)。
 
 ## 验证两种后端
 
@@ -63,4 +68,4 @@ WEAPP_STYLEX_BACKEND=auto corepack pnpm --filter './examples/*' build
 corepack pnpm test:examples
 ```
 
-矩阵覆盖七份微信产物和原生、Wevu headless 交互。两种模式的主题模块和原始 SFC 脚本均使用 Babel；auto 中符合条件的 TS/JS 模块使用 SWC。CI 在隔离的打包安装中测试原生依赖可用和实际移除可选包两条路径。
+矩阵覆盖四个目标的 28 份产物和原生、Wevu headless 交互。两种模式的主题模块和原始 SFC 脚本均使用 Babel；auto 中符合条件的 TS/JS 模块使用 SWC。CI 在隔离的打包安装中测试原生依赖可用和实际移除可选包两条路径。

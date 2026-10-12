@@ -4,7 +4,7 @@
   <img src="assets/brand/logo.svg" width="160" alt="weapp-stylex logo" />
 </p>
 
-把官方 StyleX 编译为微信小程序 WXSS。支持原生 Page/Component、Wevu、Taro React、Taro Vue 3 和 uni-app Vue 3；Taro 可使用 Vite 或 Webpack 5。
+把官方 StyleX 编译为微信、支付宝、抖音小程序样式与 H5 CSS。支持原生 Page/Component、Wevu、Taro React、Taro Vue 3 和 uni-app Vue 3；Taro 可使用 Vite 或 Webpack 5。
 
 中英文文档：[stylex.weapp.dev](https://stylex.weapp.dev/)（客户端按系统时区推断地区并选择语言，手动选择优先） · [中文指南](https://stylex.weapp.dev/zh/) · [English](https://stylex.weapp.dev/en/)。
 
@@ -24,15 +24,15 @@ pnpm add weapp-stylex
 `weapp-stylex/taro`、`weapp-stylex/uni-app` 导出构建适配器；
 `weapp-stylex/compiler` 与 `weapp-stylex/taro/loader` 提供底层构建入口。
 所有入口包含 ESM/CJS 和对应类型声明。根入口只加载 runtime，框架宿主作为可选
-peer，使用对应适配器时安装其支持的宿主版本。七份示例均使用聚合入口。
+peer，使用对应适配器时安装其支持的宿主版本。28 份构建产物均使用聚合入口。
 
-| 包                         | 用途                                                                      |
-| -------------------------- | ------------------------------------------------------------------------- |
-| `@weapp-stylex/core`       | 薄封装官方 runtime，导出 API、类型和主题能力                              |
-| `@weapp-stylex/compiler`   | 共享转换 session、SFC 预处理、依赖记录、CSS 聚合和 WXSS 输出规划；ESM/CJS |
-| `@weapp-stylex/weapp-vite` | 原生 `stylexCompiler()`；原生/Wevu `createStylex()`                       |
-| `@weapp-stylex/taro`       | Taro 默认插件，自动接入当前 builder；ESM/CJS，独立 `./loader` 入口        |
-| `@weapp-stylex/uni-app`    | `stylexUniApp()`，在 `uni()` 后注册                                       |
+| 包                         | 用途                                                                          |
+| -------------------------- | ----------------------------------------------------------------------------- |
+| `@weapp-stylex/core`       | 薄封装官方 runtime，导出 API、类型和主题能力                                  |
+| `@weapp-stylex/compiler`   | 共享转换 session、SFC 预处理、依赖记录、CSS 聚合和跨平台样式输出规划；ESM/CJS |
+| `@weapp-stylex/weapp-vite` | 原生 `stylexCompiler()`；原生/Wevu `createStylex()`                           |
+| `@weapp-stylex/taro`       | Taro 默认插件，自动接入当前 builder；ESM/CJS，独立 `./loader` 入口            |
+| `@weapp-stylex/uni-app`    | `stylexUniApp()`，在 `uni()` 后注册                                           |
 
 也可以只安装需要的拆分包，继续使用原有 `@weapp-stylex/*` 导入：
 
@@ -91,7 +91,7 @@ const attrs = stylex.attrs(styles.root, active && styles.active)
 const meter = stylex.attrs(styles.meter(80))
 ```
 
-数值保持 StyleX 的单位语义：`padding: 16` 输出 `16px`，需要响应式小程序单位时写 `'16rpx'`。StyleX WXSS 在框架尺寸转换之后输出，不会再次 px→rpx。动态样式由官方 runtime 生成 CSS 自定义属性，Vue/原生同时绑定 `.class` 和 `.style`。
+数值保持 StyleX 的单位语义：`padding: 16` 输出 `16px`，需要响应式小程序单位时写 `'16rpx'`。小程序样式在框架尺寸转换之后输出，不会再次 px→rpx；H5 仅转换静态 rpx，跟随宿主的响应式策略。动态样式由官方 runtime 生成 CSS 自定义属性，Vue/原生同时绑定 `.class` 和 `.style`。
 
 跨模块变量使用官方 `tokens.stylex.ts` 约定，定义、引用和 `createTheme()` 均**直接导入 token 文件**：
 
@@ -113,11 +113,24 @@ export const darkTheme = stylex.createTheme(tokens, {
 })
 ```
 
-样式引用 `tokens.surface`，消费者将 `darkTheme` 与样式一起传入 `attrs()` / `props()`。宿主 resolver 预解析别名及 workspace 路径，官方 custom module resolution 使用规范化文件身份生成一致的变量哈希。默认变量选择器 `:root` 映射为 `page`，主题 class 保留；隔离组件应把对应主题 class 也绑定在自身根节点。
+样式引用 `tokens.surface`，消费者将 `darkTheme` 与样式一起传入 `attrs()` / `props()`。宿主 resolver 预解析别名及 workspace 路径，官方 custom module resolution 使用规范化文件身份生成一致的变量哈希。小程序默认变量选择器 `:root` 映射为 `page`，H5 保留 `:root`，主题 class 保留；隔离组件应把对应主题 class 也绑定在自身根节点。
 
 官方编译器移除 token 的 JS 导入后，适配器仍会收集其默认变量 CSS 和依赖，并保存在消费者 metadata 中，支持缓存恢复和主题文件更新。
 
-## 原生微信 / Wevu
+## 平台支持
+
+平台由宿主自动推断，无需重复配置 StyleX。可选 `target` 使用 `weapp`、`alipay`、`tt`、`web`；与宿主目标冲突时明确报错，直接使用共享 compiler 时默认微信。
+
+| 目标   | weapp-vite  | Taro            | uni-app         | 样式产物                                        |
+| ------ | ----------- | --------------- | --------------- | ----------------------------------------------- |
+| 微信   | `-p weapp`  | `--type weapp`  | `-p mp-weixin`  | `stylex.wxss`，`.wxml/.wxss`                    |
+| 支付宝 | `-p alipay` | `--type alipay` | `-p mp-alipay`  | `stylex.acss`，`.axml/.acss`                    |
+| 抖音   | `-p tt`     | `--type tt`     | `-p mp-toutiao` | `stylex.ttss`，`.ttml/.ttss`                    |
+| H5     | `-p web`    | `--type h5`     | `-p h5`         | 浏览器 CSS；Taro/uni-app 使用带 hash 的外部 CSS |
+
+原生与 Wevu 使用 `createStylex()` 并注册两个返回入口，H5 项目根目录提供加载 `/@weapp-vite/web/entry` 的 `index.html`。小程序默认变量使用 `page`，H5 保留 `:root`；weapp-vite Web runtime 将默认变量接入页面 Shadow DOM，组件继承页面变量。H5 静态 `rpx` 跟随宿主转换，数值及 `px` 不参与尺寸转换；动态值使用 `px`、`rem`、`vw` 等浏览器标准单位。H5 支持生产构建与 dev 样式更新，允许完整刷新。
+
+## 原生小程序 / Wevu
 
 只使用原生 TS/JS 时，原有 API 保持可用：
 
@@ -130,7 +143,7 @@ export default defineConfig({
 })
 ```
 
-Wevu Vue SFC 使用工厂的两个入口，让 Vite 在 SFC 编译前处理脚本，并让 compilerPlugin 输出 WXSS：
+Wevu 及原生 H5 使用工厂的两个入口：Vite 在框架编译前处理脚本，小程序通过 compilerPlugin 输出平台样式，H5 通过宿主 Web runtime 交付 CSS：
 
 ```ts
 import { createStylex } from 'weapp-stylex/weapp-vite'
@@ -241,13 +254,13 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 ## 示例与验证
 
-| Workspace       | 已配置版本                                              | 微信产物                                |
-| --------------- | ------------------------------------------------------- | --------------------------------------- |
-| `wechat-native` | weapp-vite 7.4.0 / Vite 8.3.4                           | `dist`                                  |
-| `wechat-wevu`   | wevu 7.4.0 / weapp-vite 7.4.0                           | `dist`，含 SFC 和 JSX 组件              |
-| `taro-react`    | Taro 4.3.0 / React 18.3.1                               | `dist/weapp-webpack`、`dist/weapp-vite` |
-| `taro-vue3`     | Taro 4.3.0 / Vue 3.5.43                                 | `dist/weapp-webpack`、`dist/weapp-vite` |
-| `uni-vue3`      | DCloud vue3 `3.0.0-alpha-5030120260930001` / Vue 3.4.21 | `dist/build/mp-weixin`                  |
+| Workspace       | 已配置版本                                              | 各目标产物                                                       |
+| --------------- | ------------------------------------------------------- | ---------------------------------------------------------------- |
+| `wechat-native` | weapp-vite 7.4.0 / Vite 8.3.4                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
+| `wechat-wevu`   | wevu 7.4.0 / weapp-vite 7.4.0                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
+| `taro-react`    | Taro 4.3.0 / React 18.3.1                               | `dist/weapp-webpack`、`dist/weapp-vite`                          |
+| `taro-vue3`     | Taro 4.3.0 / Vue 3.5.43                                 | `dist/weapp-webpack`、`dist/weapp-vite`                          |
+| `uni-vue3`      | DCloud vue3 `3.0.0-alpha-5030120260930001` / Vue 3.4.21 | `dist/build/<platform>`                                          |
 
 Taro 使用 Vite 4.5.14 / Webpack 5.91.0，uni-app 固定 Vite 5.2.8；没有全局 Vite 主版本 override。各示例都包含共享样式、多消费者、条件合并、主题、动态值、少量内联样式和普通分包。每个示例的 README 提供单独构建命令。
 
@@ -263,6 +276,7 @@ corepack pnpm test
 corepack pnpm test:deps
 corepack pnpm test:integration
 corepack pnpm test:examples
+corepack pnpm test:h5
 corepack pnpm exec repo deps check
 corepack pnpm exec repo doctor
 corepack pnpm exec repo check --full
@@ -270,7 +284,7 @@ corepack pnpm audit --json
 corepack pnpm test:ide
 ```
 
-`test:integration` 使用真实原生模块图、Vite watcher 和 Webpack filesystem cache；`test:examples` 检查七份产物并运行原生/Wevu `@mpcore/test` 逻辑树和交互断言。IDE suite 全局串行，每份产物只启动一次 automator，以 `reLaunch` 切页，先断言再截图。
+`test:integration` 使用真实原生模块图、Vite watcher 和 Webpack filesystem cache；`test:examples` 检查 28 份产物并运行原生/Wevu `@mpcore/test` 逻辑树和交互断言。IDE suite 全局串行，每份产物只启动一次 automator，以 `reLaunch` 切页，先断言再截图。
 
 IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`（选定的官方稳定版 CLI），先登录并开启服务端口。构建脚本从环境注入 AppID；测试在独立产物副本同步 AppID 和条件页，不改动用户已打开的项目。日志、截图、版本和资源清理记录写入 `artifacts/ide`；缺环境时返回退出码 2 并明确标记 pending。
 
@@ -278,6 +292,6 @@ IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DE
 
 ## 支持边界
 
-本轮限微信主包、页面、组件和普通分包。独立分包、其他平台、Vue 2、uni-app x、WXML `sx` 属性和 stateful HMR 留给后续版本。token 文件需遵循官方命名与直接导入约定；编译器不解析 WXML，也不从模板反推样式。
+支持微信、支付宝、抖音的主包、页面、组件和普通分包，以及 H5。独立分包、其余小程序平台、Vue 2、uni-app x、WXML `sx` 属性和 stateful HMR 留给后续版本。token 文件需遵循官方命名与直接导入约定；编译器不解析 WXML，也不从模板反推样式。
 
 MIT License。

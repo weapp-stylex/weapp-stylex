@@ -9,5 +9,16 @@
       "urlCheck": false
     },
     "usingComponents": true
+  },
+  "mp-alipay": {
+    "usingComponents": true
+  },
+  "mp-toutiao": {
+    "usingComponents": true
+  },
+  "h5": {
+    "router": {
+      "mode": "hash"
+    }
   }
 }

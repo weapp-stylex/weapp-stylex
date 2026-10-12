@@ -21,7 +21,9 @@ Each normalized module ID owns rules and dependencies. A transform replaces that
 
 ## Vue and Webpack
 
-SFC preprocessing changes script contents only and composes sourcemaps. Template compilation and framework macros stay with the host. Vite virtual script requests are skipped. uni-app uses its own compatible parser.
+SFC preprocessing changes script contents only and composes sourcemaps. Template compilation and framework macros stay with the host. Duplicate Vite virtual script requests are skipped. uni-app uses its own compatible parser.
+
+weapp-vite's Web runtime can scan and cache SFCs before Vite runs raw-source hooks. Its adapter recognizes the host-owned Web component request, then uses `StylexSession.transformCompiledSfcScript()` after host compilation to complete any retained StyleX calls. The shared compiler keeps the original physical `.vue` metadata identity, preserves rules from raw preprocessing, replays dependencies and composes script maps. Default/`auto` retain Babel to protect template-only bindings. This explicit host path leaves generated templates, macros and lifecycle code under host control.
 
 Taro's Webpack pre-loader runs before Babel/Vue processing and records metadata in module `buildInfo`. `processAssets` collects cached rules and injects WXSS after the host finishes its own styles.
 
@@ -48,3 +50,7 @@ A shared backend interface returns code, sourcemaps and official-format rules. B
 Only imports used in StyleX compile-time evaluation are pre-resolved. Ordinary component imports and runtime styles remain in the host graph. Sessions coalesce concurrent source/token work, reuse filesystem and resolver facts within a build, and cache transforms by physical ID, source hash, compiler/options fingerprint, actual backend and dependency signatures. Non-empty custom Babel options disable transform caching because callbacks may read external state.
 
 Changes invalidate dependent results; configuration/manifest changes revalidate identities and caches. Generation and per-module request checks stop stale asynchronous jobs from restoring removed metadata. Cached modules survive watch output hooks, unreachable modules are pruned, and final watcher shutdown releases caches. Webpack adds the fingerprint to the host cache version and appends compiler build dependencies, retaining host cache settings and rules in buildInfo.
+
+## Other platforms and H5
+
+The WeChat examples above also accept Alipay, Douyin and H5 through the host. See [platform configuration](/configuration/#platforms-and-host-inference) for commands and mappings. Adapters infer the target; an optional `target` must match it. Mini-programs receive `stylex.wxss`, `stylex.acss` or `stylex.ttss`. H5 uses browser CSS; native/Wevu registers both `createStylex()` fields and supplies the Web `index.html`. H5 preserves `:root`; weapp-vite page Shadow DOM receives defaults while components inherit themes. Static rpx follows host policy, numeric/px values remain unchanged, and dynamic values use browser-standard units. Development updates may reload the page. `test:h5` validates production and development browser interactions.

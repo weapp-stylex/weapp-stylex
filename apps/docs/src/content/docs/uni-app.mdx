@@ -58,6 +58,10 @@ Use normal shared TS modules; bind class and style together for dynamic values. 
 pnpm exec uni build -p mp-weixin
 ```
 
-The plugin rejects other `UNI_PLATFORM` targets. Vue 2 and uni-app x are outside the support contract.
+The plugin accepts `mp-weixin`, `mp-alipay`, `mp-toutiao` and `h5`; other targets fail explicitly. Vue 2 and uni-app x are outside the support contract.
 
 The [uni-vue3 example](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) pins the official Vue 3 channel `3.0.0-alpha-5030120260930001`. DCloud packages share that version; Vite is `5.2.8`, Vue is `3.4.21`. These are framework compatibility pins, not a recommendation to force them on other workspaces.
+
+## Other platforms and H5
+
+The WeChat examples above also accept Alipay, Douyin and H5 through the host. See [platform configuration](/configuration/#platforms-and-host-inference) for commands and mappings. Adapters infer the target; an optional `target` must match it. Mini-programs receive `stylex.wxss`, `stylex.acss` or `stylex.ttss`. H5 uses browser CSS; native/Wevu registers both `createStylex()` fields and supplies the Web `index.html`. H5 preserves `:root`; weapp-vite page Shadow DOM receives defaults while components inherit themes. Static rpx follows host policy, numeric/px values remain unchanged, and dynamic values use browser-standard units. Development updates may reload the page. `test:h5` validates production and development browser interactions.

@@ -1,6 +1,6 @@
 ---
 title: "Examples and validation"
-description: "Five workspaces, seven WeChat artifacts and repeatable checks."
+description: "Five workspaces, 28 cross-platform artifacts and repeatable checks."
 sidebar:
   order: 11
 ---
@@ -9,13 +9,15 @@ sidebar:
 
 | Workspace | Toolchain | Artifacts |
 | --- | --- | --- |
-| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.4 / Vite 8 | `dist` |
-| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu / Vite 8, SFC + JSX | `dist` |
-| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3 / React 18 | `dist/weapp-vite`, `dist/weapp-webpack` |
-| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3 / Vue 3 | `dist/weapp-vite`, `dist/weapp-webpack` |
-| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 CLI | `dist/build/mp-weixin` |
+| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.4 / Vite 8 | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
+| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu / Vite 8, SFC + JSX | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
+| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3 / React 18 | `dist/<platform>-<builder>` |
+| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3 / Vue 3 | `dist/<platform>-<builder>` |
+| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 CLI | `dist/build/<platform>` |
 
 Examples include shared modules, multiple consumers, conditional composition, themes, dynamic values and ordinary subpackages. A few inline declarations provide a comparison.
+
+Each example build runs WeChat, Alipay, Douyin and H5 sequentially; Taro also serializes its two builders for each target. Use `dev:h5`, or Taro’s `dev:h5:webpack`, with `WEAPP_STYLEX_PORT` to select a development port. `test:h5` runs headless browser interactions against seven production and development H5 artifacts, including inherited themes and style edits. `test:ide` selects only the seven WeChat artifacts; Alipay/Douyin IDE and device acceptance are tracked separately.
 
 ## Build from source
 
@@ -28,7 +30,9 @@ corepack pnpm build
 corepack pnpm test:examples
 ```
 
-`build` builds packages before dependent examples. The two Taro builders run sequentially into separate directories. `test:examples` checks all seven outputs and runs native/Wevu headless interactions through `@mpcore/test`.
+`build` builds packages before dependent examples. The two Taro builders run sequentially into separate directories. `test:examples` checks all 28 outputs and runs native/Wevu headless interactions through `@mpcore/test`.
+
+CI separates Node 22/24 and `weapp`, `alipay`, `tt`, `h5` target jobs. To run one target, use `corepack pnpm exec node scripts/build-examples.mjs alipay`, then `WEAPP_STYLEX_TARGET=alipay corepack pnpm test:examples`.
 
 ## Automated checks
 
@@ -38,6 +42,7 @@ corepack pnpm typecheck
 corepack pnpm test
 corepack pnpm test:deps
 corepack pnpm test:integration
+corepack pnpm test:h5
 ```
 
 Integration tests use real module graphs, Vite watchers and Webpack filesystem cache. They cover shared exports, aliases, themes, cache retention, stale rule removal, WXSS imports, unit semantics and conflicts.
@@ -50,7 +55,7 @@ WEAPP_STYLEX_APPID=your-real-appid WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH=/path/to/wec
 
 Use a real AppID, the selected official stable IDE, login and an enabled service port. The suite is globally serial: one automator per artifact, `reLaunch` between pages, structural assertions before screenshots. It records IDE/base-library versions, screenshots, logs and owned-resource cleanup in `artifacts/ide`.
 
-Missing IDE prerequisites are reported as pending, not passed. Taro/uni-app runtime behavior requires this real IDE check; static build validation does not replace it. See the [validation record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-framework-validation.md) for the actual acceptance status.
+Missing IDE prerequisites are reported as pending, not passed. Taro/uni-app runtime behavior requires this real IDE check; static build validation does not replace it. See the [validation record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/multi-platform-validation.md) for the actual acceptance status.
 
 ## Validate both backends
 
@@ -63,4 +68,4 @@ WEAPP_STYLEX_BACKEND=auto corepack pnpm --filter './examples/*' build
 corepack pnpm test:examples
 ```
 
-The matrix includes all seven WeChat artifacts and native/Wevu headless interactions. Theme modules and raw SFC scripts use Babel in both modes; eligible TS/JS modules use SWC in auto. CI tests both native availability and a physically missing optional package in an isolated packed install.
+The matrix includes 28 artifacts across four targets and native/Wevu headless interactions. Theme modules and raw SFC scripts use Babel in both modes; eligible TS/JS modules use SWC in auto. CI tests both native availability and a physically missing optional package in an isolated packed install.

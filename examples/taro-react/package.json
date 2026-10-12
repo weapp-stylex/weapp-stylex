@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.3",
   "private": true,
-  "description": "Runnable WeChat StyleX integration example",
+  "description": "Runnable multi-platform StyleX integration example",
   "author": "ice breaker <1324318532@qq.com>",
   "license": "MIT",
   "repository": {
@@ -25,11 +25,17 @@
     "node": "^22.22.1 || >=24.11.0"
   },
   "scripts": {
-    "build": "corepack pnpm build:webpack && corepack pnpm build:vite",
+    "build": "corepack pnpm build:weapp && corepack pnpm build:alipay && corepack pnpm build:tt && corepack pnpm build:h5",
     "build:webpack": "node ../../scripts/build-taro.mjs webpack",
     "build:vite": "node ../../scripts/build-taro.mjs vite",
     "dev": "node ../../scripts/build-taro.mjs vite --watch",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:weapp": "node ../../scripts/build-taro.mjs webpack weapp && node ../../scripts/build-taro.mjs vite weapp",
+    "build:alipay": "node ../../scripts/build-taro.mjs webpack alipay && node ../../scripts/build-taro.mjs vite alipay",
+    "build:tt": "node ../../scripts/build-taro.mjs webpack tt && node ../../scripts/build-taro.mjs vite tt",
+    "build:h5": "node ../../scripts/build-taro.mjs webpack h5 && node ../../scripts/build-taro.mjs vite h5",
+    "dev:h5": "node ../../scripts/build-taro.mjs vite h5 --watch",
+    "dev:h5:webpack": "node ../../scripts/build-taro.mjs webpack h5 --watch"
   },
   "dependencies": {
     "@tarojs/components": "4.3.0",
@@ -44,9 +50,13 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@babel/preset-react": "^7.29.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.6.3",
     "@tarojs/cli": "4.3.0",
     "@tarojs/helper": "4.3.0",
     "@tarojs/plugin-framework-react": "4.3.0",
+    "@tarojs/plugin-platform-alipay": "4.3.0",
+    "@tarojs/plugin-platform-h5": "4.3.0",
+    "@tarojs/plugin-platform-tt": "4.3.0",
     "@tarojs/plugin-platform-weapp": "4.3.0",
     "@tarojs/vite-runner": "4.3.0",
     "@tarojs/webpack5-runner": "4.3.0",
@@ -56,6 +66,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "babel-preset-taro": "4.3.0",
     "less": "^4.9.1",
+    "react-refresh": "0.19.0",
     "sass": "^1.105.1",
     "vite": "^4.5.14",
     "webpack": "5.91.0"
