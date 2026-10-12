@@ -15,6 +15,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { waitForWatchedSources } from './watcher-ready.mjs'
 
 const compilerOptions = { backend: process.env.WEAPP_STYLEX_BACKEND === 'auto' ? 'auto' : 'babel' }
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -617,40 +618,7 @@ async function runWebViteLifecycle() {
       {
         name: 'fixture-watch-ready',
         configureServer({ watcher }) {
-          watcherReady = (async () => {
-            // Vite starts Chokidar before async environment initialization.
-            // Its one-time ready event may already have fired, so use the
-            // public registry to recognize our fully registered sources.
-            const sources = ['entry.js', 'shared.js', 'tokens.stylex.js']
-            const registered = watcher.getWatched()[cwd] ?? []
-            if (!sources.every(file => registered.includes(file))) {
-              await new Promise((resolve, reject) => {
-                let timer
-                let onReady
-                let onError
-                const cleanup = () => {
-                  clearTimeout(timer)
-                  watcher.off('ready', onReady)
-                  watcher.off('error', onError)
-                }
-                onReady = () => {
-                  cleanup()
-                  resolve()
-                }
-                onError = (error) => {
-                  cleanup()
-                  reject(error)
-                }
-                timer = setTimeout(() => onError(new Error('H5 watcher initial scan timed out')), 10000)
-                watcher.once('ready', onReady)
-                watcher.once('error', onError)
-              })
-            }
-            const watched = watcher.getWatched()[cwd] ?? []
-            for (const file of sources) {
-              assert.ok(watched.includes(file), `H5 fixture source was not registered with the watcher: ${file}`)
-            }
-          })()
+          watcherReady = waitForWatchedSources(watcher, cwd, ['entry.js', 'shared.js', 'tokens.stylex.js'])
           // Await below inside the server ownership boundary, even if the
           // initial scan fails before createServer has returned its instance.
           void watcherReady.catch(() => {})
@@ -665,7 +633,12 @@ async function runWebViteLifecycle() {
       // Chokidar's Node/Linux path suppresses duplicate change events for
       // 50ms. A write-finish event is a real stable write boundary, so the next
       // same-file edit is observed instead of falling inside that window.
-      watch: { awaitWriteFinish: { stabilityThreshold: 50, pollInterval: 10 } },
+      watch: {
+        // Exercise the CI/Linux NodeFs registration path on macOS as well.
+        // Browser acceptance separately verifies each host's default watcher.
+        useFsEvents: false,
+        awaitWriteFinish: { stabilityThreshold: 50, pollInterval: 10 },
+      },
     },
   })
   try {

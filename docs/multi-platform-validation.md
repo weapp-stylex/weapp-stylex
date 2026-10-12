@@ -44,8 +44,8 @@ weapp-vite 7.4 CLI 的开发编排路径曾返回就绪但未启动 HTTP 服务�
 | Babel 与 auto 微信原生/Wevu headless 交互                                          | 通过 | `artifacts/examples-babel-final.log`、`artifacts/examples-auto-followup.log`                              |
 | Babel 七条 H5 链路的生产与开发浏览器交互，共 14 组                                 | 通过 | `artifacts/h5-babel-followup.log`、`artifacts/h5/babel/report.json`                                       |
 | 92 项单元测试                                                                      | 通过 | `artifacts/test-final.log`                                                                                |
-| 18 项 Node 脚本测试                                                                | 通过 | `artifacts/node-tests-followup.log`                                                                       |
-| Babel 与 auto 集成：三小程序目标、Vue-loader、watch/cache、H5 生命周期、打包消费者 | 通过 | `artifacts/integration-babel-followup.log`、`artifacts/integration-auto-followup.log`                     |
+| 23 项 Node 脚本测试                                                                | 通过 | `artifacts/node-watcher-tests.log`                                                                        |
+| Babel 与 auto 集成：三小程序目标、Vue-loader、watch/cache、H5 生命周期、打包消费者 | 通过 | `artifacts/integration-watcher-babel.log`、`artifacts/integration-watcher-auto.log`                       |
 | auto 四目标共 28 份生产产物，逐产物 CSS 与 Babel 完全一致                          | 通过 | `artifacts/build-auto-final.log`、`artifacts/examples-auto-followup.log`                                  |
 | auto 七条 H5 生产/开发浏览器交互，共 14 组                                         | 通过 | `artifacts/h5-auto-followup.log`、`artifacts/h5/auto/report.json`                                         |
 | auto 微信七份产物在同一完整、串行真实 IDE suite 中运行                             | 通过 | `artifacts/ide-auto-ready-2026-10-12.log`、`artifacts/ide/run-1791798851471/report.json`                  |
@@ -53,9 +53,15 @@ weapp-vite 7.4 CLI 的开发编排路径曾返回就绪但未启动 HTTP 服务�
 
 Babel 与 auto H5 报告均包含原生、Wevu、Taro React/Vue 3 各两个 builder 以及 uni-app 七条链路，每种后端全部 production/development 为 `passed`，共 28 组浏览器验收；浏览器为 headless，两份报告的静态服务、浏览器和七个开发服务的 `resources.closed` 均为 `true`。验收覆盖首次样式、条件合并、主题切换、Shadow DOM 主题继承、动态值、静态 rpx 与数值 px、分包导航、样式及 token 编辑恢复、生产子路径部署。结束后复核 shared/token 源码恢复，未残留测试修改。
 
-最终修正后又分别重建七份 H5 并完整复跑浏览器验收：Babel 于 2026-10-12 **09:58:02.529 UTC** 开始，auto 于 **09:59:56.644 UTC** 开始，两轮各 14 组交互全部通过、九个资源全部关闭。使用 Playwright 安装的 Chromium 并显式保持 headless。Babel/auto integration 同步复跑通过，18 项 Node 脚本测试涵盖新增 IDE 应用就绪屏障。本地结果不代表本轮修复推送后的远端 CI 已通过。
+最终修正后又分别重建七份 H5 并完整复跑浏览器验收：Babel 于 2026-10-12 **09:58:02.529 UTC** 开始，auto 于 **09:59:56.644 UTC** 开始，两轮各 14 组交互全部通过、九个资源全部关闭。使用 Playwright 安装的 Chromium 并显式保持 headless。该轮 Babel/auto integration 同步复跑通过，18 项 Node 脚本测试涵盖新增 IDE 应用就绪屏障；后续 NodeFs 边界回归扩展为下述 23 项。本地结果不代表本轮修复推送后的远端 CI 已通过。
 
-初轮提交 `6f05093` 的远端 CI 失败来自验收脚本的异步同步与宿主 API 使用：H5 导航现等待公开页面栈与 `wx.reLaunch` 就绪，watch fixture 通过公开 watcher registry 确认初始扫描完成，并以稳定写入边界同步连续修改。此次增强保持实际错误断言，本地 Babel/auto 的 H5 与集成复测已通过；最新 auto 再次检查 28 份产物、逐份 CSS 一致及原生/Wevu headless 交互。远端结果以修复推送后的 CI 独立结论为准。
+初轮提交 `6f05093` 的远端 CI 失败来自验收脚本的异步同步与宿主 API 使用：H5 导航现等待公开页面栈与 `wx.reLaunch` 就绪，watch fixture 增加公开 watcher registry 检查，并以稳定写入边界同步连续修改。此次增强保持实际错误断言，本地 Babel/auto 的 H5 与集成复测已通过；最新 auto 再次检查 28 份产物、逐份 CSS 一致及原生/Wevu headless 交互。
+
+第二轮提交 `20227b3` 的远端 CI **38234348457** 已完成：四目标 × 两种 Node 的八个平台任务全部通过，包括 H5 的 Babel/auto 浏览器交互；Node 22.22.1 与 24.18.0 的两个主验证任务在 H5 watch fixture 启动阶段失败，工作流整体仍失败。两份日志分别为 `artifacts/ci-20227b3/test-node22.log` 和 `artifacts/ci-20227b3/test-node24.log`，首错均为 `entry.js` 尚未注册至 watcher；该错发生在 HTTP 请求和样式修改断言之前。
+
+本地使用 `useFsEvents: false` 强制 Chokidar 3 的 NodeFs 路径，复现相同首错，证据为 `artifacts/h5-nodefs-reproduction-old.log`。Vite 8 添加四个不存在的 env 文件，NodeFs 的 ENOENT 分支使 ready 计数提前满足：收到 `ready` 事件不保证 fixture 源文件已全部进入 registry。既有 macOS 默认 watcher 路径的本地通过不能代替这个边界。
+
+现在 watch fixture 固定使用 NodeFs，并通过共享就绪屏障在 10 秒上限内等待所需源码实际进入公开 registry；`ready` 事件只触发一次检查，不能直接解除屏障。轮询同时覆盖 `ignoreInitial` 下没有 add 事件的静默注册，watcher/registry 错误立即传播，成功、错误和超时均清理所属监听与计时器。新增五项行为回归，完整 Node 脚本测试 **23/23** 通过；固定 NodeFs 的 Babel/auto 完整集成均退出成功，日志为 `artifacts/integration-watcher-babel.log` 与 `artifacts/integration-watcher-auto.log`。第二轮远端失败保留，修复后的远端结果以独立 CI 结论为准，不将八个平台任务成功或本地回归提升为整轮 CI 通过。
 
 28 份产物检查在 Babel 和 auto 两种模式均覆盖目标扩展名、token、共享 class、单位、分包和平台资产隔离；auto 的 28 份 CSS 与保存的 Babel 基线逐份完全一致。Taro 与 uni-app H5 均交付非空 hash CSS 与 HTML link。文档最新检查为 29 对双语页面、58 个页面、13 个公开入口、83 个 API 导出和两语言各 144 个 API 章节。上述本地日志不将构建或浏览器通过提升为小程序 IDE、真机或远端 CI 通过。
 

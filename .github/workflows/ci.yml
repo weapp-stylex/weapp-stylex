@@ -26,7 +26,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - name: Verify build initialization, IDE application readiness and resource ownership
-        run: pnpm exec node --test scripts/taro/*.test.mjs scripts/ide-*.test.mjs
+        run: pnpm exec node --test scripts/taro/*.test.mjs scripts/ide-*.test.mjs scripts/watcher-ready.test.mjs
       - run: pnpm test:deps
       - run: pnpm test:integration
       - name: Verify mixed backend module graphs and filesystem caches
