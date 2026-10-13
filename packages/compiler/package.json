@@ -1,7 +1,7 @@
 {
   "name": "@weapp-stylex/compiler",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "description": "Shared StyleX compiler for WeChat, Alipay, Douyin and H5: JavaScript, TypeScript, Vue SFC and atomic styles",
   "author": "ice breaker <1324318532@qq.com>",
@@ -28,7 +28,7 @@
     "css-in-js",
     "atomic-css",
     "typescript",
-    "\u5fae\u4fe1\u5c0f\u7a0b\u5e8f",
+    "微信小程序",
     "compiler",
     "babel",
     "swc",
