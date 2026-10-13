@@ -1,5 +1,11 @@
 # @weapp-stylex/core
 
+## 0.1.3
+
+### Patch Changes
+
+- Use tsdown for the ESM core and weapp-vite adapter builds while retaining export paths, external dependencies and declaration maps.
+
 ## 0.1.2
 
 ### Patch Changes

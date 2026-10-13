@@ -1,5 +1,20 @@
 # @weapp-stylex/weapp-vite
 
+## 0.4.0
+
+### Minor Changes
+
+- Support WeChat, Alipay, Douyin and H5 through shared target-aware compilation, platform style emission and host-owned Web CSS delivery.
+
+### Patch Changes
+
+- Use tsdown for the ESM core and weapp-vite adapter builds while retaining export paths, external dependencies and declaration maps.
+
+- Update compatible compiler and tooling dependencies, retain Babel and framework version isolation, and verify packed packages on supported Node floors. Keep weapp-vite and Wevu 7.4 after the 7.5 host test API failed Linux acceptance.
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.3.0
+
 ## 0.3.0
 
 ### Minor Changes

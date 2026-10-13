@@ -14,6 +14,28 @@ const tooling = createRequire(new URL('../package.json', import.meta.url))
 const testNode = process.env.WEAPP_STYLEX_TEST_NODE_PATH ?? process.execPath
 const packageNames = ['@weapp-stylex/core', '@weapp-stylex/compiler', '@weapp-stylex/weapp-vite', '@weapp-stylex/taro', '@weapp-stylex/uni-app', 'weapp-stylex']
 
+async function installPackages(directory, packages, { omitOptional = false } = {}) {
+  const artifacts = path.join(root, 'artifacts')
+  await mkdir(artifacts, { recursive: true })
+  const logs = await mkdtemp(path.join(artifacts, `consumer-install-${process.versions.node}-${omitOptional ? 'omitted' : 'included'}-`))
+  const started = Date.now()
+  process.stdout.write(`Installing consumer dependencies; npm diagnostics: ${logs}\n`)
+  // Bound registry requests below the overall installation deadline. The old
+  // 120s deadline killed npm before its default 300s request timeout expired.
+  const args = ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', '--fetch-timeout=60000', '--fetch-retries=2', '--fetch-retry-mintimeout=10000', '--fetch-retry-maxtimeout=60000', '--timing', '--loglevel=http', `--logs-dir=${logs}`, ...(omitOptional ? ['--omit=optional'] : []), ...packages]
+  try {
+    const result = await run('npm', args, { cwd: directory, timeout: 300000, maxBuffer: 4 * 1024 * 1024 })
+    await writeFile(path.join(logs, 'output.log'), result.stdout + result.stderr)
+    process.stdout.write(`Consumer dependencies installed in ${((Date.now() - started) / 1000).toFixed(1)}s\n`)
+  }
+  catch (error) {
+    await writeFile(path.join(logs, 'output.log'), (error.stdout ?? '') + (error.stderr ?? ''))
+    const timedOut = error.killed && error.code === null
+    process.stderr.write(`Consumer installation ${timedOut ? 'exceeded its 300s deadline' : 'failed'}; npm diagnostics retained in ${logs}\n`)
+    throw error
+  }
+}
+
 async function verifyExportTargets(packageRoot, name, value, condition = 'exports') {
   if (typeof value === 'string') {
     assert.ok(value.startsWith('./'), `${name} ${condition} must refer to a package file: ${value}`)
@@ -71,11 +93,7 @@ try {
     assert.equal(packages.length, 6)
   }
   await writeFile(path.join(directory, 'package.json'), '{"name":"packed-facade-consumer","private":true,"type":"module"}')
-  await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', ...packages, `typescript@${tooling('typescript/package.json').version}`], {
-    cwd: directory,
-    timeout: 120000,
-    maxBuffer: 4 * 1024 * 1024,
-  })
+  await installPackages(directory, [...packages, `typescript@${tooling('typescript/package.json').version}`])
   const require = createRequire(path.join(directory, 'package.json'))
   const nodeVersion = (await run(testNode, ['-p', 'process.versions.node'], { cwd: directory })).stdout.trim()
   for (const name of packageNames) {
@@ -210,11 +228,7 @@ if(missing) await assert.rejects(new StylexSession({backend:'swc'}).transform(so
     const withoutOptional = await realpath(await mkdtemp(path.join(tmpdir(), 'weapp-stylex-no-optional-')))
     try {
       await writeFile(path.join(withoutOptional, 'package.json'), '{"name":"packed-facade-consumer-no-optional","private":true,"type":"module"}')
-      await run('npm', ['install', '--omit=optional', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', ...packages], {
-        cwd: withoutOptional,
-        timeout: 120000,
-        maxBuffer: 4 * 1024 * 1024,
-      })
+      await installPackages(withoutOptional, packages, { omitOptional: true })
       const missingRequire = createRequire(path.join(withoutOptional, 'package.json'))
       const missingCompilerRequire = createRequire(missingRequire.resolve('@weapp-stylex/compiler'))
       assert.throws(() => missingCompilerRequire.resolve('@stylexswc/rs-compiler/package.json'), { code: 'MODULE_NOT_FOUND' })

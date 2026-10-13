@@ -1,7 +1,7 @@
 {
   "name": "@weapp-stylex/uni-app",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "description": "StyleX Vite plugin for uni-app Vue 3 targeting WeChat, Alipay, Douyin and H5",
   "author": "ice breaker <1324318532@qq.com>",
