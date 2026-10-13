@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
-import { createRequire } from 'node:module'
+import { createRequire, findPackageJSON } from 'node:module'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import process from 'node:process'
@@ -24,6 +24,11 @@ async function main() {
   const adapterRequire = createRequire(
     new URL('../packages/weapp-vite/package.json', import.meta.url),
   )
+  const adapterManifest = adapterRequire('./package.json')
+  const hostVersion = adapterRequire('weapp-vite/package.json').version
+  assert.equal(hostVersion, adapterManifest.devDependencies['weapp-vite'])
+  assert.match(hostVersion, /^7\.(?:4|5)\.0$/, 'Reaudit the weapp-vite Babel/Vite boundaries before changing the verified host versions')
+  assert.equal(adapterManifest.peerDependencies['weapp-vite'], '>=7.4.0 <8')
   const weappRequire = createRequire(
     adapterRequire.resolve('weapp-vite/package.json'),
   )
@@ -36,6 +41,19 @@ async function main() {
     presets: [weappRequire.resolve('@babel/preset-typescript')],
   })
   assert.match(transformed.code, /const answer = 42/)
+  for (const example of ['wechat-native', 'wechat-wevu']) {
+    const exampleRequire = createRequire(
+      new URL(`../examples/${example}/package.json`, import.meta.url),
+    )
+    const manifest = exampleRequire('./package.json')
+    assert.equal(manifest.devDependencies['weapp-vite'], hostVersion)
+    assert.equal(exampleRequire('weapp-vite/package.json').version, hostVersion)
+    if (example === 'wechat-wevu') {
+      assert.equal(manifest.dependencies.wevu, hostVersion)
+      const wevuManifest = findPackageJSON('wevu', new URL(`../examples/${example}/package.json`, import.meta.url))
+      assert.equal(JSON.parse(await readFile(wevuManifest, 'utf8')).version, hostVersion)
+    }
+  }
 
   for (const example of ['taro-react', 'taro-vue3']) {
     const hostRequire = createRequire(

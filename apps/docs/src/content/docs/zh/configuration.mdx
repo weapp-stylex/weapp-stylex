@@ -63,8 +63,8 @@ import * as stylex from 'weapp-stylex'
 
 | 宿主 | 示例基线 | Builder |
 | --- | --- | --- |
-| 原生微信 | weapp-vite 7.4.0 | Vite 8.3.4 |
-| Wevu | wevu 7.4.0 + weapp-vite 7.4.0 | Vite 8.3.4 |
+| 原生微信 | weapp-vite 7.5.0 | Vite 8.3.4 |
+| Wevu | wevu 7.5.0 + weapp-vite 7.5.0 | Vite 8.3.4 |
 | Taro React | Taro 4.3.0 + React 18.3.1 | Vite 4.5.14 或 Webpack 5.91.0 |
 | Taro Vue 3 | Taro 4.3.0 + Vue 3.5.43 | Vite 4.5.14 或 Webpack 5.91.0 |
 | uni-app Vue 3 | DCloud `3.0.0-alpha-5030120260930001` + Vue 3.4.21 | Vite 5.2.8 |
@@ -112,9 +112,9 @@ stylexUniApp({ backend: 'auto' })
 const plugins = [[require.resolve('weapp-stylex/taro'), { backend: 'auto' }]]
 ```
 
-SWC 覆盖静态样式、简单的局部动态样式、条件合并、常规 shorthand/null、keyframes 与 firstThatWorks。主题和常量、编译期导入、SWC 不接受的 runtime 子路径、非空 `babel` 配置及未验证的表达式求值继续使用 Babel。原始 Vue SFC 脚本也保留 Babel：SWC 0.19.0 会删除只在模板中使用的绑定；独立 TS/JS 样式文件仍可加速。原始导入和主题身份算法保持一致。
+SWC 覆盖静态样式、简单的局部动态样式、条件合并、常规 shorthand/null、keyframes 与 firstThatWorks。主题和常量、编译期导入、SWC 不接受的 runtime 子路径、非空 `babel` 配置及未验证的表达式求值继续使用 Babel。原始 Vue SFC 脚本也保留 Babel：当前固定的 SWC 0.19.1 尚无经过验证的上游修复可避免删除模板专用绑定；独立 TS/JS 样式文件仍可加速。原始导入和主题身份算法保持一致。
 
-`@stylexswc/rs-compiler@0.19.0` 是按需加载的可选原生依赖，不需要安装 Rust。省略可选依赖时 Babel 仍可使用；`auto` 提示并使用 Babel，`swc` 给出重装建议。默认 Babel 与 runtime 入口不会加载原生模块。语法错误、解析失败及未知编译错误会正常报告。
+`@stylexswc/rs-compiler@0.19.1` 是按需加载的可选原生依赖，不需要安装 Rust。省略可选依赖时 Babel 仍可使用；`auto` 提示并使用 Babel，`swc` 给出重装建议。默认 Babel 与 runtime 入口不会加载原生模块。语法错误、解析失败及未知编译错误会正常报告。
 
 宿主作者可提供 `TransformHost.diagnostic(diagnostic)`，接收包含文件、可确定位置和修复建议的结构化诊断。Vite、weapp-vite 与 Webpack 适配器通过原生诊断接口展示；SFC 位置指向 `.vue` 原文件。参见[性能与边界](/zh/performance/)。
 

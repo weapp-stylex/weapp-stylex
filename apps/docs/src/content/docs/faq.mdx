@@ -47,6 +47,6 @@ Report issues with framework versions, config, a minimal shared module and the a
 
 ## Why does auto use Babel?
 
-`auto` promises compatibility with a verified subset, not acceleration of every module. Theme APIs, cross-file token imports, custom Babel options, unsupported runtime subpaths, unverified compile-time expressions and raw SFC scripts retain Babel. SWC 0.19.0 can delete template-only SFC bindings, so the adapter protects them. Each fallback reason is reported once during a session.
+`auto` promises compatibility with a verified subset, not acceleration of every module. Theme APIs, cross-file token imports, custom Babel options, unsupported runtime subpaths, unverified compile-time expressions and raw SFC scripts retain Babel. The pinned SWC 0.19.1 has no verified upstream fix for template-only SFC binding removal, so the adapter protects these scripts. Each fallback reason is reported once during a session.
 
 If the native dependency is absent, install with optional dependencies and restart the build. Babel remains usable without it. Use `swc` only for a project within the documented subset; unknown errors are not hidden by fallback. See [performance](/performance/) for reproducible measurements and full-build limits.

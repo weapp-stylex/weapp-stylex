@@ -98,7 +98,7 @@
   },
   "devDependencies": {
     "@tarojs/service": "4.3.0",
-    "@types/node": "^26.6.4",
+    "@types/node": "^26.6.5",
     "webpack": "5.91.0"
   }
 }

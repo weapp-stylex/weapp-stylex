@@ -57,7 +57,7 @@ stylexUniApp({ backend: 'auto' })
 const plugins = [[require.resolve('weapp-stylex/taro'), { backend: 'auto' }]]
 ```
 
-`auto` 为已验证的常规 TS/JS 样式使用可选 `@stylexswc/rs-compiler@0.19.0`；主题、编译期导入、runtime 子路径、非空 Babel 自定义配置和未验证的表达式保留 Babel。原始 Vue SFC 脚本保留 Babel，以保护只在模板中使用的变量和组件导入。原生模块首次需要时才加载，不要求 Rust；缺失时 auto 回退，强制 swc 明确报错。普通语法和编译错误不会被隐藏。
+`auto` 为已验证的常规 TS/JS 样式使用可选 `@stylexswc/rs-compiler@0.19.1`；主题、编译期导入、runtime 子路径、非空 Babel 自定义配置和未验证的表达式保留 Babel。原始 Vue SFC 脚本保留 Babel，以保护只在模板中使用的变量和组件导入；0.19.1 尚无经过验证的上游修复，保护逻辑继续保留。原生模块首次需要时才加载，不要求 Rust；缺失时 auto 回退，强制 swc 明确报错。普通语法和编译错误不会被隐藏。
 
 示例可通过 `WEAPP_STYLEX_BACKEND=auto` 切换。配置、回退与性能测量见[中文说明](https://stylex.weapp.dev/zh/performance/)和[English](https://stylex.weapp.dev/performance/)。可复现 benchmark：`corepack pnpm exec node scripts/benchmark.mjs --full`；完整构建收益与单文件编译收益分别报告。
 
@@ -256,15 +256,17 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 | Workspace       | 已配置版本                                              | 各目标产物                                                       |
 | --------------- | ------------------------------------------------------- | ---------------------------------------------------------------- |
-| `wechat-native` | weapp-vite 7.4.0 / Vite 8.3.4                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
-| `wechat-wevu`   | wevu 7.4.0 / weapp-vite 7.4.0                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
+| `wechat-native` | weapp-vite 7.5.0 / Vite 8.3.4                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
+| `wechat-wevu`   | wevu 7.5.0 / weapp-vite 7.5.0                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
 | `taro-react`    | Taro 4.3.0 / React 18.3.1                               | `dist/weapp-webpack`、`dist/weapp-vite`                          |
 | `taro-vue3`     | Taro 4.3.0 / Vue 3.5.43                                 | `dist/weapp-webpack`、`dist/weapp-vite`                          |
 | `uni-vue3`      | DCloud vue3 `3.0.0-alpha-5030120260930001` / Vue 3.4.21 | `dist/build/<platform>`                                          |
 
 Taro 使用 Vite 4.5.14 / Webpack 5.91.0，uni-app 固定 Vite 5.2.8；没有全局 Vite 主版本 override。各示例都包含共享样式、多消费者、条件合并、主题、动态值、少量内联样式和普通分包。每个示例的 README 提供单独构建命令。
 
-Node.js 要求 `^22.22.1 || >=24.11.0`；CI 验证 22.22.1、24.18.0。pnpm 从 `packageManager` 读取（12.10.1）。
+开发仓库与文档站使用 Node.js `^22.22.3 || ^24.16.0 || >=26.3.0`；CI 矩阵为 22.23.3、24.21.0。pnpm 从 `packageManager` 读取（12.11.2）。发布库的 Node 要求继续保持 `^22.22.1 || >=24.11.0`，与开发工具要求分开；独立消费者在 Node 22.22.1、24.11.0 上验证 ESM/CJS 和声明文件。
+
+六个发布库统一使用 tsdown `0.23.1`：core 与 weapp-vite 保留 ESM-only，其余四包保留 ESM/CJS，均提供声明文件。工具链保留 TypeScript `6.0.3`：TypeScript 7 移除了根入口的旧 Compiler API，且 repoctl、Astro check 与 TypeScript ESLint 尚不支持该主版本。共享 StyleX 编译仍使用 Babel 7，宿主依赖按框架隔离。
 
 ```bash
 corepack enable
@@ -288,7 +290,7 @@ corepack pnpm test:ide
 
 IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`（选定的官方稳定版 CLI），先登录并开启服务端口。构建脚本从环境注入 AppID；测试在独立产物副本同步 AppID 和条件页，不改动用户已打开的项目。日志、截图、版本和资源清理记录写入 `artifacts/ide`；缺环境时返回退出码 2 并明确标记 pending。
 
-本轮实际验证、审计残留和 IDE 状态见 [多框架验收记录](docs/multi-framework-validation.md)。以前的依赖升级记录见 [2026-10-08 依赖升级](docs/dependency-upgrade-2026-10-08.md)。
+本轮依赖变更、保留理由、本地验收和远端工作流状态见 [2026-10-13 依赖升级](docs/dependency-upgrade-2026-10-13.md)。历史验证、审计残留和 IDE 状态见 [多框架验收记录](docs/multi-framework-validation.md)；历史记录中的环境和结果保持原日期。
 
 ## 支持边界
 

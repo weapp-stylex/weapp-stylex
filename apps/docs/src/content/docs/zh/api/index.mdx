@@ -23,7 +23,9 @@ sidebar:
 
 </ApiTable>
 
-对应独立包为 `@weapp-stylex/core`、`@weapp-stylex/weapp-vite`、`@weapp-stylex/taro`（含 `/loader`）、`@weapp-stylex/uni-app` 与 `@weapp-stylex/compiler`，符号与聚合包对应入口相同。聚合包所有代码入口提供 ESM/CJS 与声明文件；独立 core 和 weapp-vite 入口为 ESM。
+对应独立包为 `@weapp-stylex/core`、`@weapp-stylex/weapp-vite`、`@weapp-stylex/taro`（含 `/loader`）、`@weapp-stylex/uni-app` 与 `@weapp-stylex/compiler`，符号与聚合包对应入口相同。六个包统一使用 tsdown：独立 core 和 weapp-vite 保留 ESM-only，compiler、Taro、uni-app 和聚合包保留 ESM/CJS；所有代码入口均提供声明文件。runtime 入口与构建适配器保持独立。
+
+API 覆盖检查核对包导出与双语参考章节；独立文档工作流的 `scripts/test-docs-browser.mjs` 另行检查生产文档交互，运行步骤见[贡献说明](/zh/contributing/)。
 
 <a id="api-package-json"></a>
 ## 包元数据

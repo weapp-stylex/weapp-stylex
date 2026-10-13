@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
-import { mkdir, mkdtemp, readdir, readFile, realpath, rename, rm, stat, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readdir, readFile, realpath, rm, stat, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
@@ -193,23 +193,44 @@ const source="import * as stylex from 'weapp-stylex';export const styles=stylex.
 const host={resolve:async()=>undefined,addWatchFile(){}}
 const filename=new URL('backend-style.js',import.meta.url).pathname
 const session=new StylexSession({backend:'auto'})
-await session.transform(source,filename,host)
+const result=await session.transform(source,filename,host)
+assert.deepEqual(await session.transform(source,filename,host),result)
 assert.equal(session.getStats().swcTransforms,missing?0:1)
 assert.equal(session.getStats().babelTransforms,missing?1:0)
+assert.equal(session.getStats().cacheHits,1)
 assert.match(session.css(),/padding:16px/)
 if(missing) await assert.rejects(new StylexSession({backend:'swc'}).transform(source,filename,host),/unavailable/)
 `)
     await run(testNode, ['backend.mjs'], { cwd: directory })
     const compilerRequire = createRequire(require.resolve('@weapp-stylex/compiler'))
-    const addon = path.dirname(compilerRequire.resolve('@stylexswc/rs-compiler/package.json'))
-    const hidden = path.join(directory, 'optional-addon-disabled')
-    await rename(addon, hidden)
+    assert.ok(compilerRequire.resolve('@stylexswc/rs-compiler/package.json'))
+    // Use a sibling install so Node cannot resolve the present addon from the
+    // first consumer's parent directories. This exercises an actual omitted
+    // optional dependency tree, including its native platform packages.
+    const withoutOptional = await realpath(await mkdtemp(path.join(tmpdir(), 'weapp-stylex-no-optional-')))
     try {
-      await run(testNode, ['consumer.mjs'], { cwd: directory })
-      await run(testNode, ['backend.mjs', 'missing'], { cwd: directory })
+      await writeFile(path.join(withoutOptional, 'package.json'), '{"name":"packed-facade-consumer-no-optional","private":true,"type":"module"}')
+      await run('npm', ['install', '--omit=optional', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', '--registry=https://registry.npmjs.org', ...packages], {
+        cwd: withoutOptional,
+        timeout: 120000,
+        maxBuffer: 4 * 1024 * 1024,
+      })
+      const missingRequire = createRequire(path.join(withoutOptional, 'package.json'))
+      const missingCompilerRequire = createRequire(missingRequire.resolve('@weapp-stylex/compiler'))
+      assert.throws(() => missingCompilerRequire.resolve('@stylexswc/rs-compiler/package.json'), { code: 'MODULE_NOT_FOUND' })
+      for (const file of ['consumer.mjs', 'backend.mjs', 'runtime-isolation.mjs']) {
+        await writeFile(path.join(withoutOptional, file), await readFile(path.join(directory, file), 'utf8'))
+      }
+      for (const entry of ['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core']) {
+        for (const format of ['esm', 'cjs']) {
+          await run(testNode, ['runtime-isolation.mjs', entry, format], { cwd: withoutOptional })
+        }
+      }
+      await run(testNode, ['consumer.mjs'], { cwd: withoutOptional })
+      await run(testNode, ['backend.mjs', 'missing'], { cwd: withoutOptional })
     }
     finally {
-      await rename(hidden, addon)
+      await rm(withoutOptional, { recursive: true, force: true })
     }
   }
   await writeFile(path.join(directory, 'consumer.ts'), `import * as stylex from 'weapp-stylex';const styles=stylex.create({root:{padding:16}});const className:string|undefined=stylex.attrs(styles.root).class;void className;`)
@@ -259,7 +280,7 @@ stylexUniApp({target: 'qq'})
       await run(testNode, [tooling.resolve('typescript/bin/tsc'), '--declaration', '--emitDeclarationOnly', '--strict', '--skipLibCheck', 'true', '--module', 'NodeNext', '--target', 'ES2022', '--outDir', 'consumer-types', `adapter-types.${extension}`], { cwd: directory })
     }
   }
-  process.stdout.write(`${registryVersion ? `Published weapp-stylex@${registryVersion}` : 'Packed facade'} (Node ${nodeVersion}): all package export files, optional hosts, ESM/CJS runtime isolation, StyleX compilation and TypeScript${registryVersion ? '' : ' public compiler/adapter types and ESM build maps'} passed\n`)
+  process.stdout.write(`${registryVersion ? `Published weapp-stylex@${registryVersion}` : 'Packed facade'} (Node ${nodeVersion}): all package export files, optional hosts, ESM/CJS runtime isolation, StyleX compilation and TypeScript${registryVersion ? '' : ' public compiler/adapter types, ESM build maps and addon-omitted install'} passed\n`)
 }
 finally {
   await rm(directory, { recursive: true, force: true })

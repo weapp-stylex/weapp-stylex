@@ -95,8 +95,13 @@ for (const example of matrix) {
   }
   assert.match(css, /--sx/)
   let hasDefaultVariables = false
+  // Web runtime 2 scopes page defaults to the active shadow host; runtime 1
+  // uses the unqualified host. Theme class rules do not count as defaults.
+  const defaultSelectors = shadow
+    ? [':host', ':host(:where([data-weapp-page-active]))']
+    : [example.rootSelector]
   postcss.parse(css).walkRules((rule) => {
-    if (rule.selectors.includes(shadow ? ':host' : example.rootSelector)) {
+    if (rule.selectors.some(selector => defaultSelectors.includes(selector.trim()))) {
       hasDefaultVariables ||= rule.nodes.some(node =>
         node.type === 'decl'
         && node.prop.startsWith('--sx')

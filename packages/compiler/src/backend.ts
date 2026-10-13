@@ -15,7 +15,7 @@ export interface BackendResult {
   backend: 'babel' | 'swc'
 }
 const require = createRequire(typeof __filename === 'string' ? __filename : import.meta.url)
-export const SWC_VERSION = '0.19.0'
+export const SWC_VERSION: string = require('../package.json').optionalDependencies['@stylexswc/rs-compiler']
 // Bump when analysis, hashing or output semantics change, including local development.
 const CACHE_ABI = 4
 export const backendBuildDependencies = [

@@ -37,6 +37,8 @@ export default defineConfig({
 
 MIT License。
 
+构建使用 tsdown；本包保留 ESM-only 的 `dist/index.js` 与 `dist/index.d.ts`，编译器和宿主依赖保持 external。
+
 ## Platforms
 
 Native and Wevu hosts infer WeChat, Alipay, Douyin or Web from their active platform. Use both `createStylex()` fields for cross-platform builds and provide a Web `index.html` importing `/@weapp-vite/web/entry`. The Web runtime receives page/component CSS metadata, preserves page defaults and allows component theme inheritance through Shadow DOM. Numeric/px values keep official semantics; only static rpx follows the host policy. The upstream Web runtime is experimental; the example uses an equivalent SFC for the mini-program JSX fixture.

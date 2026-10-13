@@ -15,7 +15,7 @@
     "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
   },
   "engines": {
-    "node": "^22.22.1 || >=24.11.0"
+    "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
   },
   "scripts": {
     "dev": "astro dev",
@@ -33,7 +33,7 @@
     "check:api": "node scripts/check-api.mjs"
   },
   "dependencies": {
-    "@cloudflare/nimbus-docs": "0.17.0",
+    "@cloudflare/nimbus-docs": "0.18.0",
     "@phosphor-icons/core": "2.1.1",
     "astro": "7.3.8"
   },

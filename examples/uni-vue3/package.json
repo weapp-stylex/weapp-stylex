@@ -22,7 +22,7 @@
   ],
   "sideEffects": false,
   "engines": {
-    "node": "^22.22.1 || >=24.11.0"
+    "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
   },
   "scripts": {
     "build": "corepack pnpm build:weapp && corepack pnpm build:alipay && corepack pnpm build:tt && corepack pnpm build:h5",
@@ -47,8 +47,8 @@
   "devDependencies": {
     "@dcloudio/types": "3.4.31",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001",
-    "@types/node": "^26.6.4",
+    "@types/node": "^26.6.5",
     "vite": "5.2.8",
-    "vue-tsc": "^3.3.12"
+    "vue-tsc": "^3.3.13"
   }
 }

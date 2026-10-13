@@ -113,13 +113,13 @@ Supported UNI_PLATFORM values are mp-weixin, mp-alipay, mp-toutiao and h5; h5 ma
 
 The framework peers are optional on adapters: install the host used by your application. Their supported ranges are deliberately kept separate.
 
-| Adapter | Declared framework peer | Verified example baseline |
+| Adapter | Declared framework peer | Configured example baseline |
 | --- | --- | --- |
-| weapp-vite | `weapp-vite >=7.4.0 <8` | weapp-vite/Wevu 7.4.0 with Vite 8 |
+| weapp-vite | `weapp-vite >=7.4.0 <8` | weapp-vite/Wevu 7.5.0 with Vite 8.3.4 |
 | Taro | `@tarojs/service >=4.3.0 <4.4.0`; `webpack ^5.91.0` | Taro 4.3.0, Vite 4.5.14 / Webpack 5.91.0 |
 | uni-app | `@dcloudio/vite-plugin-uni 3.0.0-alpha-5030120260930001` | Matching vue3 channel, Vue 3.4.21 / Vite 5.2.8 |
 
-Node must satisfy `^22.22.1 || >=24.11.0`; CI covers 22.22.1 and 24.18.0. Avoid global overrides that unify incompatible host Vite/Vue/Babel versions. Shared StyleX compilation remains on Babel 7. Static builds, headless interaction and real WeChat IDE evidence are distinct checks; consult [examples](/examples/) for the current acceptance records.
+Published libraries retain Node `^22.22.1 || >=24.11.0`; the private workspace and docs use `^22.22.3 || ^24.16.0 || >=26.3.0`. CI targets 22.23.3 and 24.21.0, with separate isolated consumers on the library minimums 22.22.1 and 24.11.0. Avoid global overrides that unify incompatible host Vite/Vue/Babel versions. Shared StyleX compilation remains on Babel 7. Static builds, headless interaction and real WeChat IDE evidence are distinct checks; consult [examples](/examples/) for acceptance records and the [dependency record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-13.md) for this upgrade's verification status.
 
 <a id="api-taroStylexTarget"></a>
 <a id="api-uniStylexTarget"></a>

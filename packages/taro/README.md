@@ -19,11 +19,13 @@ export default defineConfig({
 
 React 在 `View` 上使用 `stylex.props()`；Vue 3 使用 computed 及显式 `:class` / `:style`。样式可从普通 `styles.ts` 导入，跨模块主题使用直接导入的 `tokens.stylex.ts`。
 
-要求 Node.js `^22.22.1 || >=24.11.0`、Taro service `>=4.3.0 <4.4.0`。示例使用 Vite 4.5.14 / Webpack 5.91.0。数值保持 px，rpx 需显式字符串。当前仅支持 `TARO_ENV=weapp`。
+要求 Node.js `^22.22.1 || >=24.11.0`、Taro service `>=4.3.0 <4.4.0`。示例使用 Vite 4.5.14 / Webpack 5.91.0。数值保持 px，rpx 需显式字符串。支持 `TARO_ENV=weapp`、`alipay`、`tt` 与 `h5`。
 
 完整配置与双 builder 示例见 [weapp-stylex](https://github.com/weapp-stylex/weapp-stylex)。
 
 MIT License。
+
+构建使用 tsdown，保留 ESM/CJS、独立 loader 与内部 Webpack 入口；Taro、Webpack 和共享编译器保持 external。
 
 ## Platforms
 

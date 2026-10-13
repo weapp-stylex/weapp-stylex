@@ -23,7 +23,9 @@ The reference follows the package export maps and the installed StyleX 0.19.1 de
 
 </ApiTable>
 
-The corresponding scoped packages are `@weapp-stylex/core`, `@weapp-stylex/weapp-vite`, `@weapp-stylex/taro` (including `/loader`), `@weapp-stylex/uni-app` and `@weapp-stylex/compiler`. They expose the same symbols as their façade entries. The façade provides ESM/CJS and declarations for each code entry; scoped core and weapp-vite entries are ESM.
+The corresponding scoped packages are `@weapp-stylex/core`, `@weapp-stylex/weapp-vite`, `@weapp-stylex/taro` (including `/loader`), `@weapp-stylex/uni-app` and `@weapp-stylex/compiler`. They expose the same symbols as their façade entries. All six packages use tsdown. Scoped core and weapp-vite remain ESM-only; compiler, Taro, uni-app and the façade retain ESM/CJS. Every code entry provides TypeScript declarations. Runtime entries remain separate from build adapters.
+
+API coverage checks compare package exports with both reference locales. The dedicated documentation workflow separately checks production documentation interaction with `scripts/test-docs-browser.mjs`; see [contributing](/contributing/) for the commands.
 
 <a id="api-package-json"></a>
 ## Package metadata

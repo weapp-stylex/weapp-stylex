@@ -52,7 +52,7 @@ describe('Web shadow styles', () => {
     const rendered = web.renderChunk(loaded)!.code
     const page = JSON.parse(/export const pageCss=("(?:[^"\\]|\\.)*")/.exec(rendered)![1]!) as string
     const component = JSON.parse(/export const componentCss=("(?:[^"\\]|\\.)*")/.exec(rendered)![1]!) as string
-    expect(page).toContain(':host{--sx-a:white}')
+    expect(page).toMatch(/^:host(?:\(:where\(\[data-weapp-page-active\]\)\))?\{--sx-a:white\}/)
     expect(component).not.toContain('--sx-a:white')
     expect(component).toContain('.dark{--sx-a:black}')
     expect(component).toContain('padding:16px')

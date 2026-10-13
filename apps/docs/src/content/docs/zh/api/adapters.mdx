@@ -113,13 +113,13 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 框架 peer 在适配器中为 optional；应用安装实际使用的宿主。各版本范围有意保持独立。
 
-| 适配器 | 声明的框架 peer | 示例验证基线 |
+| 适配器 | 声明的框架 peer | 示例配置基线 |
 | --- | --- | --- |
-| weapp-vite | `weapp-vite >=7.4.0 <8` | weapp-vite/Wevu 7.4.0，Vite 8 |
+| weapp-vite | `weapp-vite >=7.4.0 <8` | weapp-vite/Wevu 7.5.0，Vite 8.3.4 |
 | Taro | `@tarojs/service >=4.3.0 <4.4.0`；`webpack ^5.91.0` | Taro 4.3.0，Vite 4.5.14 / Webpack 5.91.0 |
 | uni-app | `@dcloudio/vite-plugin-uni 3.0.0-alpha-5030120260930001` | 对应 vue3 channel，Vue 3.4.21 / Vite 5.2.8 |
 
-Node 需要满足 `^22.22.1 || >=24.11.0`，CI 覆盖 22.22.1 与 24.18.0。不要用全局 override 合并不兼容的宿主 Vite/Vue/Babel 版本。共享 StyleX 编译保持 Babel 7。静态构建、headless 交互与真实微信 IDE 证据属于不同检查，当前验收记录见[示例](/zh/examples/)。
+发布库继续要求 Node `^22.22.1 || >=24.11.0`；私有仓库与文档站使用 `^22.22.3 || ^24.16.0 || >=26.3.0`。CI 使用 22.23.3 与 24.21.0，另在库的最低版本 22.22.1、24.11.0 上检查独立消费者。不要用全局 override 合并不兼容的宿主 Vite/Vue/Babel 版本。共享 StyleX 编译保持 Babel 7。静态构建、headless 交互与真实微信 IDE 证据属于不同检查，验收记录见[示例](/zh/examples/)，本轮验证状态见[依赖记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-13.md)。
 
 <a id="api-taroStylexTarget"></a>
 <a id="api-uniStylexTarget"></a>

@@ -3,6 +3,9 @@
   "type": "module",
   "version": "0.1.3",
   "private": true,
+  "engines": {
+    "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
+  },
   "scripts": {
     "build": "corepack pnpm build:weapp && corepack pnpm build:alipay && corepack pnpm build:tt && corepack pnpm build:web",
     "test:headless": "node test/headless.mjs",
@@ -19,6 +22,6 @@
     "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
-    "weapp-vite": "7.4.0"
+    "weapp-vite": "7.5.0"
   }
 }

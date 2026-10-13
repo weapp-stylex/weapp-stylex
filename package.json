@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@12.10.1",
+  "packageManager": "pnpm@12.11.2",
   "engines": {
-    "node": "^22.22.1 || >=24.11.0"
+    "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
   },
   "scripts": {
     "build": "corepack pnpm -r --if-present build",
@@ -26,9 +26,9 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
     "@eslint/config-inspector": "^3.5.0",
-    "@mpcore/test": "0.1.15",
-    "@types/node": "^26.6.4",
-    "@vitest/coverage-v8": "~5.0.3",
+    "@mpcore/test": "1.0.0",
+    "@types/node": "^26.6.5",
+    "@vitest/coverage-v8": "~5.0.4",
     "eslint": "^10.12.0",
     "execa": "^10.1.0",
     "husky": "^9.1.7",
@@ -36,14 +36,14 @@
     "miniprogram-automator": "0.12.1",
     "only-allow": "^1.2.2",
     "playwright": "1.64.0",
-    "repoctl": "5.10.0",
+    "repoctl": "5.10.3",
     "stylelint": "^17.16.0",
     "tailwindcss": "^4.3.3",
     "tsd": "^0.33.0",
-    "tsdown": "0.23.0",
+    "tsdown": "0.23.1",
     "turbo": "^2.11.7",
     "typescript": "6.0.3",
-    "vitest": "~5.0.3",
+    "vitest": "~5.0.4",
     "yaml": "^2.9.1"
   }
 }

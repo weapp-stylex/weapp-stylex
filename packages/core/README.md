@@ -29,6 +29,8 @@ const attrs = stylex.attrs(styles.root)
 
 MIT License。
 
+构建使用 tsdown；本包保留 ESM-only 的 `dist/index.js` 与 `dist/index.d.ts`，runtime 依赖保持 external。
+
 ## Platforms
 
 The runtime stays platform-neutral and exposes official StyleX APIs. Select WeChat, Alipay, Douyin or H5 through a build adapter; the runtime has no target configuration or CSS injection. Numeric and px values retain official StyleX semantics. H5 dynamic values must use browser units such as px, rem or vw.

@@ -99,7 +99,7 @@ Use `import * as stylex from 'weapp-stylex'` or named imports. The root/core run
 
 **Symptom:** `backend: 'auto'` reports a compatibility fallback, or `backend: 'swc'` rejects a module.
 
-**Cause:** the module is outside the verified SWC subset, or the optional native dependency is unavailable. Themes/constants, compile-time imports, custom Babel options, rejected runtime subpaths and raw Vue SFC scripts retain Babel. The SFC guard protects template-only bindings from SWC 0.19.0.
+**Cause:** the module is outside the verified SWC subset, or the optional native dependency is unavailable. Themes/constants, compile-time imports, custom Babel options, rejected runtime subpaths and raw Vue SFC scripts retain Babel. The SFC guard remains enabled because the pinned SWC 0.19.1 has no verified upstream fix for template-only binding removal.
 
 Use default Babel or `auto` for that input. If the native package is missing and acceleration is desired, reinstall with optional dependencies using the project's normal package-manager configuration and restart the build. Do not force SWC past an unsupported-input diagnostic. Syntax, resolver and unknown transform errors are real failures, not compatibility fallbacks.
 

@@ -13,13 +13,14 @@ const require = createRequire(new URL('../packages/compiler/package.json', impor
 const babel = require('@babel/core')
 const plugin = require('@stylexjs/babel-plugin')
 const { StylexSession } = require('@weapp-stylex/compiler')
+const compilerManifest = require('./package.json')
 
 const prefix = 'import * as stylex from \'@weapp-stylex/core\';'
 const artifacts = new URL('../artifacts/', import.meta.url)
 await mkdir(artifacts, { recursive: true })
 const temporary = await mkdtemp(fileURLToPath(new URL('benchmark-', artifacts)))
 const report = {
-  environment: { node: process.version, cpu: os.cpus()[0].model, arch: process.arch, platform: process.platform, babel: babel.version, stylex: '0.19.1', swc: '0.19.0' },
+  environment: { node: process.version, cpu: os.cpus()[0].model, arch: process.arch, platform: process.platform, babel: babel.version, stylex: require('@stylexjs/babel-plugin/package.json').version, swc: compilerManifest.optionalDependencies['@stylexswc/rs-compiler'] },
   protocol: { warmup: 5, rounds: 7, sourcemaps: true, timingThreshold: false },
   transforms: [],
 }

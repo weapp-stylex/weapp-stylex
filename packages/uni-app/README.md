@@ -27,6 +27,8 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 MIT License。
 
+构建使用 tsdown，保留 ESM/CJS 与对应声明；DCloud 宿主和共享编译器保持 external。
+
 ## Platforms
 
 The adapter infers `mp-weixin`, `mp-alipay`, `mp-toutiao` or `h5` from uni-app. Mini-programs emit matching platform style companions. H5 emits an external CSS asset with a content hash and an owned HTML stylesheet link. Numeric/px values keep official semantics; static rpx follows DCloud's H5 policy and dynamic values use browser units. Optional compiler `target` must match the active host.

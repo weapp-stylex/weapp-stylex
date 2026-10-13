@@ -65,10 +65,10 @@
   "dependencies": {
     "@babel/core": "^7.29.7",
     "@weapp-stylex/compiler": "workspace:*",
-    "postcss": "^8.5.29"
+    "postcss": "^8.5.30"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.5",
-    "weapp-vite": "7.4.0"
+    "weapp-vite": "7.5.0"
   }
 }

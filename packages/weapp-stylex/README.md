@@ -54,6 +54,8 @@ remain available for projects that prefer installing only one adapter.
 Documentation: [English](https://stylex.weapp.dev/en/) ·
 [中文](https://stylex.weapp.dev/zh/).
 
+All seven code entries are built with tsdown. Dependencies and optional framework peers stay external; the root runtime entry remains separate from build tools.
+
 ## Platforms
 
 Build adapters infer WeChat, Alipay, Douyin or H5 from the active host. Their optional compiler `target` uses `weapp`, `alipay`, `tt` or `web` and must match that host. The root/core runtime stays unchanged. Mini-programs receive platform style companions; H5 receives browser CSS through its adapter. See the [configuration guide](https://stylex.weapp.dev/configuration/) for commands, units and Web delivery.

@@ -3,7 +3,7 @@
   "path": ".github/workflows/release.yml",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.1",
+    "version": "2.3.3",
     "assetPath": ".github/workflows/release.yml",
     "hash": "7f89bb03962a8399bf9923e5d5f980e99553f0fb844a50d198e7e73c2b2ddf87"
   },

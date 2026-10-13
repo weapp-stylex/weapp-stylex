@@ -21,6 +21,8 @@ const plugins = createVitePlugins(session)
 
 MIT License。
 
+构建使用 tsdown，保留 ESM/CJS 与对应声明；官方 runtime、Babel 及可选 SWC addon 保持 external，原生 addon 按需加载。
+
 ## Platforms
 
 `StylexSession({ target })` accepts `weapp`, `alipay`, `tt` or `web` and defaults to `weapp`. Mini-program targets map default variables to `page`; Web retains `:root`. `MiniProgramStyleEmitter` plans platform template/style companions, while `WxssEmitter` preserves the existing WeChat API. Web helpers provide host-owned CSS delivery and static rpx conversion. See the [compiler API](https://stylex.weapp.dev/api/compiler/) for the host integration contract.

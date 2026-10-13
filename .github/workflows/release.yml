@@ -75,7 +75,7 @@ jobs:
       - name: Create GitHub App token
         if: ${{ vars.REPOCTL_APP_CLIENT_ID != '' }}
         id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.REPOCTL_APP_CLIENT_ID }}
           private-key: ${{ secrets.REPOCTL_APP_PRIVATE_KEY }}
@@ -93,7 +93,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
+          node-version: 24.21.0
           cache: pnpm
 
       - name: Install npm with trusted publishing support
@@ -204,7 +204,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
+          node-version: 24.21.0
           cache: pnpm
 
       - name: Install Dependencies without lifecycle scripts

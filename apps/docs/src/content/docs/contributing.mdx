@@ -7,13 +7,15 @@ sidebar:
 
 ## Workspace workflow
 
-This repository uses repoctl `5.10.0`, pnpm `12.10.1` and Node.js `^22.22.1 || >=24.11.0`. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
+This repository uses repoctl `5.10.3`, pnpm `12.11.2` and Node.js `^22.22.3 || ^24.16.0 || >=26.3.0` for the private workspace and docs. CI targets Node 22.23.3 and 24.21.0. Published libraries retain `^22.22.1 || >=24.11.0`, with isolated ESM/CJS consumers checked on Node 22.22.1 and 24.11.0. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
+
+All six publishable libraries use tsdown `0.23.1`. Core and weapp-vite retain their ESM-only entries; the other four packages retain ESM/CJS. All code entries provide declarations. TypeScript stays at `6.0.3`: TypeScript 7 removes the legacy Compiler API from its root entry, and repoctl, Astro check and TypeScript ESLint do not yet support it. Keep the shared StyleX compiler on Babel 7 and separate the framework toolchains. Upgrade decisions and verification status are recorded in the [2026-10-13 dependency record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-13.md).
 
 Run the full [validation workflow](/examples/) before submitting compiler changes. Use `corepack pnpm change` for publishable package changes; documentation changes do not publish npm packages.
 
 ## Documentation source
 
-The site at [stylex.weapp.dev](https://stylex.weapp.dev/) started from the repoctl Nimbus template and uses Nimbus `0.17.0` with Astro `7.3.8`. Layouts and components are project-owned. Content lives in `apps/docs/src/content/docs/`; English pages use root-relative paths, with matching Chinese files under `zh/`. Recipes and API references use their own subdirectories.
+The site at [stylex.weapp.dev](https://stylex.weapp.dev/) started from the repoctl Nimbus template and uses Nimbus `0.18.0` with Astro `7.3.8`. Layouts and components are project-owned. Content lives in `apps/docs/src/content/docs/`; English pages use root-relative paths, with matching Chinese files under `zh/`. Recipes and API references use their own subdirectories.
 
 ```sh
 corepack pnpm --filter docs dev
@@ -21,11 +23,12 @@ corepack pnpm --filter docs lint
 corepack pnpm --filter docs typecheck
 corepack pnpm --filter docs build
 corepack pnpm --filter docs check:site
+corepack pnpm exec node scripts/test-docs-browser.mjs
 corepack pnpm --filter docs test
 corepack pnpm --filter docs preview
 ```
 
-Production builds generate Pagefind search. Check both language routes and switching on a production preview, rather than expecting search to work in the dev server.
+Production builds generate Pagefind search. `scripts/test-docs-browser.mjs` runs headlessly in the dedicated documentation workflow and checks both languages, search, keyboard/focus behavior, code copying, persisted themes, language routes, mobile navigation and content without JavaScript. It closes its owned browser and server. The dev server does not provide the full search index.
 
 Add both translations before publishing a page. Keep code behavior and public links equivalent, and register informative MDX components together with their Markdown text conversion. Verify custom tabs/steps in the page's Markdown export as well as the visual site. [Practical recipes](/recipes/) should show real framework bindings; [API references](/api/) should match package exports and source types.
 
