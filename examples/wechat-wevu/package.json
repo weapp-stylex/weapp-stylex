@@ -37,12 +37,12 @@
   },
   "dependencies": {
     "weapp-stylex": "workspace:*",
-    "wevu": "7.5.0"
+    "wevu": "7.4.0"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
     "miniprogram-api-typings": "^5.2.3",
     "vue-tsc": "^3.3.13",
-    "weapp-vite": "7.5.0"
+    "weapp-vite": "7.4.0"
   }
 }

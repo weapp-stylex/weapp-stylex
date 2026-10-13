@@ -8,6 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { execa } from 'execa'
 import automator from 'miniprogram-automator'
 import { examples as artifactMatrix } from './example-matrix.mjs'
+import { launchIdeAutomator } from './ide-automator.mjs'
 import { nativeJournal } from './ide-native-journal.mjs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -19,9 +20,9 @@ const cliPath = process.env.WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH
 const appid = process.env.WEAPP_STYLEX_APPID
 const startAt = Number(process.env.WEAPP_STYLEX_IDE_START_AT ?? 0)
 // A connected automation socket is not proof that the application is ready.
-// On macOS, first observe the owned simulator before enabling automation in the
-// same window. Automation can recompile it; an application structure barrier is
-// also required before the first reLaunch.
+// Observe fresh owned native readiness before the SDK version check, then
+// application structure before reLaunch. The macOS preopen path cannot replace
+// the post-auto barrier because automation can trigger another compilation.
 const preopen = process.env.WEAPP_STYLEX_IDE_PREOPEN === '1'
   || (process.platform === 'darwin' && process.env.WEAPP_STYLEX_IDE_PREOPEN !== '0')
 const reportPath = path.join(artifacts, startAt ? `partial-${startAt}.json` : 'report.json')
@@ -375,13 +376,31 @@ async function main() {
         }
         resource.launches++
         await phase('launch')
-        mini = await bounded(() => automator.launch({
+        const launched = await launchIdeAutomator({
           cliPath,
           projectPath,
           port,
           timeout: 60000,
           trustProject: true,
-        }), 'Automator launch', 65000)
+        }, {
+          sdk: {
+            launch: options => bounded(() => automator.launch(options), 'Automator launch', 65000),
+            connect: options => bounded(() => automator.connect(options), 'Automator connect', 15000),
+          },
+          runCli: execa,
+          journal,
+          until,
+          phase,
+          async report({ cli, nativeReady }) {
+            if (cli) {
+              record.autoLog = path.join(target, 'auto.log')
+              await writeFile(record.autoLog, `${cli.stdout}\n${cli.stderr}\n`)
+            }
+            resource.readyAfterAutomator = nativeReady
+            await save()
+          },
+        })
+        mini = launched.mini
         assert.ok(
           mini,
           'DevTools launch did not establish an automator connection; check login and service port',

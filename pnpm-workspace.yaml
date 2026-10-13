@@ -35,9 +35,6 @@ packageExtensions:
   weapp-vite@7.4.0:
     dependencies:
       '@babel/core': ^8.0.7
-  weapp-vite@7.5.0:
-    dependencies:
-      '@babel/core': ^8.0.7
 overrides:
   prettier: 3.9.10
   typescript: 6.0.3

@@ -72,4 +72,89 @@ describe('owned IDE native lifecycle', () => {
       assert.deepEqual(await journal.read(), { windowId: 's5', windowClosed: true, webContentsDestroyed: true })
     })
   })
+
+  it('observes only owned page readiness recorded after its checkpoint', async () => {
+    await fixture(async ({ root, log }) => {
+      const journal = await nativeJournal('/owned', root)
+      await appendFile(log, '[rt:1,win:s6] project ready, projectpath=/owned\n[rt:1,win:s6] [devtools] webview page ready\n')
+      // checkpoint() must consume pre-action records even without an earlier read().
+      const checkpoint = await journal.checkpoint()
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(log, '[rt:1,win:s60] [devtools] webview page ready\n')
+      const foreign = path.join(root, 'foreign/WeappLog/logs')
+      await mkdir(foreign, { recursive: true })
+      await writeFile(path.join(foreign, 'main.log'), '[rt:1,win:s6] project ready, projectpath=/foreign\n[rt:1,win:s6] [devtools] webview page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(log, '[rt:2,win:s6] [devtools] webview page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), true)
+      assert.equal(await journal.pageReadyAfter(checkpoint), true)
+      assert.equal(await journal.pageReadyAfter(await journal.checkpoint()), false)
+      assert.ok(!journal.evidence().includes('/foreign'))
+    })
+  })
+
+  it('keeps page readiness checkpoints across native log rollover', async () => {
+    await fixture(async ({ root, log, directory }) => {
+      const journal = await nativeJournal('/owned', root)
+      await appendFile(log, '[rt:1,win:s7] project ready, projectpath=/owned\n')
+      const checkpoint = await journal.checkpoint()
+      await rm(log)
+      await writeFile(path.join(directory, 'rotated.log'), '[rt:2,win:s70] [devtools] webview page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(path.join(directory, 'rotated.log'), '[rt:2,win:s7] [devtools] webview page ready\nnative-window-closed { winId: \'s7\' }\nwebcontents-destroyed { winId: \'s7\' }\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), true)
+      assert.deepEqual(await journal.read(), { windowId: 's7', windowClosed: true, webContentsDestroyed: true })
+    })
+  })
+
+  it('can checkpoint before launch ownership while ignoring native history', async () => {
+    await fixture(async ({ root, log }) => {
+      await appendFile(log, '[rt:1,win:s1] project ready, projectpath=/owned\n[rt:1,win:s1] [devtools] webview page ready\n')
+      const journal = await nativeJournal('/owned', root)
+      const checkpoint = await journal.checkpoint()
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(log, '[rt:2,win:s9] project ready, projectpath=/foreign\n[rt:2,win:s9] [devtools] webview page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(log, '[rt:2,win:s10] project ready, projectpath=/owned\n[rt:2,win:s10] [devtools] webview page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), true)
+      assert.equal((await journal.read()).windowId, 's10')
+    })
+  })
+
+  it('keeps the readiness cursor when an owned log is truncated', async () => {
+    await fixture(async ({ root, log }) => {
+      const journal = await nativeJournal('/owned', root)
+      await appendFile(log, `[rt:1,win:s11] project ready, projectpath=/owned\n[rt:1,win:s11] [devtools] webview page ready\n${'padding'.repeat(100)}\n`)
+      const checkpoint = await journal.checkpoint()
+      await writeFile(log, '[rt:2,win:s12] [devtools] webview page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(log, '[rt:2,win:s11] [devtools] webview page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), true)
+      assert.equal((await journal.read()).windowId, 's11')
+    })
+  })
+
+  it('does not count a partial prior record or an unfinished readiness record', async () => {
+    await fixture(async ({ root, log }) => {
+      const journal = await nativeJournal('/owned', root)
+      await appendFile(log, '[rt:1,win:s8] project ready, projectpath=/owned\n[rt:1,win:s8] [devtools] webview')
+      const checkpoint = await journal.checkpoint()
+      await appendFile(log, ' page ready\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(log, '[rt:2,win:s8] [devtools] webview page ready')
+      assert.equal(await journal.pageReadyAfter(checkpoint), false)
+      await appendFile(log, '\n')
+      assert.equal(await journal.pageReadyAfter(checkpoint), true)
+    })
+  })
+
+  it('rejects checkpoints from other journals', async () => {
+    await fixture(async ({ root }) => {
+      const journal = await nativeJournal('/owned', root)
+      const foreign = await nativeJournal('/foreign', root)
+      const checkpoint = await foreign.checkpoint()
+      await assert.rejects(journal.pageReadyAfter(checkpoint), /different journal/)
+      await assert.rejects(journal.pageReadyAfter({}), /different journal/)
+    })
+  })
 })

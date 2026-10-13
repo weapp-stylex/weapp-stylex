@@ -256,8 +256,8 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 | Workspace       | 已配置版本                                              | 各目标产物                                                       |
 | --------------- | ------------------------------------------------------- | ---------------------------------------------------------------- |
-| `wechat-native` | weapp-vite 7.5.0 / Vite 8.3.4                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
-| `wechat-wevu`   | wevu 7.5.0 / weapp-vite 7.5.0                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
+| `wechat-native` | weapp-vite 7.4.0 / Vite 8.3.4                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
+| `wechat-wevu`   | wevu 7.4.0 / weapp-vite 7.4.0                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
 | `taro-react`    | Taro 4.3.0 / React 18.3.1                               | `dist/weapp-webpack`、`dist/weapp-vite`                          |
 | `taro-vue3`     | Taro 4.3.0 / Vue 3.5.43                                 | `dist/weapp-webpack`、`dist/weapp-vite`                          |
 | `uni-vue3`      | DCloud vue3 `3.0.0-alpha-5030120260930001` / Vue 3.4.21 | `dist/build/<platform>`                                          |

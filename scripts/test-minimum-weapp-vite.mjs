@@ -5,7 +5,6 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import process from 'node:process'
-import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { promisify } from 'node:util'
 import { waitForWatchedSources } from './watcher-ready.mjs'
@@ -108,15 +107,45 @@ async function development(cwd, createCompilerContext, createServer) {
     context = await createCompilerContext({ cwd, isDev: true, mode: 'development', cliPlatform: 'web', preloadAppEntry: false, syncAutoImportSupportFiles: false })
     const config = context.configService.mergeWeb()
     assert.ok(config, 'Minimum host omitted its Web development configuration')
+    const tokens = path.join(cwd, 'src/tokens.stylex.ts')
     let ready
+    let pendingTokenUpdate
+    const hotUpdateEnvironments = config.server?.hotUpdateEnvironments
     server = await createServer({
       ...config,
       optimizeDeps: { noDiscovery: true, include: [] },
+      server: {
+        ...config.server,
+        async hotUpdateEnvironments(value, hmr) {
+          const update = pendingTokenUpdate?.seen ? pendingTokenUpdate : undefined
+          try {
+            if (hotUpdateEnvironments) {
+              await hotUpdateEnvironments(value, hmr)
+            }
+            else {
+              await Promise.all(Object.values(value.environments).map(environment => hmr(environment)))
+            }
+            update?.resolve()
+          }
+          catch (error) {
+            update?.reject(error)
+            throw error
+          }
+        },
+      },
       plugins: [...config.plugins, {
-        name: 'minimum-host:watch-ready',
+        name: 'minimum-host:watch-sync',
         configureServer({ watcher }) {
           ready = waitForWatchedSources(watcher, path.join(cwd, 'src'), ['styles.ts', 'tokens.stylex.ts'])
           void ready.catch(() => {})
+        },
+        handleHotUpdate: {
+          order: 'post',
+          handler({ file }) {
+            if (file === tokens && pendingTokenUpdate) {
+              pendingTokenUpdate.seen = true
+            }
+          },
         },
       }],
     })
@@ -163,29 +192,27 @@ async function development(cwd, createCompilerContext, createServer) {
     assert.match(client, /vite:ws:connect/)
     assert.match(client, /location\.reload\(\)/)
     assert.match(client, /readState\(\)/)
-    const tokens = path.join(cwd, 'src/tokens.stylex.ts')
+    let timer
     const changed = new Promise((resolve, reject) => {
-      let timer
-      const onChange = (id) => {
-        if (id === tokens) {
-          clearTimeout(timer)
-          server.watcher.off('change', onChange)
-          resolve()
-        }
-      }
+      pendingTokenUpdate = { resolve, reject, seen: false }
       timer = setTimeout(() => {
-        server.watcher.off('change', onChange)
-        reject(new Error('Minimum host token watcher timed out'))
+        reject(new Error('Minimum host token HMR completion timed out'))
       }, 10000)
-      server.watcher.on('change', onChange)
     })
-    await writeFile(tokens, tokenSource('purple'))
-    await changed
-    // File notifications precede the host's asynchronous invalidation hook.
-    await delay(20)
-    const styleUrl = [...seen].find(url => /\/src\/styles\.ts(?:\?|$)/.test(url))
-    assert.ok(styleUrl, 'Host module graph omitted the shared StyleX module')
-    await request(styleUrl)
+    void changed.catch(() => {})
+    try {
+      await writeFile(tokens, tokenSource('purple'))
+      await changed
+    }
+    finally {
+      clearTimeout(timer)
+      pendingTokenUpdate = undefined
+    }
+    // The raw watcher event precedes async watch/HMR hooks. Wait for Vite's
+    // environment updates to finish, then follow the same graph a reload loads.
+    seen.clear()
+    await loadGraph('/minimum/')
+    assert.ok([...seen].some(url => /\/src\/styles\.ts(?:\?|$)/.test(url)), 'Host module graph omitted the shared StyleX module')
     const updated = await state()
     assertShadowState(updated, 'purple')
     assert.doesNotMatch(updated.pageCss, /:orange/)

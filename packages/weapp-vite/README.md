@@ -1,6 +1,6 @@
 # @weapp-stylex/weapp-vite
 
-将官方 StyleX 编译为原生小程序和 Wevu 的微信/支付宝/抖音样式及 H5 CSS。要求 weapp-vite `>=7.4.0 <8`。
+将官方 StyleX 编译为原生小程序和 Wevu 的微信/支付宝/抖音样式及 H5 CSS。要求 weapp-vite `>=7.4.0 <8`。当前仓库示例使用 weapp-vite/Wevu `7.4.0`；7.5.0 的开发宿主升级因 Linux 集成检查失败暂不接受，详情见[依赖评估](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-13.md)。
 
 ```bash
 pnpm add @weapp-stylex/core

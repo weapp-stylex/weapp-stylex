@@ -47,12 +47,13 @@ export async function nativeJournal(projectPath, logRoot) {
   const offsets = new Map((await logFiles(root)).map(info => [info.file, info.size]))
   const observation = { windowId: null, windowClosed: false, webContentsDestroyed: false }
   const observed = new Map()
+  const checkpoints = new WeakMap()
   let ownerDirectory
   const identifiesProject = line => line.endsWith(`projectpath=${projectPath}`)
     || line.includes(`cacheSubKey: '${projectPath}/`)
     || line.includes(`projectId: '${projectPath}'`)
     || line.includes(`projectPath: '${projectPath}'`)
-  return {
+  const journal = {
     observation,
     async read() {
       for (const { file, size } of await logFiles(root)) {
@@ -96,6 +97,51 @@ export async function nativeJournal(projectPath, logRoot) {
       }
       return observation
     },
+    async checkpoint() {
+      // Include unread bytes written before the caller starts its next action.
+      await journal.read()
+      const checkpoint = Object.freeze({})
+      checkpoints.set(checkpoint, new Map([...observed].map(([file, data]) => [file, data.length])))
+      return checkpoint
+    },
+    async pageReadyAfter(checkpoint) {
+      const cursor = checkpoints.get(checkpoint)
+      if (!cursor) {
+        throw new Error('Native readiness checkpoint belongs to a different journal')
+      }
+      await journal.read()
+      if (!observation.windowId) {
+        return false
+      }
+      for (const [file, data] of observed) {
+        if (path.dirname(file) !== ownerDirectory) {
+          continue
+        }
+        const offset = cursor.get(file) ?? 0
+        let next = data.slice(offset)
+        // A record started before the action cannot prove readiness after it.
+        if (offset && data[offset - 1] !== '\n') {
+          const newline = next.indexOf('\n')
+          if (newline < 0) {
+            continue
+          }
+          next = next.slice(newline + 1)
+        }
+        // Native writes may split a record; wait for its complete line.
+        const newline = next.lastIndexOf('\n')
+        if (newline < 0) {
+          continue
+        }
+        if (next.slice(0, newline).split('\n').some(line =>
+          line.includes('[devtools] webview page ready')
+          && (line.includes(`win:${observation.windowId}]`)
+            || line.includes(`winId: '${observation.windowId}'`)),
+        )) {
+          return true
+        }
+      }
+      return false
+    },
     evidence() {
       return [...observed.entries()]
         .filter(([file]) => path.dirname(file) === ownerDirectory)
@@ -110,4 +156,5 @@ export async function nativeJournal(projectPath, logRoot) {
         .join('\n')
     },
   }
+  return journal
 }

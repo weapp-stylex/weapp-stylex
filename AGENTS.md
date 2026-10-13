@@ -133,6 +133,9 @@ presets to it. Weapp-vite/Wevu use Vite 8; Taro 4.3.0 uses Vite 4 and Webpack
 5.91.0; uni-app's aligned vue3 channel uses Vite 5.2.8 and Vue 3.4.21. Declare
 intentional dependency groups in repoctl.config.ts instead of unifying these
 incompatible major versions with global overrides. See docs for audit limits.
+Keep weapp-vite/Wevu at 7.4.0: the evaluated 7.5.0 host test API fails on Linux
+while fingerprinting synthetic virtual module IDs. Reconsider after an upstream
+fix is verified; do not patch the host or weaken integration checks to upgrade.
 Keep TypeScript 6.0.3 until the toolchain supports TypeScript 7 and the legacy
 Compiler API consumers are migrated: TypeScript 7 removes those APIs from its
 root entry and exposes separate unstable API modules.

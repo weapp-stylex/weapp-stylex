@@ -27,7 +27,7 @@ async function main() {
   const adapterManifest = adapterRequire('./package.json')
   const hostVersion = adapterRequire('weapp-vite/package.json').version
   assert.equal(hostVersion, adapterManifest.devDependencies['weapp-vite'])
-  assert.match(hostVersion, /^7\.(?:4|5)\.0$/, 'Reaudit the weapp-vite Babel/Vite boundaries before changing the verified host versions')
+  assert.equal(hostVersion, '7.4.0', 'Reaudit the host test API virtual inputs before accepting weapp-vite 7.5')
   assert.equal(adapterManifest.peerDependencies['weapp-vite'], '>=7.4.0 <8')
   const weappRequire = createRequire(
     adapterRequire.resolve('weapp-vite/package.json'),

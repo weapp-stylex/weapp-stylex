@@ -22,6 +22,6 @@
     "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
-    "weapp-vite": "7.5.0"
+    "weapp-vite": "7.4.0"
   }
 }
