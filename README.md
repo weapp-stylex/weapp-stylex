@@ -259,7 +259,7 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 | `wechat-native` | weapp-vite 7.4.0 / Vite 8.3.4                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
 | `wechat-wevu`   | wevu 7.4.0 / weapp-vite 7.4.0                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
 | `taro-react`    | Taro 4.3.0 / React 18.3.1                               | `dist/weapp-webpack`、`dist/weapp-vite`                          |
-| `taro-vue3`     | Taro 4.3.0 / Vue 3.5.43                                 | `dist/weapp-webpack`、`dist/weapp-vite`                          |
+| `taro-vue3`     | Taro 4.3.0 / Vue 3.5.44                                 | `dist/weapp-webpack`、`dist/weapp-vite`                          |
 | `uni-vue3`      | DCloud vue3 `3.0.0-alpha-5030120260930001` / Vue 3.4.21 | `dist/build/<platform>`                                          |
 
 Taro 使用 Vite 4.5.14 / Webpack 5.91.0，uni-app 固定 Vite 5.2.8；没有全局 Vite 主版本 override。各示例都包含共享样式、多消费者、条件合并、主题、动态值、少量内联样式和普通分包。每个示例的 README 提供单独构建命令。

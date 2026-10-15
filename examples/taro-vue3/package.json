@@ -42,7 +42,7 @@
     "@tarojs/runtime": "4.3.0",
     "@tarojs/shared": "4.3.0",
     "@tarojs/taro": "4.3.0",
-    "vue": "^3.5.43",
+    "vue": "^3.5.44",
     "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
