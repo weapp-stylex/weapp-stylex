@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-10-16T03:59:31.008580+00:00",
-  "status": "pending",
+  "updatedAt": "2026-10-16T04:55:00.000Z",
+  "status": "passed",
   "source": {
-    "baseRevision": "1f8152b9e444bd39da8dd809e145fb6ff2be99a8",
-    "sha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1"
+    "baseRevision": "6a7114346cbb677c47de2f26821372e0f86fcf04",
+    "sha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf"
   },
   "lockfiles": [
     {
@@ -482,12 +482,12 @@
     },
     "externalFacade": {
       "status": "passed",
-      "artifacts": 56,
-      "manifest": "artifacts/consumer-hosts-tHijna/manifest.json",
-      "buildsPerBackend": 28,
-      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
-      "validationBatch": "r4",
-      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "artifacts": 14,
+      "manifest": "artifacts/consumer-hosts-4U2cUh/manifest.json",
+      "buildsPerBackend": 7,
+      "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+      "validationBatch": "r5",
+      "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
       "previousRuns": [
         {
           "status": "passed",
@@ -507,16 +507,17 @@
             }
           ]
         }
-      ]
+      ],
+      "scope": "weapp"
     },
     "externalAdapters": {
       "status": "passed",
-      "artifacts": 56,
-      "manifest": "artifacts/consumer-hosts-nTgwhM/manifest.json",
-      "buildsPerBackend": 28,
-      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
-      "validationBatch": "r4",
-      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "artifacts": 14,
+      "manifest": "artifacts/consumer-hosts-VTmjbP/manifest.json",
+      "buildsPerBackend": 7,
+      "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+      "validationBatch": "r5",
+      "libraryPacksId": "31548082ef92e54a9adadf94e126c7450d107623fb504e9a86d5951541239ffb",
       "previousRuns": [
         {
           "status": "passed",
@@ -527,7 +528,8 @@
           "libraryPacksId": "c7c5299ea8c3f5e5274c32f99d4b3c7018999e158d054a7249c6bc419df86d4a",
           "equivalentR3Packages": "artifacts/goal-final-packs-r2-r3-comparison.json"
         }
-      ]
+      ],
+      "scope": "weapp"
     },
     "platforms": {
       "status": "passed",
@@ -841,11 +843,11 @@
       "screenshots": 42,
       "resources": 14,
       "ownedResourcesClosed": true,
-      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
-      "validationBatch": "r4",
-      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
-      "consumerManifest": "artifacts/consumer-hosts-tHijna/manifest.json",
-      "adapterConsumerManifest": "artifacts/consumer-hosts-nTgwhM/manifest.json",
+      "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+      "validationBatch": "r5",
+      "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
+      "consumerManifest": "artifacts/consumer-hosts-4U2cUh/manifest.json",
+      "adapterConsumerManifest": "artifacts/consumer-hosts-VTmjbP/manifest.json",
       "previousPreflight": "artifacts/goal-final-ide-preflight.json",
       "blockers": [],
       "isloginFinalLog": "artifacts/goal-ide-final-islogin.log",
@@ -856,7 +858,7 @@
       "actualToolInfo": {
         "version": "2.02.2608080",
         "SDKVersions": {
-          "babel": "3.17.4",
+          "babel": "3.17.5",
           "auto": "3.17.5"
         }
       },
@@ -928,6 +930,76 @@
             "runId": "82779d199e445478b442ba2a4a9357cc23bc1272fb93fc85771e274371c99d50",
             "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0"
           }
+        },
+        {
+          "backend": "babel",
+          "status": "failed",
+          "scope": "full",
+          "report": "artifacts/ide/run-1792125906571/report.json",
+          "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+          "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
+          "passedArtifacts": 1,
+          "artifacts": [
+            {
+              "name": "wechat-native",
+              "directory": "dist",
+              "status": "passed",
+              "stage": "return and reenter index with initial state"
+            },
+            {
+              "name": "wechat-wevu",
+              "directory": "dist",
+              "status": "failed",
+              "stage": "application readiness",
+              "error": "timeout waiting for automator response"
+            }
+          ],
+          "ownedResourcesClosed": true,
+          "suiteLockReleased": true,
+          "historical": true,
+          "reason": "Transient miniprogram-automator protocol timeout; all owned resources were released before retry."
+        },
+        {
+          "backend": "babel",
+          "status": "passed",
+          "scope": "full",
+          "report": "artifacts/ide/run-1792125998013/report.json",
+          "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+          "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
+          "runId": "f9f46e72424768d94aebaa90567a3b6ccd51168f153b5963b00bb645c1e0de19",
+          "sdkVersion": "3.17.5",
+          "toolVersion": "2.02.2608080",
+          "passedArtifacts": 7,
+          "screenshots": 21,
+          "resources": 7,
+          "ownedResourcesClosed": true,
+          "suiteLockReleased": true,
+          "finalInputVerification": {
+            "checkedAt": "2026-10-16T04:50:14.904Z",
+            "runId": "f9f46e72424768d94aebaa90567a3b6ccd51168f153b5963b00bb645c1e0de19",
+            "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306"
+          }
+        },
+        {
+          "backend": "auto",
+          "status": "passed",
+          "scope": "full",
+          "report": "artifacts/ide/run-1792126262870/report.json",
+          "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+          "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
+          "runId": "dcb541fc0b7356f8bef998c472ce7d2e7bed21c53b01df78f0828134f16ce52e",
+          "sdkVersion": "3.17.5",
+          "toolVersion": "2.02.2608080",
+          "passedArtifacts": 7,
+          "screenshots": 21,
+          "resources": 7,
+          "ownedResourcesClosed": true,
+          "suiteLockReleased": true,
+          "finalInputVerification": {
+            "checkedAt": "2026-10-16T04:54:39.793Z",
+            "runId": "dcb541fc0b7356f8bef998c472ce7d2e7bed21c53b01df78f0828134f16ce52e",
+            "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306"
+          }
         }
       ],
       "diagnostics": {
@@ -944,43 +1016,60 @@
           "resolution": "Open proves editor startup only. Take a native journal checkpoint before auto, wait for a fresh owned page-ready event after auto, connect SDK, then require the application page stack and root structure."
         }
       },
-      "reason": "Both complete seven-artifact suites passed; Babel used SDK 3.17.4 and auto used SDK 3.17.5 under Stable 2.02.2608080."
+      "reason": "Both complete seven-artifact suites passed against the final source-bound r5 consumer batch; a transient Wevu protocol timeout was retried successfully. Stable 2.02.2608080 reported SDK 3.17.5 for both backends."
     },
     "remoteCi": {
-      "status": "pending",
-      "reason": "Both IDE suites and all local validation are complete; await commit and push before remote CI acceptance."
+      "status": "passed",
+      "workflow": "CI",
+      "runId": 38850618190,
+      "commit": "6a7114346cbb677c47de2f26821372e0f86fcf04",
+      "conclusion": "success",
+      "url": "https://github.com/weapp-stylex/weapp-stylex/actions/runs/38850618190",
+      "completedAt": "2026-10-16T04:38:58Z",
+      "release": {
+        "runId": 38850618722,
+        "conclusion": "success",
+        "url": "https://github.com/weapp-stylex/weapp-stylex/actions/runs/38850618722",
+        "completedAt": "2026-10-16T04:29:56Z"
+      },
+      "note": "The remote CI and Release workflows passed for the implementation commit; this final validation record is documentation-only after that commit."
     },
     "finalInputVerification": {
       "status": "passed",
-      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
-      "validationBatch": "r4",
-      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+      "validationBatch": "r5",
+      "libraryPacksId": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
       "backends": [
         {
           "backend": "babel",
-          "source": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
-          "run": "be2d64bd0bf66aac3f935b50eced6e35e2f11425401eae125640fc67a34a067c",
+          "source": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+          "run": "f9f46e72424768d94aebaa90567a3b6ccd51168f153b5963b00bb645c1e0de19",
           "artifacts": 7,
           "libraryPacks": {
-            "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
-            "runId": "9c876159-604d-460f-a9af-8c227cbdddad",
-            "manifestPath": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/goal-final-packs-20261016-r4/library-packs.json"
+            "id": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
+            "runId": "b1719c74-f94c-4818-888a-ec88d1198dce",
+            "manifest": "artifacts/goal-final-packs-20261016-r5/library-packs.json"
           },
-          "report": "artifacts/ide/run-1792121348602/report.json"
+          "report": "artifacts/ide/run-1792125998013/report.json"
         },
         {
           "backend": "auto",
-          "source": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
-          "run": "82779d199e445478b442ba2a4a9357cc23bc1272fb93fc85771e274371c99d50",
+          "source": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+          "run": "dcb541fc0b7356f8bef998c472ce7d2e7bed21c53b01df78f0828134f16ce52e",
           "artifacts": 7,
           "libraryPacks": {
-            "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
-            "runId": "9c876159-604d-460f-a9af-8c227cbdddad",
-            "manifestPath": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/goal-final-packs-20261016-r4/library-packs.json"
+            "id": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
+            "runId": "b1719c74-f94c-4818-888a-ec88d1198dce",
+            "manifest": "artifacts/goal-final-packs-20261016-r5/library-packs.json"
           },
-          "report": "artifacts/ide/report.json"
+          "report": "artifacts/ide/run-1792126262870/report.json"
         }
       ],
+      "consumerManifests": {
+        "facade": "artifacts/consumer-hosts-4U2cUh/manifest.json",
+        "adapter": "artifacts/consumer-hosts-VTmjbP/manifest.json"
+      },
+      "checkedAt": "2026-10-16T04:54:39.793Z",
       "previousRuns": [
         {
           "status": "pending",
@@ -1263,6 +1352,26 @@
       "archivesEqual": true,
       "distEqual": true,
       "contentEqual": true
+    },
+    "r5": {
+      "sourceSha256": "2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf",
+      "libraryPacks": {
+        "id": "aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306",
+        "runId": "b1719c74-f94c-4818-888a-ec88d1198dce",
+        "manifest": "artifacts/goal-final-packs-20261016-r5/library-packs.json"
+      },
+      "adapterLibraryPacks": {
+        "id": "31548082ef92e54a9adadf94e126c7450d107623fb504e9a86d5951541239ffb",
+        "runId": "59f64746-52eb-457d-91d1-8924f0dabbc7",
+        "manifest": "artifacts/goal-final-adapter-packs-20261016-r5/library-packs.json"
+      },
+      "facadeManifest": "artifacts/consumer-hosts-4U2cUh/manifest.json",
+      "adapterManifest": "artifacts/consumer-hosts-VTmjbP/manifest.json",
+      "ideReports": [
+        "artifacts/ide/run-1792125998013/report.json",
+        "artifacts/ide/run-1792126262870/report.json"
+      ],
+      "note": "Final source-bound consumer and IDE suites after the Corepack fixture fix; the initial Wevu protocol timeout is retained as failed evidence and the retry passed."
     }
   },
   "r4Evidence": {

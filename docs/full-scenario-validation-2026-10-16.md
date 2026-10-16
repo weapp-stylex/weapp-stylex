@@ -1,10 +1,10 @@
 # 全场景验收 · 2026-10-16
 
-本轮两套微信 IDE suite 已完成：同一份 r4 源码在 Babel、auto 后端各完成完整七产物验收，所有自有资源已关闭。Goal 仍等待对应提交的远端 CI；在提交和推送前不将本轮标记为最终完成。历史 IDE 成功和局部测试不能替代本轮验收。
+最终两套微信 IDE suite 已完成：同一份 r5 源码在 Babel、auto 后端各完成完整七产物验收，所有自有资源已关闭。实现提交 `6a7114346cbb677c47de2f26821372e0f86fcf04` 的远端 CI 与 Release 均已通过；验证记录现标记为 passed。首次 Wevu 协议超时已保留失败证据，重试后完整 suite 通过。
 
 r2 的非 IDE 验证已完成：根目录 102 项测试、91 项脚本测试、文档 12 项测试及浏览器交互；根目录全部规定检查、最低 Node 与宿主检查通过。facade / 独立适配器合计 112 次外部真实宿主构建通过。Babel、auto 各 28 份正式工作区产物通过，全部 28 组 CSS 一致；每后端 H5 七条生产和七条开发链路完整通过，各 14 张有效 PNG、9 项自有资源全部关闭。完整构建基准也已通过。这些记录保留原源码摘要 `dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486` 和 r2 包批次身份。
 
-当前 r4 源码摘要为 `d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1`。r2→r3 的 IDE 圆角和启动修复之后，r3→r4 仅修改 Wevu JSX fixture、headless 尾端断言和 IDE 错误消息；六库已重新构建打包，完整 dist、归档内容和 tarball 字节均与 r3 一致，证明见 `artifacts/goal-final-packs-r3-r4-comparison.json`。r4 已通过 root lint、typecheck、102 项根测试、依赖边界检查、92 项脚本测试、repo doctor；默认 `repo check` 也通过（空暂存集），`repo check --full` 仅按约束完成 dry-run 预览，未重复执行 build。r4 facade 与独立 adapter 各完成 Babel/auto 56 次外部真实宿主构建；两者 Wevu headless 结果均已保存并通过。Node 22.22.1 与 24.11.0 的 r4 隔离消费者现已通过，并绑定同一 r4 六包证明；此前 r3 的完整 Node 检查和 r2 的其他结果继续保留原运行身份。
+r4 的 IDE 与平台证据仍作为历史记录保留。最终 r5 源码摘要为 `2044c755c7e0b66b47546331cebac82b709dd7df487c8d015594727d2cb161cf`，实现提交为 `6a7114346cbb677c47de2f26821372e0f86fcf04`。修复 Corepack fixture 后，r5 facade 与独立 adapter 各完成 Babel/auto 七份 WeChat 外部真实宿主构建；两轮 IDE 重新绑定同一 r5 facade 包批次并通过。
 
 ## 场景与验收层次
 
@@ -26,7 +26,7 @@ r2 的非 IDE 验证已完成：根目录 102 项测试、91 项脚本测试、�
 
 `scripts/library-packs.mjs` 在构建前记录源码、源锁与安装锁、实际依赖版本，清理六库生成目录，完成真实构建和打包后逐文件核对归档。`library-packs.json` 绑定源码、完整 dist 集合、六份候选 tarball 和同一构建批次。旧包、混批、空构建和构建后修改均被拒绝；最低 Node 消费者复用生产工具链生成的同一批包。
 
-当前候选清单为 `artifacts/goal-final-packs-20261016-r4/library-packs.json`，证明 ID 为 `cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0`，构建批次为 `9c876159-604d-460f-a9af-8c227cbdddad`。r4 facade 清单为 `artifacts/consumer-hosts-tHijna/manifest.json`，独立 adapter 清单为 `artifacts/consumer-hosts-nTgwhM/manifest.json`；两份均为 Babel / auto 各 28 份产物、总计 56 份，并提供当前 IDE 输入。r3 清单、运行 ID 和六包字节比较仍作为历史证据保留；不能替代 r4 完整 suite 结束时的再次核验。
+最终候选清单为 `artifacts/goal-final-packs-20261016-r5/library-packs.json`，证明 ID 为 `aff5746a3d0fb9757464a377e9c87366bb6398e3b66294a65590bbd3c8d6c306`，构建批次为 `b1719c74-f94c-4818-888a-ec88d1198dce`。r5 facade 清单为 `artifacts/consumer-hosts-4U2cUh/manifest.json`，独立 adapter 清单为 `artifacts/consumer-hosts-VTmjbP/manifest.json`；两份均覆盖 Babel / auto 各七份 WeChat 产物，并提供当前 IDE 输入。adapter 包批次为 `31548082ef92e54a9adadf94e126c7450d107623fb504e9a86d5951541239ffb`。r4 及更早清单和六包字节比较仍作为历史证据保留。
 
 `scripts/build-provenance.mjs` 记录后端、外部消费者源码与安装锁、框架版本和完整产物摘要。IDE 启动前验证完整七产物，复制前后再次核对全部文件，修改隔离副本的 AppID 后才启动。suite 完成前再次核验同一源码和包批次。跨 checkout 原子互斥保证 IDE 串行，每份只启动一个 automator。
 
@@ -34,7 +34,7 @@ H5 报告记录源码与产物身份，生产验收后再次核对完整产物�
 
 r4 平台矩阵 `artifacts/goal-final-r4-matrix-status.json` 的 Babel / auto 六步全部通过：每后端 28 份产物、示例 headless、H5 full 均成功，日志中的 28 组 CSS 与 Babel 完全一致。Babel H5 报告为 `artifacts/h5/babel/run-1792121090991/report.json`，auto H5 报告为 `artifacts/h5/auto/run-1792121263081/report.json`；两者各覆盖七个生产和七个开发应用、14 张 PNG，9 项自有资源全部关闭。
 
-当前 IDE 验收报告为 Babel `artifacts/ide/run-1792121348602/report.json` 和 auto `artifacts/ide/report.json`。两者均为 `status=passed`、`scope=full`，各含七个产物、21 张 PNG、7 个自有资源；端口、automator endpoint、原生窗口和 webContents 均已关闭，suite lock 已释放，最终输入核验绑定同一 r4 源码与包证明。Babel 的 `Tool.getInfo` 为 Stable 2.02.2608080 / SDK 3.17.4，auto 为 Stable 2.02.2608080 / SDK 3.17.5；这是本次运行环境的实际差异，两个 SDK 均完成同一场景断言。
+最终 IDE 验收报告为 Babel `artifacts/ide/run-1792125998013/report.json` 和 auto `artifacts/ide/run-1792126262870/report.json`。两者均为 `status=passed`、`scope=full`，各含七个产物、21 张 PNG、7 个自有资源；端口、automator endpoint、原生窗口和 webContents 均已关闭，suite lock 已释放，最终输入核验绑定同一 r5 源码与包证明。Stable 2.02.2608080 的两轮 `Tool.getInfo` 均报告 SDK 3.17.5，两个后端完成同一场景断言。
 
 ## 已发现的问题与修复
 
@@ -57,7 +57,7 @@ r4 平台矩阵 `artifacts/goal-final-r4-matrix-status.json` 的 Babel / auto �
 
 支付宝、抖音覆盖构建与集成回归，其真实 IDE 验收仍待完成。真机、独立分包、Vue 2、uni-app x 和 stateful HMR 不在本次完成门槛内。
 
-本轮机器可读结果与日志位于 `artifacts/goal-final-*`，完整 IDE 运行证据位于 `artifacts/ide/run-*`。两轮完整 IDE 和其他规定回归均已通过；当前仍未提交或推送本轮代码，因此对应远端 CI 尚未验收。
+本轮机器可读结果与日志位于 `artifacts/goal-final-*`，完整 IDE 运行证据位于 `artifacts/ide/run-*`。最终实现提交的 GitHub Actions CI（run `38850618190`）和 Release（run `38850618722`）均为 success；本次文档更新只补充已完成的远端证据。
 
 结构化汇总见 [本轮验证记录](validation/full-scenario-2026-10-16.json)。候选包审计与依赖升级后的基线一致：75 项 advisory（4 critical、21 high、40 moderate、10 low），没有新增 advisory ID；仍由固定的 Taro、uni-app 和 automator 宿主链路传递。未执行 audit fix，未添加安全 overrides。兼容 outdated 查询只返回 Sass 1.105.2，其当前与 wanted 均为 1.105.1；本轮保留已验证的锁文件。
 
