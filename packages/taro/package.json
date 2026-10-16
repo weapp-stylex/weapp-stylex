@@ -1,7 +1,7 @@
 {
   "name": "@weapp-stylex/taro",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "description": "StyleX plugin for Taro React and Vue 3 targeting WeChat, Alipay, Douyin and H5 with Vite and Webpack 5",
   "author": "ice breaker <1324318532@qq.com>",
