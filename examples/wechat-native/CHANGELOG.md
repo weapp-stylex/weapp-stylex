@@ -1,5 +1,12 @@
 # wechat-native
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies:
+  - weapp-stylex@0.3.1
+
 ## 0.1.4
 
 ### Patch Changes

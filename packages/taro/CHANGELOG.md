@@ -1,5 +1,14 @@
 # @weapp-stylex/taro
 
+## 0.3.1
+
+### Patch Changes
+
+- Expose the shared StylexTarget type through the Taro adapter so inferred target helper exports emit portable declarations.
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes

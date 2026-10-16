@@ -18,6 +18,10 @@
   intents:
     - soft-squids-press
     - spicy-bats-swim
+"@weapp-stylex/compiler@0.3.1":
+  dir: packages/compiler
+  intents:
+    - sharp-deers-report
 "@weapp-stylex/core@0.1.1":
   dir: packages/core
   intents:
@@ -50,6 +54,10 @@
   intents:
     - soft-squids-press
     - spicy-bats-swim
+"@weapp-stylex/taro@0.3.1":
+  dir: packages/taro
+  intents:
+    - wet-cups-heal
 "@weapp-stylex/uni-app@0.1.0":
   dir: packages/uni-app
   intents:
@@ -69,6 +77,11 @@
   intents:
     - soft-squids-press
     - spicy-bats-swim
+"@weapp-stylex/uni-app@0.3.1":
+  dir: packages/uni-app
+  intents:
+    - bright-olives-lie
+    - weak-peaches-start
 "@weapp-stylex/weapp-vite@0.2.0":
   dir: packages/weapp-vite
   intents:
@@ -90,6 +103,10 @@
     - curly-ravens-raise
     - soft-squids-press
     - spicy-bats-swim
+"@weapp-stylex/weapp-vite@0.4.1":
+  dir: packages/weapp-vite
+  intents:
+    - bright-olives-lie
 weapp-stylex@0.0.0:
   dir: packages/weapp-stylex
   intents:
@@ -109,3 +126,8 @@ weapp-stylex@0.3.0:
   intents:
     - soft-squids-press
     - spicy-bats-swim
+weapp-stylex@0.3.1:
+  dir: packages/weapp-stylex
+  intents:
+    - bright-olives-lie
+    - weak-peaches-start
