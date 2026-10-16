@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
-import { mkdir, mkdtemp, readdir, readFile, realpath, rm, stat, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, realpath, rm, stat, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
+import { assertHostsAbsent, candidateSummary, ensureArtifactsDirectory, installConsumer, prepareCandidates, verifyCandidates } from './consumers/candidates.mjs'
+import { testIndependentEntries } from './consumers/entries.mjs'
 
 const run = promisify(execFile)
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -69,6 +71,7 @@ async function sourceMap(packageRoot, fileName) {
 }
 
 const directory = await realpath(await mkdtemp(path.join(tmpdir(), 'weapp-stylex-package-')))
+let prepared
 try {
   const registryVersion = process.env.WEAPP_STYLEX_TEST_REGISTRY_VERSION
   // Reuse the exact tarballs in another Node runtime without repacking them.
@@ -80,24 +83,24 @@ try {
     packages = [`weapp-stylex@${registryVersion}`]
   }
   else {
-    const packs = prepackedDirectory ? path.resolve(prepackedDirectory) : path.join(directory, 'packs')
-    if (!prepackedDirectory) {
-      await mkdir(packs)
-      for (const name of ['core', 'compiler', 'weapp-vite', 'taro', 'uni-app', 'weapp-stylex']) {
-        await run('corepack', ['pnpm', 'pack', '--pack-destination', packs], {
-          cwd: path.join(root, 'packages', name),
-        })
-      }
-    }
-    packages = (await readdir(packs)).filter(file => file.endsWith('.tgz')).map(file => path.join(packs, file))
-    assert.equal(packages.length, 6)
+    prepared = await prepareCandidates(prepackedDirectory)
   }
-  await writeFile(path.join(directory, 'package.json'), '{"name":"packed-facade-consumer","private":true,"type":"module"}')
-  await installPackages(directory, [...packages, `typescript@${tooling('typescript/package.json').version}`])
-  const require = createRequire(path.join(directory, 'package.json'))
+  let installed
+  if (registryVersion) {
+    await writeFile(path.join(directory, 'package.json'), '{"name":"packed-facade-consumer","private":true,"type":"module"}')
+    await installPackages(directory, [...packages, `typescript@${tooling('typescript/package.json').version}`])
+  }
+  else {
+    await ensureArtifactsDirectory()
+    const consumer = await installConsumer(directory, prepared.candidates, 'weapp-stylex', { dependencies: { typescript: tooling('typescript/package.json').version } })
+    installed = consumer.installed
+    await assertHostsAbsent(directory, installed)
+  }
+  const entryRequire = createRequire(path.join(directory, 'package.json'))
+  const require = createRequire(entryRequire.resolve('weapp-stylex'))
   const nodeVersion = (await run(testNode, ['-p', 'process.versions.node'], { cwd: directory })).stdout.trim()
   for (const name of packageNames) {
-    const packageRoot = path.join(directory, 'node_modules', name)
+    const packageRoot = installed?.get(name) ?? path.join(directory, 'node_modules', name)
     const manifest = JSON.parse(await readFile(path.join(packageRoot, 'package.json'), 'utf8'))
     assert.equal(manifest.name, name)
     assert.ok(manifest.exports, `${name} has no public export contract`)
@@ -140,6 +143,7 @@ try {
   await writeFile(path.join(directory, 'runtime-isolation.mjs'), `
 import assert from 'node:assert/strict'
 import {createRequire,registerHooks} from 'node:module'
+import {pathToFileURL} from 'node:url'
 const require=createRequire(import.meta.url)
 const forbidden=/^(?:@weapp-stylex\\/(?:compiler|weapp-vite|taro|uni-app)(?:\\/|$)|weapp-stylex\\/(?:compiler|weapp-vite|taro|uni-app)(?:\\/|$)|@babel\\/|@stylexswc\\/|weapp-vite(?:\\/|$)|@tarojs\\/|webpack(?:\\/|$)|@dcloudio\\/)/
 const seen=[]
@@ -152,14 +156,16 @@ const hook=registerHooks({resolve(specifier,context,nextResolve){
 try {
   const [entry,mode]=process.argv.slice(2)
   const runtime=mode==='cjs'?require(entry):await import(entry)
-  const official=await import('@stylexjs/stylex')
+  const coreRequire=createRequire(createRequire(require.resolve('weapp-stylex')).resolve('@weapp-stylex/core'))
+  const officialManifest=coreRequire('@stylexjs/stylex/package.json')
+  const official=await import(new URL(officialManifest.exports['.'].import,pathToFileURL(coreRequire.resolve('@stylexjs/stylex/package.json'))).href)
   assert.deepEqual(Object.keys(runtime).sort(),Object.keys(official).sort())
   assert.equal(runtime.attrs,official.attrs)
   assert.equal(runtime.props,official.props)
   assert.ok(!seen.some(url=>/\\/@(?:babel|stylexswc)\\/|\\/@weapp-stylex\\/(?:compiler|weapp-vite|taro|uni-app)\\//.test(url)), 'Runtime entry resolved build tool files')
 } finally {hook.deregister()}
 `)
-  for (const entry of ['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core']) {
+  for (const entry of ['weapp-stylex', 'weapp-stylex/core']) {
     for (const format of ['esm', 'cjs']) {
       await run(testNode, ['runtime-isolation.mjs', entry, format], { cwd: directory })
     }
@@ -172,9 +178,7 @@ const require=createRequire(import.meta.url)
 assert.equal(typeof stylex.create,'function')
 assert.equal(typeof require('weapp-stylex').attrs,'function')
 assert.ok(!Object.keys(require.cache).some(file=>/[/\\\\]@babel[/\\\\]|[/\\\\]compiler[/\\\\]dist/.test(file)), 'Runtime entry loaded build tools')
-assert.equal(import.meta.resolve('@weapp-stylex/core'),new URL('./node_modules/@weapp-stylex/core/dist/index.js',import.meta.url).href)
-assert.equal(import.meta.resolve('@weapp-stylex/weapp-vite'),new URL('./node_modules/@weapp-stylex/weapp-vite/dist/index.js',import.meta.url).href)
-for (const adapter of [await import('@weapp-stylex/weapp-vite'),require('@weapp-stylex/weapp-vite')]) {
+for (const adapter of [await import('weapp-stylex/weapp-vite'),require('weapp-stylex/weapp-vite')]) {
   assert.equal(adapter.default,adapter.stylexCompiler)
   assert.equal(adapter.createStylex({target:'web'}).compilerPlugin.name,'weapp-stylex')
 }
@@ -227,15 +231,15 @@ if(missing) await assert.rejects(new StylexSession({backend:'swc'}).transform(so
     // optional dependency tree, including its native platform packages.
     const withoutOptional = await realpath(await mkdtemp(path.join(tmpdir(), 'weapp-stylex-no-optional-')))
     try {
-      await writeFile(path.join(withoutOptional, 'package.json'), '{"name":"packed-facade-consumer-no-optional","private":true,"type":"module"}')
-      await installPackages(withoutOptional, packages, { omitOptional: true })
+      const omitted = await installConsumer(withoutOptional, prepared.candidates, 'weapp-stylex', { omitOptional: true })
+      await assertHostsAbsent(withoutOptional, omitted.installed)
       const missingRequire = createRequire(path.join(withoutOptional, 'package.json'))
-      const missingCompilerRequire = createRequire(missingRequire.resolve('@weapp-stylex/compiler'))
+      const missingCompilerRequire = createRequire(createRequire(missingRequire.resolve('weapp-stylex')).resolve('@weapp-stylex/compiler'))
       assert.throws(() => missingCompilerRequire.resolve('@stylexswc/rs-compiler/package.json'), { code: 'MODULE_NOT_FOUND' })
       for (const file of ['consumer.mjs', 'backend.mjs', 'runtime-isolation.mjs']) {
         await writeFile(path.join(withoutOptional, file), await readFile(path.join(directory, file), 'utf8'))
       }
-      for (const entry of ['weapp-stylex', 'weapp-stylex/core', '@weapp-stylex/core']) {
+      for (const entry of ['weapp-stylex', 'weapp-stylex/core']) {
         for (const format of ['esm', 'cjs']) {
           await run(testNode, ['runtime-isolation.mjs', entry, format], { cwd: withoutOptional })
         }
@@ -275,10 +279,12 @@ import {stylexTaro, taroStylexTarget} from 'weapp-stylex/taro'
 import {stylexUniApp, uniStylexTarget} from 'weapp-stylex/uni-app'
 export const nativeIntegration = createStylex({target: 'alipay', backend: 'babel'})
 export const nativeWebIntegration = createStylex({target: 'web'})
+export const {vitePlugins, compilerPlugin} = createStylex()
 export const taroPlugin: typeof stylexTaro = stylexTaro
 export const taroOptions: NonNullable<Parameters<typeof stylexTaro>[1]> = {target: 'tt'}
 export const taroTarget: StylexTarget = taroStylexTarget('h5')
 export const uniPlugins = stylexUniApp({target: 'web'})
+export const spreadPlugins = [...stylexUniApp()]
 export const uniTarget: StylexTarget = uniStylexTarget('mp-alipay')
 // @ts-expect-error Each adapter retains the shared target union.
 createStylex({target: 'swan'})
@@ -294,8 +300,28 @@ stylexUniApp({target: 'qq'})
       await run(testNode, [tooling.resolve('typescript/bin/tsc'), '--declaration', '--emitDeclarationOnly', '--strict', '--skipLibCheck', 'true', '--module', 'NodeNext', '--target', 'ES2022', '--outDir', 'consumer-types', `adapter-types.${extension}`], { cwd: directory })
     }
   }
+  if (prepared) {
+    await testIndependentEntries(prepared.candidates, { testNode, tooling })
+    await verifyCandidates(prepared)
+    const report = path.join(root, 'artifacts', `consumers-node-${nodeVersion}.json`)
+    await writeFile(report, `${JSON.stringify({ checkedAt: new Date().toISOString(), nodeVersion, status: 'passed', libraryPacks: prepared.attestation, candidates: candidateSummary(prepared.candidates), directInstalls: packageNames }, null, 2)}\n`)
+    process.stdout.write(`Candidate consumer evidence: ${report}\n`)
+  }
   process.stdout.write(`${registryVersion ? `Published weapp-stylex@${registryVersion}` : 'Packed facade'} (Node ${nodeVersion}): all package export files, optional hosts, ESM/CJS runtime isolation, StyleX compilation and TypeScript${registryVersion ? '' : ' public compiler/adapter types, ESM build maps and addon-omitted install'} passed\n`)
+}
+catch (error) {
+  await ensureArtifactsDirectory()
+  const log = path.join(root, 'artifacts', `consumer-failure-${Date.now()}.log`)
+  await writeFile(log, `${error.stack}\n${error.stdout ?? ''}${error.stderr ?? ''}`)
+  process.stderr.write(`Consumer failure diagnostics: ${log}\n`)
+  throw error
 }
 finally {
   await rm(directory, { recursive: true, force: true })
+  if (prepared) {
+    await rm(prepared.unpacked, { recursive: true, force: true })
+    if (!process.env.WEAPP_STYLEX_TEST_PACKS_DIR) {
+      await rm(prepared.packs, { recursive: true, force: true })
+    }
+  }
 }

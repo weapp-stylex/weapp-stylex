@@ -2,8 +2,9 @@ import type { SfcParser, StylexCompilerOptions, StylexTarget } from '@weapp-styl
 import { createRequire } from 'node:module'
 import process from 'node:process'
 import { createCssValueTransformer, createVitePlugins, createWebStylePlugins, resolveStylexTarget, StylexSession } from '@weapp-stylex/compiler'
+import { createRuntimeResolver } from './runtime-resolver.js'
 
-export type { StylexCompilerOptions } from '@weapp-stylex/compiler'
+export type { PluginHost, StyleBundle, StylexCompilerOptions, StylexTarget, WebPluginHost, WebServer } from '@weapp-stylex/compiler'
 export function uniStylexTarget(platform = process.env.UNI_PLATFORM): StylexTarget {
   const targets: Record<string, StylexTarget> = { 'mp-weixin': 'weapp', 'mp-alipay': 'alipay', 'mp-toutiao': 'tt', 'h5': 'web' }
   const key = platform ?? ''
@@ -14,7 +15,7 @@ export function uniStylexTarget(platform = process.env.UNI_PLATFORM): StylexTarg
   return target
 }
 
-export function stylexUniApp(options: StylexCompilerOptions = {}) {
+function createUniAppPlugins(options: StylexCompilerOptions) {
   // DCloud owns the Vue compiler version and may redirect Vue resolution.
   const require = createRequire(
     typeof __filename === 'string' ? __filename : import.meta.url,
@@ -33,6 +34,7 @@ export function stylexUniApp(options: StylexCompilerOptions = {}) {
     return session
   }
   return [
+    createRuntimeResolver(),
     {
       name: 'weapp-stylex:uni-platform',
       config() {
@@ -59,5 +61,13 @@ export function stylexUniApp(options: StylexCompilerOptions = {}) {
       policyKey: () => policyKey,
     }),
   ]
+}
+
+/** Public return identity for configurations that emit their own declarations. */
+// An interface keeps its public identity when downstream exports infer this array.
+export interface StylexUniAppPlugins extends ReturnType<typeof createUniAppPlugins> {}
+
+export function stylexUniApp(options: StylexCompilerOptions = {}): StylexUniAppPlugins {
+  return createUniAppPlugins(options)
 }
 export default stylexUniApp

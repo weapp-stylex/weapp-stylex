@@ -6,7 +6,7 @@ import process from 'node:process'
 import { createRpxOnlyPostcssTransformer, createVitePlugins, createWebStylePlugins, resolveStylexTarget, StylexSession } from '@weapp-stylex/compiler'
 import { StylexWebpackPlugin } from './webpack.js'
 
-export type { StylexCompilerOptions } from '@weapp-stylex/compiler'
+export type { StylexCompilerOptions, StylexTarget } from '@weapp-stylex/compiler'
 
 export function taroStylexTarget(environment = process.env.TARO_ENV): StylexTarget {
   const targets: Record<string, StylexTarget> = { weapp: 'weapp', alipay: 'alipay', tt: 'tt', h5: 'web' }

@@ -1,0 +1,1289 @@
+{
+  "updatedAt": "2026-10-16T03:59:31.008580+00:00",
+  "status": "pending",
+  "source": {
+    "baseRevision": "1f8152b9e444bd39da8dd809e145fb6ff2be99a8",
+    "sha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1"
+  },
+  "lockfiles": [
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "fae0710972385fd17c1fda2625f523ee7b47fed9e594d46855d7e0cc308953eb",
+      "bytes": 1233531
+    },
+    {
+      "path": "node_modules/.pnpm/lock.yaml",
+      "sha256": "7bb910c22aed79919af3657a34621e35fb3e92308409669e3eb2102b0ed567fb",
+      "bytes": 1228925
+    }
+  ],
+  "libraryPacks": {
+    "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+    "runId": "9c876159-604d-460f-a9af-8c227cbdddad",
+    "manifest": "artifacts/goal-final-packs-20261016-r4/library-packs.json",
+    "candidates": [
+      {
+        "name": "@weapp-stylex/core",
+        "version": "0.1.3",
+        "archive": "weapp-stylex-core-0.1.3.tgz",
+        "sha256": "d6ef64967d4c69e880953fccc250cf00707989ac4d7675dff5e65fa18286dcac"
+      },
+      {
+        "name": "@weapp-stylex/compiler",
+        "version": "0.3.0",
+        "archive": "weapp-stylex-compiler-0.3.0.tgz",
+        "sha256": "f536b73d3053b5cbb1af2b5508f13d7c952374f489e609d60424ab272ab84179"
+      },
+      {
+        "name": "@weapp-stylex/weapp-vite",
+        "version": "0.4.0",
+        "archive": "weapp-stylex-weapp-vite-0.4.0.tgz",
+        "sha256": "9655c11914b181354c6370200a966e21b00cec968db1e32ec14f7f2638d744fa"
+      },
+      {
+        "name": "@weapp-stylex/taro",
+        "version": "0.3.0",
+        "archive": "weapp-stylex-taro-0.3.0.tgz",
+        "sha256": "29a32b9af047eb089307d1bce45b65a40f429f0fdb55198de0ec9a6f8df4c8e0"
+      },
+      {
+        "name": "@weapp-stylex/uni-app",
+        "version": "0.3.0",
+        "archive": "weapp-stylex-uni-app-0.3.0.tgz",
+        "sha256": "5ff1ca72ea314494a4ac249fd0e8199f50179ba525d424ca0a02171dbf36ee27"
+      },
+      {
+        "name": "weapp-stylex",
+        "version": "0.3.0",
+        "archive": "weapp-stylex-0.3.0.tgz",
+        "sha256": "2f83667d13a4f4293885651e09c47e6b5b19f149f3213a312620372f00f7a8bd"
+      }
+    ]
+  },
+  "checks": {
+    "frozenInstall": {
+      "status": "passed",
+      "log": "artifacts/goal-final-install.log",
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "validationBatch": "r3",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "log": "artifacts/goal-final-install.log",
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "lint": {
+      "status": "passed",
+      "log": "artifacts/goal-final-r4-lint.log",
+      "command": "corepack pnpm lint",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "warnings": 8,
+      "errors": 0,
+      "exitCode": 0,
+      "previousRuns": [
+        {
+          "status": "passed",
+          "log": "artifacts/goal-ide-final-lint.log",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "validationBatch": "r3",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "log": "artifacts/goal-final-lint-frozen.log",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            }
+          ]
+        }
+      ]
+    },
+    "build": {
+      "status": "passed",
+      "log": "artifacts/goal-final-build-serial.log",
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "validationBatch": "r3",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "log": "artifacts/goal-final-build-serial.log",
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "typecheck": {
+      "status": "passed",
+      "log": "artifacts/goal-final-r4-typecheck.log",
+      "command": "corepack pnpm typecheck",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "note": "Wevu prepare emits its existing native JSON-import fallback warning and succeeds.",
+      "exitCode": 0,
+      "previousRuns": [
+        {
+          "status": "passed",
+          "log": "artifacts/goal-ide-final-typecheck.log",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "validationBatch": "r3",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "log": "artifacts/goal-final-typecheck.log",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            }
+          ]
+        }
+      ]
+    },
+    "unit": {
+      "status": "passed",
+      "log": "artifacts/goal-final-r4-unit.log",
+      "command": "corepack pnpm test",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "tests": 102,
+      "testFiles": 13,
+      "exitCode": 0,
+      "previousRuns": [
+        {
+          "status": "passed",
+          "tests": 102,
+          "log": "artifacts/goal-ide-final-unit.log",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "validationBatch": "r3",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "tests": 102,
+              "log": "artifacts/goal-final-unit.log",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            }
+          ]
+        }
+      ]
+    },
+    "scripts": {
+      "status": "passed",
+      "log": "artifacts/goal-final-r4-scripts.log",
+      "command": "corepack pnpm exec node --test scripts/*.test.mjs scripts/taro/*.test.mjs",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "tests": 92,
+      "suites": 14,
+      "skipped": 0,
+      "exitCode": 0,
+      "previousRuns": [
+        {
+          "status": "passed",
+          "tests": 92,
+          "suites": 14,
+          "skipped": 0,
+          "log": "artifacts/goal-ide-final-scripts.log",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "validationBatch": "r3",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "tests": 91,
+              "log": "artifacts/goal-final-scripts-r2.log",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            }
+          ]
+        }
+      ]
+    },
+    "dependencyBoundaries": {
+      "status": "passed",
+      "log": "artifacts/goal-final-r4-deps.log",
+      "command": "corepack pnpm test:deps",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "exitCode": 0,
+      "previousRuns": [
+        {
+          "status": "passed",
+          "log": "artifacts/goal-ide-final-deps.log",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "validationBatch": "r3",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "log": "artifacts/goal-final-deps.log",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            }
+          ]
+        }
+      ]
+    },
+    "integration": {
+      "status": "passed",
+      "backends": [
+        "babel",
+        "auto"
+      ],
+      "logs": [
+        "artifacts/goal-final-integration-babel.log",
+        "artifacts/goal-final-integration-auto.log"
+      ],
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "validationBatch": "r3",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "backends": [
+            "babel",
+            "auto"
+          ],
+          "logs": [
+            "artifacts/goal-final-integration-babel.log",
+            "artifacts/goal-final-integration-auto.log"
+          ],
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "nodeFloors": {
+      "status": "passed",
+      "versions": [
+        "22.22.1",
+        "24.11.0"
+      ],
+      "reports": [
+        "artifacts/consumers-node-22.22.1.json",
+        "artifacts/consumers-node-24.11.0.json"
+      ],
+      "logs": [
+        "artifacts/goal-final-r4-node-22.22.1.log",
+        "artifacts/goal-final-r4-node-24.11.0.log"
+      ],
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacks": {
+        "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+        "runId": "9c876159-604d-460f-a9af-8c227cbdddad"
+      },
+      "previousRuns": [
+        {
+          "status": "pending",
+          "versions": [
+            "22.22.1",
+            "24.11.0"
+          ],
+          "reports": [
+            "artifacts/consumers-node-22.22.1.json",
+            "artifacts/consumers-node-24.11.0.json"
+          ],
+          "reason": "R4 floor reruns are still in progress; the listed reports currently span r4 and r3 batches and cannot be combined as one pass.",
+          "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+          "validationBatch": "r4",
+          "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "versions": [
+                "22.22.1",
+                "24.11.0"
+              ],
+              "reports": [
+                "artifacts/consumers-node-22.22.1.json",
+                "artifacts/consumers-node-24.11.0.json"
+              ],
+              "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+              "validationBatch": "r3",
+              "libraryPacks": {
+                "id": "fdf0b7be7f6ffe9e21ec3f15aa5a45bd1968a35070e5b355aedc38b746c01342",
+                "runId": "f8060c56-d368-4b8e-8223-f1c071113ebb"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "minimumHosts": {
+      "status": "passed",
+      "host": "7.4.0",
+      "profilesPerBackend": 8,
+      "logs": [
+        "artifacts/goal-final-minimum-host-babel.log",
+        "artifacts/goal-final-minimum-host-auto.log"
+      ],
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "validationBatch": "r3",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "host": "7.4.0",
+          "profilesPerBackend": 8,
+          "logs": [
+            "artifacts/goal-final-minimum-host-babel.log",
+            "artifacts/goal-final-minimum-host-auto.log"
+          ],
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "docs": {
+      "status": "passed",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "report": "artifacts/goal-final-r4-docs-checks.json",
+      "steps": [
+        {
+          "name": "api",
+          "status": "passed",
+          "log": "artifacts/goal-final-r4-docs-api.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:23:25.767004+00:00",
+          "publicEntries": 13,
+          "declarationConditions": 24,
+          "exports": 85,
+          "bilingualSections": 146,
+          "command": "corepack pnpm --filter docs check:api"
+        },
+        {
+          "name": "build",
+          "status": "passed",
+          "log": "artifacts/goal-final-r4-docs-build.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:23:25.767004+00:00",
+          "pages": 60,
+          "command": "corepack pnpm --filter docs build"
+        },
+        {
+          "name": "test",
+          "status": "passed",
+          "log": "artifacts/goal-final-r4-docs-test.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:23:25.767004+00:00",
+          "tests": 12,
+          "testFiles": 3,
+          "command": "corepack pnpm --filter docs test"
+        },
+        {
+          "name": "lint",
+          "status": "passed",
+          "log": "artifacts/goal-final-r4-docs-lint.log",
+          "startedAt": "2026-10-16T03:23:25.767004+00:00",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:24:01.670696+00:00",
+          "files": 58,
+          "command": "corepack pnpm --filter docs lint"
+        },
+        {
+          "name": "site",
+          "status": "passed",
+          "log": "artifacts/goal-final-r4-docs-site.log",
+          "startedAt": "2026-10-16T03:24:01.670696+00:00",
+          "command": "corepack pnpm --filter docs check:site",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:24:51.237349+00:00",
+          "pages": 58,
+          "sourceAnchors": 294,
+          "customComponents": 142
+        },
+        {
+          "name": "typecheck",
+          "status": "passed",
+          "log": "artifacts/goal-final-r4-docs-typecheck.log",
+          "startedAt": "2026-10-16T03:24:01.670696+00:00",
+          "command": "corepack pnpm --filter docs typecheck",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:24:51.237349+00:00",
+          "files": 47,
+          "errors": 0,
+          "warnings": 0,
+          "hints": 0
+        },
+        {
+          "name": "browser",
+          "status": "passed",
+          "log": "artifacts/goal-final-r4-docs-browser.log",
+          "startedAt": "2026-10-16T03:24:01.670696+00:00",
+          "command": "PLAYWRIGHT_BROWSERS_PATH=/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/dependency-upgrade-2026-10-15/playwright-browsers corepack pnpm exec node scripts/test-docs-browser.mjs",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:24:51.237349+00:00",
+          "report": "artifacts/goal-final-r4-docs-browser/report.json",
+          "checks": [
+            "en: production Pagefind, keyboard/focus, copy, theme persistence, language routes and desktop layout",
+            "zh-CN: production Pagefind, keyboard/focus, copy, theme persistence, language routes and desktop layout",
+            "Mobile navigation and layout",
+            "Content, code and language links remain available without JavaScript"
+          ],
+          "screenshots": [
+            "artifacts/goal-final-r4-docs-browser/en-desktop.png",
+            "artifacts/goal-final-r4-docs-browser/zh-CN-desktop.png",
+            "artifacts/goal-final-r4-docs-browser/zh-mobile.png"
+          ],
+          "ownedResourcesClosed": 2
+        }
+      ],
+      "previousRuns": [
+        {
+          "status": "passed",
+          "unitTests": 12,
+          "logs": [
+            "artifacts/goal-final-docs-api-r2.log",
+            "artifacts/goal-final-docs-site-r2.log",
+            "artifacts/goal-final-docs-lint-r2.log",
+            "artifacts/goal-final-docs-typecheck-r2.log",
+            "artifacts/goal-final-docs-test-r2.log",
+            "artifacts/goal-final-docs-browser-r2.log"
+          ],
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "repoDoctor": {
+      "status": "passed",
+      "log": "artifacts/goal-final-r4-doctor.log",
+      "command": "corepack pnpm exec repo doctor",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "passCount": 145,
+      "warnings": 113,
+      "failures": 0,
+      "exitCode": 0
+    },
+    "repoCheck": {
+      "status": "passed",
+      "log": "artifacts/goal-final-r4-repo-check-default.log",
+      "command": "corepack pnpm exec repo check",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "scope": "lint-staged",
+      "stagedFiles": 0,
+      "buildExecuted": false,
+      "exitCode": 0,
+      "fullPreview": {
+        "status": "previewed",
+        "command": "corepack pnpm exec repo check --full --dry-run",
+        "log": "artifacts/goal-final-r4-repo-check.log",
+        "buildExecuted": false
+      }
+    },
+    "externalFacade": {
+      "status": "passed",
+      "artifacts": 56,
+      "manifest": "artifacts/consumer-hosts-tHijna/manifest.json",
+      "buildsPerBackend": 28,
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "artifacts": 56,
+          "manifest": "artifacts/consumer-hosts-YcF8Ii/manifest.json",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "validationBatch": "r3",
+          "libraryPacksId": "fdf0b7be7f6ffe9e21ec3f15aa5a45bd1968a35070e5b355aedc38b746c01342",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "artifacts": 56,
+              "manifest": "artifacts/consumer-hosts-weQUMU/manifest.json",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2",
+              "libraryPacksId": "c7c5299ea8c3f5e5274c32f99d4b3c7018999e158d054a7249c6bc419df86d4a"
+            }
+          ]
+        }
+      ]
+    },
+    "externalAdapters": {
+      "status": "passed",
+      "artifacts": 56,
+      "manifest": "artifacts/consumer-hosts-nTgwhM/manifest.json",
+      "buildsPerBackend": 28,
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "artifacts": 56,
+          "manifest": "artifacts/consumer-hosts-1RQleS/manifest.json",
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2",
+          "libraryPacksId": "c7c5299ea8c3f5e5274c32f99d4b3c7018999e158d054a7249c6bc419df86d4a",
+          "equivalentR3Packages": "artifacts/goal-final-packs-r2-r3-comparison.json"
+        }
+      ]
+    },
+    "platforms": {
+      "status": "passed",
+      "artifactsPerBackend": 28,
+      "totalArtifacts": 56,
+      "cssParity": "All 28 auto CSS artifacts match Babel exactly",
+      "backends": [
+        "babel",
+        "auto"
+      ],
+      "matrixReport": "artifacts/goal-final-r4-matrix-status.json",
+      "steps": [
+        {
+          "name": "platform-build",
+          "backend": "babel",
+          "status": "passed",
+          "startedAt": "2026-10-16T03:18:08.539438+00:00",
+          "log": "artifacts/goal-final-r4-platform-build-babel.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:20:22.810542+00:00"
+        },
+        {
+          "name": "examples",
+          "backend": "babel",
+          "status": "passed",
+          "startedAt": "2026-10-16T03:20:22.811584+00:00",
+          "log": "artifacts/goal-final-r4-examples-babel.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:20:24.098889+00:00"
+        },
+        {
+          "name": "h5-full",
+          "backend": "babel",
+          "status": "passed",
+          "startedAt": "2026-10-16T03:24:50.648683+00:00",
+          "log": "artifacts/goal-final-r4-h5-full-babel.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:25:41.062674+00:00"
+        },
+        {
+          "name": "platform-build",
+          "backend": "auto",
+          "status": "passed",
+          "startedAt": "2026-10-16T03:25:41.063617+00:00",
+          "log": "artifacts/goal-final-r4-platform-build-auto.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:27:41.331685+00:00"
+        },
+        {
+          "name": "examples",
+          "backend": "auto",
+          "status": "passed",
+          "startedAt": "2026-10-16T03:27:41.332299+00:00",
+          "log": "artifacts/goal-final-r4-examples-auto.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:27:42.757913+00:00"
+        },
+        {
+          "name": "h5-full",
+          "backend": "auto",
+          "status": "passed",
+          "startedAt": "2026-10-16T03:27:42.758478+00:00",
+          "log": "artifacts/goal-final-r4-h5-full-auto.log",
+          "exitCode": 0,
+          "finishedAt": "2026-10-16T03:28:35.651964+00:00"
+        }
+      ],
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "artifactsPerBackend": 28,
+          "cssParity": "All 28 auto CSS artifacts match Babel exactly",
+          "backends": [
+            "babel",
+            "auto"
+          ],
+          "matrixReport": "artifacts/goal-final-matrix-status.json",
+          "steps": [
+            {
+              "name": "platform-build",
+              "backend": "babel",
+              "status": "passed",
+              "startedAt": "2026-10-16T02:31:57.042839+00:00",
+              "log": "artifacts/goal-final-platform-build-babel-serial.log",
+              "exitCode": 0,
+              "finishedAt": "2026-10-16T02:33:54.408859+00:00"
+            },
+            {
+              "name": "examples",
+              "backend": "babel",
+              "status": "passed",
+              "startedAt": "2026-10-16T02:33:54.409481+00:00",
+              "log": "artifacts/goal-final-examples-babel-serial.log",
+              "exitCode": 0,
+              "finishedAt": "2026-10-16T02:33:55.675280+00:00"
+            },
+            {
+              "name": "h5-full",
+              "backend": "babel",
+              "status": "passed",
+              "startedAt": "2026-10-16T02:33:55.675634+00:00",
+              "log": "artifacts/goal-final-h5-full-babel-serial.log",
+              "exitCode": 0,
+              "finishedAt": "2026-10-16T02:34:47.585796+00:00"
+            },
+            {
+              "name": "platform-build",
+              "backend": "auto",
+              "status": "passed",
+              "startedAt": "2026-10-16T02:34:47.586685+00:00",
+              "log": "artifacts/goal-final-platform-build-auto-serial.log",
+              "exitCode": 0,
+              "finishedAt": "2026-10-16T02:36:44.748167+00:00"
+            },
+            {
+              "name": "examples",
+              "backend": "auto",
+              "status": "passed",
+              "startedAt": "2026-10-16T02:36:44.748743+00:00",
+              "log": "artifacts/goal-final-examples-auto-serial.log",
+              "exitCode": 0,
+              "finishedAt": "2026-10-16T02:36:45.963882+00:00"
+            },
+            {
+              "name": "h5-full",
+              "backend": "auto",
+              "status": "passed",
+              "startedAt": "2026-10-16T02:36:45.964289+00:00",
+              "log": "artifacts/goal-final-h5-full-auto-serial.log",
+              "exitCode": 0,
+              "finishedAt": "2026-10-16T02:37:35.989494+00:00"
+            }
+          ],
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "h5Full": {
+      "status": "passed",
+      "runs": [
+        {
+          "backend": "babel",
+          "status": "passed",
+          "scope": "full",
+          "production": 7,
+          "development": 7,
+          "screenshots": 14,
+          "ownedResourcesClosed": 9,
+          "resources": 9,
+          "report": "artifacts/h5/babel/run-1792121090991/report.json",
+          "evidence": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/h5/babel/run-1792121090991",
+          "buildRun": "e8a9ce8a433788e4e616cf1bed8958bec5afe0ed0a0772e4ec7a2707c2457b7c",
+          "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+          "validationBatch": "r4",
+          "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0"
+        },
+        {
+          "backend": "auto",
+          "status": "passed",
+          "scope": "full",
+          "production": 7,
+          "development": 7,
+          "screenshots": 14,
+          "ownedResourcesClosed": 9,
+          "resources": 9,
+          "report": "artifacts/h5/auto/run-1792121263081/report.json",
+          "evidence": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/h5/auto/run-1792121263081",
+          "buildRun": "f186227e9fe3b4db7a3345344633a623f4f43e85ee97e38dd71b96e4f71d8552",
+          "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+          "validationBatch": "r4",
+          "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0"
+        }
+      ],
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "runs": [
+            {
+              "backend": "babel",
+              "status": "passed",
+              "scope": "full",
+              "production": 7,
+              "development": 7,
+              "screenshots": 14,
+              "ownedResourcesClosed": 9,
+              "report": "artifacts/h5/babel/run-1792118035979/report.json",
+              "buildRun": "631d730eac7b811da8e9b2648fa589fbc56205c7493865094f5d7b0a071b52cd",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            },
+            {
+              "backend": "auto",
+              "status": "passed",
+              "scope": "full",
+              "production": 7,
+              "development": 7,
+              "screenshots": 14,
+              "ownedResourcesClosed": 9,
+              "report": "artifacts/h5/auto/run-1792118206268/report.json",
+              "buildRun": "986a24388caab6633dbeca40887aff6010f9b2e517cfd93c3aaa9854e27e3729",
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            }
+          ],
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "benchmarkFull": {
+      "status": "passed",
+      "report": "artifacts/benchmark.json",
+      "log": "artifacts/goal-final-benchmark-serial.log",
+      "fullBuild": {
+        "babel": {
+          "samplesMs": [
+            61124.17033299999,
+            58782.375583000015,
+            58426.159209000005
+          ],
+          "medianMs": 58782.375583000015
+        },
+        "auto": {
+          "samplesMs": [
+            71918.27504200005,
+            58774.409667,
+            59490.09233300004
+          ],
+          "medianMs": 59490.09233300004
+        }
+      },
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "validationBatch": "r3",
+      "previousRuns": [
+        {
+          "status": "passed",
+          "report": "artifacts/benchmark.json",
+          "log": "artifacts/goal-final-benchmark-serial.log",
+          "fullBuild": {
+            "babel": {
+              "samplesMs": [
+                61124.17033299999,
+                58782.375583000015,
+                58426.159209000005
+              ],
+              "medianMs": 58782.375583000015
+            },
+            "auto": {
+              "samplesMs": [
+                71918.27504200005,
+                58774.409667,
+                59490.09233300004
+              ],
+              "medianMs": 59490.09233300004
+            }
+          },
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "audit": {
+      "status": "unchanged-from-upgrade-baseline",
+      "advisories": 75,
+      "newAdvisoryIds": [],
+      "severities": {
+        "info": 0,
+        "low": 10,
+        "moderate": 40,
+        "high": 21,
+        "critical": 4
+      },
+      "report": "artifacts/goal-final-audit.json",
+      "pathDelta": "artifacts/goal-final-audit-delta.json",
+      "note": "Vue JSX peer adds paths to the already declared Taro Vite 4 host; no new advisory IDs or Vite version.",
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "validationBatch": "r3",
+      "previousRuns": [
+        {
+          "status": "unchanged-from-upgrade-baseline",
+          "advisories": 75,
+          "newAdvisoryIds": [],
+          "severities": {
+            "info": 0,
+            "low": 10,
+            "moderate": 40,
+            "high": 21,
+            "critical": 4
+          },
+          "report": "artifacts/goal-final-audit.json",
+          "pathDelta": "artifacts/goal-final-audit-delta.json",
+          "note": "Vue JSX peer adds paths to the already declared Taro Vite 4 host; no new advisory IDs or Vite version.",
+          "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+          "validationBatch": "r2"
+        }
+      ]
+    },
+    "ide": {
+      "status": "passed",
+      "completedArtifacts": 14,
+      "completedSuites": 2,
+      "requiredSuites": 2,
+      "requiredArtifactsPerBackend": 7,
+      "screenshots": 42,
+      "resources": 14,
+      "ownedResourcesClosed": true,
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "consumerManifest": "artifacts/consumer-hosts-tHijna/manifest.json",
+      "adapterConsumerManifest": "artifacts/consumer-hosts-nTgwhM/manifest.json",
+      "previousPreflight": "artifacts/goal-final-ide-preflight.json",
+      "blockers": [],
+      "isloginFinalLog": "artifacts/goal-ide-final-islogin.log",
+      "isloginExitCode": 0,
+      "login": true,
+      "servicePort": 20343,
+      "officialStable": "2.02.2608080",
+      "actualToolInfo": {
+        "version": "2.02.2608080",
+        "SDKVersions": {
+          "babel": "3.17.4",
+          "auto": "3.17.5"
+        }
+      },
+      "runs": [
+        {
+          "backend": "babel",
+          "status": "failed",
+          "scope": "full",
+          "report": "artifacts/ide/run-1792120256803/report.json",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "libraryPacksId": "fdf0b7be7f6ffe9e21ec3f15aa5a45bd1968a35070e5b355aedc38b746c01342",
+          "passedArtifacts": 1,
+          "artifacts": [
+            {
+              "name": "wechat-native",
+              "directory": "dist",
+              "status": "passed",
+              "stage": "return and reenter index with initial state"
+            },
+            {
+              "name": "wechat-wevu",
+              "directory": "dist",
+              "status": "failed",
+              "stage": "index route and precise initial styles"
+            }
+          ],
+          "ownedResourcesClosed": true,
+          "suiteLockReleased": true,
+          "historical": true
+        },
+        {
+          "backend": "babel",
+          "status": "passed",
+          "scope": "full",
+          "report": "artifacts/ide/run-1792121348602/report.json",
+          "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+          "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+          "runId": "be2d64bd0bf66aac3f935b50eced6e35e2f11425401eae125640fc67a34a067c",
+          "sdkVersion": "3.17.4",
+          "toolVersion": "2.02.2608080",
+          "passedArtifacts": 7,
+          "screenshots": 21,
+          "resources": 7,
+          "ownedResourcesClosed": true,
+          "suiteLockReleased": true,
+          "finalInputVerification": {
+            "checkedAt": "2026-10-16T03:32:51.417Z",
+            "runId": "be2d64bd0bf66aac3f935b50eced6e35e2f11425401eae125640fc67a34a067c",
+            "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0"
+          }
+        },
+        {
+          "backend": "auto",
+          "status": "passed",
+          "scope": "full",
+          "report": "artifacts/ide/report.json",
+          "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+          "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+          "runId": "82779d199e445478b442ba2a4a9357cc23bc1272fb93fc85771e274371c99d50",
+          "sdkVersion": "3.17.5",
+          "toolVersion": "2.02.2608080",
+          "passedArtifacts": 7,
+          "screenshots": 21,
+          "resources": 7,
+          "ownedResourcesClosed": true,
+          "suiteLockReleased": true,
+          "finalInputVerification": {
+            "checkedAt": "2026-10-16T03:56:32.704Z",
+            "runId": "82779d199e445478b442ba2a4a9357cc23bc1272fb93fc85771e274371c99d50",
+            "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0"
+          }
+        }
+      ],
+      "diagnostics": {
+        "radius": {
+          "failedReport": "artifacts/ide/run-1792119429763/report.json",
+          "probe": "artifacts/goal-ide-radius-probe.json",
+          "actualShorthand": null,
+          "actualCorners": "12px",
+          "resolution": "Assert all four longhand corner values; regression accepts a null shorthand and rejects one corner at 0px.",
+          "regressionLog": "artifacts/goal-ide-final-scripts.log"
+        },
+        "preopen": {
+          "failedReport": "artifacts/goal-ide-radius-preopen-failure.json",
+          "resolution": "Open proves editor startup only. Take a native journal checkpoint before auto, wait for a fresh owned page-ready event after auto, connect SDK, then require the application page stack and root structure."
+        }
+      },
+      "reason": "Both complete seven-artifact suites passed; Babel used SDK 3.17.4 and auto used SDK 3.17.5 under Stable 2.02.2608080."
+    },
+    "remoteCi": {
+      "status": "pending",
+      "reason": "Both IDE suites and all local validation are complete; await commit and push before remote CI acceptance."
+    },
+    "finalInputVerification": {
+      "status": "passed",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "backends": [
+        {
+          "backend": "babel",
+          "source": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+          "run": "be2d64bd0bf66aac3f935b50eced6e35e2f11425401eae125640fc67a34a067c",
+          "artifacts": 7,
+          "libraryPacks": {
+            "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+            "runId": "9c876159-604d-460f-a9af-8c227cbdddad",
+            "manifestPath": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/goal-final-packs-20261016-r4/library-packs.json"
+          },
+          "report": "artifacts/ide/run-1792121348602/report.json"
+        },
+        {
+          "backend": "auto",
+          "source": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+          "run": "82779d199e445478b442ba2a4a9357cc23bc1272fb93fc85771e274371c99d50",
+          "artifacts": 7,
+          "libraryPacks": {
+            "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+            "runId": "9c876159-604d-460f-a9af-8c227cbdddad",
+            "manifestPath": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/goal-final-packs-20261016-r4/library-packs.json"
+          },
+          "report": "artifacts/ide/report.json"
+        }
+      ],
+      "previousRuns": [
+        {
+          "status": "pending",
+          "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+          "validationBatch": "r3",
+          "libraryPacksId": "fdf0b7be7f6ffe9e21ec3f15aa5a45bd1968a35070e5b355aedc38b746c01342",
+          "reason": "The complete r3 IDE suites must reach their final input verification; r2 verification remains historical evidence.",
+          "previousRuns": [
+            {
+              "status": "passed",
+              "report": "artifacts/goal-final-input-verification.json",
+              "backends": [
+                {
+                  "backend": "babel",
+                  "source": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+                  "run": "9dacc504f7def6f54bd10cf1534fad5d46952cdb590ce8f9198007c51c3a393b",
+                  "artifacts": 7,
+                  "libraryPacks": {
+                    "id": "c7c5299ea8c3f5e5274c32f99d4b3c7018999e158d054a7249c6bc419df86d4a",
+                    "runId": "2a9c7f59-2748-454e-aa80-c0398156c624",
+                    "manifestPath": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/goal-final-packs-20261016-r2/library-packs.json"
+                  }
+                },
+                {
+                  "backend": "auto",
+                  "source": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+                  "run": "95abb4914dd2b9b810996d96c460b9667d3bfeee8ac6e7f520e5ed20af9e0745",
+                  "artifacts": 7,
+                  "libraryPacks": {
+                    "id": "c7c5299ea8c3f5e5274c32f99d4b3c7018999e158d054a7249c6bc419df86d4a",
+                    "runId": "2a9c7f59-2748-454e-aa80-c0398156c624",
+                    "manifestPath": "/Users/icebreaker/Documents/GitHub/weapp-stylex/artifacts/goal-final-packs-20261016-r2/library-packs.json"
+                  }
+                }
+              ],
+              "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+              "validationBatch": "r2"
+            }
+          ]
+        }
+      ]
+    },
+    "basicChecks": {
+      "status": "passed",
+      "report": "artifacts/goal-final-r4-checks.json",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0"
+    },
+    "consumerHeadless": {
+      "status": "passed",
+      "report": "artifacts/goal-final-r4-consumer-gate.json",
+      "facadeHeadless": "artifacts/goal-final-consumer-hosts-facade-r4-headless.log",
+      "adapterHeadless": "artifacts/goal-ide-final-r4-adapter-headless.json",
+      "checks": [
+        "shared styles",
+        "JSX actual class binding",
+        "JSX own light theme after parent toggle",
+        "conditional class",
+        "theme",
+        "dynamic width",
+        "ordinary subpackage"
+      ],
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "validationBatch": "r4",
+      "libraryPacksId": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0"
+    }
+  },
+  "retainedFailures": [
+    {
+      "log": "artifacts/goal-final-build.log",
+      "reason": "Concurrent builds and candidate preparation touched shared dist; full root build passed on serial rerun"
+    },
+    {
+      "log": "artifacts/goal-final-packs.log",
+      "reason": "Legitimate publishable package omitted private:false; assertion fixed and candidate batch rebuilt with regression"
+    },
+    {
+      "log": "artifacts/goal-final-benchmark.log",
+      "reason": "Benchmark warmup was paused to serialize shared output writes; its wall clock deadline expired. Restarted as a fully serial run."
+    },
+    {
+      "report": "artifacts/ide/run-1792119429763/report.json",
+      "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+      "reason": "Actual radius shorthand returned null while emitted styles were correct; real probe confirmed all four corners at 12px. Fixed harness uses four longhands with a broken-corner regression."
+    },
+    {
+      "report": "artifacts/goal-ide-radius-preopen-failure.json",
+      "reason": "Reopening a historical project did not repeat preopen native readiness. Diagnostic failure is not acceptance; the simulator readiness barrier remains after auto."
+    },
+    {
+      "report": "artifacts/ide/run-1792120256803/report.json",
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "reason": "Native interactions passed; Wevu initial class attribute was null. Full suite failed and all owned resources were closed."
+    },
+    {
+      "report": "artifacts/goal-wevu-jsx-regression-red.log",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "reason": "Headless caught module-level Wevu JSX attrs not reaching WXML; r4 moved attrs into setup and added explicit class/style plus own-theme checks."
+    },
+    {
+      "report": "artifacts/goal-final-r4-matrix-status.json",
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "reason": "R4 platform matrix completed Babel/auto six steps; retained as current evidence, not a failure."
+    }
+  ],
+  "boundaries": {
+    "alipayAndDouyinIde": "pending",
+    "realDevices": "outside-this-goal",
+    "independentSubpackages": "outside-this-goal",
+    "vue2": "outside-this-goal",
+    "uniAppX": "outside-this-goal",
+    "statefulHmr": "outside-this-goal"
+  },
+  "pendingAcceptance": [
+    "Corresponding pushed main commit remote CI"
+  ],
+  "validationBatches": {
+    "r2": {
+      "sourceSha256": "dfa4d83b6de9a7fa9512d33011c4b089227b81d2274ab472832f8b049ed97486",
+      "libraryPacks": {
+        "id": "c7c5299ea8c3f5e5274c32f99d4b3c7018999e158d054a7249c6bc419df86d4a",
+        "runId": "2a9c7f59-2748-454e-aa80-c0398156c624",
+        "manifest": "artifacts/goal-final-packs-20261016-r2/library-packs.json",
+        "candidates": [
+          {
+            "name": "@weapp-stylex/core",
+            "version": "0.1.3",
+            "archive": "weapp-stylex-core-0.1.3.tgz",
+            "sha256": "d6ef64967d4c69e880953fccc250cf00707989ac4d7675dff5e65fa18286dcac"
+          },
+          {
+            "name": "@weapp-stylex/compiler",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-compiler-0.3.0.tgz",
+            "sha256": "f536b73d3053b5cbb1af2b5508f13d7c952374f489e609d60424ab272ab84179"
+          },
+          {
+            "name": "@weapp-stylex/weapp-vite",
+            "version": "0.4.0",
+            "archive": "weapp-stylex-weapp-vite-0.4.0.tgz",
+            "sha256": "9655c11914b181354c6370200a966e21b00cec968db1e32ec14f7f2638d744fa"
+          },
+          {
+            "name": "@weapp-stylex/taro",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-taro-0.3.0.tgz",
+            "sha256": "29a32b9af047eb089307d1bce45b65a40f429f0fdb55198de0ec9a6f8df4c8e0"
+          },
+          {
+            "name": "@weapp-stylex/uni-app",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-uni-app-0.3.0.tgz",
+            "sha256": "5ff1ca72ea314494a4ac249fd0e8199f50179ba525d424ca0a02171dbf36ee27"
+          },
+          {
+            "name": "weapp-stylex",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-0.3.0.tgz",
+            "sha256": "2f83667d13a4f4293885651e09c47e6b5b19f149f3213a312620372f00f7a8bd"
+          }
+        ]
+      },
+      "note": "Original non-IDE run identities are retained; these checks were not all rerun on r3."
+    },
+    "r3": {
+      "sourceSha256": "aa05cc1f04a4f9f654cb749ac9747bae86dde8e6477ba098c4b33122a24df45b",
+      "libraryPacks": {
+        "id": "fdf0b7be7f6ffe9e21ec3f15aa5a45bd1968a35070e5b355aedc38b746c01342",
+        "runId": "f8060c56-d368-4b8e-8223-f1c071113ebb",
+        "manifest": "artifacts/goal-final-packs-20261016-r3/library-packs.json",
+        "candidates": [
+          {
+            "name": "@weapp-stylex/core",
+            "version": "0.1.3",
+            "archive": "weapp-stylex-core-0.1.3.tgz",
+            "sha256": "d6ef64967d4c69e880953fccc250cf00707989ac4d7675dff5e65fa18286dcac"
+          },
+          {
+            "name": "@weapp-stylex/compiler",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-compiler-0.3.0.tgz",
+            "sha256": "f536b73d3053b5cbb1af2b5508f13d7c952374f489e609d60424ab272ab84179"
+          },
+          {
+            "name": "@weapp-stylex/weapp-vite",
+            "version": "0.4.0",
+            "archive": "weapp-stylex-weapp-vite-0.4.0.tgz",
+            "sha256": "9655c11914b181354c6370200a966e21b00cec968db1e32ec14f7f2638d744fa"
+          },
+          {
+            "name": "@weapp-stylex/taro",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-taro-0.3.0.tgz",
+            "sha256": "29a32b9af047eb089307d1bce45b65a40f429f0fdb55198de0ec9a6f8df4c8e0"
+          },
+          {
+            "name": "@weapp-stylex/uni-app",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-uni-app-0.3.0.tgz",
+            "sha256": "5ff1ca72ea314494a4ac249fd0e8199f50179ba525d424ca0a02171dbf36ee27"
+          },
+          {
+            "name": "weapp-stylex",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-0.3.0.tgz",
+            "sha256": "2f83667d13a4f4293885651e09c47e6b5b19f149f3213a312620372f00f7a8bd"
+          }
+        ]
+      },
+      "note": "IDE harness-only changes; libraries were rebuilt and repacked before new facade, Node floor and IDE runs."
+    },
+    "comparison": {
+      "report": "artifacts/goal-final-packs-r2-r3-comparison.json",
+      "changedSourceFiles": [
+        "scripts/ide-scenarios.mjs",
+        "scripts/ide-scenarios.test.mjs",
+        "scripts/test-ide.mjs"
+      ],
+      "packages": 6,
+      "archivesEqual": true,
+      "distEqual": true,
+      "contentEqual": true
+    },
+    "r4": {
+      "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+      "libraryPacks": {
+        "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+        "runId": "9c876159-604d-460f-a9af-8c227cbdddad",
+        "manifest": "artifacts/goal-final-packs-20261016-r4/library-packs.json",
+        "candidates": [
+          {
+            "name": "@weapp-stylex/core",
+            "version": "0.1.3",
+            "archive": "weapp-stylex-core-0.1.3.tgz",
+            "sha256": "d6ef64967d4c69e880953fccc250cf00707989ac4d7675dff5e65fa18286dcac"
+          },
+          {
+            "name": "@weapp-stylex/compiler",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-compiler-0.3.0.tgz",
+            "sha256": "f536b73d3053b5cbb1af2b5508f13d7c952374f489e609d60424ab272ab84179"
+          },
+          {
+            "name": "@weapp-stylex/weapp-vite",
+            "version": "0.4.0",
+            "archive": "weapp-stylex-weapp-vite-0.4.0.tgz",
+            "sha256": "9655c11914b181354c6370200a966e21b00cec968db1e32ec14f7f2638d744fa"
+          },
+          {
+            "name": "@weapp-stylex/taro",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-taro-0.3.0.tgz",
+            "sha256": "29a32b9af047eb089307d1bce45b65a40f429f0fdb55198de0ec9a6f8df4c8e0"
+          },
+          {
+            "name": "@weapp-stylex/uni-app",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-uni-app-0.3.0.tgz",
+            "sha256": "5ff1ca72ea314494a4ac249fd0e8199f50179ba525d424ca0a02171dbf36ee27"
+          },
+          {
+            "name": "weapp-stylex",
+            "version": "0.3.0",
+            "archive": "weapp-stylex-0.3.0.tgz",
+            "sha256": "2f83667d13a4f4293885651e09c47e6b5b19f149f3213a312620372f00f7a8bd"
+          }
+        ]
+      },
+      "checks": "r4 root, platform, consumer, H5 and docs evidence"
+    },
+    "comparisonR3R4": {
+      "report": "artifacts/goal-final-packs-r3-r4-comparison.json",
+      "changedSourceFiles": [
+        "examples/wechat-wevu/src/components/jsx-card/index.tsx",
+        "scripts/headless.mjs",
+        "scripts/ide-scenarios.mjs"
+      ],
+      "packages": 6,
+      "archivesEqual": true,
+      "distEqual": true,
+      "contentEqual": true
+    }
+  },
+  "r4Evidence": {
+    "sourceSha256": "d2ac864a7017921afeb1ab11442d05d9bbfc240636dd6bbec131313a68a7ecc1",
+    "libraryPacks": {
+      "id": "cfa6e3e18cd818a0cf69dad4c1b3a2e7f539c030589827a9e66fb273b1ce18d0",
+      "runId": "9c876159-604d-460f-a9af-8c227cbdddad",
+      "manifest": "artifacts/goal-final-packs-20261016-r4/library-packs.json"
+    },
+    "facadeManifest": "artifacts/consumer-hosts-tHijna/manifest.json",
+    "adapterManifest": "artifacts/consumer-hosts-nTgwhM/manifest.json",
+    "matrix": "artifacts/goal-final-r4-matrix-status.json",
+    "consumerGate": "artifacts/goal-final-r4-consumer-gate.json",
+    "docsChecks": "artifacts/goal-final-r4-docs-checks.json",
+    "wevuRegression": {
+      "red": "artifacts/goal-wevu-jsx-regression-red.log",
+      "green": [
+        "artifacts/goal-wevu-jsx-regression-green-babel.log",
+        "artifacts/goal-wevu-jsx-regression-green-auto.log"
+      ],
+      "adapterHeadless": "artifacts/goal-ide-final-r4-adapter-headless.json"
+    }
+  }
+}

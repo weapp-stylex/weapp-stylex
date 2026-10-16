@@ -18,7 +18,14 @@ import {
 } from '@weapp-stylex/compiler'
 import { createShadowStylePlugins } from './web.js'
 
-export type { StylexCompilerOptions, StylexTarget } from '@weapp-stylex/compiler'
+export type {
+  PluginHost,
+  StyleBundle,
+  StylexCompilerOptions,
+  StylexTarget,
+  WebPluginHost,
+  WebServer,
+} from '@weapp-stylex/compiler'
 
 function hostTarget(platform: string): StylexTarget {
   const target = platform === 'wechat' ? 'weapp' : platform === 'h5' ? 'web' : platform
@@ -153,8 +160,7 @@ export function stylexCompiler(
 ): WeappCompilerPluginOption {
   return provider(options)
 }
-/** Use both returned fields for native/Wevu mini-programs and the host Web runtime. */
-export function createStylex(options: StylexCompilerOptions = {}) {
+function createIntegration(options: StylexCompilerOptions) {
   const sessions = new Map<StylexTarget, StylexSession>()
   let target: StylexTarget = options.target ?? 'weapp'
   let watching = false
@@ -223,5 +229,16 @@ export function createStylex(options: StylexCompilerOptions = {}) {
     ],
     compilerPlugin: provider(options, sessionFor),
   }
+}
+
+/** Public return identity for configurations that emit their own declarations. */
+export interface StylexIntegration {
+  vitePlugins: ReturnType<typeof createIntegration>['vitePlugins']
+  compilerPlugin: WeappCompilerPluginOption
+}
+
+/** Use both returned fields for native/Wevu mini-programs and the host Web runtime. */
+export function createStylex(options: StylexCompilerOptions = {}): StylexIntegration {
+  return createIntegration(options)
 }
 export default stylexCompiler

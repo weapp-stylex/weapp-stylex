@@ -56,6 +56,25 @@ Bind both `.class` and `.style`: dynamic values can produce inline CSS custom pr
 
 JSX/TSX consumers can use the official runtime too. Raw `<script>` and `<script setup>` are transformed before SFC compilation, sourcemaps are composed, and virtual script requests are skipped to avoid double transformation. Shared external TS styles are processed as modules.
 
+For mini-program JSX/TSX, declare template-facing `attrs` objects and `computed` bindings inside `setup()`. Wevu exposes setup-local bindings to generated WXML; module-level runtime bindings are not published as template data. Shared styles, tokens and themes can remain in external modules and be imported. Bind `.class` and `.style` explicitly:
+
+```tsx
+import * as stylex from 'weapp-stylex'
+import { defineComponent } from 'wevu'
+import { lightTheme, styles } from './styles'
+
+export default defineComponent({
+  setup() {
+    const attrs = stylex.attrs(lightTheme, styles.card)
+    return () => (
+      <view class={attrs.class} style={attrs.style}>
+        <text>Shared StyleX</text>
+      </view>
+    )
+  },
+})
+```
+
 Explore [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu), including Vue SFC, a JSX component, themes and a subpackage.
 
 ## Other platforms and H5

@@ -9,17 +9,22 @@ import process from 'node:process'
 import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
+import { captureBuildInputs, verifyBuildProvenance } from './build-provenance.mjs'
 import { examples } from './example-matrix.mjs'
+import { loadIdeExpectations, normalizeIdeColor } from './ide-scenarios.mjs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const backend = process.env.WEAPP_STYLEX_BACKEND ?? 'babel'
-const artifacts = path.join(root, 'artifacts/h5', backend)
+const reportRoot = path.join(root, 'artifacts/h5', backend)
+const artifacts = path.join(reportRoot, `run-${Date.now()}`)
 await mkdir(artifacts, { recursive: true })
-const selected = examples.filter(example => example.target === 'h5'
-  && (!process.env.WEAPP_STYLEX_H5_FILTER || `${example.name}/${example.builder ?? ''}`.includes(process.env.WEAPP_STYLEX_H5_FILTER)))
+const h5Examples = examples.filter(example => example.target === 'h5')
+const selected = h5Examples.filter(example =>
+  !process.env.WEAPP_STYLEX_H5_FILTER || `${example.name}/${example.builder ?? ''}`.includes(process.env.WEAPP_STYLEX_H5_FILTER))
 assert.ok(selected.length, 'No H5 examples selected')
 
-const report = { backend, startedAt: new Date().toISOString(), browser: { headless: true }, examples: [], resources: [] }
+const full = selected.length === h5Examples.length && process.env.WEAPP_STYLEX_H5_SKIP_DEV !== '1'
+const report = { backend, scope: full ? 'full' : 'partial', startedAt: new Date().toISOString(), browser: { headless: true }, examples: [], resources: [], evidence: artifacts }
 const errors = []
 const deploymentBase = '/stylex-preview/'
 let servingRoot
@@ -115,23 +120,53 @@ async function reLaunchWeappPage(page, url) {
 }
 
 async function interactions(page, url, example) {
+  const expectations = await loadIdeExpectations(example)
+  const color = async (selector, property, expected) => poll(
+    async () => normalizeIdeColor(await computed(page, selector, property)) === normalizeIdeColor(expected),
+    `${example.name}: ${selector} ${property} must equal ${expected}`,
+  )
   await page.setViewportSize({ width: 375, height: 812 })
   await page.goto(url)
   await poll(async () => await computed(page, '#stylex-root', 'paddingTop') === '16px', `${example.name}: first StyleX paint`)
   assert.equal(await computed(page, '#stylex-meter', 'width'), '80px')
   assert.equal(await computed(page, '#stylex-meter', 'height'), '12px')
-  const initialTheme = await computed(page, '#stylex-root', 'backgroundColor')
-  await page.locator('#stylex-toggle').click()
-  await poll(async () => Number(await computed(page, '#stylex-toggle', 'opacity')) === 0.6, 'conditional style')
-  await page.locator('#stylex-grow').click()
-  await poll(async () => await computed(page, '#stylex-meter', 'width') === '120px', 'dynamic official runtime value')
-  await page.locator('#stylex-theme').click()
-  await poll(async () => await computed(page, '#stylex-root', 'backgroundColor') !== initialTheme, 'theme switch')
-  const darkTheme = await computed(page, '#stylex-root', 'backgroundColor')
-  if (example.cssDelivery === 'weapp-web') {
-    await poll(async () => await computed(page, '#stylex-inherited-root', 'backgroundColor') === darkTheme, 'theme inheritance through component ShadowRoot')
-  }
   const cardSelector = await page.locator('#stylex-card-root').count() ? '#stylex-card-root' : '#stylex-card'
+  async function themeState(theme) {
+    for (const selector of ['#stylex-root', cardSelector, ...(example.cssDelivery === 'weapp-web' ? ['#stylex-inherited-root'] : [])]) {
+      await color(selector, 'backgroundColor', theme.surface)
+      await color(selector, 'color', theme.text)
+      assert.equal(await computed(page, selector, 'paddingTop'), '16px')
+    }
+    await color('#stylex-toggle', 'backgroundColor', theme.accent)
+    await color('#stylex-meter', 'backgroundColor', theme.accent)
+  }
+  await themeState(expectations.light)
+  assert.equal(await computed(page, '#stylex-inline', 'marginTop'), '8px')
+  assert.equal(Number(await computed(page, '#stylex-toggle', 'opacity')), 1)
+  async function jsxState() {
+    if (example.name === 'wechat-wevu') {
+      await color('#stylex-jsx-root', 'backgroundColor', expectations.light.surface)
+      await color('#stylex-jsx-root', 'color', expectations.light.text)
+      assert.equal(await computed(page, '#stylex-jsx-root', 'paddingTop'), '16px')
+    }
+  }
+  await jsxState()
+  for (let round = 1; round <= 3; round++) {
+    await page.locator('#stylex-toggle').click()
+    await poll(async () => Number(await computed(page, '#stylex-toggle', 'opacity')) === 0.6, `round ${round}: conditional enabled`)
+    await page.locator('#stylex-toggle').click()
+    await poll(async () => Number(await computed(page, '#stylex-toggle', 'opacity')) === 1, `round ${round}: conditional restored`)
+    await page.locator('#stylex-theme').click()
+    await themeState(expectations.dark)
+    await jsxState()
+    await page.locator('#stylex-theme').click()
+    await themeState(expectations.light)
+    await page.locator('#stylex-grow').click()
+    await poll(async () => await computed(page, '#stylex-meter', 'width') === '120px', `round ${round}: dynamic width expanded`)
+    await page.locator('#stylex-grow').click()
+    await poll(async () => await computed(page, '#stylex-meter', 'width') === '80px', `round ${round}: dynamic width restored`)
+    assert.equal(await computed(page, '#stylex-meter', 'height'), '12px')
+  }
   const narrowMargin = Number.parseFloat(await computed(page, cardSelector, 'marginTop'))
   assert.ok(narrowMargin > 0, 'Static rpx produced no usable CSS')
   await page.setViewportSize({ width: 750, height: 900 })
@@ -155,11 +190,17 @@ async function interactions(page, url, example) {
     await page.goto(`${url.replace(/\/$/, '')}/#/subpackage/detail/index`)
   }
   await poll(async () => await computed(page, '#stylex-detail', 'paddingTop') === '16px', 'subpackage route style')
+  await color('#stylex-detail', 'backgroundColor', expectations.light.surface)
+  await color('#stylex-detail', 'color', expectations.light.text)
   await page.goto(url, { waitUntil: 'load' })
   if (example.cssDelivery === 'weapp-web') {
     await reLaunchWeappPage(page, '/pages/index/index')
   }
   await poll(async () => await computed(page, '#stylex-root', 'paddingTop') === '16px', 'return to main route')
+  await themeState(expectations.light)
+  await jsxState()
+  assert.equal(await computed(page, '#stylex-meter', 'width'), '80px')
+  assert.equal(Number(await computed(page, '#stylex-toggle', 'opacity')), 1)
 }
 
 async function availablePort() {
@@ -302,6 +343,7 @@ let browser
 let context
 let page
 try {
+  report.buildProvenance = await verifyBuildProvenance(h5Examples, { backend })
   servingRoot = selected[0].project
   server.listen(0, '127.0.0.1')
   await once(server, 'listening')
@@ -324,7 +366,15 @@ try {
     await page.screenshot({ path: path.join(artifacts, `${name}-production.png`), fullPage: true })
     entry.production = 'passed'
     process.stdout.write(`H5 production passed: ${name}\n`)
-    if (process.env.WEAPP_STYLEX_H5_SKIP_DEV !== '1') {
+  }
+  // Verify the complete production set before development watchers can replace
+  // host output files. Development edits are restored before checking inputs.
+  await verifyBuildProvenance(h5Examples, { backend })
+  if (process.env.WEAPP_STYLEX_H5_SKIP_DEV !== '1') {
+    for (const [index, example] of selected.entries()) {
+      const entry = report.examples[index]
+      const { name } = entry
+      errors.length = 0
       entry.development = 'running'
       await devChecks(page, example, name)
       assert.deepEqual(errors, [], `${name}: development browser errors`)
@@ -332,7 +382,9 @@ try {
       process.stdout.write(`H5 development passed: ${name}\n`)
     }
   }
-  report.status = 'passed'
+  const finalInputs = await captureBuildInputs({ backend, candidates: report.buildProvenance.run.candidates })
+  assert.equal(finalInputs.id, report.buildProvenance.run.inputId, 'H5 development changed implementation or dependency inputs')
+  report.status = full ? 'passed' : 'partial'
 }
 catch (error) {
   report.status = 'failed'
@@ -362,7 +414,11 @@ finally {
         report.resources.find(resource => resource.kind === 'static-server').closed = true
       }
       report.finishedAt = new Date().toISOString()
+      if (report.resources.some(resource => !resource.closed)) {
+        report.status = 'failed'
+      }
       await writeFile(path.join(artifacts, 'report.json'), `${JSON.stringify(report, null, 2)}\n`)
+      await writeFile(path.join(reportRoot, 'report.json'), `${JSON.stringify(report, null, 2)}\n`)
     }
   }
 }

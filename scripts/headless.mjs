@@ -19,6 +19,15 @@ export async function testHeadless(projectRoot) {
     const root = page.screen.getByTestId('stylex-root')
     assert.match(root.attributes.class, /sx\w+/)
     const initialTheme = root.attributes.class
+    // fileURLToPath(new URL('..')) retains its trailing separator. Compare the
+    // directory name so the Wevu-only regression always runs for that caller.
+    const wevu = path.basename(projectRoot) === 'wechat-wevu'
+    const jsxClass = wevu
+      ? page.screen.getByTestId('stylex-jsx-root').attributes.class
+      : null
+    if (wevu) {
+      assert.match(jsxClass, /sx\w+/, 'JSX setup bindings must reach the rendered component')
+    }
     const button = page.screen.getByText('点击查看条件样式')
     const initialClass = button.attributes.class
     await page.user.tap(button)
@@ -40,10 +49,11 @@ export async function testHeadless(projectRoot) {
     const meter = page.screen.getByTestId('stylex-meter')
     assert.notEqual(meter.attributes.style, initialStyle)
     assert.match(meter.attributes.style, /120px/)
-    if (projectRoot.endsWith('wechat-wevu')) {
-      assert.match(
-        page.screen.getByText('JSX 组件共享样式').attributes.class,
-        /sx\w+/,
+    if (wevu) {
+      assert.equal(
+        page.screen.getByTestId('stylex-jsx-root').attributes.class,
+        jsxClass,
+        'The JSX component must retain its own light theme when its parent changes',
       )
     }
     const subpackage = await project.renderPage('/subpackage/detail/index')

@@ -41,7 +41,7 @@ This entry handles native JS/TS scripts. Vue SFC preprocessing uses `createStyle
 ## createStylex
 
 ```ts
-createStylex(options: StylexCompilerOptions = {}): { vitePlugins: ReturnType<typeof createVitePlugins>; compilerPlugin: WeappCompilerPluginOption }
+createStylex(options: StylexCompilerOptions = {}): StylexIntegration
 ```
 
 Named export of the weapp-vite entry. Returns two parts sharing one `StylexSession`: raw SFC pre-plugins and a native compiler/output provider. Register **both fields from one call**. Separate calls break their shared metadata/output contract.
@@ -57,6 +57,11 @@ export default defineConfig({
 ```
 
 The Vite half transforms raw SFC scripts before framework compilation with `sfcOnly: true` and `emitStyles: false`; the native half owns WXSS emission. Raw SFCs stay on Babel even in `auto`, protecting template-only bindings. Use this factory for Wevu/SFC and native H5. H5 uses host page/component CSS metadata; official runtime CSS injection stays disabled.
+
+<a id="api-StylexIntegration"></a>
+## StylexIntegration
+
+Public return interface of `createStylex`, exported from `weapp-stylex/weapp-vite` and `@weapp-stylex/weapp-vite`. It retains the exact `vitePlugins` hooks and `compilerPlugin` provider. Exporting an inferred integration from a configuration library emits a reference to this public interface, so consumers do not need to declare the shared compiler directly. The adapter also re-exports the compiler's `PluginHost`, `StyleBundle`, `WebPluginHost` and `WebServer` types so destructuring `vitePlugins` keeps emitted declarations portable.
 
 <a id="api-stylexTaro"></a>
 ## stylexTaro
@@ -94,10 +99,12 @@ The path is public for plugin/host resolution, not a self-contained manual loade
 ## stylexUniApp
 
 ```ts
-stylexUniApp(options: StylexCompilerOptions = {}): /* platform guard + shared Vite plugin array */
+stylexUniApp(options: StylexCompilerOptions = {}): StylexUniAppPlugins
 ```
 
 Named/default export of `weapp-stylex/uni-app` or `@weapp-stylex/uni-app`. Returns an array to spread **after `uni()`**. It resolves DCloud’s matching `@vue/compiler-sfc` parser instead of substituting a workspace Vue parser.
+
+With pnpm's isolated installation, consumers can install only the `weapp-stylex` facade. The adapter resolves its runtime forwarding dependencies using physical package identities while preserving DCloud's symlink settings; no extra direct `@weapp-stylex/core` dependency is needed.
 
 ```ts
 import uniImport from '@dcloudio/vite-plugin-uni'
@@ -108,6 +115,11 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 ```
 
 Supported UNI_PLATFORM values are mp-weixin, mp-alipay, mp-toutiao and h5; h5 maps to compiler web. The config hook rejects unsupported platforms and explicit target conflicts. Missing/mismatched DCloud parser dependencies can fail during factory setup. Vue 2 and uni-app x are outside the stable contract.
+
+<a id="api-StylexUniAppPlugins"></a>
+## StylexUniAppPlugins
+
+Public array interface returned by `stylexUniApp`, exported from `weapp-stylex/uni-app` and `@weapp-stylex/uni-app`. It preserves the platform guard, compiler and web plugin hooks, including array spreading and indexing. Configuration libraries can export the inferred return value while keeping generated declarations portable through these public entry points. The adapter also re-exports `PluginHost`, `StyleBundle`, `WebPluginHost` and `WebServer` as types, preserving declaration emission when the returned array is spread into a new exported array.
 
 ## Host versions and validation boundary
 
