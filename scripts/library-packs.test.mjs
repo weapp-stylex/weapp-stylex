@@ -14,7 +14,6 @@ import { buildLibraryPacks, verifyLibraryPacks } from './library-packs.mjs'
 const run = promisify(execFile)
 const directories = ['core', 'compiler', 'weapp-vite', 'taro', 'uni-app', 'weapp-stylex']
 const packageManager = JSON.parse(await readFile(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8')).packageManager
-
 async function put(root, file, value) {
   await mkdir(path.dirname(path.join(root, file)), { recursive: true })
   await writeFile(path.join(root, file), value)
@@ -43,7 +42,9 @@ async function fixture(context) {
     await put(root, `packages/${directory}/build.mjs`, `import {mkdir,readFile,writeFile} from 'node:fs/promises';await mkdir('dist',{recursive:true});await writeFile('dist/index.js',await readFile('src/index.js'));await writeFile('dist/index.d.ts','export declare const version: string;');`)
     await put(root, `packages/${directory}/dist/stale.js`, 'old output must be removed')
   }
-  await run('corepack', ['pnpm', 'install', '--ignore-scripts', '--offline'], { cwd: root, maxBuffer: 4 * 1024 * 1024 })
+  // Corepack needs a network lookup for the configured manager when the CI
+  // metadata mirror is cold; the fixture itself has no registry dependencies.
+  await run('corepack', ['pnpm', 'install', '--ignore-scripts'], { cwd: root, maxBuffer: 4 * 1024 * 1024 })
   await run('git', ['init', '--quiet'], { cwd: root })
   await run('git', ['add', '.'], { cwd: root })
   await run('git', ['-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.test', '-c', 'commit.gpgsign=false', 'commit', '--quiet', '-m', 'fixture'], { cwd: root })
