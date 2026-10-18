@@ -1,5 +1,14 @@
 # @weapp-stylex/weapp-vite
 
+## 0.4.1
+
+### Patch Changes
+
+- Keep adapter configuration declarations portable in isolated consumers, including inferred return values, destructuring and plugin array spreading.
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.3.1
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @weapp-stylex/compiler
 
+## 0.3.1
+
+### Patch Changes
+
+- Update the Vue SFC compiler to 3.5.44 while retaining framework toolchain isolation.
+
 ## 0.3.0
 
 ### Minor Changes
