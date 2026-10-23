@@ -1,5 +1,9 @@
 ---
+import { resolveDeploymentContext } from '../../scripts/deployment-context.mjs'
+import PreviewNotice from '../components/preview-notice.astro'
 import '../styles/site.css'
+
+const deployment = resolveDeploymentContext()
 ---
 
 <!doctype html>
@@ -9,12 +13,14 @@ import '../styles/site.css'
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>weapp-stylex · 中文 / English</title>
     <meta name="description" content="StyleX for WeChat mini-programs · 微信小程序的 StyleX 编译方案" />
-    <link rel="canonical" href="https://stylex.weapp.dev/" />
-    <link rel="alternate" hreflang="zh-CN" href="https://stylex.weapp.dev/zh/" />
-    <link rel="alternate" hreflang="en" href="https://stylex.weapp.dev/en/" />
-    <link rel="alternate" hreflang="x-default" href="https://stylex.weapp.dev/" />
+    {deployment.preview && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={`${deployment.origin}/`} />
+    <link rel="alternate" hreflang="zh-CN" href={`${deployment.origin}/zh/`} />
+    <link rel="alternate" hreflang="en" href={`${deployment.origin}/en/`} />
+    <link rel="alternate" hreflang="x-default" href={`${deployment.origin}/`} />
   </head>
   <body>
+    <PreviewNotice bilingual />
     <main class="language-entry">
       <img src="/logo.svg" width="96" height="96" alt="" />
       <h1>weapp-stylex</h1>

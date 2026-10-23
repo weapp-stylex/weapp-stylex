@@ -2,6 +2,7 @@
 name: Release
 
 on:
+  # Source repository only: 03:17 Asia/Shanghai.
   push:
     branches:
       - main
@@ -23,6 +24,7 @@ on:
           - publish-unpublished
           - reconcile
           - oidc-audit
+          - nightly
       package:
         description: Package used for unpublished-version recovery
         required: false
@@ -32,7 +34,7 @@ on:
         required: false
         type: string
       dry-run:
-        description: Preview release reconciliation without changes
+        description: Preview reconciliation or nightly publication without changes
         required: false
         default: false
         type: boolean
@@ -40,9 +42,11 @@ on:
         description: Original main commit to recover (publish modes only)
         required: false
         type: string
+  schedule:
+    - cron: 17 19 * * *
 
 env:
-  HUSKY: 0
+  LEFTHOOK: 0
   NPM_CONFIG_PROVENANCE: true
   npm_config_registry: https://registry.npmjs.org
 
@@ -57,9 +61,12 @@ concurrency:
 
 jobs:
   release:
-    if: ${{ inputs.mode != 'oidc-audit' }}
+    if: ${{ github.event_name != 'schedule' && inputs.mode != 'nightly' && inputs.mode != 'oidc-audit' }}
     name: Release
     runs-on: ubuntu-latest
+    outputs:
+      release-record: ${{ steps.release-finalize.outputs.release-record }}
+      docs-sites: ${{ steps.release-finalize.outputs.docs-sites }}
     steps:
       - name: Validate GitHub App configuration
         env:
@@ -93,7 +100,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24.21.0
+          node-version: 24.22.1
           cache: pnpm
 
       - name: Install npm with trusted publishing support
@@ -186,6 +193,93 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+  docs:
+    needs: release
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' && needs.release.outputs.release-record != '' && needs.release.outputs.docs-sites != '' && needs.release.outputs.docs-sites != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        site: ${{ fromJSON(needs.release.outputs.docs-sites) }}
+    uses: ./.github/workflows/repoctl-docs-deploy.yml
+    with:
+      site: ${{ matrix.site }}
+      channel: stable
+      release: ${{ needs.release.outputs.release-record }}
+    secrets: inherit
+
+  nightly:
+    name: Publish nightly
+    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '17 19 * * *') || (github.event_name == 'workflow_dispatch' && inputs.mode == 'nightly') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      REPOCTL_NIGHTLY_PROVIDER: npm
+      REPOCTL_NIGHTLY_SCHEDULE: '17 19 * * *'
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Validate nightly source
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ -z "$DEFAULT_BRANCH" ] || [ "$GITHUB_REF" != "refs/heads/$DEFAULT_BRANCH" ]; then
+            echo '::error::Nightly publication requires the repository default branch.'
+            exit 1
+          fi
+
+      - name: Checkout nightly source
+        id: nightly-checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.22.1
+          cache: pnpm
+
+      - name: Install npm with trusted publishing support
+        id: nightly-npm
+        run: npm install --global npm@11.16.0 --registry=https://registry.npmjs.org
+
+      - name: Install Dependencies without lifecycle scripts
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Publish nightly packages
+        id: nightly-publish
+        env:
+          REPOCTL_SNAPSHOT_PUBLISH: '1'
+          REPO_RELEASE_PACKAGE: ${{ inputs.package }}
+          REPO_RELEASE_VERSION: ${{ inputs.version }}
+          REPO_RELEASE_DRY_RUN: ${{ inputs.dry-run }}
+          REPO_RELEASE_RECOVERY_SOURCE_SHA: ${{ inputs.source-sha }}
+        run: |
+          args=(--publish --output "$RUNNER_TEMP/repoctl-nightly" --json)
+          if [ "$REPO_RELEASE_DRY_RUN" = 'true' ]; then
+            args+=(--dry-run)
+          fi
+          pnpm exec repo release nightly "${args[@]}"
+
+      - name: Preserve nightly diagnostics
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: nightly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/repoctl-nightly/*.json
+            ${{ runner.temp }}/repoctl-nightly/**/nightly-report.json
+            ${{ runner.temp }}/repoctl-nightly/**/consumer-report.json
+            ${{ runner.temp }}/repoctl-nightly/**/snapshot-report.json
+            ${{ runner.temp }}/repoctl-nightly/**/tarballs/**/*.tgz
+          if-no-files-found: ignore
+          retention-days: 14
+
   oidc-audit:
     name: Audit npm OIDC
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'oidc-audit' }}
@@ -204,7 +298,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24.21.0
+          node-version: 24.22.1
           cache: pnpm
 
       - name: Install Dependencies without lifecycle scripts

@@ -1,6 +1,6 @@
 # Contributing to weapp-stylex
 
-Use Node.js `^22.22.1 || >=24.11.0` and enable Corepack so pnpm uses the
+Use Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` and enable Corepack so pnpm uses the
 version declared in `packageManager`. Run `pnpm install --frozen-lockfile`.
 
 Before opening a pull request, run:

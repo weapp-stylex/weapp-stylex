@@ -7,11 +7,13 @@ sidebar:
 
 ## Workspace workflow
 
-This repository uses repoctl `5.10.3`, pnpm `12.11.2` and Node.js `^22.22.3 || ^24.16.0 || >=26.3.0` for the private workspace and docs. CI targets Node 22.23.3 and 24.21.0. Published libraries retain `^22.22.1 || >=24.11.0`, with isolated ESM/CJS consumers checked on Node 22.22.1 and 24.11.0. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
+This repository uses repoctl `6.0.1`, pnpm `12.11.2` and Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` for the private workspace and docs. CI targets Node 22.23.4 and 24.22.1. Published libraries retain `^22.22.1 || >=24.11.0`, with isolated ESM/CJS consumers checked on Node 22.22.1 and 24.11.0. Git hooks are managed by Lefthook; synchronize `lefthook.yml` with the repoctl upgrade instead of restoring legacy Husky or lint-staged files. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
 
 All six publishable libraries use tsdown `0.23.1`. Core and weapp-vite retain their ESM-only entries; the other four packages retain ESM/CJS. All code entries provide declarations. TypeScript stays at `6.0.3`: TypeScript 7 removes the legacy Compiler API from its root entry, and repoctl, Astro check and TypeScript ESLint do not yet support it. Keep the shared StyleX compiler on Babel 7 and separate the framework toolchains. Upgrade decisions and verification status are recorded in the [2026-10-15 dependency record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-15.md).
 
 Run the full [validation workflow](/examples/) before submitting compiler changes. Use `corepack pnpm change` for publishable package changes; documentation changes do not publish npm packages.
+
+The managed `release.yml` also publishes all six packages to npm `snapshot-nightly` from `main` at 19:17 UTC daily (03:17 Asia/Shanghai), with a manual nightly mode. Install with `pnpm add weapp-stylex@snapshot-nightly`. Snapshots use npm OIDC and do not consume release intents or advance `latest`. For a reproducible report, use the exact snapshot version from the workflow artifacts.
 
 ## Documentation source
 
@@ -40,11 +42,15 @@ Each page exposes `/index.md` and `/index.mdx`. `/llms.txt` lists the documentat
 
 ## Deployment
 
-Cloudflare Workers Static Assets serves the static `dist/` directory. `apps/docs/wrangler.jsonc` owns the `stylex.weapp.dev` custom domain, including automatic DNS/TLS management. All canonical and language alternate links use this origin.
+repoctl registers the documentation site as `stylex`. Main updates deploy to [preview.stylex.weapp.dev](https://preview.stylex.weapp.dev/); complete stable npm release records deploy to [stylex.weapp.dev](https://stylex.weapp.dev/). Cloudflare Workers Static Assets serves the static `dist/` directory through separate Workers and custom domains. The selected channel supplies canonical, language alternate, sitemap and Markdown/AI origins. Preview displays an unreleased notice and disables search-engine indexing while keeping Pagefind search.
+
+Validate both build channels from the repository root without uploading:
 
 ```sh
-corepack pnpm --filter docs deploy:dry-run
-corepack pnpm --filter docs deploy
+corepack pnpm docs:build
+REPO_DOCS_CHANNEL=preview REPO_DOCS_URL=https://preview.stylex.weapp.dev corepack pnpm docs:build
 ```
 
-Authenticate locally with Wrangler before deploying. Never commit credentials. See the [deployment runbook](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/site-deployment.md) for checks and rollback.
+The root build prepares public declarations and runs documentation checks and headless browser interactions. The managed `repoctl-docs.yml` and `repoctl-docs-deploy.yml` workflows own deployment; `Documentation checks` retains the project-specific validation workflow. Internal `docs:deploy:preview` / `docs:deploy:stable` provider scripts require the managed context and are not manual production shortcuts.
+
+GitHub environments `docs-stylex-preview` and `docs-stylex-stable` need `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; never commit credentials. The first managed stable baseline waits for an eligible complete stable release, leaving the current production version in place. Retry a failed deployment with the same release record instead of republishing packages. See the [deployment runbook](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/site-deployment.md) for setup and recovery.

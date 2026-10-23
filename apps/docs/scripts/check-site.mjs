@@ -2,10 +2,12 @@ import assert from 'node:assert/strict'
 import { access, readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { getSiteSidebar } from '../src/lib/navigation.ts'
+import { resolveDeploymentContext } from './deployment-context.mjs'
 
 const output = new URL('../dist/', import.meta.url)
 const content = new URL('../src/content/docs/', import.meta.url)
-const origin = 'https://stylex.weapp.dev'
+const deploymentContext = resolveDeploymentContext()
+const { origin } = deploymentContext
 const editPrefix = 'https://github.com/weapp-stylex/weapp-stylex/edit/main/apps/docs/src/content/docs/'
 const customComponents = new Set(['Aside', 'ApiTable', 'Tabs', 'Tab', 'Steps', 'Step', 'HomeHero', 'CardGrid', 'LinkCard'])
 // Keep published routes reachable; adding pages does not require changing this baseline.
@@ -188,12 +190,24 @@ async function checkLink(href, current) {
 }
 
 const root = await readHtml('index.html')
+assert.deepEqual(tags(root, 'link').filter(link => link.rel === 'canonical').map(link => link.href), [`${origin}/`], 'Wrong language entry canonical')
 assert.doesNotMatch(root, /http-equiv="refresh"/i, 'The root must let the client select a language')
 assert.ok(root.includes('href="/zh/"') && root.includes('href="/en/"'), 'The root must provide both languages without JavaScript')
 assert.ok(root.includes('hreflang="x-default"'), 'The root is the default language selection entry')
 const redirects = await readFile(new URL('_redirects', output), 'utf8')
 assert.doesNotMatch(redirects, /^\/(?:index\.html)?\s+/m, 'Edge redirects must not override client language selection')
 assert.match(redirects, /^\/index\.mdx\s+\/en\/index\.mdx\s+301\s*$/m, 'Keep the previous English MDX URL reachable')
+
+function checkChannel(html, route, noindex = false) {
+  const robots = tags(html, 'meta').find(meta => meta.name === 'robots')?.content ?? ''
+  assert.equal(/\bnoindex\b/.test(robots), deploymentContext.preview || noindex, `Wrong indexing policy: ${route}`)
+  const notice = tags(html, 'aside').find(tag => tag.class === 'preview-notice')
+  assert.equal(Boolean(notice), deploymentContext.preview, `Wrong preview notice visibility: ${route}`)
+  if (deploymentContext.preview) {
+    assert.ok(tags(html, 'a').some(link => link.href === `${deploymentContext.stableOrigin}${route}`), `Missing stable documentation link: ${route}`)
+  }
+}
+checkChannel(root, '/')
 
 const fullText = await readFile(new URL('llms-full.txt', output), 'utf8')
 const markers = [...fullText.matchAll(/^Source: (\S+) · Markdown: (\S+)$/gm)]
@@ -217,6 +231,11 @@ for (const [route, document] of documents) {
   const alternate = route === '/zh/' ? '/en/' : route === '/en/' ? '/zh/' : chinese ? route.slice(3) : `/zh${route}`
   assert.ok(documents.has(alternate), `Missing translated route: ${route}`)
   const html = await readHtml(`${route.slice(1)}index.html`)
+  const noindex = /^noindex:\s*true\s*$/m.test(frontmatter(document.text))
+  checkChannel(html, route, noindex)
+  if (!noindex && !/^searchable:\s*false\s*$/m.test(frontmatter(document.text))) {
+    assert.match(html, /data-pagefind-body[\s=>]/, `Preview indexing policy must not disable local search: ${route}`)
+  }
   assert.equal(tags(html, 'html')[0]?.lang, chinese ? 'zh-CN' : 'en', `Wrong language: ${route}`)
   const links = tags(html, 'link')
   assert.deepEqual(links.filter(link => link.rel === 'canonical').map(link => link.href), [`${origin}${route}`], `Wrong canonical: ${route}`)
@@ -281,7 +300,10 @@ async function checkIndex(file) {
   }
   visitedIndexes.add(file)
   const text = await readFile(new URL(file, output), 'utf8')
-  for (const [href] of text.matchAll(/https:\/\/stylex\.weapp\.dev\/[^\s)>\]]+/g)) {
+  for (const [href] of text.matchAll(/https?:\/\/[^\s)>\]]+/g)) {
+    if (new URL(href).origin !== origin) {
+      continue
+    }
     await checkLink(href, '/')
     const url = new URL(href)
     if (url.pathname.endsWith('/llms.txt')) {
@@ -315,6 +337,11 @@ for (const file of ['.well-known/ard.json', '.well-known/ai-catalog.json']) {
 }
 const headers = await readFile(new URL('_headers', output), 'utf8')
 const ownerHeaders = await readFile(new URL('../public/_headers', import.meta.url), 'utf8')
-assert.ok(headers.includes(ownerHeaders.trim()), 'Generated headers must retain the site security and caching rules')
+assert.ok(headers.replace(/^ {2}X-Robots-Tag: noindex, nofollow\r?\n/gm, '').includes(ownerHeaders.trim()), 'Generated headers must retain the site security and caching rules')
+assert.equal(/^ {2}X-Robots-Tag: noindex, nofollow$/m.test(headers), deploymentContext.preview, 'Wrong deployment indexing header')
 assert.ok(headers.includes(`<${origin}/.well-known/ard.json>; rel="ard"`), 'Missing homepage discovery Link header')
+const robots = await readFile(new URL('robots.txt', output), 'utf8')
+assert.equal(/^Disallow: \/$/m.test(robots), deploymentContext.preview, 'Preview robots.txt must block crawling')
+assert.equal(/^Allow: \/$/m.test(robots), !deploymentContext.preview, 'Stable robots.txt must allow crawling')
+assert.equal(robots.includes(`Sitemap: ${origin}/sitemap-index.xml`), !deploymentContext.preview, 'Only stable robots.txt should advertise its sitemap')
 console.log(`Verified ${documents.size} pages: source routes, both navigation surfaces, edit links, language metadata, local links, ${anchorCount} source anchors, ${componentCount} custom components, Markdown/MDX, AI indexes and search/discovery assets.`)

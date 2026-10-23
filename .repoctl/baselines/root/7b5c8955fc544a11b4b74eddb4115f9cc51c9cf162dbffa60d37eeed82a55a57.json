@@ -3,7 +3,7 @@
   "path": "renovate.json",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "2.3.3",
+    "version": "3.0.1",
     "assetPath": "renovate.json",
     "hash": "1d2dc68d14e0ec86677feb8a1a53abb29c39b27fefd47b0df890257416d707fc"
   },

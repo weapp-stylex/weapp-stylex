@@ -4,7 +4,7 @@
   "version": "0.1.5",
   "private": true,
   "engines": {
-    "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "scripts": {
     "build": "corepack pnpm build:weapp && corepack pnpm build:alipay && corepack pnpm build:tt && corepack pnpm build:web",

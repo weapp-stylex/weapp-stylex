@@ -1,6 +1,6 @@
 # npm 发布
 
-六个公开包（`weapp-stylex` 聚合包及五个 `@weapp-stylex/*` 拆分包）由 `weapp-stylex/weapp-stylex` 的 `.github/workflows/release.yml` 发布。npm trusted publisher 绑定该仓库及工作流文件名；新包按下述首次注册流程接入，不使用持久 npm token。
+repoctl `6.0.1` 管理发布流程。六个公开包（`weapp-stylex` 聚合包及五个 `@weapp-stylex/*` 拆分包）由 `weapp-stylex/weapp-stylex` 的 `.github/workflows/release.yml` 发布。npm trusted publisher 绑定该仓库及工作流文件名；新包按下述首次注册流程接入，不使用持久 npm token。
 
 ## 版本与发布流程
 
@@ -21,6 +21,40 @@ gh workflow run release.yml --repo weapp-stylex/weapp-stylex --ref main -f mode=
 ```
 
 `oidc-audit` 检查每个包能否通过 GitHub OIDC 换取 npm 发布认证；成功不代表包已发布。新 trusted publisher 还需在 npm 要求的两天内完成首次成功的 OIDC 发布。
+
+## Nightly 快照
+
+`commands.release.nightly` 使用 npm provider，UTC cron 为 `17 19 * * *`，即北京时间每天 03:17。配置和受管 `release.yml` 必须通过 `repo upgrade` 一起同步；nightly 是同一工作流内的独立 job，可复用现有 npm trusted publisher 的 `release.yml` 绑定。六包都需要通过发布前的 OIDC audit。
+
+```bash
+pnpm add weapp-stylex@snapshot-nightly
+# 拆分包也使用同一标签
+pnpm add @weapp-stylex/core@snapshot-nightly
+```
+
+Nightly 从默认分支 `main` 的已提交源码准备六个公开包，并验证精确的内部依赖和独立消费者。它不消费发布意图，不修改稳定版本、ledger、changelog、Git tags 或 npm `latest`。成功后的安装说明、tarball 与消费者报告保存在该次 workflow artifacts；复现问题时优先使用报告里的精确快照版本。
+
+手动触发会真正发布新的快照，不用于日常迁移验证：
+
+```bash
+gh workflow run release.yml --repo weapp-stylex/weapp-stylex --ref main -f mode=nightly
+```
+
+定时运行仅在全部包的 nightly 元数据均匹配当前提交、并共享同一构建身份时跳过。部分上传、registry 查询失败或消费者验证失败必须在报告中保持失败状态。手动运行会生成新的构建身份。不要向 nightly 传 `source-sha`、`package` 或 `version`。
+
+本地只读检查使用快照入口，完整提交 SHA 由 `git rev-parse HEAD` 获取：
+
+```bash
+corepack pnpm exec repo release snapshot --kind nightly --commit <full-HEAD-sha> --build-id local-check --dry-run --json
+```
+
+`repo release nightly --dry-run` 仍要求受支持的 GitHub Actions 上下文，不是普通本地 shell 的替代入口。
+
+## 发布后的正式文档
+
+受管 `release.yml` 在 finalize 产生完整稳定发布记录后，通过 `repoctl-docs-deploy.yml` 更新 `stylex` 站点的 `stable` 渠道。正式站绑定该记录对应的源码和六包发布证据；nightly 不触发正式站。`main` 的文档更新由 `repoctl-docs.yml` 部署到固定预览站。
+
+迁移前的发布检查点不等于新版稳定文档基线。第一次接入保留已在线的正式站，等待下一次合格的完整稳定发布生成记录；不要伪造记录或为启用网站而单独发布 npm。网站部署失败可使用相同 release record 重试，不重新上传 npm 包。凭据、检查及恢复命令见[文档站部署](./site-deployment.md)。
 
 ## 新包注册
 

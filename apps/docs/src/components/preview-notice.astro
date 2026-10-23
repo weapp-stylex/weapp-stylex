@@ -1,0 +1,16 @@
+---
+import { resolveDeploymentContext } from '../../scripts/deployment-context.mjs'
+
+interface Props { chinese?: boolean, bilingual?: boolean }
+const { chinese = false, bilingual = false } = Astro.props
+const deployment = resolveDeploymentContext()
+const stableUrl = new URL(Astro.url.pathname, deployment.stableOrigin)
+---
+
+{deployment.preview && <aside class="preview-notice" data-docs-preview data-pagefind-ignore aria-label={chinese ? '预览文档' : 'Preview documentation'}>
+  {bilingual
+    ? <><span lang="zh-CN">未发布文档预览。</span> <span lang="en">Preview of unreleased documentation.</span></>
+    : <span>{chinese ? '这是未发布版本的文档预览。' : 'This is a preview of unreleased documentation.'}</span>}
+  {' '}
+  <a href={stableUrl}>{bilingual ? '正式文档 / Stable docs' : chinese ? '查看正式文档' : 'View stable documentation'}</a>
+</aside>}

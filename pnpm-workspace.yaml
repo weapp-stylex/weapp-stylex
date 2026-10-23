@@ -67,3 +67,4 @@ allowBuilds:
   '@tarojs/cli': true
   core-js: false
   core-js-pure: false
+  lefthook: true

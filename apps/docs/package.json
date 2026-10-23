@@ -15,12 +15,12 @@
     "url": "https://github.com/weapp-stylex/weapp-stylex/issues"
   },
   "engines": {
-    "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "scripts": {
     "dev": "astro dev",
     "build": "corepack pnpm check:locales && astro build",
-    "deploy": "corepack pnpm build && wrangler deploy",
+    "deploy": "node ../../scripts/deploy-docs.mjs stable",
     "deploy:dry-run": "corepack pnpm build && wrangler deploy --dry-run",
     "preview": "astro preview",
     "typecheck": "astro check && tsc --noEmit",
@@ -30,7 +30,8 @@
     "check:locales": "node scripts/check-locales.mjs",
     "check:site": "corepack pnpm check:api && node scripts/check-site.mjs",
     "test": "vitest run scripts/*.test.mjs",
-    "check:api": "node scripts/check-api.mjs"
+    "check:api": "node scripts/check-api.mjs",
+    "deploy:preview": "node ../../scripts/deploy-docs.mjs preview"
   },
   "dependencies": {
     "@cloudflare/nimbus-docs": "0.18.1",
