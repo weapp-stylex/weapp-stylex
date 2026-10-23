@@ -41,7 +41,7 @@ export default defineConfig({
 ## createStylex
 
 ```ts
-createStylex(options: StylexCompilerOptions = {}): { vitePlugins: ReturnType<typeof createVitePlugins>; compilerPlugin: WeappCompilerPluginOption }
+createStylex(options: StylexCompilerOptions = {}): StylexIntegration
 ```
 
 是 weapp-vite 入口的具名导出，返回共享同一 `StylexSession` 的两部分：原始 SFC pre-plugin 与原生 compiler/output provider。**同一次调用的两个字段都要注册**，分开调用会破坏共享 metadata 与输出契约。
@@ -57,6 +57,11 @@ export default defineConfig({
 ```
 
 Vite 部分以 `sfcOnly: true` 与 `emitStyles: false` 在框架编译前转换原始 SFC script，原生部分负责 WXSS 输出。即使是 `auto`，原始 SFC 仍走 Babel，保护仅供模板使用的绑定。这是 Wevu/Vue SFC 接入，不是浏览器 CSS 注入器。
+
+<a id="api-StylexIntegration"></a>
+## StylexIntegration
+
+`createStylex` 的公开返回接口，从 `weapp-stylex/weapp-vite` 与 `@weapp-stylex/weapp-vite` 导出。保留精确的 `vitePlugins` hooks 和 `compilerPlugin` provider。配置库导出推断所得的 integration 时，声明会引用这个公开接口，消费者无需直接声明共享 compiler 依赖。适配器也以类型重导出 compiler 的 `PluginHost`、`StyleBundle`、`WebPluginHost` 与 `WebServer`，保证解构 `vitePlugins` 后的声明仍可移植。
 
 <a id="api-stylexTaro"></a>
 ## stylexTaro
@@ -94,10 +99,12 @@ const loaderPath = require.resolve('weapp-stylex/taro/loader')
 ## stylexUniApp
 
 ```ts
-stylexUniApp(options: StylexCompilerOptions = {}): /* platform guard + shared Vite plugin array */
+stylexUniApp(options: StylexCompilerOptions = {}): StylexUniAppPlugins
 ```
 
 是 `weapp-stylex/uni-app` 或 `@weapp-stylex/uni-app` 的具名与默认导出。返回插件数组，在 **`uni()` 之后展开**。它解析 DCloud 匹配的 `@vue/compiler-sfc`，不拿 workspace 的 Vue parser 替换。
+
+pnpm 隔离安装时可只安装 facade `weapp-stylex`；适配器会按物理包身份解析其 runtime 转发依赖，保留 DCloud 的符号链接设置，无需额外直接安装 `@weapp-stylex/core`。
 
 ```ts
 import uniImport from '@dcloudio/vite-plugin-uni'
@@ -109,6 +116,11 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 支持 UNI_PLATFORM=mp-weixin、mp-alipay、mp-toutiao 和 h5，h5 映射为 compiler web；config hook 拒绝未知平台与显式 target 冲突。缺少或错配 DCloud parser 依赖会在 factory 初始化时失败。Vue 2 与 uni-app x 不在稳定契约内。
 
+<a id="api-StylexUniAppPlugins"></a>
+## StylexUniAppPlugins
+
+`stylexUniApp` 返回的公开数组接口，从 `weapp-stylex/uni-app` 与 `@weapp-stylex/uni-app` 导出。保留平台检查、编译器和 Web 插件 hooks，以及数组展开和索引操作。配置库可以直接导出推断返回值，生成的声明通过这些公开入口保持可移植。适配器还以类型重导出 `PluginHost`、`StyleBundle`、`WebPluginHost` 与 `WebServer`，保证将返回值展开为新的导出数组时仍能生成声明。
+
 ## 宿主版本与验收边界
 
 框架 peer 在适配器中为 optional；应用安装实际使用的宿主。各版本范围有意保持独立。
@@ -119,7 +131,7 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 | Taro | `@tarojs/service >=4.3.0 <4.4.0`；`webpack ^5.91.0` | Taro 4.3.0，Vite 4.5.14 / Webpack 5.91.0 |
 | uni-app | `@dcloudio/vite-plugin-uni 3.0.0-alpha-5030120260930001` | 对应 vue3 channel，Vue 3.4.21 / Vite 5.2.8 |
 
-发布库继续要求 Node `^22.22.1 || >=24.11.0`；私有仓库与文档站使用 `^22.22.3 || ^24.16.0 || >=26.3.0`。CI 使用 22.23.3 与 24.21.0，另在库的最低版本 22.22.1、24.11.0 上检查独立消费者。不要用全局 override 合并不兼容的宿主 Vite/Vue/Babel 版本。共享 StyleX 编译保持 Babel 7。静态构建、headless 交互与真实微信 IDE 证据属于不同检查，验收记录见[示例](/zh/examples/)，本轮验证状态见[依赖记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-13.md)。
+发布库继续要求 Node `^22.22.1 || >=24.11.0`；私有仓库与文档站使用 `^22.23.4 || ^24.22.1 || >=26.12.1`。CI 使用 22.23.4 与 24.22.1，另在库的最低版本 22.22.1、24.11.0 上检查独立消费者。不要用全局 override 合并不兼容的宿主 Vite/Vue/Babel 版本。共享 StyleX 编译保持 Babel 7。静态构建、headless 交互与真实微信 IDE 证据属于不同检查，验收记录见[示例](/zh/examples/)，本轮验证状态见[依赖记录](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-13.md)。
 
 <a id="api-taroStylexTarget"></a>
 <a id="api-uniStylexTarget"></a>

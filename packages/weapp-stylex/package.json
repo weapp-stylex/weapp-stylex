@@ -1,7 +1,7 @@
 {
   "name": "weapp-stylex",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "description": "StyleX runtime and build adapters for WeChat, Alipay, Douyin and H5: native, Wevu, Taro and uni-app",
   "author": "ice breaker <1324318532@qq.com>",

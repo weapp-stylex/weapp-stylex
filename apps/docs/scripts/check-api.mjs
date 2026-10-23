@@ -48,7 +48,7 @@ const pages = {
     'VarGroup',
     'PositionTry',
   ],
-  adapters: ['stylexCompiler', 'createStylex', 'stylexTaro', 'stylexLoader', 'stylexUniApp', 'taroStylexTarget', 'uniStylexTarget'],
+  adapters: ['stylexCompiler', 'createStylex', 'StylexIntegration', 'stylexTaro', 'stylexLoader', 'stylexUniApp', 'StylexUniAppPlugins', 'taroStylexTarget', 'uniStylexTarget'],
   compiler: [
     'StylexBackend',
     'backendBuildDependencies',

@@ -26,10 +26,12 @@ repoctl `6.0.1` 将站点登记为 `commands.docs.sites.stylex`，覆盖六个�
 
 在 GitHub 创建 `docs-stylex-preview`、`docs-stylex-stable` environments，均采用自动部署，不设置人工审核门禁。为工作流配置：
 
-| 名称                    | 类型               | 内容                                                      |
-| ----------------------- | ------------------ | --------------------------------------------------------- |
-| `CLOUDFLARE_API_TOKEN`  | Environment secret | 可管理目标 Worker 的专用 API token                        |
-| `CLOUDFLARE_ACCOUNT_ID` | Secret 或 variable | `apps/docs/wrangler.jsonc` 中已有的 Cloudflare account ID |
+| 名称                    | 类型                      | 内容                                                    |
+| ----------------------- | ------------------------- | ------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | 组织或 Environment secret | 可管理目标 Worker 的专用 API token                      |
+| `CLOUDFLARE_ACCOUNT_ID` | Environment secret        | 既有 Cloudflare 账户 `2db8e8dc78d5ffdd9fe579a7188b7826` |
+
+Wrangler 上传与部署确认统一读取 `CLOUDFLARE_ACCOUNT_ID`，配置文件不再另设账户。受管工作流优先读取 secret，再回退到仓库 variable；两个部署环境显式设置账户，以免组织同名 secret 指向其他项目账户。
 
 Token 需要目标账户的 Worker 上传与部署权限、版本和 deployment 读取权限，以及目标 zone 的 custom domain 管理权限。复用现有账户和 zone，仅管理本项目两个 Worker。不要将本地 Wrangler 的短期 OAuth token 复制到 GitHub，或将凭据写入仓库、日志与命令参数。
 

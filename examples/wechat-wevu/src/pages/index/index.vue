@@ -48,7 +48,7 @@ function grow() {
     </view>
     <stylex-card id="stylex-card" :dark="dark" />
     <inherited-card id="stylex-inherited-card" />
-    <jsx-card />
+    <jsx-card id="stylex-jsx-card" />
     <view id="stylex-toggle" :class="button.class" @tap="toggle">
       点击查看条件样式
     </view>

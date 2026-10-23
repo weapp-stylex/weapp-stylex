@@ -27,7 +27,7 @@ jobs:
       - run: pnpm test
       - run: pnpm test:docs-deployment
       - name: Verify build initialization, IDE application readiness and resource ownership
-        run: pnpm exec node --test scripts/taro/*.test.mjs scripts/ide-*.test.mjs scripts/watcher-ready.test.mjs
+        run: pnpm exec node --test scripts/taro/*.test.mjs scripts/ide-*.test.mjs scripts/watcher-ready.test.mjs scripts/build-provenance.test.mjs scripts/library-packs.test.mjs
       - run: pnpm test:deps
       - name: Verify minimum supported weapp-vite and Wevu hosts
         run: pnpm exec node scripts/test-minimum-weapp-vite.mjs
@@ -99,6 +99,14 @@ jobs:
         run: pnpm test:h5
         env:
           WEAPP_STYLEX_BACKEND: auto
+      - name: Verify candidate tarballs in isolated framework consumers
+        if: matrix.node == '24.22.1'
+        run: corepack pnpm exec node scripts/test-consumer-hosts.mjs
+      - name: Verify individual adapters in isolated framework consumers
+        if: matrix.node == '24.22.1'
+        run: corepack pnpm exec node scripts/test-consumer-hosts.mjs
+        env:
+          WEAPP_STYLEX_CONSUMER_ENTRY: adapter
       - name: Retain platform diagnostics
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -107,6 +115,9 @@ jobs:
           path: |
             artifacts/example-babel-css-*.json
             artifacts/h5/
+            artifacts/build-provenance/
+            artifacts/consumer-hosts-*/
+            artifacts/consumer-install-*/
           if-no-files-found: ignore
 
   consumers:
@@ -125,11 +136,7 @@ jobs:
       - name: Prepare tarballs with the supported workspace toolchain
         run: |
           pnpm install --frozen-lockfile
-          pnpm --filter './packages/*' build
-          mkdir -p artifacts/consumer-packs
-          for package in core compiler weapp-vite taro uni-app weapp-stylex; do
-            pnpm -C "packages/$package" pack --pack-destination ../../artifacts/consumer-packs
-          done
+          corepack pnpm exec node scripts/library-packs.mjs artifacts/consumer-packs
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}

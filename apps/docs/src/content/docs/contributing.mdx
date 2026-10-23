@@ -9,7 +9,7 @@ sidebar:
 
 This repository uses repoctl `6.0.1`, pnpm `12.11.2` and Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` for the private workspace and docs. CI targets Node 22.23.4 and 24.22.1. Published libraries retain `^22.22.1 || >=24.11.0`, with isolated ESM/CJS consumers checked on Node 22.22.1 and 24.11.0. Git hooks are managed by Lefthook; synchronize `lefthook.yml` with the repoctl upgrade instead of restoring legacy Husky or lint-staged files. Create packages with `corepack pnpm exec repo new <name> --template <key>`; keep build adapters thin and shared compiler behavior in `@weapp-stylex/compiler`.
 
-All six publishable libraries use tsdown `0.23.1`. Core and weapp-vite retain their ESM-only entries; the other four packages retain ESM/CJS. All code entries provide declarations. TypeScript stays at `6.0.3`: TypeScript 7 removes the legacy Compiler API from its root entry, and repoctl, Astro check and TypeScript ESLint do not yet support it. Keep the shared StyleX compiler on Babel 7 and separate the framework toolchains. Upgrade decisions and verification status are recorded in the [2026-10-13 dependency record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-13.md).
+All six publishable libraries use tsdown `0.23.1`. Core and weapp-vite retain their ESM-only entries; the other four packages retain ESM/CJS. All code entries provide declarations. TypeScript stays at `6.0.3`: TypeScript 7 removes the legacy Compiler API from its root entry, and repoctl, Astro check and TypeScript ESLint do not yet support it. Keep the shared StyleX compiler on Babel 7 and separate the framework toolchains. Upgrade decisions and verification status are recorded in the [2026-10-15 dependency record](https://github.com/weapp-stylex/weapp-stylex/blob/main/docs/dependency-upgrade-2026-10-15.md).
 
 Run the full [validation workflow](/examples/) before submitting compiler changes. Use `corepack pnpm change` for publishable package changes; documentation changes do not publish npm packages.
 
@@ -17,7 +17,7 @@ The managed `release.yml` also publishes all six packages to npm `snapshot-night
 
 ## Documentation source
 
-The site at [stylex.weapp.dev](https://stylex.weapp.dev/) started from the repoctl Nimbus template and uses Nimbus `0.18.0` with Astro `7.3.8`. Layouts and components are project-owned. Content lives in `apps/docs/src/content/docs/`; English pages use root-relative paths, with matching Chinese files under `zh/`. Recipes and API references use their own subdirectories.
+The site at [stylex.weapp.dev](https://stylex.weapp.dev/) started from the repoctl Nimbus template and uses Nimbus `0.18.1` with Astro `7.3.8`. Layouts and components are project-owned. Content lives in `apps/docs/src/content/docs/`; English pages use root-relative paths, with matching Chinese files under `zh/`. Recipes and API references use their own subdirectories.
 
 ```sh
 corepack pnpm --filter docs dev

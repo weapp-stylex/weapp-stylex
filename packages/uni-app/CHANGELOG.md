@@ -1,5 +1,16 @@
 # @weapp-stylex/uni-app
 
+## 0.3.1
+
+### Patch Changes
+
+- Keep adapter configuration declarations portable in isolated consumers, including inferred return values, destructuring and plugin array spreading.
+
+- Resolve runtime forwarding imports from physical package identities in uni-app so facade-only pnpm consumers build without extra runtime dependencies.
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes

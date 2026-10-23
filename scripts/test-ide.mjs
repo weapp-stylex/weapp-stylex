@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { cp, mkdir, open, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { createConnection, createServer } from 'node:net'
 import path from 'node:path'
 import process from 'node:process'
@@ -9,7 +9,12 @@ import { execa } from 'execa'
 import automator from 'miniprogram-automator'
 import { examples as artifactMatrix } from './example-matrix.mjs'
 import { launchIdeAutomator } from './ide-automator.mjs'
+import { copyVerifiedIdeProject, resolveIdeInputs } from './ide-inputs.mjs'
 import { nativeJournal } from './ide-native-journal.mjs'
+import { assertions, captureIdeScreenshot, loadIdeExpectations } from './ide-scenarios.mjs'
+import { withIdeSuiteLock } from './ide-suite-lock.mjs'
+
+export { assertions } from './ide-scenarios.mjs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const examples = artifactMatrix.filter(example => example.target === 'weapp')
@@ -101,13 +106,21 @@ async function until(check, message, timeout = 15000) {
   } while (Date.now() < deadline)
   throw new Error(message)
 }
-function assertRuntimeLogs(logs) {
+export function assertRuntimeLogs(logs) {
   assert.ok(
     !logs.some(
       log => log.type === 'exception' || log.message?.type === 'error' || log.message?.level === 'error',
     ),
     'Runtime errors captured in IDE logs',
   )
+}
+export function withRuntimeLogChecks(wait, logs) {
+  return (check, ...options) => wait(async () => {
+    assertRuntimeLogs(logs)
+    const result = await check()
+    assertRuntimeLogs(logs)
+    return result
+  }, ...options)
 }
 export async function waitForAppReady(mini, { logs = [], timeout = 45000 } = {}) {
   const started = Date.now()
@@ -133,76 +146,44 @@ export async function waitForAppReady(mini, { logs = [], timeout = 45000 } = {})
   }, 'Application index structure did not become ready before route automation', timeout)
   return ready
 }
-async function element(page, id) {
-  let node
-  await until(async () => {
-    node = await page.$(`#${id}`)
-    if (node) {
-      return true
+export async function closeOwnedIdeResource({ mini, cliPath: selectedCli, projectPath, port, journal, resource, target }, {
+  runCli = execa,
+  isEndpointClosed = endpointClosed,
+  wait = until,
+} = {}) {
+  const failures = []
+  try {
+    await mini?.disconnect()
+  }
+  catch (error) {
+    failures.push(error)
+  }
+  try {
+    // The shared host may contain user windows. Only close this owned project.
+    await runCli(selectedCli, ['close', '--project', projectPath], { timeout: 15000 })
+  }
+  catch (error) {
+    failures.push(error)
+  }
+  try {
+    await wait(() => isEndpointClosed(port), `Owned automator endpoint ${port} is still live after close`)
+    resource.endpointClosed = true
+    if (journal) {
+      await wait(async () => {
+        resource.nativeWindow = await journal.read()
+        return resource.nativeWindow.windowClosed && resource.nativeWindow.webContentsDestroyed
+      }, 'Owned native window did not finish closing')
+      resource.nativeLogs = path.join(target, 'native.log')
+      await writeFile(resource.nativeLogs, `${journal.evidence()}\n`)
     }
-    if (id === 'stylex-card-root') {
-      // The native/Vue fixture gives its custom-component host a stable selector.
-      const component = await page.$('#stylex-card')
-      node = await component?.$(`#${id}`)
-    }
-    return !!node
-  }, `Missing #${id}`)
-  return node
-}
-export async function assertions(mini, target, phase) {
-  await phase('index route')
-  const page = await mini.reLaunch('/pages/index/index')
-  assert.ok(page)
-  await phase('shared page class')
-  const rootNode = await element(page, 'stylex-root')
-  const initialTheme = await rootNode.attribute('class')
-  assert.match(initialTheme, /sx\w+/)
-  const background = await rootNode.style('background-color')
-  await phase('inline StyleX class and units')
-  const inline = await element(page, 'stylex-inline')
-  assert.match(await inline.attribute('class'), /sx\w+/)
-  assert.equal(await inline.style('margin-top'), '8px')
-  await phase('shared component class')
-  assert.match(
-    await (await element(page, 'stylex-card-root')).attribute('class'),
-    /sx\w+/,
-  )
-  const toggle = await element(page, 'stylex-toggle')
-  await phase('conditional class')
-  const initial = await toggle.attribute('class')
-  await toggle.tap()
-  await until(
-    async () => (await toggle.attribute('class')) !== initial,
-    'Conditional class did not update',
-  )
-  assert.equal(Number(await toggle.style('opacity')), 0.6)
-  await phase('theme variables')
-  await (await element(page, 'stylex-theme')).tap()
-  await until(
-    async () => (await rootNode.attribute('class')) !== initialTheme,
-    'Theme class did not update',
-  )
-  assert.notEqual(
-    await rootNode.style('background-color'),
-    background,
-    'Theme variables did not apply',
-  )
-  await phase('dynamic width')
-  await (await element(page, 'stylex-grow')).tap()
-  const meter = await element(page, 'stylex-meter')
-  await until(
-    async () => (await meter.style('width')) === '120px',
-    'Dynamic width did not remain 120px',
-  )
-  await mini.screenshot({ path: path.join(target, 'index.png') })
-  await phase('subpackage route')
-  const detail = await mini.reLaunch('/subpackage/detail/index')
-  assert.ok(detail)
-  assert.match(
-    await (await element(detail, 'stylex-detail')).attribute('class'),
-    /sx\w+/,
-  )
-  await mini.screenshot({ path: path.join(target, 'subpackage.png') })
+  }
+  catch (error) {
+    failures.push(error)
+  }
+  resource.closed = failures.length === 0
+  if (failures.length) {
+    throw new AggregateError(failures, 'Owned IDE resource cleanup failed')
+  }
 }
 async function main() {
   assert.ok(Number.isInteger(startAt) && startAt >= 0 && startAt < examples.length, 'Invalid IDE artifact start index')
@@ -274,233 +255,252 @@ async function main() {
     process.exitCode = 2
     return
   }
-  const lockPath = path.join(artifacts, 'suite.lock')
-  const lock = await open(lockPath, 'wx')
-  const run = path.join(artifacts, `run-${Date.now()}`)
-  try {
-    await mkdir(run)
-    activeRun = run
-    await lock.writeFile(JSON.stringify({ pid: process.pid, run }))
-    if (process.platform !== 'win32') {
-      const { stdout } = await execa('ps', ['-axo', 'pid=,command='])
-      // Read-only guard. Never stop or reuse another suite's automator.
-      if (
-        stdout
-          .split('\n')
-          .some(line => /(?:cli|cli\.bat).*--auto-port/.test(line))
-      ) {
-        throw new Error(
-          'Another automator launch is active; run IDE suites globally in sequence',
-        )
-      }
-    }
-    for (const [index, example] of examples.entries()) {
-      if (index < startAt) {
-        continue
-      }
-      const target = path.join(run, `${index}-${example.name}`)
-      const projectPath = path.join(target, 'project')
-      await cp(example.project, projectPath, { recursive: true })
-      const configPath = path.join(projectPath, 'project.config.json')
-      const config = JSON.parse(await readFile(configPath, 'utf8'))
-      await writeFile(
-        configPath,
-        JSON.stringify({ ...config, appid, miniprogramRoot: '.' }, null, 2),
-      )
-      await writeFile(
-        path.join(projectPath, 'project.private.config.json'),
-        JSON.stringify(
-          {
-            condition: {
-              miniprogram: {
-                list: [
-                  {
-                    name: 'StyleX index',
-                    pathName: 'pages/index/index',
-                    query: '',
-                  },
-                  {
-                    name: 'StyleX ordinary subpackage',
-                    pathName: 'subpackage/detail/index',
-                    query: '',
-                  },
-                ],
-              },
-            },
-          },
-          null,
-          2,
-        ),
-      )
-      const port = await freePort()
-      const resource = {
-        projectPath,
-        port,
-        createdByTask: true,
-        launches: 0,
-        closed: false,
-      }
-      report.resources.push(resource)
-      const record = {
-        name: example.name,
-        directory: example.directory,
-        status: 'running',
-        screenshots: [
-          path.join(target, 'index.png'),
-          path.join(target, 'subpackage.png'),
-        ],
-        logs: path.join(target, 'console.json'),
-      }
-      report.artifacts.push(record)
-      async function phase(stage) {
-        record.stage = stage
-        process.stdout.write(`[IDE] ${example.name}/${example.directory}: ${stage}\n`)
-        await save()
-      }
-      const logs = []
-      const journal = await nativeJournal(projectPath)
-      let mini
-      let failure
-      try {
-        if (preopen) {
-          assert.ok(journal, 'Native readiness observation is required for preopen acceptance')
-          await phase('open project before automation')
-          const result = await execa(cliPath, ['open', '--project', projectPath], { timeout: 60000 })
-          record.openLog = path.join(target, 'open.log')
-          await writeFile(record.openLog, `${result.stdout}\n${result.stderr}\n`)
-          await until(async () => {
-            resource.nativeWindow = await journal.read()
-            return journal.evidence().includes('[devtools] webview page ready')
-          }, 'Owned project did not reach native page readiness before automation', 45000)
-          resource.readyBeforeAutomator = true
-        }
-        resource.launches++
-        await phase('launch')
-        const launched = await launchIdeAutomator({
-          cliPath,
-          projectPath,
-          port,
-          timeout: 60000,
-          trustProject: true,
-        }, {
-          sdk: {
-            launch: options => bounded(() => automator.launch(options), 'Automator launch', 65000),
-            connect: options => bounded(() => automator.connect(options), 'Automator connect', 15000),
-          },
-          runCli: execa,
-          journal,
-          until,
-          phase,
-          async report({ cli, nativeReady }) {
-            if (cli) {
-              record.autoLog = path.join(target, 'auto.log')
-              await writeFile(record.autoLog, `${cli.stdout}\n${cli.stderr}\n`)
-            }
-            resource.readyAfterAutomator = nativeReady
-            await save()
-          },
-        })
-        mini = launched.mini
-        assert.ok(
-          mini,
-          'DevTools launch did not establish an automator connection; check login and service port',
-        )
-        // MiniProgram.on('console') drops App.enableLog's Promise. Await it so failure still runs teardown.
-        mini.addListener('console', message =>
-          logs.push({ at: new Date().toISOString(), stage: record.stage, type: 'console', message }))
-        mini.addListener('exception', message =>
-          logs.push({ at: new Date().toISOString(), stage: record.stage, type: 'exception', message }))
-        await phase('connected environment')
-        await bounded(() => mini.send('App.enableLog'), 'App.enableLog')
-        record.toolInfo = await bounded(() => mini.send('Tool.getInfo'), 'Tool.getInfo')
-        record.systemInfo = await bounded(() => mini.systemInfo(), 'System info')
-        record.account = await bounded(() => mini.callWxMethod('getAccountInfoSync'), 'Account info')
-        assert.equal(record.account.miniProgram.appId, appid)
-        assert.equal(record.toolInfo.version, report.installedVersion)
-        if (journal) {
-          resource.nativeWindow = await journal.read()
-          assert.ok(resource.nativeWindow.windowId, 'Cannot identify owned native window in DevTools journal')
-        }
-        await phase('application readiness')
-        record.applicationReady = await waitForAppReady(mini, { logs })
-        await save()
-        await bounded(() => assertions(mini, target, phase), 'Runtime assertions', 90000)
-        assertRuntimeLogs(logs)
-        record.status = 'passed'
-      }
-      catch (error) {
-        record.status = 'failed'
-        record.error = error.stack
-        failure = error
-        if (mini) {
-          try {
-            record.failureScreenshot = path.join(target, 'failure.png')
-            await bounded(() => mini.screenshot({ path: record.failureScreenshot }), 'Failure screenshot', 5000)
-          }
-          catch (captureError) {
-            record.screenshotError = captureError.message
-          }
+  const inputOptions = { backend: report.backend, consumerManifest: process.env.WEAPP_STYLEX_IDE_CONSUMER_MANIFEST }
+  const inputs = await resolveIdeInputs(inputOptions)
+  const { examples: selectedExamples, sourceRoot } = inputs
+  report.provenance = inputs.provenance
+  report.consumerManifest = inputs.consumerManifestPath ?? null
+  report.libraryPacks = inputs.libraryPacks ?? null
+  await withIdeSuiteLock(async (lock) => {
+    report.suiteLock = { path: lock.path, owner: lock.owner, released: false }
+    const run = path.join(artifacts, `run-${Date.now()}`)
+    try {
+      await mkdir(run)
+      activeRun = run
+      if (process.platform !== 'win32') {
+        const { stdout } = await execa('ps', ['-axo', 'pid=,command='])
+        // Read-only guard. Never stop or reuse another suite's automator.
+        if (
+          stdout
+            .split('\n')
+            .some(line => /(?:cli|cli\.bat).*--auto-port/.test(line))
+        ) {
+          throw new Error(
+            'Another automator launch is active; run IDE suites globally in sequence',
+          )
         }
       }
-      finally {
+      for (const [index, example] of selectedExamples.entries()) {
+        if (index < startAt) {
+          continue
+        }
+        const target = path.join(run, `${index}-${example.name}`)
+        const projectPath = path.join(target, 'project')
+        const expectations = await loadIdeExpectations(example, { workspace: sourceRoot })
+        const record = {
+          name: example.name,
+          directory: example.directory,
+          status: 'running',
+          provenance: report.provenance.artifacts.find(artifact => artifact.name === example.name && artifact.directory === example.directory),
+          expectations,
+          copy: {},
+          screenshots: [
+            path.join(target, 'index.png'),
+            path.join(target, 'subpackage.png'),
+            path.join(target, 'reentry.png'),
+          ],
+          logs: path.join(target, 'console.json'),
+        }
+        report.artifacts.push(record)
         try {
-          await writeFile(record.logs, JSON.stringify(logs, null, 2))
+          await copyVerifiedIdeProject(example, projectPath, record.provenance, { evidence: record.copy })
         }
         catch (error) {
           record.status = 'failed'
-          record.logError = error.message
-          failure = failure
-            ? new AggregateError([failure, error], 'IDE validation and log capture failed')
-            : error
+          record.error = error.stack
+          throw error
         }
-        try {
-          // Target the owned project explicitly; the shared IDE host may contain user windows.
-          mini?.disconnect()
-          await execa(cliPath, ['close', '--project', projectPath], {
-            timeout: 15000,
-          })
-          // Verify only our dedicated automation endpoint; never close other projects.
-          await until(() => endpointClosed(port), `Owned automator endpoint ${port} is still live after close`)
-          resource.endpointClosed = true
-          if (journal) {
-            await until(async () => {
-              resource.nativeWindow = await journal.read()
-              return resource.nativeWindow.windowClosed && resource.nativeWindow.webContentsDestroyed
-            }, 'Owned native window did not finish closing')
-            resource.nativeLogs = path.join(target, 'native.log')
-            await writeFile(resource.nativeLogs, `${journal.evidence()}\n`)
-          }
-          resource.closed = true
+        const configPath = path.join(projectPath, 'project.config.json')
+        const config = JSON.parse(await readFile(configPath, 'utf8'))
+        await writeFile(
+          configPath,
+          JSON.stringify({ ...config, appid, miniprogramRoot: '.' }, null, 2),
+        )
+        await writeFile(
+          path.join(projectPath, 'project.private.config.json'),
+          JSON.stringify(
+            {
+              condition: {
+                miniprogram: {
+                  list: [
+                    {
+                      name: 'StyleX index',
+                      pathName: 'pages/index/index',
+                      query: '',
+                    },
+                    {
+                      name: 'StyleX ordinary subpackage',
+                      pathName: 'subpackage/detail/index',
+                      query: '',
+                    },
+                  ],
+                },
+              },
+            },
+            null,
+            2,
+          ),
+        )
+        const port = await freePort()
+        const resource = {
+          projectPath,
+          port,
+          createdByTask: true,
+          launches: 0,
+          closed: false,
         }
-        catch (error) {
-          resource.cleanupError = error.message
-          failure = failure
-            ? new AggregateError(
-                [failure, error],
-                'IDE validation and cleanup failed',
-              )
-            : error
-        }
-        finally {
+        report.resources.push(resource)
+        async function phase(stage) {
+          record.stage = stage
+          process.stdout.write(`[IDE] ${example.name}/${example.directory}: ${stage}\n`)
           await save()
         }
+        const logs = []
+        const journal = await nativeJournal(projectPath)
+        let mini
+        let failure
+        try {
+          if (preopen) {
+            assert.ok(journal, 'Native readiness observation is required for preopen acceptance')
+            await phase('open project before automation')
+            const result = await execa(cliPath, ['open', '--project', projectPath], { timeout: 60000 })
+            record.openLog = path.join(target, 'open.log')
+            await writeFile(record.openLog, `${result.stdout}\n${result.stderr}\n`)
+            // Opening a project may initialize only its editor. The auto CLI
+            // starts the simulator; launchIdeAutomator requires a fresh native
+            // readiness event after that command before connecting the SDK.
+            resource.openedBeforeAutomator = true
+          }
+          resource.launches++
+          await phase('launch')
+          const launched = await launchIdeAutomator({
+            cliPath,
+            projectPath,
+            port,
+            timeout: 60000,
+            trustProject: true,
+          }, {
+            sdk: {
+              launch: options => bounded(() => automator.launch(options), 'Automator launch', 65000),
+              connect: options => bounded(() => automator.connect(options), 'Automator connect', 15000),
+            },
+            runCli: execa,
+            journal,
+            until: withRuntimeLogChecks(until, logs),
+            phase,
+            async report({ cli, nativeReady }) {
+              if (cli) {
+                record.autoLog = path.join(target, 'auto.log')
+                await writeFile(record.autoLog, `${cli.stdout}\n${cli.stderr}\n`)
+              }
+              resource.readyAfterAutomator = nativeReady
+              await save()
+            },
+          })
+          mini = launched.mini
+          assert.ok(
+            mini,
+            'DevTools launch did not establish an automator connection; check login and service port',
+          )
+          // MiniProgram.on('console') drops App.enableLog's Promise. Await it so failure still runs teardown.
+          mini.addListener('console', message =>
+            logs.push({ at: new Date().toISOString(), stage: record.stage, type: 'console', message }))
+          mini.addListener('exception', message =>
+            logs.push({ at: new Date().toISOString(), stage: record.stage, type: 'exception', message }))
+          await phase('connected environment')
+          await bounded(() => mini.send('App.enableLog'), 'App.enableLog')
+          record.toolInfo = await bounded(() => mini.send('Tool.getInfo'), 'Tool.getInfo')
+          record.systemInfo = await bounded(() => mini.systemInfo(), 'System info')
+          record.account = await bounded(() => mini.callWxMethod('getAccountInfoSync'), 'Account info')
+          assert.equal(record.account.miniProgram.appId, appid)
+          assert.equal(record.toolInfo.version, report.installedVersion)
+          assert.ok(record.toolInfo.SDKVersion, 'Tool.getInfo omitted the actual SDK version')
+          assert.equal(record.systemInfo.SDKVersion, record.toolInfo.SDKVersion, 'Tool and system SDK versions differ')
+          if (journal) {
+            resource.nativeWindow = await journal.read()
+            assert.ok(resource.nativeWindow.windowId, 'Cannot identify owned native window in DevTools journal')
+          }
+          await phase('application readiness')
+          record.applicationReady = await waitForAppReady(mini, { logs })
+          await save()
+          record.assertions = { rounds: 3, checks: [], screenshots: [] }
+          await bounded(() => assertions(mini, target, phase, {
+            example,
+            systemInfo: record.systemInfo,
+            expectations,
+            until: withRuntimeLogChecks(until, logs),
+            evidence: record.assertions,
+          }), 'Runtime assertions', 90000)
+          assertRuntimeLogs(logs)
+          record.status = 'passed'
+        }
+        catch (error) {
+          record.status = 'failed'
+          record.error = error.stack
+          record.failedComputedStyle = error.ideComputedStyle
+          failure = error
+          if (mini) {
+            try {
+              record.failureScreenshot = path.join(target, 'failure.png')
+              await bounded(() => captureIdeScreenshot(mini, record.failureScreenshot), 'Failure screenshot', 5000)
+            }
+            catch (captureError) {
+              record.screenshotError = captureError.message
+            }
+          }
+        }
+        finally {
+          try {
+            await writeFile(record.logs, JSON.stringify(logs, null, 2))
+          }
+          catch (error) {
+            record.status = 'failed'
+            record.logError = error.message
+            failure = failure
+              ? new AggregateError([failure, error], 'IDE validation and log capture failed')
+              : error
+          }
+          try {
+            await closeOwnedIdeResource({ mini, cliPath, projectPath, port, journal, resource, target })
+          }
+          catch (error) {
+            resource.cleanupError = error.message
+            failure = failure
+              ? new AggregateError(
+                  [failure, error],
+                  'IDE validation and cleanup failed',
+                )
+              : error
+          }
+          finally {
+            await save()
+          }
+        }
+        if (failure) {
+          throw failure
+        }
       }
-      if (failure) {
-        throw failure
+      const finalInputs = await resolveIdeInputs(inputOptions)
+      assert.equal(finalInputs.provenance.run.id, inputs.provenance.run.id, 'IDE build provenance changed during the suite')
+      assert.equal(finalInputs.libraryPacks?.id ?? null, inputs.libraryPacks?.id ?? null, 'IDE library build/pack batch changed during the suite')
+      report.finalInputVerification = {
+        checkedAt: new Date().toISOString(),
+        runId: finalInputs.provenance.run.id,
+        libraryPacksId: finalInputs.libraryPacks?.id ?? null,
       }
+      report.status = startAt ? 'partial' : 'passed'
     }
-    report.status = startAt ? 'partial' : 'passed'
-  }
-  catch (error) {
-    report.status = 'failed'
-    report.error = error.stack
-    process.exitCode = 1
-  }
-  finally {
-    await lock.close()
-    await rm(lockPath)
-    await save()
-  }
+    catch (error) {
+      report.status = 'failed'
+      report.error = error.stack
+      process.exitCode = 1
+    }
+    finally {
+      await save()
+    }
+  }, { owner: { workspace: root, backend: report.backend } })
+  report.suiteLock.released = true
+  await save()
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   main().catch(async (error) => {

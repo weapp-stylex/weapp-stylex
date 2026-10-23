@@ -34,7 +34,7 @@
     "deploy:preview": "node ../../scripts/deploy-docs.mjs preview"
   },
   "dependencies": {
-    "@cloudflare/nimbus-docs": "0.18.0",
+    "@cloudflare/nimbus-docs": "0.18.1",
     "@phosphor-icons/core": "2.1.1",
     "astro": "7.3.8"
   },
@@ -46,6 +46,6 @@
     "eslint-plugin-mdx": "^3.8.1",
     "pagefind": "^1.5.2",
     "typescript": "6.0.3",
-    "wrangler": "^4.149.0"
+    "wrangler": "^4.151.0"
   }
 }

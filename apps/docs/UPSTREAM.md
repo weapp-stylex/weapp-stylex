@@ -4,7 +4,7 @@ This template adapts the static empty starter from [Cloudflare Nimbus](https://g
 
 - Starter tag: `templates-v0.7.9`
 - Starter commit: `aae348048a8c659f84c39696ee6b20c2ad2f5ae2`
-- Nimbus package: `@cloudflare/nimbus-docs@0.18.0` (reviewed 2026-10-13)
+- Nimbus package: `@cloudflare/nimbus-docs@0.18.1` (reviewed 2026-10-15)
 - Astro: `7.3.8`
 
 Nimbus declares Astro `>=7.2.6 <8`; the private documentation workspace follows the upgraded toolchain range `^22.23.4 || ^24.22.1 || >=26.12.1`. Published weapp-stylex libraries retain the separate `^22.22.1 || >=24.11.0` consumer floor. Builds, Astro diagnostics and TypeScript checks use the repository's TypeScript `6.0.3` and Vite `8.3.4` constraints. Resolved dependencies are recorded in the monorepo's root `pnpm-lock.yaml`; generated projects use their own root workspace lockfile.
@@ -14,6 +14,15 @@ Agent endpoint routes and the content-loading approach come from that starter. T
 The local head component emits page-specific language metadata because the upstream head uses the site-wide locale. Client scripts are emitted as external assets so Astro does not inline them before Vite finalizes Pagefind's dynamic import.
 
 The package version and starter tag were checked against published package metadata. `nimbus.json` records the reviewed package API baseline. The original full starter was not copied wholesale, so upstream starter diffs are not a claim that every local file is an unmodified upstream component.
+
+## Nimbus 0.18.1 API review
+
+The official `nimbus-docs migrate --dry-run --json` reported no migrations,
+optional reviews or errors from 0.18.0 to 0.18.1. After that review,
+`nimbus-docs migrate --yes --json` advanced the recorded baseline to 0.18.1
+without source changes. Project-owned layouts, navigation, components and
+static agent endpoint routes retain the decisions below. Migration diagnostics
+are retained in `artifacts/dependency-upgrade-2026-10-15/`.
 
 ## Nimbus 0.18.0 API review
 

@@ -56,6 +56,25 @@ const meter = computed(() => stylex.attrs(styles.meter(width.value)))
 
 JSX/TSX 消费者同样使用官方 runtime。原始 `<script>` 与 `<script setup>` 在 SFC 编译前处理，并组合 sourcemap；跳过虚拟 script 请求以避免重复转换。外部共享 TS 样式按普通模块处理。
 
+小程序 JSX/TSX 模板使用的 `attrs` 对象和 `computed` 绑定必须在 `setup()` 内声明。Wevu 只把 setup 局部绑定发布到生成的 WXML，模块级运行时绑定不会成为模板数据。共享 styles、tokens 和主题仍可放在外部模块中导入。显式绑定 `.class` 和 `.style`：
+
+```tsx
+import * as stylex from 'weapp-stylex'
+import { defineComponent } from 'wevu'
+import { lightTheme, styles } from './styles'
+
+export default defineComponent({
+  setup() {
+    const attrs = stylex.attrs(lightTheme, styles.card)
+    return () => (
+      <view class={attrs.class} style={attrs.style}>
+        <text>共享 StyleX</text>
+      </view>
+    )
+  },
+})
+```
+
 [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) 包含 Vue SFC、JSX 组件、主题与分包示例。
 
 ## 跨平台与 H5
