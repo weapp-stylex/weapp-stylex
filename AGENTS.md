@@ -48,11 +48,15 @@ pnpm exec repo check
 
 ## Requirements
 
-- Private workspace/docs Node.js `^22.22.3 || ^24.16.0 || >=26.3.0`
-  (CI: 22.23.3 and 24.21.0). Published libraries retain
+- Private workspace/docs Node.js `^22.23.4 || ^24.22.1 || >=26.12.1`
+  (CI: 22.23.4 and 24.22.1). Published libraries retain
   `^22.22.1 || >=24.11.0`; verify isolated consumers on Node 22.22.1 and 24.11.0.
-- pnpm (run `corepack enable` so the declared workspace version is used)
+- repoctl is pinned to `6.0.1`; pnpm is pinned to `12.11.2` (run `corepack enable` so the declared workspace version is used)
 - CLI output is English by default; `--lang zh-CN` or `REPOCTL_LANG=zh-CN` selects Simplified Chinese
+
+## Git hooks
+
+Lefthook reads `lefthook.yml`. Keep pre-commit jobs sequential: ESLint fixes, Stylelint fixes (including Vue style blocks), then one `repo verify staged-typecheck` call. Use `stage_fixed: true` for fixes and `glob_matcher: doublestar` for root and nested files. Do not call `repo verify pre-commit` from inside the Lefthook configuration.
 
 ## Scope
 
@@ -72,7 +76,7 @@ The private root workspace is named `weapp-stylex-workspace`.
 - Run `corepack pnpm lint`, `build`, `typecheck`, `test`, `test:deps`,
   `test:integration`, and `test:examples` from the root.
 - `build` produces 28 artifacts: seven per target (WeChat, Alipay, Douyin, H5). Taro's two builders run in sequence
-  into separate directories. CI tests Node 22.23.3 and 24.21.0.
+  into separate directories. CI tests Node 22.23.4 and 24.22.1.
 - All six publishable libraries use tsdown. Core and weapp-vite remain ESM-only;
   compiler, Taro, uni-app and the facade retain ESM/CJS and declarations.
   Keep runtime and build-tool entries separate and verify their declared formats in isolated consumers.
@@ -146,3 +150,12 @@ Use `corepack pnpm change` to record package changes; do not hand-increment
 versions or publish npm as part of implementation tasks. Independent
 subpackages, platforms beyond WeChat/Alipay/Douyin/H5, Vue 2, uni-app x, WXML sx syntax and stateful HMR
 remain future work.
+
+## Nightly and documentation channels
+
+- Configure nightly through `commands.release.nightly` and synchronize managed workflows with `repo upgrade`. The npm provider uses `snapshot-nightly`, every day at 19:17 UTC (03:17 Asia/Shanghai), in the existing `release.yml` with npm OIDC. Never consume release intents, change stable versions or advance `latest` for a snapshot.
+- `commands.docs.sites.stylex` owns the six-package documentation site. Main updates deploy `preview` to `preview.stylex.weapp.dev`; completed stable releases deploy `stable` to `stylex.weapp.dev`. Keep the existing Nimbus/Astro site, project-owned layout and bilingual routes.
+- Keep `repoctl-docs.yml` and `repoctl-docs-deploy.yml` managed. Preserve the project-owned documentation checks. `docs:build` must verify the frozen source before upload; `docs:deploy:preview` and `docs:deploy:stable` are internal provider adapters, not manual deployment entrypoints.
+- Use GitHub environments `docs-stylex-preview` and `docs-stylex-stable`, with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Never copy a temporary local Wrangler OAuth credential into CI or log tokens.
+- Deploy stable only from a complete repoctl stable release record and the managed concurrency group. Keep the existing production Worker until the first eligible record is available; do not fabricate a baseline or publish npm merely to activate documentation. Retry failed deployments with the same release record instead of republishing packages.
+- Keep channel origins consistent across metadata, AI exports and validation. Preview is public but unindexed; retain its Pagefind search. Do not replace the managed stable path with a direct `wrangler deploy` command.

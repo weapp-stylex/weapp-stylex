@@ -30,6 +30,21 @@
   border-bottom: 1px solid var(--line);
 }
 
+.preview-notice {
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink);
+  text-align: center;
+  background: var(--soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.preview-notice a {
+  color: var(--accent);
+  white-space: nowrap;
+}
+
 .header-inner {
   display: flex;
   gap: 2rem;

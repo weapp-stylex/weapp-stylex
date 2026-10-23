@@ -43,7 +43,11 @@ pnpm add -D @weapp-stylex/weapp-vite # 或 @weapp-stylex/taro / @weapp-stylex/un
 
 本仓库的示例通过 `workspace:*` 使用本地包，不需要发布即可构建。公开包通过 GitHub Actions 的 `release.yml` 使用 npm OIDC trusted publishing 发布，并生成 provenance。
 
-版本、OIDC 配置及恢复流程见 [npm 发布](docs/npm-release.md)。
+repoctl `6.0.1` 还通过同一工作流提供 nightly：北京时间每天 03:17 从 `main` 发布六包快照，可用 `pnpm add weapp-stylex@snapshot-nightly` 安装。快照不推进正式 `latest`，定时检查确认当前提交已完整发布时会跳过。
+
+[预览站](https://preview.stylex.weapp.dev/)跟随 `main`；[正式站](https://stylex.weapp.dev/)在稳定 npm 发布完成后更新，文档内容绑定该次发布记录。首次接入需完成 Cloudflare CI 凭据配置；正式站的首个受管基线由下一次完整稳定发布建立。
+
+版本、OIDC 配置及恢复流程见 [npm 发布](docs/npm-release.md)，网站渠道、凭据与恢复入口见[文档站部署](docs/site-deployment.md)。
 
 ## 编译提速
 
@@ -264,7 +268,7 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 Taro 使用 Vite 4.5.14 / Webpack 5.91.0，uni-app 固定 Vite 5.2.8；没有全局 Vite 主版本 override。各示例都包含共享样式、多消费者、条件合并、主题、动态值、少量内联样式和普通分包。每个示例的 README 提供单独构建命令。
 
-开发仓库与文档站使用 Node.js `^22.22.3 || ^24.16.0 || >=26.3.0`；CI 矩阵为 22.23.3、24.21.0。pnpm 从 `packageManager` 读取（12.11.2）。发布库的 Node 要求继续保持 `^22.22.1 || >=24.11.0`，与开发工具要求分开；独立消费者在 Node 22.22.1、24.11.0 上验证 ESM/CJS 和声明文件。
+开发仓库与文档站使用 Node.js `^22.23.4 || ^24.22.1 || >=26.12.1`；CI 矩阵为 22.23.4、24.22.1。repoctl 固定为 `6.0.1`，Git hooks 通过受管 `lefthook.yml` 配置；pnpm 从 `packageManager` 读取（12.11.2）。发布库的 Node 要求继续保持 `^22.22.1 || >=24.11.0`，与开发工具要求分开；独立消费者在 Node 22.22.1、24.11.0 上验证 ESM/CJS 和声明文件。
 
 六个发布库统一使用 tsdown `0.23.1`：core 与 weapp-vite 保留 ESM-only，其余四包保留 ESM/CJS，均提供声明文件。工具链保留 TypeScript `6.0.3`：TypeScript 7 移除了根入口的旧 Compiler API，且 repoctl、Astro check 与 TypeScript ESLint 尚不支持该主版本。共享 StyleX 编译仍使用 Babel 7，宿主依赖按框架隔离。
 

@@ -1,6 +1,111 @@
 # 文档站部署
 
-核心域名：<https://stylex.weapp.dev/>，根地址由客户端自动选择语言：手动保存的选择优先，其次按系统时区推断地区（中国时区进入 `/zh/`，其他有效时区进入 `/en/`），时区不可用时回退到浏览器首选语言。英文首页位于 `/en/`，其他英文指南沿用根目录路由。所有 canonical、hreflang、sitemap 和 Markdown/AI 入口都使用该域名。
+repoctl `6.0.1` 将站点登记为 `commands.docs.sites.stylex`，覆盖六个公开包。两个渠道使用相同的 Nimbus/Astro 静态站和双语内容，部署到独立 Cloudflare Worker。
+
+| 渠道      | 来源与触发                                         | 地址                                | Worker                      |
+| --------- | -------------------------------------------------- | ----------------------------------- | --------------------------- |
+| `preview` | 最新 `main` 提交；main push 自动部署               | <https://preview.stylex.weapp.dev/> | `weapp-stylex-docs-preview` |
+| `stable`  | 完整稳定 npm 发布记录；release finalize 后自动部署 | <https://stylex.weapp.dev/>         | `weapp-stylex-docs`         |
+
+正式站内容绑定已发布包对应的源码；nightly 不触发正式站。预览站显示未发布提示，使用 HTML noindex、robots 和响应头限制搜索引擎索引，保留 Pagefind 搜索。两个渠道的 canonical、hreflang、sitemap、Markdown 和 AI 入口分别使用自己的 origin。
+
+根地址由客户端选择语言：手动保存的选择优先，其次按系统时区推断地区，中国时区进入 `/zh/`，其他有效时区进入 `/en/`；时区不可用时回退到浏览器首选语言。英文首页位于 `/en/`，其他英文指南沿用根目录路由。无 JavaScript 时保留两个语言入口，具体文章地址不自动改写。
+
+## 工作流与首次接入
+
+- `.github/workflows/repoctl-docs.yml` 监听 `main` push，并提供手动选择 site、channel、release、source-sha 和 commits 的入口。
+- `.github/workflows/repoctl-docs-deploy.yml` 是受管部署执行器，使用环境和并发组 `docs-stylex-preview` / `docs-stylex-stable`。同一站点渠道串行执行，不取消正在运行的部署。
+- `.github/workflows/release.yml` 的 finalize 阶段产生完整稳定发布记录后，调用执行器部署 `stable`。
+- `.github/workflows/docs.yml` 的 `Documentation checks` 保留项目专用静态检查及浏览器验证。部署自身的 `docs:build` 也必须验证冻结源码，不能仅凭另一个 workflow 通过就上传。
+
+首次迁移时保留已在线的正式 Worker 版本，先启用预览。稳定站的首个受管基线等待下一次合格的完整稳定发布；旧发布检查点不等于新的 completion record。不要伪造发布记录、将任意 main SHA 指定为稳定源码，或为启用网站而临时发布 npm。
+
+完成记录和部署进度由 repoctl 保存在 `repoctl-release-state` 分支。稳定站部署必须在受管 Actions 环境和正确并发组中执行；本地可以 plan，不能直接 deploy stable。
+
+## Cloudflare 与 GitHub 配置
+
+在 GitHub 创建 `docs-stylex-preview`、`docs-stylex-stable` environments，均采用自动部署，不设置人工审核门禁。为工作流配置：
+
+| 名称                    | 类型               | 内容                                                      |
+| ----------------------- | ------------------ | --------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | Environment secret | 可管理目标 Worker 的专用 API token                        |
+| `CLOUDFLARE_ACCOUNT_ID` | Secret 或 variable | `apps/docs/wrangler.jsonc` 中已有的 Cloudflare account ID |
+
+Token 需要目标账户的 Worker 上传与部署权限、版本和 deployment 读取权限，以及目标 zone 的 custom domain 管理权限。复用现有账户和 zone，仅管理本项目两个 Worker。不要将本地 Wrangler 的短期 OAuth token 复制到 GitHub，或将凭据写入仓库、日志与命令参数。
+
+`apps/docs/wrangler.jsonc` 是部署配置来源，静态产物为 `apps/docs/dist`。正式目标保留 `weapp-stylex-docs`，预览通过 `preview` environment 使用独立 Worker 与 `preview.stylex.weapp.dev` custom domain。两者继续禁用 `workers.dev` 和版本 preview URL；常驻预览站使用自己的 custom domain。Wrangler 管理对应 DNS/TLS。
+
+保持纯 Static Assets，不增加 Worker 脚本、按请求运行的语言检测、IP 查询或定位权限。HTML 使用末尾斜线，未知路径返回真实 404；`_redirects` 保留旧 `/index.mdx` 到 `/en/index.mdx` 的跳转，`_headers` 保留安全及哈希资源缓存策略。
+
+## 本地验证
+
+开发工具链要求 Node.js `^22.23.4 || ^24.22.1 || >=26.12.1`，CI 使用 22.23.4 和 24.22.1。pnpm 固定为 12.11.2，公开包的消费者下限不变。
+
+```sh
+corepack pnpm install --frozen-lockfile
+corepack pnpm docs:build
+REPO_DOCS_CHANNEL=preview REPO_DOCS_URL=https://preview.stylex.weapp.dev corepack pnpm docs:build
+```
+
+`docs:build` 构建六包声明并执行文档 lint、类型检查、构建、API/站点检查、单测与 headless 浏览器验收，同时准备所需 Chromium。本地两个命令只构建和验证，不上传。无部署环境变量时使用正式站 origin；预览变量应同时传给构建与检查，避免用正式 origin 校验预览产物。
+
+浏览器验证覆盖双语搜索、键盘与焦点、复制、主题持久化、语言切换、移动导航及无 JavaScript 内容，并关闭自己创建的浏览器和服务。既有框架/IDE 验收仍按各自的日期与范围记录。
+
+## 计划、部署与重试
+
+预览必须使用当前最新 `origin/main` 的完整 SHA。repoctl 在构建后再次核对 main，阻止较旧预览覆盖较新提交：
+
+```sh
+corepack pnpm exec repo docs plan stylex --channel preview --source-sha <full-main-sha> --json
+```
+
+正式计划使用完整稳定发布记录 ID，不能使用任意源码 SHA：
+
+```sh
+corepack pnpm exec repo docs plan stylex --channel stable --release <completion-id> --json
+```
+
+正常发布自动部署。需要重新执行失败的正式部署时，通过受管入口传同一个记录：
+
+```sh
+gh workflow run repoctl-docs.yml --repo weapp-stylex/weapp-stylex --ref main \
+  -f site=stylex -f channel=stable -f release=<completion-id>
+```
+
+`docs:deploy:preview` 与 `docs:deploy:stable` 是内部 provider 适配器。repoctl 注入源码、渠道、URL、发布记录、deployment ID 和 `REPO_DOCS_RESULT_FILE`；适配器确认构建身份与目标一致，再检查 Cloudflare 当前唯一 100% 生效版本。只有部署确认后，才写入 `{ versionId, url }` 供 repoctl 推进状态。同一 deployment ID 已生效时可恢复结果，不重复上传。
+
+失败后保留日志、deployment ID 和版本证据，修正原因后重试同一记录。不要重新发布 npm、修改 repoctl 状态分支、删除 pending 记录，或用直接 `wrangler deploy` 覆盖正式站。重试仍需验证 Cloudflare 实际生效版本，不能把上传成功等同于已完成发布。
+
+## 稳定文档修正
+
+`patchPaths` 只允许已经合入 main 的中英文内容和静态图片修正。通过受管手动入口的 `commits` 选择单父提交；每个提交必须通过 repoctl 的路径及内容检查。导航、组件、构建与部署配置、scripts、包源码和 lockfile 变更等待正常稳定发布，不通过文档修正入口绕过发布边界。
+
+`releaseInputs` 覆盖每个公开包的发布源码、manifest、构建配置和共享 `tsconfig.base.json`，排除测试、fixtures、README 与 CHANGELOG。修改这些输入后，稳定站必须取得相应的新发布证据。完整快照仍使用冻结 lockfile 安装依赖。
+
+## 验收与恢复记录
+
+对两个渠道分别检查以下入口，以及目标域名、索引策略、真实 404 和交互行为：
+
+```text
+/
+/zh/
+/en/
+/get-started/
+/zh/get-started/
+/llms.txt
+/zh/llms.txt
+/llms-full.txt
+/styles/index.md
+/zh/styles/index.mdx
+/sitemap-index.xml
+/robots.txt
+```
+
+配置接入、构建成功和站点上线是不同状态。记录各次实际 workflow、源码 SHA、release/deployment ID、Cloudflare version ID、URL 和线上验收结果；凭据未就绪或首次稳定基线未建立时，明确标为待上线。
+
+预览失败可由当前 main 的部署重试恢复。稳定站保留上一次成功部署，使用相同 completion ID 恢复未完成部署，或通过合格的后续稳定发布更新。紧急 Cloudflare 版本回退属于单独的运维操作，需要同时核对真实生效版本与 repoctl 记录，不能把旧的直接 rollback/build/deploy 方式当作日常发布入口。不要删除整个 zone 或改动其他项目的 DNS/Worker。
+
+以下为历史迁移和验收记录，不代表当前双渠道流程已上线或当前版本已通过验收。
 
 ## 2026-10-10 repoctl 正式版收敛
 
@@ -19,66 +124,6 @@ asset baseline 继续记录原来源版本。
 2026-10-09 查询时，npm 的最新 repoctl 为 **5.9.0**，从 5.8.1 升级。模板依赖仍为 **2.3.1**。执行 `repo upgrade --dry-run --json` 审查差异后，使用 `--no-overwrite` 的计划应用，结果为 unchanged。保留微信专用 CI，以及 Taro Vite 4、uni-app Vite 5、weapp-vite Vite 8 的版本隔离；未采用模板新增的全局 major override。
 
 通过 `corepack pnpm exec repo new docs --template nimbus` 创建 `apps/docs`，保留模板实例与基线。使用默认 Nimbus 0.16.0 / Astro 7.3.7，不替换成 VitePress。
-
-## 本地验证与部署
-
-```sh
-corepack pnpm install --frozen-lockfile
-corepack pnpm --filter docs lint
-corepack pnpm --filter docs typecheck
-corepack pnpm --filter docs build
-corepack pnpm --filter docs check:site
-corepack pnpm --filter docs test
-corepack pnpm --filter docs exec wrangler whoami
-corepack pnpm --filter docs exec wrangler deploy --dry-run
-corepack pnpm --filter docs exec wrangler deploy
-```
-
-构建后的搜索使用 Pagefind。浏览器验收检查中英页面、对应语言切换、搜索结果、移动导航、代码滚动与深色模式；先在生产 preview 检查，再验证线上产物。
-
-## Cloudflare 配置
-
-- Cloudflare 部署名：`weapp-stylex-docs`，纯 Static Assets，无自定义 Worker 脚本。
-- 配置：`apps/docs/wrangler.jsonc`；产物：`apps/docs/dist`。
-- custom domain：`stylex.weapp.dev`，由 Wrangler 管理 DNS 与 TLS。
-- 禁用 workers.dev 和 preview URL，主域名作为唯一公开站点入口。
-- HTML 使用末尾斜线；未知页面返回真实 404，不返回 SPA 首页。
-- 根地址发布统一的语言选择 HTML，客户端读取 `Intl.DateTimeFormat().resolvedOptions().timeZone` 推断地区，通过 `location.replace` 跳转并保留 query/hash。中国时区含 `Asia/Shanghai`、`Asia/Urumqi` 及 IANA 历史别名；其他有效时区（包括 UTC）选择英文，单纯 UTC 偏移不能推断地区。
-- 保持纯静态部署，不增加 Worker 运行调用，不查询 IP 服务、不请求定位权限。HTML 相同，语言选择只在客户端执行，静态缓存不会串用户地区。
-- 设备时区只反映系统设置，不保证真实所在地；时区不可用时使用浏览器首选语言。开发、静态 preview 与生产使用同一逻辑。手动切换保存到 localStorage；storage 禁用不影响切换和自动选择。无 JavaScript 时提供两种手动入口。直接访问具体语言页或文章不会自动改写。
-- 英文首页使用 `slug: en`，导航与语言切换明确指向 `/en/`；`public/_redirects` 仅保留旧 `/index.mdx` 到 `/en/index.mdx` 的兼容跳转。
-- `_headers` 为哈希静态资源提供长期缓存，并配置基本响应头。
-- 所有凭据留在本地 Wrangler 登录配置或 CI secret，代码不包含令牌。
-
-`.github/workflows/docs.yml` 自动验证站点。常规根 CI 的 build/typecheck 也覆盖此 workspace。当前部署使用本地 Wrangler 认证；没有将短期 OAuth token 复制进 GitHub Actions。需要持续自动部署时，配置最小权限的 Cloudflare API token 与明确的部署环境后接入。
-
-## 验收入口
-
-```text
-/
-/zh/
-/en/
-/get-started/
-/zh/get-started/
-/llms.txt
-/zh/llms.txt
-/llms-full.txt
-/styles/index.md
-/zh/styles/index.mdx
-/sitemap-index.xml
-/robots.txt
-```
-
-`check:site` 检查双语页面数量、语言属性、canonical、alternate、内部链接和锚点、Markdown 以及搜索/AI 文件。新增文档时同步两种语言。
-
-## 回滚
-
-```sh
-corepack pnpm --filter docs exec wrangler deployments list
-corepack pnpm --filter docs exec wrangler rollback <previous-version-id>
-```
-
-首个部署没有可回滚的旧版本；从 Git 恢复之前的文档提交后重新 build/deploy。不要删除整个 zone 或改动其他项目的 DNS/Worker。真实发布版本、线上验收与日志记录见本文件后续的交付记录。
 
 ## 2026-10-09 交付记录
 

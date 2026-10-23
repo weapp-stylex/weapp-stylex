@@ -5,11 +5,13 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
+import { resolveDeploymentContext } from '../apps/docs/scripts/deployment-context.mjs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const output = path.join(root, 'apps/docs/dist')
-const artifacts = path.join(root, 'artifacts/docs-browser')
-const report = { node: process.versions.node, headless: true, checks: [], errors: [], resources: [] }
+const deployment = resolveDeploymentContext()
+const artifacts = path.join(root, 'artifacts/docs-browser', deployment.channel)
+const report = { node: process.versions.node, channel: deployment.channel, headless: true, checks: [], errors: [], resources: [] }
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.wasm': 'application/wasm', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2' }
 const server = createServer(async (request, response) => {
   try {
@@ -44,6 +46,13 @@ try {
     await page.locator('[data-search-open]').waitFor({ state: 'visible' })
     assert.equal(await page.locator('html').getAttribute('lang'), language)
     assert.equal(await page.locator('h1').count(), 1)
+    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), `${deployment.origin}${route}`)
+    assert.equal(await page.locator('[data-docs-preview]').count(), deployment.preview ? 1 : 0)
+    if (deployment.preview) {
+      assert.equal(await page.locator('[data-docs-preview]').isVisible(), true)
+      assert.equal(await page.locator('[data-docs-preview] a').getAttribute('href'), `${deployment.stableOrigin}${route}`)
+      assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex, nofollow')
+    }
     await page.locator('[data-theme-select]').selectOption('dark')
     await page.reload()
     await page.waitForFunction(() => document.documentElement.dataset.theme === 'dark')
@@ -91,7 +100,7 @@ try {
   report.checks.push('Content, code and language links remain available without JavaScript')
   assert.deepEqual(report.errors, [])
   report.passed = true
-  process.stdout.write(`Documentation production browser checks passed (Node ${report.node}, headless)\n`)
+  process.stdout.write(`Documentation ${deployment.channel} browser checks passed (Node ${report.node}, headless)\n`)
 }
 finally {
   await context?.close()

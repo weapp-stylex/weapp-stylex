@@ -1,7 +1,50 @@
 import type { MonorepoConfig } from 'repoctl'
 
+const documentedPackages = {
+  '@weapp-stylex/compiler': 'packages/compiler',
+  '@weapp-stylex/core': 'packages/core',
+  '@weapp-stylex/taro': 'packages/taro',
+  '@weapp-stylex/uni-app': 'packages/uni-app',
+  '@weapp-stylex/weapp-vite': 'packages/weapp-vite',
+  'weapp-stylex': 'packages/weapp-stylex',
+}
+
 export default {
   commands: {
+    release: {
+      nightly: {
+        provider: 'npm',
+        schedule: '17 19 * * *',
+      },
+    },
+    docs: {
+      sites: {
+        stylex: {
+          packages: Object.keys(documentedPackages),
+          releaseInputs: Object.fromEntries(Object.entries(documentedPackages).map(([name, directory]) => [name, [
+            `${directory}/**`,
+            'tsconfig.base.json',
+            `!${directory}/README*`,
+            `!${directory}/CHANGELOG*`,
+            `!${directory}/{docs,test,tests,__tests__,test-d,fixtures}/**`,
+            `!${directory}/**/*.{test,spec}.*`,
+          ]])),
+          buildScript: 'docs:build',
+          preview: {
+            deployScript: 'docs:deploy:preview',
+            url: 'https://preview.stylex.weapp.dev',
+          },
+          stable: {
+            deployScript: 'docs:deploy:stable',
+            url: 'https://stylex.weapp.dev',
+          },
+          patchPaths: [
+            'apps/docs/src/content/docs/**/*.{md,mdx}',
+            'apps/docs/public/**/*.{png,jpg,jpeg,webp,svg,ico}',
+          ],
+        },
+      },
+    },
     deps: {
       groups: [
         {
@@ -45,9 +88,6 @@ export default {
       rules: {
         'media-feature-range-notation': 'prefix',
       },
-    },
-    lintStaged: {
-      repoCommand: 'pnpm exec repo',
     },
     vitest: {
       includeWorkspaceRootConfig: false,

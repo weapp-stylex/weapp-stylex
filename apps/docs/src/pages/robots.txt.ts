@@ -1,14 +1,16 @@
 import { withBase } from '@cloudflare/nimbus-docs/runtime'
 import { config } from 'virtual:nimbus/config'
+import { resolveDeploymentContext } from '../../scripts/deployment-context.mjs'
 
 export const prerender = true
 
 export function GET() {
+  const deployment = resolveDeploymentContext()
   const body = [
     'User-agent: *',
-    'Allow: /',
+    deployment.preview ? 'Disallow: /' : 'Allow: /',
     '',
-    `Sitemap: ${new URL(withBase('/sitemap-index.xml', import.meta.env.BASE_URL), config.site).href}`,
+    ...deployment.preview ? [] : [`Sitemap: ${new URL(withBase('/sitemap-index.xml', import.meta.env.BASE_URL), config.site).href}`],
     '',
   ].join('\n')
 

@@ -7,7 +7,7 @@ This template adapts the static empty starter from [Cloudflare Nimbus](https://g
 - Nimbus package: `@cloudflare/nimbus-docs@0.18.0` (reviewed 2026-10-13)
 - Astro: `7.3.8`
 
-Nimbus declares Astro `>=7.2.6 <8`; the private documentation workspace follows the upgraded toolchain range `^22.22.3 || ^24.16.0 || >=26.3.0`. Published weapp-stylex libraries retain the separate `^22.22.1 || >=24.11.0` consumer floor. Builds, Astro diagnostics and TypeScript checks use the repository's TypeScript `6.0.3` and Vite `8.3.4` constraints. Resolved dependencies are recorded in the monorepo's root `pnpm-lock.yaml`; generated projects use their own root workspace lockfile.
+Nimbus declares Astro `>=7.2.6 <8`; the private documentation workspace follows the upgraded toolchain range `^22.23.4 || ^24.22.1 || >=26.12.1`. Published weapp-stylex libraries retain the separate `^22.22.1 || >=24.11.0` consumer floor. Builds, Astro diagnostics and TypeScript checks use the repository's TypeScript `6.0.3` and Vite `8.3.4` constraints. Resolved dependencies are recorded in the monorepo's root `pnpm-lock.yaml`; generated projects use their own root workspace lockfile.
 
 Agent endpoint routes and the content-loading approach come from that starter. The bilingual layout, navigation, search interface, examples and workspace checks are repoctl adaptations. These files are maintained locally; generating a project never downloads the upstream starter.
 
@@ -39,7 +39,7 @@ overrides or patches to remove.
 Nimbus continues to generate `/.well-known/ard.json`,
 `/.well-known/ai-catalog.json`, Markdown and Pagefind output. Production checks
 must retain the project-owned `_headers` security and caching rules and the
-existing robots policy. There is no workspace `skills/` directory to publish.
+stable robots policy. Preview builds add channel-specific noindex and crawler directives while retaining Pagefind search. There is no workspace `skills/` directory to publish.
 
 ## Local documentation UI
 
@@ -49,3 +49,13 @@ Navigation comes from `src/lib/navigation.ts`; Nimbus still owns content loading
 static routes, Markdown conversion, AI discovery and the production Pagefind index.
 Static SVG icons come from `@phosphor-icons/core@2.1.1`. Authored components and
 styles should be reviewed separately from future Nimbus starter migrations.
+
+## repoctl deployment integration
+
+The workspace uses repoctl `6.0.1` for managed asset upgrades and the `stylex`
+documentation site registration. This does not change the original starter
+provenance or advance the Nimbus migration baseline. Main snapshots target
+`preview.stylex.weapp.dev`; complete stable release records target
+`stylex.weapp.dev`. Both channels keep Nimbus/Astro static output and the local
+UI. Deployment origins and indexing rules are build inputs, so metadata,
+Markdown/AI discovery and static checks use the selected channel consistently.
