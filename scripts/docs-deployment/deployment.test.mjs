@@ -158,6 +158,25 @@ it('preview deploys only its Worker and confirms the exact reported version befo
   await assert.rejects(stat(path.dirname(outputFile)), { code: 'ENOENT' })
 })
 
+it('a failed result write rejects success and retries the active deployment without another upload', async (t) => {
+  const h = await fixture(t)
+  const state = remote({ deployed: false })
+  await mkdir(h.env.REPO_DOCS_RESULT_FILE)
+  let uploads = 0
+  const run = async (_command, _args, options) => {
+    uploads++
+    await writeFile(options.env.WRANGLER_OUTPUT_FILE_PATH, JSON.stringify({ type: 'deploy', worker_name: 'weapp-stylex-docs', version_id: versionId }))
+    state.deployed = true
+  }
+  await assert.rejects(deployDocs({ ...h, channel: 'stable', request: state.request, run }), { code: 'EISDIR' })
+  assert.equal(uploads, 1)
+  await rm(h.env.REPO_DOCS_RESULT_FILE, { recursive: true })
+  const result = await deployDocs({ ...h, channel: 'stable', request: state.request, run })
+  assert.equal(uploads, 1)
+  assert.deepEqual(JSON.parse(await readFile(h.env.REPO_DOCS_RESULT_FILE, 'utf8')), result)
+  assert.deepEqual(result, { versionId, url: 'https://stylex.weapp.dev' })
+})
+
 it('successful upload output cannot confirm a different remotely active version', async (t) => {
   const h = await fixture(t)
   const state = remote({ deployed: false })
