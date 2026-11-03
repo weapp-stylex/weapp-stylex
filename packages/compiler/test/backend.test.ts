@@ -53,6 +53,23 @@ it('handles named/default imports, TS and JSX without loading host frameworks', 
     expect(session.getStats().swcTransforms).toBe(1)
   }
 })
+it.each(['ts', 'mts', 'cts'])('keeps non-JSX TypeScript syntax and runtime behavior through SWC for .%s modules', async (extension) => {
+  const source = `${prefix}
+    const identity = <T>(value: T): T => value;
+    const styles = stylex.create({ root: { padding: 16, color: 'red' } });
+    export const value = identity('typed');
+    export const attrs = stylex.attrs(styles.root);
+  `
+  const id = file.replace('.tsx', `.${extension}`)
+  const babel = new StylexSession()
+  const swc = new StylexSession({ backend: 'swc' })
+  const [official, result] = await Promise.all([babel.transform(source, id, host), swc.transform(source, id, host)])
+  expect(execute(result!.code)).toEqual(execute(official!.code))
+  expect(execute(result!.code)).toMatchObject({ value: 'typed', attrs: { class: expect.stringContaining('sx1tamke2') } })
+  expect(normalize(result!.rules)).toEqual(normalize(official!.rules))
+  expect(swc.css()).toBe(babel.css())
+  expect(swc.getStats()).toMatchObject({ swcTransforms: 1, babelTransforms: 0 })
+})
 it.each([
   [`${prefix}export const tokens=stylex.defineVars({color:'red'})`, {}],
   [`${prefix}export const tokens=stylex.defineVars({color:'red'});export const theme=stylex.createTheme(tokens,{color:'blue'})`, {}],

@@ -14,6 +14,7 @@ export const run = promisify(execFile)
 export const root = fileURLToPath(new URL('../..', import.meta.url))
 export const names = ['@weapp-stylex/core', '@weapp-stylex/compiler', '@weapp-stylex/weapp-vite', '@weapp-stylex/taro', '@weapp-stylex/uni-app', 'weapp-stylex']
 export const hosts = ['weapp-vite', '@tarojs/service', 'webpack', '@dcloudio/vite-plugin-uni']
+export const supportedUniHostVersions = ['3.0.0-alpha-5030120260930001', '3.0.0-5030420261029002']
 
 export async function fileHash(filename) {
   return createHash('sha256').update(await readFile(filename)).digest('hex')
@@ -87,9 +88,10 @@ export async function verifyCandidates(prepared) {
   assert.deepEqual(candidateSummary(attestation.candidates).sort((a, b) => a.name.localeCompare(b.name)), candidateSummary(prepared.candidates).sort((a, b) => a.name.localeCompare(b.name)), 'Consumer candidate set differs from its attested library build')
 }
 
-export async function installConsumer(directory, candidates, direct, { dependencies = {}, omitOptional = false, host = false } = {}) {
+export async function installConsumer(directory, candidates, direct, { dependencies = {}, omitOptional = false, host = false, uniHostVersion = supportedUniHostVersions.at(-1) } = {}) {
   assert.ok(names.includes(direct), `Unknown public entry ${direct}`)
   assert.ok(!Object.keys(dependencies).some(name => names.includes(name)), 'Consumer must declare only one StyleX package directly')
+  assert.ok(supportedUniHostVersions.includes(uniHostVersion), `Unsupported uni-app consumer host version: ${uniHostVersion}`)
   const workspace = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'))
   const candidate = candidates.find(candidate => candidate.name === direct)
   await mkdir(directory, { recursive: true })
@@ -102,7 +104,7 @@ export async function installConsumer(directory, candidates, direct, { dependenc
   }, null, 2)}\n`)
   // These overrides redirect candidate edges without declaring extra packages.
   // Host repairs reproduce the two documented upstream packaging omissions.
-  await writeFile(path.join(directory, 'pnpm-workspace.yaml'), `packages: ['.']\nautoInstallPeers: false\nstrictPeerDependencies: false\n${host ? 'packageExtensions:\n  weapp-vite@7.4.0:\n    dependencies:\n      \'@babel/core\': \'^8.0.7\'\n  \'@dcloudio/uni-mp-vite@3.0.0-alpha-5030120260930001\':\n    dependencies:\n      estree-walker: 2.0.2\n' : ''}overrides:\n${candidates.map(candidate => `  ${JSON.stringify(candidate.name)}: ${JSON.stringify(`file:${candidate.path}`)}`).join('\n')}\n${host ? '  \'weapp-vite>vite\': \'8.3.4\'\n' : ''}`)
+  await writeFile(path.join(directory, 'pnpm-workspace.yaml'), `packages: ['.']\nautoInstallPeers: false\nstrictPeerDependencies: false\n${host ? `packageExtensions:\n  weapp-vite@7.4.0:\n    dependencies:\n      '@babel/core': '^8.0.7'\n  ${JSON.stringify(`@dcloudio/uni-mp-vite@${uniHostVersion}`)}:\n    dependencies:\n      estree-walker: 2.0.2\n` : ''}overrides:\n${candidates.map(candidate => `  ${JSON.stringify(candidate.name)}: ${JSON.stringify(`file:${candidate.path}`)}`).join('\n')}\n${host ? '  \'weapp-vite>vite\': \'8.3.5\'\n' : ''}`)
   await ensureArtifactsDirectory()
   const logs = await mkdtemp(path.join(root, 'artifacts', 'consumer-install-'))
   process.stdout.write(`Installing isolated ${direct}${omitOptional ? ' without optional dependencies' : ''}; diagnostics: ${logs}\n`)

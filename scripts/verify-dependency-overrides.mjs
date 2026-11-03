@@ -27,7 +27,7 @@ async function main() {
   const adapterManifest = adapterRequire('./package.json')
   const hostVersion = adapterRequire('weapp-vite/package.json').version
   assert.equal(hostVersion, adapterManifest.devDependencies['weapp-vite'])
-  assert.equal(hostVersion, '7.4.0', 'Reaudit the host test API virtual inputs before accepting weapp-vite 7.5')
+  assert.equal(hostVersion, '7.8.0', 'Keep the evaluated weapp-vite/Wevu development hosts aligned')
   assert.equal(adapterManifest.peerDependencies['weapp-vite'], '>=7.4.0 <8')
   const weappRequire = createRequire(
     adapterRequire.resolve('weapp-vite/package.json'),
@@ -61,7 +61,7 @@ async function main() {
     )
     assert.equal(hostRequire('vite/package.json').version, '4.5.14')
     assert.equal(hostRequire('webpack/package.json').version, '5.91.0')
-    assert.equal(hostRequire('@tarojs/taro/package.json').version, '4.3.0')
+    assert.equal(hostRequire('@tarojs/taro/package.json').version, '4.3.2')
     assert.match(hostRequire('@babel/core').version, /^7\./)
   }
   const uniRequire = createRequire(
@@ -90,10 +90,10 @@ async function main() {
   ]) {
     assert.equal(
       uniRequire(`@dcloudio/${name}/package.json`).version,
-      '3.0.0-alpha-5030120260930001',
+      '3.0.0-5030420261029002',
     )
   }
-  assert.equal(weappRequire('vite/package.json').version, '8.3.4')
+  assert.equal(weappRequire('vite/package.json').version, '8.3.5')
 
   // Resolve from the consuming tooling package, so these checks exercise the
   // installed overrides rather than separate direct test dependencies.

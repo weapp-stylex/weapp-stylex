@@ -49,9 +49,9 @@ pnpm exec repo check
 ## Requirements
 
 - Private workspace/docs Node.js `^22.23.4 || ^24.22.1 || >=26.12.1`
-  (CI: 22.23.4 and 24.22.1). Published libraries retain
+  (CI: 22.23.4, 24.22.2 and 26.13.0). Published libraries retain
   `^22.22.1 || >=24.11.0`; verify isolated consumers on Node 22.22.1 and 24.11.0.
-- repoctl is pinned to `6.0.1`; pnpm is pinned to `12.11.2` (run `corepack enable` so the declared workspace version is used)
+- repoctl is pinned to `6.3.2`; pnpm is pinned to `12.16.1`. The default local runtime is Node `26.13.0` (`.node-version`); bootstrap official `corepack@0.36.0` on Node 26, then run `corepack enable`
 - CLI output is English by default; `--lang zh-CN` or `REPOCTL_LANG=zh-CN` selects Simplified Chinese
 
 ## Git hooks
@@ -76,7 +76,7 @@ The private root workspace is named `weapp-stylex-workspace`.
 - Run `corepack pnpm lint`, `build`, `typecheck`, `test`, `test:deps`,
   `test:integration`, and `test:examples` from the root.
 - `build` produces 28 artifacts: seven per target (WeChat, Alipay, Douyin, H5). Taro's two builders run in sequence
-  into separate directories. CI tests Node 22.23.4 and 24.22.1.
+  into separate directories. CI tests Node 22.23.4, 24.22.2 and 26.13.0.
 - All six publishable libraries use tsdown. Core and weapp-vite remain ESM-only;
   compiler, Taro, uni-app and the facade retain ESM/CJS and declarations.
   Keep runtime and build-tool entries separate and verify their declared formats in isolated consumers.
@@ -123,7 +123,7 @@ The private root workspace is named `weapp-stylex-workspace`.
   `swc` rejects unsupported inputs. Never catch arbitrary transform failures as fallbacks.
 - Keep `@stylexswc/rs-compiler` optional, pinned and lazy. Runtime and default Babel must
   not load the native addon. Themes, compiler imports, custom Babel options, rejected
-  runtime subpaths and raw Vue SFC scripts stay on Babel. The pinned SWC 0.19.1 has
+  runtime subpaths and raw Vue SFC scripts stay on Babel. The pinned SWC 0.20.0 has
   no verified upstream fix for template-only binding removal; preserve this guard.
 - Keep caches session-owned, generation-safe, with concurrent token work coalesced.
   Replay watch dependencies on cache hits. Preserve Webpack host cache identity.
@@ -133,13 +133,15 @@ The private root workspace is named `weapp-stylex-workspace`.
 ## Dependency isolation
 
 Keep Babel 7 in the shared StyleX compiler; do not apply weapp-vite's Babel 8
-presets to it. Weapp-vite/Wevu use Vite 8; Taro 4.3.0 uses Vite 4 and Webpack
+presets to it. Weapp-vite/Wevu use Vite 8; Taro 4.3.2 uses Vite 4 and Webpack
 5.91.0; uni-app's aligned vue3 channel uses Vite 5.2.8 and Vue 3.4.21. Declare
 intentional dependency groups in repoctl.config.ts instead of unifying these
 incompatible major versions with global overrides. See docs for audit limits.
-Keep weapp-vite/Wevu at 7.4.0: the evaluated 7.5.0 host test API fails on Linux
-while fingerprinting synthetic virtual module IDs. Reconsider after an upstream
-fix is verified; do not patch the host or weaken integration checks to upgrade.
+Development hosts use weapp-vite/Wevu 7.8.0. Keep the public host floor at
+7.4.0 and verify it in isolated consumers. Evaluate upgrades with the original
+Linux integration flow and public buildTestArtifact API; simplified fixtures
+that do not reproduce an old failure cannot establish that it persists or is fixed.
+Do not patch the host or weaken integration checks to upgrade.
 Keep TypeScript 6.0.3 until the toolchain supports TypeScript 7 and the legacy
 Compiler API consumers are migrated: TypeScript 7 removes those APIs from its
 root entry and exposes separate unstable API modules.

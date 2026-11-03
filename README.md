@@ -43,7 +43,7 @@ pnpm add -D @weapp-stylex/weapp-vite # 或 @weapp-stylex/taro / @weapp-stylex/un
 
 本仓库的示例通过 `workspace:*` 使用本地包，不需要发布即可构建。公开包通过 GitHub Actions 的 `release.yml` 使用 npm OIDC trusted publishing 发布，并生成 provenance。
 
-repoctl `6.0.1` 还通过同一工作流提供 nightly：北京时间每天 03:17 从 `main` 发布六包快照，可用 `pnpm add weapp-stylex@snapshot-nightly` 安装。快照不推进正式 `latest`，定时检查确认当前提交已完整发布时会跳过。
+repoctl `6.3.2` 还通过同一工作流提供 nightly：北京时间每天 03:17 从 `main` 发布六包快照，可用 `pnpm add weapp-stylex@snapshot-nightly` 安装。快照不推进正式 `latest`，定时检查确认当前提交已完整发布时会跳过。
 
 [预览站](https://preview.stylex.weapp.dev/)跟随 `main`；[正式站](https://stylex.weapp.dev/)在稳定 npm 发布完成后更新，文档内容绑定该次发布记录。首次接入需完成 Cloudflare CI 凭据配置；正式站的首个受管基线由下一次完整稳定发布建立。
 
@@ -61,7 +61,7 @@ stylexUniApp({ backend: 'auto' })
 const plugins = [[require.resolve('weapp-stylex/taro'), { backend: 'auto' }]]
 ```
 
-`auto` 为已验证的常规 TS/JS 样式使用可选 `@stylexswc/rs-compiler@0.19.1`；主题、编译期导入、runtime 子路径、非空 Babel 自定义配置和未验证的表达式保留 Babel。原始 Vue SFC 脚本保留 Babel，以保护只在模板中使用的变量和组件导入；0.19.1 尚无经过验证的上游修复，保护逻辑继续保留。原生模块首次需要时才加载，不要求 Rust；缺失时 auto 回退，强制 swc 明确报错。普通语法和编译错误不会被隐藏。
+`auto` 为已验证的常规 TS/JS 样式使用可选 `@stylexswc/rs-compiler@0.20.0`；主题、编译期导入、runtime 子路径、非空 Babel 自定义配置和未验证的表达式保留 Babel。原始 Vue SFC 脚本保留 Babel，以保护只在模板中使用的变量和组件导入；0.20.0 尚无经过验证的模板绑定上游修复，保护逻辑继续保留。原生模块首次需要时才加载，不要求 Rust；缺失时 auto 回退，强制 swc 明确报错。普通语法和编译错误不会被隐藏。
 
 示例可通过 `WEAPP_STYLEX_BACKEND=auto` 切换。配置、回退与性能测量见[中文说明](https://stylex.weapp.dev/zh/performance/)和[English](https://stylex.weapp.dev/performance/)。可复现 benchmark：`corepack pnpm exec node scripts/benchmark.mjs --full`；完整构建收益与单文件编译收益分别报告。
 
@@ -258,19 +258,21 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 ## 示例与验证
 
-| Workspace       | 已配置版本                                              | 各目标产物                                                       |
-| --------------- | ------------------------------------------------------- | ---------------------------------------------------------------- |
-| `wechat-native` | weapp-vite 7.4.0 / Vite 8.3.4                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
-| `wechat-wevu`   | wevu 7.4.0 / weapp-vite 7.4.0                           | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
-| `taro-react`    | Taro 4.3.0 / React 18.3.1                               | `dist/weapp-webpack`、`dist/weapp-vite`                          |
-| `taro-vue3`     | Taro 4.3.0 / Vue 3.5.44                                 | `dist/weapp-webpack`、`dist/weapp-vite`                          |
-| `uni-vue3`      | DCloud vue3 `3.0.0-alpha-5030120260930001` / Vue 3.4.21 | `dist/build/<platform>`                                          |
+| Workspace       | 已配置版本                                        | 各目标产物                                                       |
+| --------------- | ------------------------------------------------- | ---------------------------------------------------------------- |
+| `wechat-native` | weapp-vite 7.8.0 / Vite 8.3.5                     | `dist`、`dist/alipay`、`dist/tt`、`dist/web`                     |
+| `wechat-wevu`   | wevu 7.8.0 / weapp-vite 7.8.0                     | `dist`、`dist/alipay`、`dist/tt`、`dist/web`，含 SFC 和 JSX 组件 |
+| `taro-react`    | Taro 4.3.2 / React 18.3.1                         | `dist/weapp-webpack`、`dist/weapp-vite`                          |
+| `taro-vue3`     | Taro 4.3.2 / Vue 3.5.44                           | `dist/weapp-webpack`、`dist/weapp-vite`                          |
+| `uni-vue3`      | DCloud vue3 `3.0.0-5030420261029002` / Vue 3.4.21 | `dist/build/<platform>`                                          |
 
 Taro 使用 Vite 4.5.14 / Webpack 5.91.0，uni-app 固定 Vite 5.2.8；没有全局 Vite 主版本 override。各示例都包含共享样式、多消费者、条件合并、主题、动态值、少量内联样式和普通分包。每个示例的 README 提供单独构建命令。
 
-开发仓库与文档站使用 Node.js `^22.23.4 || ^24.22.1 || >=26.12.1`；CI 矩阵为 22.23.4、24.22.1。repoctl 固定为 `6.0.1`，Git hooks 通过受管 `lefthook.yml` 配置；pnpm 从 `packageManager` 读取（12.11.2）。发布库的 Node 要求继续保持 `^22.22.1 || >=24.11.0`，与开发工具要求分开；独立消费者在 Node 22.22.1、24.11.0 上验证 ESM/CJS 和声明文件。
+开发仓库与文档站使用 Node.js `^22.23.4 || ^24.22.1 || >=26.12.1`；CI 矩阵为 22.23.4、24.22.2、26.13.0。repoctl 固定为 `6.3.2`，Git hooks 通过受管 `lefthook.yml` 配置；pnpm 从 `packageManager` 读取（12.16.1）。默认开发运行时为 `.node-version` 中的 Node 26.13.0；Node 26 需先安装官方 `corepack@0.36.0` 并执行 `corepack enable`。发布库的 Node 要求继续保持 `^22.22.1 || >=24.11.0`，与开发工具要求分开；独立消费者在 Node 22.22.1、24.11.0 上验证 ESM/CJS 和声明文件。
 
-六个发布库统一使用 tsdown `0.23.1`：core 与 weapp-vite 保留 ESM-only，其余四包保留 ESM/CJS，均提供声明文件。工具链保留 TypeScript `6.0.3`：TypeScript 7 移除了根入口的旧 Compiler API，且 repoctl、Astro check 与 TypeScript ESLint 尚不支持该主版本。共享 StyleX 编译仍使用 Babel 7，宿主依赖按框架隔离。
+本轮依赖升级的版本决策、验证结果和上游安全约束见[全量升级报告](docs/dependency-upgrade-2026-11-03.md)，逐项版本与官方元数据见[依赖清单 JSON](docs/dependency-upgrade-2026-11-03.json)。
+
+六个发布库统一使用 tsdown `0.23.4`：core 与 weapp-vite 保留 ESM-only，其余四包保留 ESM/CJS，均提供声明文件。工具链保留 TypeScript `6.0.3`：TypeScript 7 移除了根入口的旧 Compiler API，且 repoctl、Astro check 与 TypeScript ESLint 尚不支持该主版本。共享 StyleX 编译仍使用 Babel 7，宿主依赖按框架隔离。
 
 ```bash
 corepack enable
@@ -292,9 +294,9 @@ corepack pnpm test:ide
 
 `test:integration` 使用真实原生模块图、Vite watcher 和 Webpack filesystem cache；`test:examples` 检查 28 份产物并运行原生/Wevu `@mpcore/test` 逻辑树和交互断言。IDE suite 全局串行，每份产物只启动一次 automator，以 `reLaunch` 切页，先断言再截图。
 
-IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`（选定的官方稳定版 CLI），先登录并开启服务端口。构建脚本从环境注入 AppID；测试在独立产物副本同步 AppID 和条件页，不改动用户已打开的项目。日志、截图、版本和资源清理记录写入 `artifacts/ide`；缺环境时返回退出码 2 并明确标记 pending。
+IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`（选定的官方稳定版 CLI），先登录并开启服务端口。本轮完整验收选择 `WEAPP_STYLEX_IDE_PREOPEN=0` 的单次启动路径；同批产物与 auto 后端的完整命令及启动方式限制见[升级报告](docs/dependency-upgrade-2026-11-03.md#微信-ide-启动方式与失败记录)。构建脚本从环境注入 AppID；测试在独立产物副本同步 AppID 和条件页，不改动用户已打开的项目。日志、截图、版本和资源清理记录写入 `artifacts/ide`；缺环境时返回退出码 2 并明确标记 pending。
 
-本轮依赖变更、保留理由、本地验收和远端工作流状态见 [2026-10-13 依赖升级](docs/dependency-upgrade-2026-10-13.md)。历史验证、审计残留和 IDE 状态见 [多框架验收记录](docs/multi-framework-validation.md)；历史记录中的环境和结果保持原日期。
+此前依赖变更、保留理由、本地验收和远端工作流状态见 [2026-10-13 依赖升级](docs/dependency-upgrade-2026-10-13.md)。历史验证、审计残留和 IDE 状态见 [多框架验收记录](docs/multi-framework-validation.md)；历史记录中的环境和结果保持原日期。
 
 ## 支持边界
 

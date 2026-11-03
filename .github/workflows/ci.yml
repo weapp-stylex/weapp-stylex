@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [22.23.4, 24.22.1]
+        node: [22.23.4, 24.22.2, 26.13.0]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
@@ -19,6 +19,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
+      - name: Bootstrap Corepack for Node 26 and reproducible pnpm
+        run: npm install --global corepack@0.36.0 && corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - name: Build libraries and documentation
@@ -41,7 +43,11 @@ jobs:
         env:
           WEAPP_STYLEX_BACKEND: auto
       - run: pnpm exec repo deps check
-      - run: pnpm exec repo doctor
+      - name: Verify each matrix runtime against the workspace Node engines
+        run: pnpm exec repo doctor --rules node-version --strict
+      - name: Verify the canonical development environment
+        if: matrix.node == '26.13.0'
+        run: pnpm exec repo doctor
       - run: pnpm exec repo check --full
       - name: Retain verification diagnostics
         if: always()
@@ -51,6 +57,7 @@ jobs:
           path: |
             coverage/
             artifacts/benchmark.json
+            artifacts/dependency-upgrade/
             artifacts/shared-style-growth-*.json
             artifacts/ide/report.json
             artifacts/h5/
@@ -62,7 +69,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [22.23.4, 24.22.1]
+        node: [22.23.4, 24.22.2, 26.13.0]
         target: [weapp, alipay, tt, h5]
     env:
       WEAPP_STYLEX_TARGET: ${{ matrix.target }}
@@ -74,6 +81,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
+      - name: Bootstrap Corepack for Node 26 and reproducible pnpm
+        run: npm install --global corepack@0.36.0 && corepack enable
       - run: pnpm install --frozen-lockfile
       - name: Build StyleX packages
         run: pnpm --filter './packages/*' build
@@ -101,12 +110,23 @@ jobs:
         env:
           WEAPP_STYLEX_BACKEND: auto
       - name: Verify candidate tarballs in isolated framework consumers
-        if: matrix.node == '24.22.1'
+        if: matrix.node == '26.13.0'
         run: corepack pnpm exec node scripts/test-consumer-hosts.mjs
       - name: Verify individual adapters in isolated framework consumers
-        if: matrix.node == '24.22.1'
+        if: matrix.node == '26.13.0'
         run: corepack pnpm exec node scripts/test-consumer-hosts.mjs
         env:
+          WEAPP_STYLEX_CONSUMER_ENTRY: adapter
+      - name: Verify the previously supported DCloud channel with the facade
+        if: matrix.node == '26.13.0' && (matrix.target == 'weapp' || matrix.target == 'h5')
+        run: corepack pnpm exec node scripts/test-consumer-hosts.mjs
+        env:
+          WEAPP_STYLEX_UNI_HOST_VERSION: 3.0.0-alpha-5030120260930001
+      - name: Verify the previously supported DCloud channel with its adapter
+        if: matrix.node == '26.13.0' && (matrix.target == 'weapp' || matrix.target == 'h5')
+        run: corepack pnpm exec node scripts/test-consumer-hosts.mjs
+        env:
+          WEAPP_STYLEX_UNI_HOST_VERSION: 3.0.0-alpha-5030120260930001
           WEAPP_STYLEX_CONSUMER_ENTRY: adapter
       - name: Retain platform diagnostics
         if: always()
@@ -132,8 +152,10 @@ jobs:
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24.22.1
+          node-version: 26.13.0
           cache: pnpm
+      - name: Bootstrap Corepack for Node 26 and reproducible pnpm
+        run: npm install --global corepack@0.36.0 && corepack enable
       - name: Prepare tarballs with the supported workspace toolchain
         run: |
           pnpm install --frozen-lockfile
@@ -141,10 +163,17 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}
+      - name: Record the published consumer Node runtime
+        id: consumer-node
+        run: node --input-type=module -e 'import { appendFileSync } from "node:fs"; appendFileSync(process.env.GITHUB_OUTPUT, "path=" + process.execPath + "\n")'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.13.0
       - name: Verify isolated consumers on published Node floors
         run: node scripts/test-package.mjs
         env:
           WEAPP_STYLEX_TEST_PACKS_DIR: artifacts/consumer-packs
+          WEAPP_STYLEX_TEST_NODE_PATH: ${{ steps.consumer-node.outputs.path }}
       - name: Retain consumer installation diagnostics
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -152,3 +181,23 @@ jobs:
           name: consumer-install-node-${{ matrix.node }}
           path: artifacts/consumer-install-*/
           if-no-files-found: ignore
+
+  host-candidate:
+    name: Evaluate weapp-vite 7.8 Linux virtual inputs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.13.0
+      - name: Install the official candidate outside the workspace
+        run: npm install --prefix "$RUNNER_TEMP/weapp-vite-7.8" --no-audit --no-fund weapp-vite@7.8.0
+      - name: Verify public artifact builds with long physical source paths
+        run: node scripts/test-weapp-vite-synthetic-ids.mjs --host-root "$RUNNER_TEMP/weapp-vite-7.8" --host-version 7.8.0 --policy require-success --output artifacts/dependency-upgrade/weapp-vite-7.8-linux
+      - name: Retain candidate evaluation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: weapp-vite-7.8-linux-evaluation
+          path: artifacts/dependency-upgrade/weapp-vite-7.8-linux/
+          if-no-files-found: error

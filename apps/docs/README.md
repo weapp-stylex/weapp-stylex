@@ -2,7 +2,7 @@
 
 Primary domain: [stylex.weapp.dev](https://stylex.weapp.dev/), which uses the device's time zone to infer region: Chinese for China time zones, English otherwise. A saved manual language choice takes priority. [中文](https://stylex.weapp.dev/zh/) / [English](https://stylex.weapp.dev/en/).
 
-The original scaffold used `corepack pnpm exec repo new docs --template nimbus`, repoctl 5.9.0 and template 2.3.1. The workspace now declares repoctl 6.0.1 and uses Nimbus 0.18.1, Astro 7.3.8 and Pagefind 1.5.2. Keep `nimbus.json` and `UPSTREAM.md` for future upgrades.
+The original scaffold used `corepack pnpm exec repo new docs --template nimbus`, repoctl 5.9.0 and template 2.3.1. The workspace now declares repoctl 6.3.2 and uses Nimbus 0.19.2, Astro 7.4.5 and Pagefind 1.6.0. Keep `nimbus.json` and `UPSTREAM.md` for future upgrades.
 
 English content is in `src/content/docs/`; Chinese translations have identical relative filenames under `zh/`. The 29 page pairs include existing guides, `api/`, `recipes/` and troubleshooting. The English homepage uses `slug: en`; existing guide URLs stay unchanged. `/` serves a client language selector. The client applies saved manual choice → device time zone → first browser language if the time zone is unavailable, then uses `location.replace` while preserving the query and fragment. China time zones include `Asia/Shanghai`, `Asia/Urumqi` and their IANA aliases. Other valid zones, including UTC, use English; UTC offsets alone cannot identify a region. Time zone reflects device settings, not verified physical location. No IP lookup, geolocation permission, or Worker script is needed. Development and static previews use the same code. Explicit document routes are never redirected. Without JavaScript, both language links remain usable.
 
@@ -27,7 +27,7 @@ Search requires a production build. Check Pagefind search, keyboard focus, code 
 
 Nimbus authoring lint also needs the resolved rules and route manifest. `lint:docs` builds the site first so `lint` works in a clean checkout and always checks the current configuration.
 
-The private workspace uses Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` and pnpm `12.11.2`; CI runs Node 22.23.4 and 24.22.1. Published package consumers keep their separate `^22.22.1 || >=24.11.0` requirement.
+The private workspace uses Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` and pnpm `12.16.1`; CI runs Node 22.23.4, 24.22.2 and 26.13.0. The default development runtime is Node 26.13.0; install official `corepack@0.36.0` before `corepack enable` on Node 26. Published package consumers keep their separate `^22.22.1 || >=24.11.0` requirement.
 
 Cloudflare Workers Static Assets hosts `dist/` with no Worker script or per-request language handler. repoctl registers this site as `stylex`: `main` updates deploy to [preview.stylex.weapp.dev](https://preview.stylex.weapp.dev/), and complete stable npm release records deploy to [stylex.weapp.dev](https://stylex.weapp.dev/). Separate Workers keep preview uploads away from production. The selected channel supplies metadata and AI-export origins. Preview shows an unreleased notice and disables search-engine indexing; Pagefind search remains available.
 

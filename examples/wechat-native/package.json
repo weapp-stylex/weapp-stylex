@@ -22,6 +22,7 @@
     "weapp-stylex": "workspace:*"
   },
   "devDependencies": {
-    "weapp-vite": "7.4.0"
+    "miniprogram-api-typings": "^5.2.3",
+    "weapp-vite": "7.8.0"
   }
 }

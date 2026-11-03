@@ -3,7 +3,7 @@
   "path": "CONTRIBUTING.md",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "3.0.1",
+    "version": "3.1.4",
     "assetPath": "CONTRIBUTING.md",
     "hash": "02a21e646e9717d369dc40d055fb9b1b7a75f13052400c8b97fad0a7dd404cec"
   },

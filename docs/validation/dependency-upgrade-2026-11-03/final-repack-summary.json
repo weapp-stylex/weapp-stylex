@@ -1,0 +1,30 @@
+[
+  {
+    "step": "final-frozen",
+    "exitCode": 0,
+    "seconds": 0.7,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-frozen.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-lint",
+    "exitCode": 0,
+    "seconds": 7.8,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-lint.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-script-tests",
+    "exitCode": 0,
+    "seconds": 8.3,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-script-tests.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-packs",
+    "exitCode": 0,
+    "seconds": 5.0,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-packs.log",
+    "lockUnchanged": true
+  }
+]

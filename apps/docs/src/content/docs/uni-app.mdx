@@ -60,7 +60,7 @@ pnpm exec uni build -p mp-weixin
 
 The plugin accepts `mp-weixin`, `mp-alipay`, `mp-toutiao` and `h5`; other targets fail explicitly. Vue 2 and uni-app x are outside the support contract.
 
-The [uni-vue3 example](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) pins the official Vue 3 channel `3.0.0-alpha-5030120260930001`. DCloud packages share that version; Vite is `5.2.8`, Vue is `3.4.21`. These are framework compatibility pins, not a recommendation to force them on other workspaces.
+The [uni-vue3 example](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) pins the official Vue 3 channel `3.0.0-5030420261029002`. DCloud packages share that version; Vite is `5.2.8`, Vue is `3.4.21`. The adapter peer also retains `3.0.0-alpha-5030120260930001`: its exact range is `3.0.0-alpha-5030120260930001 || 3.0.0-5030420261029002`. Select one complete channel with its matching SFC parser. These are framework compatibility pins, not a recommendation to force them on other workspaces.
 
 ## Other platforms and H5
 

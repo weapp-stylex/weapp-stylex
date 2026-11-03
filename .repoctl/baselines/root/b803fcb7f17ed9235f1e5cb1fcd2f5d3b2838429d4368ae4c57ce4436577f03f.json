@@ -3,7 +3,7 @@
   "path": ".github/workflows/ci.yml",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "3.0.1",
+    "version": "3.1.4",
     "assetPath": ".github/workflows/ci.yml",
     "hash": "ff011ae147c8a381d202cba9a4e110b8002dd108a71a313c52d44f7fc54bbd34"
   },

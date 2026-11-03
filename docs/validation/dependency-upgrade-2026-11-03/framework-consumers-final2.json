@@ -1,0 +1,88 @@
+{
+  "status": "passed",
+  "packId": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+  "packRunId": "5e62c554-f0f4-4678-a108-6c2d17a2667d",
+  "totalRealBuilds": 120,
+  "lockUnchanged": true,
+  "lockSha256": "c0dd499b4c3aa8e401baa06670679b5d6ccab37edc5663b203c66ef93a160e7b",
+  "scenarios": [
+    {
+      "entry": "facade",
+      "target": null,
+      "exitCode": 0,
+      "durationSeconds": 274.26,
+      "lockUnchanged": true,
+      "manifest": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/consumer-hosts-Xlxrt8/manifest.json",
+      "status": "passed",
+      "builds": 56,
+      "libraryPacksId": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+      "requestedUniHostVersion": null,
+      "workspace": "/private/var/folders/nc/lnt357c50gdcwqlvymm9jn040000gn/T/weapp-stylex-consumer-hosts-oTJzXp"
+    },
+    {
+      "entry": "facade",
+      "target": "weapp",
+      "exitCode": 0,
+      "durationSeconds": 18.25,
+      "lockUnchanged": true,
+      "manifest": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/consumer-hosts-XlJGnB/manifest.json",
+      "status": "passed",
+      "builds": 2,
+      "libraryPacksId": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+      "requestedUniHostVersion": "3.0.0-alpha-5030120260930001",
+      "workspace": "/private/var/folders/nc/lnt357c50gdcwqlvymm9jn040000gn/T/weapp-stylex-consumer-hosts-uWqs5X"
+    },
+    {
+      "entry": "facade",
+      "target": "h5",
+      "exitCode": 0,
+      "durationSeconds": 18.12,
+      "lockUnchanged": true,
+      "manifest": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/consumer-hosts-ptmJy9/manifest.json",
+      "status": "passed",
+      "builds": 2,
+      "libraryPacksId": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+      "requestedUniHostVersion": "3.0.0-alpha-5030120260930001",
+      "workspace": "/private/var/folders/nc/lnt357c50gdcwqlvymm9jn040000gn/T/weapp-stylex-consumer-hosts-xSnSQE"
+    },
+    {
+      "entry": "adapter",
+      "target": null,
+      "exitCode": 0,
+      "durationSeconds": 273.94,
+      "lockUnchanged": true,
+      "manifest": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/consumer-hosts-QrLyLy/manifest.json",
+      "status": "passed",
+      "builds": 56,
+      "libraryPacksId": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+      "requestedUniHostVersion": null,
+      "workspace": "/private/var/folders/nc/lnt357c50gdcwqlvymm9jn040000gn/T/weapp-stylex-consumer-hosts-Lk5l1K"
+    },
+    {
+      "entry": "adapter",
+      "target": "weapp",
+      "exitCode": 0,
+      "durationSeconds": 18.56,
+      "lockUnchanged": true,
+      "manifest": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/consumer-hosts-6x6ubb/manifest.json",
+      "status": "passed",
+      "builds": 2,
+      "libraryPacksId": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+      "requestedUniHostVersion": "3.0.0-alpha-5030120260930001",
+      "workspace": "/private/var/folders/nc/lnt357c50gdcwqlvymm9jn040000gn/T/weapp-stylex-consumer-hosts-GvKtuB"
+    },
+    {
+      "entry": "adapter",
+      "target": "h5",
+      "exitCode": 0,
+      "durationSeconds": 18.12,
+      "lockUnchanged": true,
+      "manifest": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/consumer-hosts-brZuEh/manifest.json",
+      "status": "passed",
+      "builds": 2,
+      "libraryPacksId": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+      "requestedUniHostVersion": "3.0.0-alpha-5030120260930001",
+      "workspace": "/private/var/folders/nc/lnt357c50gdcwqlvymm9jn040000gn/T/weapp-stylex-consumer-hosts-OuEpzi"
+    }
+  ]
+}

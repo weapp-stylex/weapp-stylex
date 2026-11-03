@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "node": "v26.13.0",
+  "minimist": {
+    "baseline": "0.0.8",
+    "candidate": "0.2.4",
+    "parseCases": 5,
+    "parseDifferences": [
+      {
+        "args": [
+          "-m0750",
+          "one",
+          "two"
+        ],
+        "before": {
+          "_": [
+            "one",
+            "two"
+          ],
+          "debug": false,
+          "m": 750,
+          "mode": 750,
+          "theme": "light"
+        },
+        "after": {
+          "_": [
+            "one",
+            "two"
+          ],
+          "debug": false,
+          "m": "0750",
+          "mode": "0750",
+          "theme": "light"
+        }
+      }
+    ],
+    "pollutionCases": 2,
+    "optimistCases": 5,
+    "optimistDifferences": []
+  },
+  "mkdirp": {
+    "baseline": "0.5.1",
+    "candidate": "0.5.6",
+    "cliAndSyncAndAsync": true,
+    "jimp": "0.6.8",
+    "jimpNestedPngWriteAndDecode": true
+  },
+  "recommendation": "Prefer scoped official mkdirp@>=0.5 <0.6 -> 0.5.6 patch over minimist 0.x subline override because alias/string parsing changes; the actual critical path is Jimp -> mkdirp0.5.1 -> minimist0.0.8."
+}

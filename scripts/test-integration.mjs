@@ -19,7 +19,7 @@ import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { promisify } from 'node:util'
 import { createContext, Script } from 'node:vm'
-import { waitForWatchedSources } from './watcher-ready.mjs'
+import { createWatchBuildWaiter, replaceWatchedSource, waitForWatchedSources } from './watcher-ready.mjs'
 
 const compilerOptions = { backend: process.env.WEAPP_STYLEX_BACKEND === 'auto' ? 'auto' : 'babel' }
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -503,12 +503,14 @@ async function viteWatch({ target, style }) {
     = 'import * as stylex from \'@weapp-stylex/core\';import {styles,themed} from \'./shared.js\';export const sx=stylex.attrs(styles.root,themed.root).class;'
   await writeFile(path.join(cwd, 'entry.js'), entry)
   const session = new StylexSession({ ...compilerOptions, target })
+  const builds = createWatchBuildWaiter()
   const watcher = await build({
     configFile: false,
     root: cwd,
     logLevel: 'error',
     resolve: { alias: { '@weapp-stylex/core': core } },
     plugins: [
+      builds.plugin,
       ...createVitePlugins(session),
       {
         name: 'wxss-fixture',
@@ -532,62 +534,28 @@ async function viteWatch({ target, style }) {
       watch: {},
     },
   })
-  let pending
-  let failure
-  const rebuilt = () =>
-    new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        pending = undefined
-        reject(new Error('Vite watch rebuild timed out'))
-      }, 30000)
-      pending = {
-        resolve: () => {
-          clearTimeout(timeout)
-          pending = undefined
-          resolve()
-        },
-        reject: (error) => {
-          clearTimeout(timeout)
-          pending = undefined
-          reject(error)
-        },
-      }
-      if (failure) {
-        pending.reject(failure)
-      }
-    })
-  watcher.on('event', (event) => {
-    if (event.code === 'ERROR') {
-      failure = event.error
-      pending?.reject(event.error)
-    }
-    if (event.code === 'END') {
-      pending?.resolve()
-    }
-  })
+  watcher.on('event', builds.onEvent)
   try {
-    await rebuilt()
+    await builds.waitForBuild()
     const css = () => readFile(path.join(cwd, `dist/stylex.${style}`), 'utf8')
     assert.match(await css(), /color:red/)
-    let next = rebuilt()
-    await writeFile(path.join(cwd, 'entry.js'), `${entry}\n// importer edit`)
-    await next
+    const update = async (file, source) => {
+      const filename = path.join(cwd, file)
+      const next = builds.waitForBuild({ file: filename, source })
+      await replaceWatchedSource(filename, source)
+      await next
+    }
+    await update('entry.js', `${entry}\n// importer edit`)
     assert.match(await css(), /color:red/)
-    next = rebuilt()
-    await writeFile(path.join(cwd, 'shared.js'), sharedSource('blue'))
-    await next
+    await update('shared.js', sharedSource('blue'))
     assert.match(await css(), /color:blue/)
     assert.doesNotMatch(await css(), /color:red/)
     assert.match(await css(), /orange/)
-    next = rebuilt()
-    await writeFile(path.join(cwd, 'tokens.stylex.js'), tokenSource('purple'))
-    await next
+    await update('tokens.stylex.js', tokenSource('purple'))
     assert.match(await css(), /purple/)
     assert.doesNotMatch(await css(), /orange/)
     assert.match(await css(), /color:blue/)
-    next = rebuilt()
-    await writeFile(path.join(cwd, 'entry.js'), 'export const sx=""')
-    await next
+    await update('entry.js', 'export const sx=""')
     await assert.rejects(css(), { code: 'ENOENT' })
     assert.equal(await readFile(path.join(cwd, `dist/app.${style}`), 'utf8'), '.fixture{}')
   }

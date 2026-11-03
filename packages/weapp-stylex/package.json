@@ -141,7 +141,7 @@
     "@weapp-stylex/weapp-vite": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^26.6.5"
+    "@types/node": "^26.6.6"
   },
   "tsd": {
     "compilerOptions": {

@@ -21,7 +21,7 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 使用 `uni build -p mp-weixin`。Vue 通过 computed 和显式 `:class` / `:style` 绑定官方 `attrs()` 的结果；支持共享样式和直接导入 `tokens.stylex.ts` 的主题。
 
-要求 Node.js `^22.22.1 || >=24.11.0`。当前兼容 DCloud Vue 3 通道 `3.0.0-alpha-5030120260930001`，示例固定 Vite 5.2.8 / Vue 3.4.21。采用 DCloud 配套 SFC parser，数值保持 px，rpx 需显式字符串。
+要求 Node.js `^22.22.1 || >=24.11.0`。保留原 DCloud Vue 3 通道 `3.0.0-alpha-5030120260930001`，并支持 `3.0.0-5030420261029002`；示例使用新通道，示例固定 Vite 5.2.8 / Vue 3.4.21。采用 DCloud 配套 SFC parser，数值保持 px，rpx 需显式字符串。
 
 完整示例和支持边界见 [weapp-stylex](https://github.com/weapp-stylex/weapp-stylex)。
 

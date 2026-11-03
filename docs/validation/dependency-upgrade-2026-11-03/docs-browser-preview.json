@@ -1,0 +1,26 @@
+{
+  "node": "26.13.0",
+  "channel": "preview",
+  "headless": true,
+  "checks": [
+    "en: production Pagefind, keyboard/focus, copy, theme persistence, language routes and desktop layout",
+    "zh-CN: production Pagefind, keyboard/focus, copy, theme persistence, language routes and desktop layout",
+    "Mobile navigation and layout",
+    "Content, code and language links remain available without JavaScript"
+  ],
+  "errors": [],
+  "resources": [
+    {
+      "kind": "server",
+      "origin": "http://127.0.0.1:56369",
+      "owned": true,
+      "closed": true
+    },
+    {
+      "kind": "browser",
+      "owned": true,
+      "closed": true
+    }
+  ],
+  "passed": true
+}

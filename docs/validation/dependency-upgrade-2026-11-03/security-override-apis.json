@@ -1,0 +1,519 @@
+{
+  "schemaVersion": 1,
+  "node": "v26.13.0",
+  "platform": "darwin",
+  "passed": true,
+  "packages": [
+    {
+      "name": "@babel/core",
+      "version": "7.29.7",
+      "consumers": [
+        "@babel/helper-create-class-features-plugin@7.29.7",
+        "@babel/helper-create-regexp-features-plugin@7.29.10",
+        "@babel/helper-define-polyfill-provider@0.6.8",
+        "@babel/helper-module-transforms@7.29.7",
+        "@babel/helper-remap-async-to-generator@7.29.7",
+        "@babel/helper-replace-supers@7.29.7",
+        "@babel/plugin-bugfix-firefox-class-in-computed-class-key@7.29.7",
+        "@babel/plugin-bugfix-safari-class-field-initializer-scope@7.29.7",
+        "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.29.7",
+        "@babel/plugin-bugfix-safari-rest-destructuring-rhs-array@7.29.7",
+        "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining@7.29.7",
+        "@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly@7.29.7",
+        "@babel/plugin-proposal-decorators@7.29.7",
+        "@babel/plugin-proposal-private-property-in-object@7.21.0-placeholder-for-preset-env.2",
+        "@babel/plugin-syntax-decorators@7.29.7",
+        "@babel/plugin-syntax-import-assertions@7.29.7",
+        "@babel/plugin-syntax-import-attributes@7.29.7",
+        "@babel/plugin-syntax-import-meta@7.10.4",
+        "@babel/plugin-syntax-jsx@7.29.7",
+        "@babel/plugin-syntax-typescript@7.29.7",
+        "@babel/plugin-syntax-unicode-sets-regex@7.18.6",
+        "@babel/plugin-transform-arrow-functions@7.29.7",
+        "@babel/plugin-transform-async-generator-functions@7.29.7",
+        "@babel/plugin-transform-async-to-generator@7.29.7",
+        "@babel/plugin-transform-block-scoped-functions@7.29.7",
+        "@babel/plugin-transform-block-scoping@7.29.7",
+        "@babel/plugin-transform-class-properties@7.29.7",
+        "@babel/plugin-transform-class-static-block@7.29.7",
+        "@babel/plugin-transform-classes@7.29.7",
+        "@babel/plugin-transform-computed-properties@7.29.7",
+        "@babel/plugin-transform-destructuring@7.29.7",
+        "@babel/plugin-transform-dotall-regex@7.29.7",
+        "@babel/plugin-transform-duplicate-keys@7.29.7",
+        "@babel/plugin-transform-duplicate-named-capturing-groups-regex@7.29.7",
+        "@babel/plugin-transform-dynamic-import@7.29.7",
+        "@babel/plugin-transform-explicit-resource-management@7.29.7",
+        "@babel/plugin-transform-exponentiation-operator@7.29.7",
+        "@babel/plugin-transform-export-namespace-from@7.29.7",
+        "@babel/plugin-transform-for-of@7.29.7",
+        "@babel/plugin-transform-function-name@7.29.7",
+        "@babel/plugin-transform-json-strings@7.29.7",
+        "@babel/plugin-transform-literals@7.29.7",
+        "@babel/plugin-transform-logical-assignment-operators@7.29.7",
+        "@babel/plugin-transform-member-expression-literals@7.29.7",
+        "@babel/plugin-transform-modules-amd@7.29.7",
+        "@babel/plugin-transform-modules-commonjs@7.29.7",
+        "@babel/plugin-transform-modules-systemjs@7.29.8",
+        "@babel/plugin-transform-modules-umd@7.29.7",
+        "@babel/plugin-transform-named-capturing-groups-regex@7.29.7",
+        "@babel/plugin-transform-new-target@7.29.7",
+        "@babel/plugin-transform-nullish-coalescing-operator@7.29.7",
+        "@babel/plugin-transform-numeric-separator@7.29.7",
+        "@babel/plugin-transform-object-rest-spread@7.29.7",
+        "@babel/plugin-transform-object-super@7.29.7",
+        "@babel/plugin-transform-optional-catch-binding@7.29.7",
+        "@babel/plugin-transform-optional-chaining@7.29.7",
+        "@babel/plugin-transform-parameters@7.29.7",
+        "@babel/plugin-transform-private-methods@7.29.7",
+        "@babel/plugin-transform-private-property-in-object@7.29.7",
+        "@babel/plugin-transform-property-literals@7.29.7",
+        "@babel/plugin-transform-react-display-name@7.29.7",
+        "@babel/plugin-transform-react-jsx-development@7.29.7",
+        "@babel/plugin-transform-react-jsx-self@7.29.7",
+        "@babel/plugin-transform-react-jsx-source@7.29.7",
+        "@babel/plugin-transform-react-jsx@7.29.7",
+        "@babel/plugin-transform-react-pure-annotations@7.29.7",
+        "@babel/plugin-transform-regenerator@7.29.8",
+        "@babel/plugin-transform-regexp-modifiers@7.29.7",
+        "@babel/plugin-transform-reserved-words@7.29.7",
+        "@babel/plugin-transform-runtime@7.29.7",
+        "@babel/plugin-transform-shorthand-properties@7.29.7",
+        "@babel/plugin-transform-spread@7.29.8",
+        "@babel/plugin-transform-sticky-regex@7.29.7",
+        "@babel/plugin-transform-template-literals@7.29.7",
+        "@babel/plugin-transform-typeof-symbol@7.29.7",
+        "@babel/plugin-transform-typescript@7.29.9",
+        "@babel/plugin-transform-unicode-escapes@7.29.7",
+        "@babel/plugin-transform-unicode-property-regex@7.29.7",
+        "@babel/plugin-transform-unicode-regex@7.29.7",
+        "@babel/plugin-transform-unicode-sets-regex@7.29.7",
+        "@babel/preset-env@7.29.7",
+        "@babel/preset-modules@0.1.6-no-external-plugins",
+        "@babel/preset-react@7.29.7",
+        "@babel/preset-typescript@7.29.7",
+        "@dcloudio/uni-cli-shared@3.0.0-5030420261029002",
+        "@dcloudio/vite-plugin-uni@3.0.0-5030420261029002",
+        "@rnx-kit/babel-preset-metro-react-native@1.1.8",
+        "@rollup/plugin-babel@6.1.0",
+        "@stylexjs/babel-plugin@0.19.1",
+        "@tarojs/helper@4.3.2",
+        "@tarojs/plugin-platform-h5@4.3.2",
+        "@tarojs/vite-runner@4.3.2",
+        "@tarojs/webpack5-runner@4.3.2",
+        "@vitejs/plugin-legacy@4.1.1",
+        "@vitejs/plugin-legacy@5.3.2",
+        "@vitejs/plugin-react@4.7.0",
+        "@vitejs/plugin-vue-jsx@3.1.0",
+        "@vue/babel-plugin-jsx@1.5.0",
+        "@vue/babel-plugin-resolve-type@1.5.0",
+        "@weapp-stylex/compiler@0.3.1",
+        "@weapp-stylex/weapp-vite@0.4.1",
+        "babel-loader@8.2.1",
+        "babel-plugin-const-enum@1.2.0",
+        "babel-plugin-polyfill-corejs2@0.4.17",
+        "babel-plugin-polyfill-corejs3@0.13.0",
+        "babel-plugin-polyfill-corejs3@0.14.2",
+        "babel-plugin-polyfill-regenerator@0.6.8",
+        "babel-plugin-transform-taroapi@4.3.2",
+        "babel-preset-taro@4.3.2",
+        "eslint-plugin-react-hooks@7.1.1",
+        "taro-react@0.0.5",
+        "taro-vue3@0.0.5"
+      ]
+    },
+    {
+      "name": "debug",
+      "version": "4.4.3",
+      "consumers": [
+        "@babel/core@7.29.7",
+        "@babel/helper-define-polyfill-provider@0.6.8",
+        "@babel/traverse@7.29.10",
+        "@dcloudio/uni-cli-shared@3.0.0-5030420261029002",
+        "@dcloudio/uni-h5-vite@3.0.0-5030420261029002",
+        "@dcloudio/uni-h5@3.0.0-5030420261029002",
+        "@dcloudio/uni-mp-vite@3.0.0-5030420261029002",
+        "@dcloudio/uni-stat@3.0.0-5030420261029002",
+        "@dcloudio/vite-plugin-uni@3.0.0-5030420261029002",
+        "@eslint/config-array@0.23.5",
+        "@eslint/eslintrc@2.1.4",
+        "@humanwhocodes/config-array@0.11.14",
+        "@kwsites/file-exists@1.1.1",
+        "@tarojs/helper@4.3.2",
+        "@typescript-eslint/parser@8.72.0",
+        "@typescript-eslint/parser@8.72.1",
+        "@typescript-eslint/project-service@8.71.1",
+        "@typescript-eslint/project-service@8.72.0",
+        "@typescript-eslint/project-service@8.72.1",
+        "@typescript-eslint/type-utils@8.71.1",
+        "@typescript-eslint/typescript-estree@8.71.1",
+        "@typescript-eslint/typescript-estree@8.72.0",
+        "@typescript-eslint/typescript-estree@8.72.1",
+        "agent-base@6.0.2",
+        "astro-eslint-parser@3.2.0",
+        "detect-port@1.6.1",
+        "eslint-plugin-jsdoc@64.5.4",
+        "eslint-plugin-toml@1.5.0",
+        "eslint@10.14.0",
+        "eslint@8.41.0",
+        "http-proxy-agent@7.0.2",
+        "https-proxy-agent@5.0.1",
+        "https-proxy-agent@7.0.6",
+        "micromark@4.0.3",
+        "miniprogram-automator@0.13.0",
+        "simple-git@4.0.2",
+        "socks-proxy-agent@8.0.5",
+        "spdy-transport@3.0.0",
+        "spdy@4.0.2",
+        "stylelint@16.26.1",
+        "stylelint@17.16.0",
+        "stylus@0.64.0",
+        "tuf-js@4.1.0",
+        "unified-engine@11.2.2",
+        "vite-tsconfig-paths@7.0.0-alpha.3",
+        "vue-eslint-parser@10.4.1",
+        "weapp-tailwindcss@5.6.3"
+      ]
+    },
+    {
+      "name": "source-map-js",
+      "version": "1.2.2",
+      "consumers": [
+        "@dcloudio/uni-cli-shared@3.0.0-5030420261029002",
+        "@dcloudio/vite-plugin-uni@3.0.0-5030420261029002",
+        "@eslint/css-tree@4.1.1",
+        "@tailwindcss/node@4.3.3",
+        "@vue/compiler-core@3.4.21",
+        "@vue/compiler-core@3.5.43",
+        "@vue/compiler-core@3.5.44",
+        "@vue/compiler-sfc@3.4.21",
+        "@vue/compiler-sfc@3.5.43",
+        "@vue/compiler-sfc@3.5.44",
+        "css-tree@2.2.1",
+        "css-tree@2.3.1",
+        "css-tree@3.2.1",
+        "magicast@0.5.5",
+        "postcss@8.5.32",
+        "sass@1.107.1"
+      ]
+    },
+    {
+      "name": "joi",
+      "version": "17.13.9",
+      "consumers": [
+        "@tarojs/service@4.3.2"
+      ]
+    },
+    {
+      "name": "lodash",
+      "version": "4.18.1",
+      "consumers": [
+        "@tarojs/helper@4.3.2",
+        "@tarojs/plugin-framework-react@4.3.2",
+        "@tarojs/plugin-framework-vue3@4.3.2",
+        "@tarojs/service@4.3.2",
+        "@tarojs/vite-runner@4.3.2",
+        "@tarojs/webpack5-prebundle@4.3.2",
+        "@tarojs/webpack5-runner@4.3.2",
+        "babel-plugin-transform-taroapi@4.3.2",
+        "html-webpack-plugin@5.6.8",
+        "inquirer@8.2.7",
+        "pretty-error@4.0.0",
+        "renderkid@3.0.0"
+      ]
+    },
+    {
+      "name": "zod",
+      "version": "4.6.7",
+      "consumers": [
+        "@astrojs/sitemap@3.7.2",
+        "@eslint-react/shared@5.28.6",
+        "@modelcontextprotocol/client@2.3.1",
+        "@modelcontextprotocol/core@2.3.1",
+        "@modelcontextprotocol/core@2.4.0",
+        "@modelcontextprotocol/server@2.3.1",
+        "@modelcontextprotocol/server@2.4.0",
+        "@weapp-core/schematics@6.3.1",
+        "@weapp-vite/acceptance@0.2.1",
+        "@weapp-vite/mcp@2.2.1",
+        "astro@7.4.5",
+        "eslint-plugin-react-hooks@7.1.1",
+        "weapp-ide-cli@6.4.1",
+        "weapp-vite@7.8.0",
+        "zod-validation-error@4.0.2"
+      ]
+    },
+    {
+      "name": "lodash-es",
+      "version": "4.18.1",
+      "consumers": [
+        "@tarojs/plugin-platform-h5@4.3.2",
+        "@tarojs/taro-h5@4.3.2"
+      ]
+    },
+    {
+      "name": "postcss-selector-parser",
+      "version": "6.1.5",
+      "consumers": [
+        "@dcloudio/uni-cli-shared@3.0.0-5030420261029002",
+        "@dcloudio/uni-h5@3.0.0-5030420261029002",
+        "postcss-calc@9.0.1",
+        "postcss-merge-rules@6.1.1",
+        "postcss-minify-selectors@6.0.4",
+        "postcss-unique-selectors@6.0.4",
+        "stylehacks@6.1.1"
+      ]
+    },
+    {
+      "name": "ws",
+      "version": "8.22.1",
+      "consumers": [
+        "@dcloudio/uni-mp-weixin@3.0.0-5030420261029002",
+        "@weapp-vite/miniprogram-automator@1.5.1",
+        "jsdom@24.1.3",
+        "miniflare@5.20261102.0-beta",
+        "webpack-dev-server@4.15.2"
+      ]
+    },
+    {
+      "name": "body-parser",
+      "version": "1.20.9",
+      "consumers": [
+        "express@4.20.0",
+        "express@4.22.3"
+      ]
+    },
+    {
+      "name": "path-to-regexp",
+      "version": "0.1.13",
+      "consumers": [
+        "express@4.20.0",
+        "express@4.22.3"
+      ]
+    },
+    {
+      "name": "qs",
+      "version": "6.16.1",
+      "consumers": [
+        "body-parser@1.20.9",
+        "express@4.20.0",
+        "express@4.22.3"
+      ]
+    },
+    {
+      "name": "@intlify/core-base",
+      "version": "9.1.11",
+      "consumers": [
+        "@dcloudio/uni-cli-shared@3.0.0-5030420261029002"
+      ]
+    },
+    {
+      "name": "@intlify/shared",
+      "version": "9.1.10",
+      "consumers": [
+        "@dcloudio/uni-cli-shared@3.0.0-5030420261029002",
+        "@intlify/core-base@9.1.11",
+        "@intlify/devtools-if@9.1.10",
+        "@intlify/message-compiler@9.1.10",
+        "@intlify/runtime@9.1.10",
+        "@intlify/vue-devtools@9.1.10"
+      ]
+    },
+    {
+      "name": "@intlify/vue-devtools",
+      "version": "9.1.10",
+      "consumers": [
+        "@dcloudio/uni-cli-shared@3.0.0-5030420261029002",
+        "@intlify/core-base@9.1.11"
+      ]
+    },
+    {
+      "name": "glob",
+      "version": "10.5.0",
+      "consumers": [
+        "@npmcli/map-workspaces@3.0.6",
+        "@npmcli/package-json@5.2.1",
+        "@tarojs/plugin-doctor@0.0.13",
+        "stylus@0.64.0",
+        "unified-engine@11.2.2"
+      ]
+    },
+    {
+      "name": "follow-redirects",
+      "version": "1.16.2",
+      "consumers": [
+        "axios@1.20.0",
+        "centra@2.7.0",
+        "http-proxy@1.18.1"
+      ]
+    },
+    {
+      "name": "undici",
+      "version": "8.12.3",
+      "consumers": [
+        "unifont@1.0.3"
+      ]
+    },
+    {
+      "name": "undici",
+      "version": "7.30.1",
+      "consumers": [
+        "miniflare@5.20261102.0-beta"
+      ]
+    },
+    {
+      "name": "fast-uri",
+      "version": "3.1.9",
+      "consumers": [
+        "ajv@8.20.0"
+      ]
+    },
+    {
+      "name": "@intlify/devtools-if",
+      "version": "9.1.10",
+      "consumers": [
+        "@intlify/core-base@9.1.11"
+      ]
+    },
+    {
+      "name": "@intlify/message-compiler",
+      "version": "9.1.10",
+      "consumers": [
+        "@intlify/core-base@9.1.11",
+        "@intlify/runtime@9.1.10"
+      ]
+    },
+    {
+      "name": "@intlify/message-resolver",
+      "version": "9.1.11",
+      "consumers": [
+        "@intlify/core-base@9.1.11",
+        "@intlify/message-compiler@9.1.10",
+        "@intlify/runtime@9.1.10",
+        "@intlify/vue-devtools@9.1.10"
+      ]
+    },
+    {
+      "name": "@intlify/runtime",
+      "version": "9.1.10",
+      "consumers": [
+        "@intlify/core-base@9.1.11",
+        "@intlify/vue-devtools@9.1.10"
+      ]
+    },
+    {
+      "name": "node-forge",
+      "version": "1.4.2",
+      "consumers": [
+        "selfsigned@2.4.1"
+      ]
+    },
+    {
+      "name": "seroval",
+      "version": "1.6.11",
+      "consumers": [
+        "seroval-plugins@1.6.9",
+        "solid-js@1.9.17"
+      ]
+    },
+    {
+      "name": "decode-uri-component",
+      "version": "0.5.1",
+      "consumers": [
+        "query-string@9.5.1"
+      ]
+    },
+    {
+      "name": "mkdirp",
+      "version": "0.5.6",
+      "consumers": [
+        "@jimp/core@0.10.3",
+        "@jimp/core@0.6.8"
+      ]
+    },
+    {
+      "name": "js-yaml",
+      "version": "5.5.0",
+      "consumers": [
+        "eslint-plugin-n@18.4.1"
+      ]
+    },
+    {
+      "name": "undici",
+      "version": "6.29.1",
+      "consumers": [
+        "node-gyp@12.4.0"
+      ]
+    },
+    {
+      "name": "ip-address",
+      "version": "10.7.5",
+      "consumers": [
+        "socks@2.8.10"
+      ]
+    }
+  ],
+  "expressFrameworkContexts": 2,
+  "dcloudIntlifyContexts": [
+    {
+      "hostVersion": "3.0.0-5030420261029002",
+      "consumer": "uni-cli-shared/lib/vue-i18n/dist/vue-i18n.runtime.esm-bundler.js",
+      "required": [
+        {
+          "name": "@intlify/shared",
+          "members": [
+            "getGlobalThis",
+            "format",
+            "makeSymbol",
+            "isPlainObject",
+            "isArray",
+            "hasOwn",
+            "isObject",
+            "isBoolean",
+            "isString",
+            "isRegExp",
+            "isFunction",
+            "assign",
+            "isNumber",
+            "warn",
+            "createEmitter",
+            "isEmptyObject"
+          ]
+        },
+        {
+          "name": "@intlify/core-base",
+          "members": [
+            "createCompileError",
+            "handleFlatJson",
+            "createCoreContext",
+            "updateFallbackLocale",
+            "resolveValue",
+            "clearDateTimeFormat",
+            "clearNumberFormat",
+            "setAdditionalMeta",
+            "NOT_REOSLVED",
+            "isTranslateFallbackWarn",
+            "isTranslateMissingWarn",
+            "parseTranslateArgs",
+            "translate",
+            "MISSING_RESOLVE_VALUE",
+            "parseDateTimeArgs",
+            "datetime",
+            "parseNumberArgs",
+            "number",
+            "getLocaleChain",
+            "setDevToolsHook"
+          ]
+        },
+        {
+          "name": "@intlify/vue-devtools",
+          "members": [
+            "VueDevToolsLabels",
+            "VueDevToolsPlaceholders",
+            "VueDevToolsTimelineColors"
+          ]
+        }
+      ]
+    }
+  ]
+}

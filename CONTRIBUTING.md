@@ -1,7 +1,11 @@
 # Contributing to weapp-stylex
 
 Use Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` and enable Corepack so pnpm uses the
-version declared in `packageManager`. Run `pnpm install --frozen-lockfile`.
+version declared in `packageManager`. The default development runtime is Node
+`26.13.0` (`.node-version`), with pnpm `12.16.1`. Node 26 no longer bundles
+Corepack: run `npm install --global corepack@0.36.0` followed by `corepack enable`.
+Run `pnpm install --frozen-lockfile`. CI also covers Node 22.23.4 and 24.22.2;
+published package consumers retain their separate minimum Node requirements.
 
 Before opening a pull request, run:
 

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "scenario": "official-public-buildTestArtifact-native-source-provider-sidecar-fingerprinting-without-stylex",
+  "environment": {
+    "platform": "linux",
+    "architecture": "x64",
+    "node": "v24.22.1"
+  },
+  "host": {
+    "version": "7.8.0",
+    "entry": "/tmp/weapp-vite-linux-gate-tvv0o4os/node_modules/weapp-vite/dist/test.mjs",
+    "packageSha256": "7431ab1f5f1d3f47f44ceebe8bab90579101ff43a1f1a04ceffcec4eadad5ec1"
+  },
+  "fixture": {
+    "cwd": "/tmp/weapp-vite-linux-gate-tvv0o4os/synthetic-success-evidence/fixture/native-public-test-api-without-stylex/physical-directory-with-legal-short-components/original-sidecar-watch-dependency-fingerprint",
+    "stylexImported": false,
+    "provider": "public identity script source provider; no synthetic IDs or addWatchFile calls",
+    "sourceFiles": [
+      "package.json",
+      "project.config.json",
+      "vite.config.mjs",
+      "src/app.json",
+      "src/app.ts",
+      "src/pages/index/index.json",
+      "src/pages/index/index.ts",
+      "src/pages/index/index.wxml"
+    ],
+    "longestPhysicalComponentBytes": 46
+  },
+  "result": {
+    "exitCode": 0,
+    "signal": null,
+    "killed": false,
+    "knownSyntheticIdFailure": false,
+    "rejectedPath": null,
+    "syntheticComponentBytes": null
+  },
+  "observedHostSyntheticIds": [
+    {
+      "id": "weapp-vite:sidecar:script:%2Ftmp%2Fweapp-vite-linux-gate-tvv0o4os%2Fsynthetic-success-evidence%2Ffixture%2Fnative-public-test-api-without-stylex%2Fphysical-directory-with-legal-short-components%2Foriginal-sidecar-watch-dependency-fingerprint%2Fsrc%2Fapp.ts:%2Ftmp%2Fweapp-vite-linux-gate-tvv0o4os%2Fsynthetic-success-evidence%2Ffixture%2Fnative-public-test-api-without-stylex%2Fphysical-directory-with-legal-short-components%2Foriginal-sidecar-watch-dependency-fingerprint%2Fsrc%2Fapp.ts:module.js",
+      "bytes": 497
+    },
+    {
+      "id": "weapp-vite:sidecar:script:%2Ftmp%2Fweapp-vite-linux-gate-tvv0o4os%2Fsynthetic-success-evidence%2Ffixture%2Fnative-public-test-api-without-stylex%2Fphysical-directory-with-legal-short-components%2Foriginal-sidecar-watch-dependency-fingerprint%2Fsrc%2Fpages%2Findex%2Findex.ts:%2Ftmp%2Fweapp-vite-linux-gate-tvv0o4os%2Fsynthetic-success-evidence%2Ffixture%2Fnative-public-test-api-without-stylex%2Fphysical-directory-with-legal-short-components%2Foriginal-sidecar-watch-dependency-fingerprint%2Fsrc%2Fpages%2Findex%2Findex.ts:module.js",
+      "bytes": 533
+    }
+  ],
+  "outputManifest": [
+    {
+      "path": "app.js",
+      "bytes": 189,
+      "sha256": "61544035318c11c908792de6b31b27170c00b35f7ee363a58c06cdde6bb4fe25"
+    },
+    {
+      "path": "app.json",
+      "bytes": 65,
+      "sha256": "c4cbcb4495824f5a82c8a4153c47f153f8aa92c576fcff4aa3f63741d18e7b44"
+    },
+    {
+      "path": "pages/index/index.js",
+      "bytes": 253,
+      "sha256": "28766b4044b3dfd4a3426898ac9f24ff48645aefe80a0281621cb2c4e36822a8"
+    },
+    {
+      "path": "pages/index/index.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "pages/index/index.wxml",
+      "bytes": 24,
+      "sha256": "1273697d5f3d62dfb1a78ffa14f51ff6b164160ad8210ddcf44c8b85b3d02ecd"
+    }
+  ],
+  "policy": "require-success",
+  "policyPassed": true
+}
