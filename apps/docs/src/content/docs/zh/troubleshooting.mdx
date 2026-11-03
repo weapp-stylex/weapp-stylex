@@ -21,7 +21,7 @@ sidebar:
   </Step>
   <Step title="检查生成产物">
 
-构建受影响宿主，确认消费者导入了定义模块，输出包含生成的 class、`stylex.wxss` 和同目录 WXSS import。存在 StyleX 规则时，没有手写 WXSS 的页面/组件入口应补齐同名文件。未被导入的源码不会贡献规则。
+构建受影响宿主，确认消费者导入了定义模块，输出包含生成的 class、共享的 `stylex.wxss` 和可解析的 WXSS 相对 import。存在 StyleX 规则时，没有手写 WXSS 的页面/组件入口应补齐同名文件。未被导入的源码不会贡献规则。
 
   </Step>
   <Step title="检查实际节点绑定">

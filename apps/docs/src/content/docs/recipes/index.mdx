@@ -42,7 +42,7 @@ Compute `attrs()` with the host's `computed()` and explicitly bind `:class` and 
 
 ## Check the result
 
-After a build, inspect the generated `stylex.wxss` and same-directory imports in page/component WXSS. Numeric lengths preserve official StyleX units: `16` is `16px`, while `'16rpx'` is responsive WXSS. Theme and dynamic-value recipes also require CSS custom-property support in the chosen WeChat base library.
+After a build, inspect the shared `stylex.wxss` and relative imports in page/component WXSS. Numeric lengths preserve official StyleX units: `16` is `16px`, while `'16rpx'` is responsive WXSS. Theme and dynamic-value recipes also require CSS custom-property support in the chosen WeChat base library.
 
 Run interactions in the target runtime. [Example validation](/examples/) explains what static artifact checks, headless interactions and real WeChat DevTools checks establish. A successful compile alone does not establish support for every browser selector or CSS property.
 

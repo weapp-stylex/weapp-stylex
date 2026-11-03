@@ -370,7 +370,7 @@ Emission is required, removal optional, with no default callbacks. Both can be s
 generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>
 ```
 
-All inputs are required. Plans directory-local `stylex.wxss`, relative imports and missing page/component companions where WXML/JS exist. Initial empty CSS leaves output unchanged. Later builds remove only tracked owned stale assets/imports, calling optional sink.remove. Existing user `stylex.wxss` causes a collision error; rename it instead of overwriting. Sink failures reject.
+All inputs are required. Plans one physical `stylex.wxss` per shared output scope, consumer-relative imports and missing page/component companions where WXML/JS exist. A complete application shares at its output root; an app-less partial bundle shares inside the common consumer directory. Explicit independent roots in `app.json` keep references inside their own scope. Companions retain their local style context, including isolated components. Initial empty CSS leaves output unchanged. Later builds remove only tracked owned stale assets/imports, calling optional sink.remove. Existing user `stylex.wxss` at a planned asset path causes a collision error; rename it instead of overwriting. Sink failures reject.
 
 ```ts
 await emitter.generate(bundle, session.css(), {
@@ -429,7 +429,7 @@ assertStylexTarget requires a name and rejects unsupported targets. resolveStyle
 new MiniProgramStyleEmitter(target: Exclude<StylexTarget, 'web'> = 'weapp', extensions?: MiniProgramExtensions)
 ```
 
-Shared mini-program emitter, defaulting to WeChat and optionally accepting host extensions. Preserves ownership, sibling imports, missing companions, user collision detection and stale output cleanup. Use createWebStylePlugins for web. WxssEmitter remains the no-argument WeChat compatibility wrapper.
+Shared mini-program emitter, defaulting to WeChat and optionally accepting host extensions. Preserves ownership, consumer-relative imports, missing companions, user collision detection and stale output cleanup. Use createWebStylePlugins for web. WxssEmitter remains the no-argument WeChat compatibility wrapper.
 
 <a id="api-MiniProgramStyleEmitter-target"></a>
 <a id="api-WxssEmitter-target"></a>
@@ -448,7 +448,7 @@ readonly extensions contains template and style, defaulting to the target descri
 
 `generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>`
 
-generate requires all inputs and emits stylex.wxss/stylex.acss/stylex.ttss with sibling imports for the target. It shares WxssEmitter.generate’s initial-empty-build, collision and owned-only stale cleanup contracts.
+generate requires all inputs and emits one shared stylex.wxss/stylex.acss/stylex.ttss per output scope with consumer-relative imports for the target. It shares WxssEmitter.generate’s partial-bundle boundary, initial-empty-build, collision and owned-only stale cleanup contracts.
 
 <a id="api-MiniProgramStyleEmitter-clear"></a>
 ### clear

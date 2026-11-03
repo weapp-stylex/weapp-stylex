@@ -75,7 +75,14 @@ for (const example of matrix) {
   const shadow = example.cssDelivery === 'weapp-web'
   const styles = output.filter(file => web
     ? /(?:^|\/)stylex-[\da-f]+\.css$/.test(file)
-    : file.endsWith(`stylex${example.styleExtension}`))
+    : path.basename(file) === `stylex${example.styleExtension}`)
+  if (!web) {
+    assert.deepEqual(
+      styles,
+      [path.join(example.project, `stylex${example.styleExtension}`)],
+      `${example.name}: ordinary pages/components must share one physical StyleX stylesheet`,
+    )
+  }
   const cssParts = shadow
     ? await shadowStyles(output)
     : await Promise.all(styles.toSorted().map(file => readFile(file, 'utf8')))
@@ -120,11 +127,17 @@ for (const example of matrix) {
         file => file.endsWith(example.styleExtension) && !file.endsWith(`stylex${example.styleExtension}`),
       )) {
     const content = await readFile(file, 'utf8')
-    assert.ok(content.includes(`@import "./stylex${example.styleExtension}";`), file)
-    assert.ok(
-      output.includes(path.join(path.dirname(file), `stylex${example.styleExtension}`)),
-      file,
-    )
+    const generatedImports = []
+    postcss.parse(content).walkAtRules('import', (rule) => {
+      const request = /^['"]([^'"]+)['"]$/.exec(rule.params)?.[1]
+      if (request && path.posix.basename(request) === `stylex${example.styleExtension}`) {
+        generatedImports.push(request)
+      }
+    })
+    assert.equal(generatedImports.length, 1, `${file}: expected one explicit StyleX import`)
+    const imported = path.resolve(path.dirname(file), generatedImports[0])
+    assert.equal(imported, path.join(example.project, `stylex${example.styleExtension}`), file)
+    assert.ok(output.includes(imported), `${file}: shared StyleX import must resolve to an emitted asset`)
   }
   if (web) {
     const html = await readFile(path.join(example.project, 'index.html'), 'utf8')

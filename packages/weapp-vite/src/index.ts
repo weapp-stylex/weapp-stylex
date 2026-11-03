@@ -4,7 +4,7 @@ import type {
   StylexCompilerOptions,
   StylexTarget,
 } from '@weapp-stylex/compiler'
-import type { WeappCompilerPluginOption } from 'weapp-vite'
+import type { WeappCompilerPluginOption, WeappCompilerSourceRequest } from 'weapp-vite'
 import { mkdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import {
@@ -31,6 +31,16 @@ function hostTarget(platform: string): StylexTarget {
   const target = platform === 'wechat' ? 'weapp' : platform === 'h5' ? 'web' : platform
   assertStylexTarget(target)
   return target
+}
+
+function isNativeScriptSource(request: WeappCompilerSourceRequest): boolean {
+  // Raw sidecars and virtual wrappers must never replace or remove metadata
+  // owned by the physical script, even when their source string has an import.
+  return request.kind === 'script'
+    && path.isAbsolute(request.id)
+    && !request.id.includes('\0')
+    && !request.id.includes('?')
+    && SCRIPT_RE.test(request.id)
 }
 
 function provider(
@@ -62,10 +72,7 @@ function provider(
           session.beginBuild()
         },
         claimSource(request) {
-          if (
-            request.kind !== 'script'
-            || !SCRIPT_RE.test(request.id.split('?')[0]!)
-          ) {
+          if (!isNativeScriptSource(request)) {
             return false
           }
           if (!session.hasImport(request.code)) {
@@ -75,6 +82,9 @@ function provider(
           return { id: request.id, entryId: request.id }
         },
         async transformSource(request) {
+          if (!isNativeScriptSource(request)) {
+            return null
+          }
           const result = await session.transform(request.code, request.id, {
             resolve: async (source, importer) =>
               (await context.resolve(source, importer, { skipSelf: true }))?.id,

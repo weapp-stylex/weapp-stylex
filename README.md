@@ -252,9 +252,9 @@ export default defineConfig({ plugins: [uni(), ...stylexUniApp()] })
 
 所有适配器固定 `sx` 前缀，关闭 runtime CSS 注入、CSS Layers 和浏览器 specificity polyfill。`importSources`、`babel` 配置继续支持；平台必需的前缀、runtime 注入和层输出限制不能被覆盖。
 
-每个样式输出目录生成一份 `stylex.wxss`，其他 WXSS 添加 `@import "./stylex.wxss";`。没有本地 WXSS 的页面/组件补充同名入口，没有任何入口时补充 `app.wxss`。重建会替换模块规则、保留未变化的缓存、按当前模块图删除不再引用的规则，并清理插件生成的过期文件和 import。用户同名 `stylex.wxss` 明确报错，首次无 StyleX 的构建不改变产物。
+同一可共享输出域只生成一份 `stylex.wxss`，页面和组件 WXSS 通过相对路径导入它，不再按页面目录复制全量规则。没有本地 WXSS 的页面/组件补充同名入口，隔离组件仍保留自己的显式导入；没有任何入口时补充 `app.wxss`。独立输出域的样式引用保留在本域内，不因此扩大独立分包的运行时支持范围。重建会替换模块规则、保留未变化的缓存、按当前模块图删除不再引用的规则，并清理插件生成的过期文件和 import。用户同名 `stylex.wxss` 明确报错，首次无 StyleX 的构建不改变产物。
 
-优先使用宿主 emission API。weapp-vite 7.4 对新增 bundle key 的限制通过文件输出兼容；其他 WXSS 资产仍由宿主写出。watcher 最终关闭时释放状态，构建的 `closeBundle` 不清空活动 watcher。这里保证完整重建的一致性，不提供 stateful HMR 补丁。
+优先使用宿主 emission API。weapp-vite 7.4 对新增 bundle key 的限制通过文件输出兼容；其他 WXSS 资产仍由宿主写出。原生 compiler 只接管物理脚本源，忽略 `?raw` 等派生模块，避免空元数据覆盖真实源规则。watcher 最终关闭时释放状态，构建的 `closeBundle` 不清空活动 watcher。这里保证完整重建的一致性，不提供 stateful HMR 补丁。
 
 ## 示例与验证
 

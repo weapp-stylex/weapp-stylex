@@ -102,6 +102,6 @@ React 组件接收 `active`/`dark` props，在自身 `View` 上展开 `stylex.pr
 
 ## 验证每个产物入口
 
-存在 StyleX 规则时，同时输出 WXML 和 JavaScript、却没有本地 WXSS 的页面/组件会补齐同名 WXSS。Emitter 还会按需创建 `app.wxss`，在需要样式的目录写入 `stylex.wxss`，补齐文件自动导入它。用户编写的同名 `stylex.wxss` 会触发冲突错误。
+存在 StyleX 规则时，同时输出 WXML 和 JavaScript、却没有本地 WXSS 的页面/组件会补齐同名 WXSS。Emitter 还会按需创建 `app.wxss`，在每个可共享输出域只写一份物理 `stylex.wxss`，补齐文件通过相对路径自动导入。隔离组件保留显式导入，独立输出边界内的引用不得指向父域。用户编写的同名 `stylex.wxss` 会触发冲突错误。这项输出规划不代表新增独立分包运行时验收。
 
 打开主页面与分包路由，切换组件属性，检查组件自身根节点的 class/style 和颜色；核对页面/组件 WXSS 及其 import。七份[示例产物](/zh/examples/)覆盖普通分包输出，实际 IDE 验收范围以保留日期的运行记录为准。

@@ -21,7 +21,7 @@ export default defineConfig({
 })
 ```
 
-`stylexCompiler()` supports native JS, TS, JSX and TSX source modules. Use `createStylex()` when your project also contains Vue SFCs.
+`stylexCompiler()` supports native JS, TS, JSX and TSX source modules. It ignores derived requests such as `?raw` so their metadata cannot replace or remove the physical source's rules. Use `createStylex()` when your project also contains Vue SFCs.
 
 ## Bind class and style explicitly
 
@@ -60,7 +60,7 @@ The same pattern works in a `Component`: store the initial `attrs()` result in `
 
 ## Pages and components without local WXSS
 
-The compiler adds a same-name WXSS companion for pages and isolated components that have no local stylesheet. Each style output directory gets `stylex.wxss`; its siblings import it via `./stylex.wxss`. A build with no StyleX leaves output unchanged.
+The compiler adds a same-name WXSS companion for pages and isolated components that have no local stylesheet. Consumers in one shared output scope import one physical `stylex.wxss` through relative paths. Isolated components retain their own explicit imports; sharing the asset does not change their style context. A build with no StyleX leaves output unchanged.
 
 ## Ordinary subpackages
 

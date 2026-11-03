@@ -102,6 +102,6 @@ An ordinary subpackage is the supported case. Do not add `independent: true` and
 
 ## Verify each output entry
 
-With StyleX rules present, pages/components that have emitted WXML and JavaScript but no local WXSS receive a same-name WXSS companion. The emitter also creates `app.wxss` when needed and writes `stylex.wxss` beside required styles; companions import it automatically. Authored `stylex.wxss` conflicts are rejected.
+With StyleX rules present, pages/components that have emitted WXML and JavaScript but no local WXSS receive a same-name WXSS companion. The emitter also creates `app.wxss` when needed and writes one physical `stylex.wxss` per shared output scope; companions import it automatically through relative paths. Isolated components keep their explicit imports, and independent output boundaries must not reference a parent scope. Authored `stylex.wxss` conflicts are rejected. This output planning does not add independent-package runtime acceptance.
 
 Open the main page and subpackage route. Toggle the component's properties and inspect its own root class/style and colors. Check the component/page WXSS companions and their imports. The seven [example artifacts](/examples/) cover ordinary subpackage output; the dated runtime record states the actual scope of IDE acceptance.
