@@ -22,6 +22,11 @@
   dir: packages/compiler
   intents:
     - sharp-deers-report
+"@weapp-stylex/compiler@0.3.2":
+  dir: packages/compiler
+  intents:
+    - orange-taxis-wave
+    - wise-icons-hear
 "@weapp-stylex/core@0.1.1":
   dir: packages/core
   intents:
@@ -58,6 +63,10 @@
   dir: packages/taro
   intents:
     - wet-cups-heal
+"@weapp-stylex/taro@0.3.2":
+  dir: packages/taro
+  intents:
+    - orange-taxis-wave
 "@weapp-stylex/uni-app@0.1.0":
   dir: packages/uni-app
   intents:
@@ -82,6 +91,10 @@
   intents:
     - bright-olives-lie
     - weak-peaches-start
+"@weapp-stylex/uni-app@0.3.2":
+  dir: packages/uni-app
+  intents:
+    - orange-taxis-wave
 "@weapp-stylex/weapp-vite@0.2.0":
   dir: packages/weapp-vite
   intents:
@@ -107,6 +120,11 @@
   dir: packages/weapp-vite
   intents:
     - bright-olives-lie
+"@weapp-stylex/weapp-vite@0.4.2":
+  dir: packages/weapp-vite
+  intents:
+    - orange-taxis-wave
+    - wise-clocks-dance
 weapp-stylex@0.0.0:
   dir: packages/weapp-stylex
   intents:

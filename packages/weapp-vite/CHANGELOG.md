@@ -1,5 +1,16 @@
 # @weapp-stylex/weapp-vite
 
+## 0.4.2
+
+### Patch Changes
+
+- 升级官方编译与适配依赖，支持新版 SWC 和 DCloud Vue 3 通道，保留各框架与最低 Node 兼容边界。
+
+- Ignore derived raw script requests without replacing or removing the physical source stylesheet metadata
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.3.2
+
 ## 0.4.1
 
 ### Patch Changes

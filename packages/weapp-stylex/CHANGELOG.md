@@ -1,5 +1,15 @@
 # weapp-stylex
 
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies:
+  - @weapp-stylex/compiler@0.3.2
+  - @weapp-stylex/taro@0.3.2
+  - @weapp-stylex/uni-app@0.3.2
+  - @weapp-stylex/weapp-vite@0.4.2
+
 ## 0.3.1
 
 ### Patch Changes
