@@ -1,5 +1,12 @@
 # taro-react
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies:
+  - weapp-stylex@0.3.2
+
 ## 0.0.5
 
 ### Patch Changes

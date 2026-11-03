@@ -1,5 +1,13 @@
 # @weapp-stylex/compiler
 
+## 0.3.2
+
+### Patch Changes
+
+- 升级官方编译与适配依赖，支持新版 SWC 和 DCloud Vue 3 通道，保留各框架与最低 Node 兼容边界。
+
+- Share generated mini-program stylesheets within each output scope while preserving component imports and rebuild ownership
+
 ## 0.3.1
 
 ### Patch Changes
