@@ -286,15 +286,20 @@ export default defineConfig({plugins:sx.vitePlugins,weapp:{platform:target,compi
       }
       else {
         await buildTestArtifact({ cwd, outDir: 'dist', skipNpm: true })
-        const css = await readFile(path.join(cwd, `dist/pages/index/stylex.${profile.style}`), 'utf8')
+        const css = await readFile(path.join(cwd, `dist/stylex.${profile.style}`), 'utf8')
+        const files = await outputFiles(path.join(cwd, 'dist'))
+        assert.deepEqual(files.filter(file => path.basename(file) === `stylex.${profile.style}`), [path.join(cwd, `dist/stylex.${profile.style}`)], 'Minimum host must emit one shared physical stylesheet')
         assert.match(css, /color:red/)
         assert.match(css, /padding:16px/)
         assert.match(css, /border-radius:6px/)
         assert.match(css, /margin:16rpx/)
         assert.match(css, /page(?:\s*,[^{}]*)?\{[^}]*:orange/)
         assert.doesNotMatch(css, /:root\{/)
-        assert.match(await readFile(path.join(cwd, `dist/pages/index/index.${profile.style}`), 'utf8'), new RegExp(`@import "\\./stylex\\.${profile.style}"`))
-        assert.match(await readFile(path.join(cwd, `dist/components/card/index.${profile.style}`), 'utf8'), new RegExp(`@import "\\./stylex\\.${profile.style}"`))
+        for (const entry of ['pages/index/index', 'components/card/index']) {
+          const content = await readFile(path.join(cwd, `dist/${entry}.${profile.style}`), 'utf8')
+          assert.ok(content.includes(`@import "../../stylex.${profile.style}";`), `${kind}/${profile.target}: ${entry} must import the shared stylesheet in its own context`)
+          assert.equal((content.match(/@import\b/g) ?? []).length, 1, `${entry}: duplicate generated import`)
+        }
         assert.ok((await readFile(path.join(cwd, `dist/pages/index/index.${profile.template}`), 'utf8')).includes(`minimum ${kind === 'native' ? 'native' : 'Wevu'}`))
         if (kind === 'wevu') {
           assert.match(css, /font-size:14px/)

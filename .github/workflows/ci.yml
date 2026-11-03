@@ -51,6 +51,7 @@ jobs:
           path: |
             coverage/
             artifacts/benchmark.json
+            artifacts/shared-style-growth-*.json
             artifacts/ide/report.json
             artifacts/h5/
             artifacts/consumer-install-*/

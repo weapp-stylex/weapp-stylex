@@ -21,7 +21,7 @@ Follow the matching [adapter guide](/api/adapters/). Wevu registers both fields 
   </Step>
   <Step title="Inspect the generated artifact">
 
-Build the affected host. Confirm the consumer imports the definition module and that the output includes generated classes, `stylex.wxss` and same-directory WXSS imports. Page/component entries without authored WXSS should receive companions when StyleX rules exist. A source file that is never imported cannot contribute rules.
+Build the affected host. Confirm the consumer imports the definition module and that the output includes generated classes, shared `stylex.wxss` and resolvable relative WXSS imports. Page/component entries without authored WXSS should receive companions when StyleX rules exist. A source file that is never imported cannot contribute rules.
 
   </Step>
   <Step title="Inspect the actual node binding">

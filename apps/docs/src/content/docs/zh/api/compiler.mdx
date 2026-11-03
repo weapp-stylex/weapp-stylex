@@ -370,7 +370,7 @@ emit 必填、remove 可选，没有默认 callback，都可同步/异步且会�
 generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>
 ```
 
-全部参数必填。规划目录内 stylex.wxss、相对 import 与 WXML/JS 存在时缺失的页面/组件 companion。首次 CSS 为空时不改变输出，后续只移除已记录所属过期 assets/imports，调用可选 sink.remove。已有用户 stylex.wxss 会报冲突，应该重命名而非覆盖。sink 错误 reject。
+全部参数必填。每个可共享输出域只规划一份物理 stylex.wxss，并生成相对于消费者的 import 与 WXML/JS 存在时缺失的页面/组件 companion。完整应用在输出根共享；没有 app 入口的局部 bundle 在消费者公共目录内共享。app.json 明确声明的独立根将引用保留在本域。companion 保持本地样式上下文，包括隔离组件。首次 CSS 为空时不改变输出，后续只移除已记录所属过期 assets/imports，调用可选 sink.remove。规划资产路径上已有用户 stylex.wxss 会报冲突，应该重命名而非覆盖。sink 错误 reject。
 
 ```ts
 await emitter.generate(bundle, session.css(), {
@@ -429,7 +429,7 @@ assertStylexTarget 接收必填名称并拒绝未知目标。resolveStylexTarget
 new MiniProgramStyleEmitter(target: Exclude<StylexTarget, 'web'> = 'weapp', extensions?: MiniProgramExtensions)
 ```
 
-共享小程序输出器，默认微信，也接受宿主扩展名描述符。保留 ownership、同目录 import、缺失 companion、用户冲突和过期输出清理契约。web 使用 createWebStylePlugins，不使用该输出器。WxssEmitter 仍是无参数的微信兼容包装。
+共享小程序输出器，默认微信，也接受宿主扩展名描述符。保留 ownership、相对于消费者的 import、缺失 companion、用户冲突和过期输出清理契约。web 使用 createWebStylePlugins，不使用该输出器。WxssEmitter 仍是无参数的微信兼容包装。
 
 <a id="api-MiniProgramStyleEmitter-target"></a>
 <a id="api-WxssEmitter-target"></a>
@@ -448,7 +448,7 @@ readonly extensions 包含 template 与 style，默认来自目标描述符；Wx
 
 `generate(bundle: StyleBundle, css: string, sink: AssetSink): Promise<void>`
 
-generate 的输入必填，按目标生成 stylex.wxss/stylex.acss/stylex.ttss 及相对 import。与 WxssEmitter.generate 共享初次空构建不变、冲突报错和只删除所属过期产物的契约。
+generate 的输入必填，每个输出域按目标生成一份共享的 stylex.wxss/stylex.acss/stylex.ttss 及相对 import。与 WxssEmitter.generate 共享局部 bundle 边界、初次空构建不变、冲突报错和只删除所属过期产物的契约。
 
 <a id="api-MiniProgramStyleEmitter-clear"></a>
 ### clear

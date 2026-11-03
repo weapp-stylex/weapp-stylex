@@ -269,9 +269,10 @@ describe('WXSS ownership', () => {
     }
     await emitter.generate(bundle, '.sx{padding:16px}', { emit })
     expect(bundle['components/card.wxss']).toMatchObject({
-      source: '@import "./stylex.wxss";\n',
+      source: '@import "../stylex.wxss";\n',
     })
-    expect(bundle['components/stylex.wxss']).toBeDefined()
+    expect(bundle['stylex.wxss']).toBeDefined()
+    expect(bundle['components/stylex.wxss']).toBeUndefined()
     const initial = JSON.stringify(bundle)
     await emitter.generate(bundle, '.sx{padding:16px}', { emit })
     expect(JSON.stringify(bundle)).toBe(initial)

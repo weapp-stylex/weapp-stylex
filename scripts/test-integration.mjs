@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { Buffer } from 'node:buffer'
 import {
   mkdir,
   mkdtemp,
@@ -15,6 +16,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { createContext, Script } from 'node:vm'
 import { waitForWatchedSources } from './watcher-ready.mjs'
 
 const compilerOptions = { backend: process.env.WEAPP_STYLEX_BACKEND === 'auto' ? 'auto' : 'babel' }
@@ -135,6 +137,176 @@ const sx = stylex.attrs(styles.text).class
   process.stdout.write('CJS/ESM cached SFC completion: canonical ownership, token updates, Babel guard and final rule cleanup passed\n')
 }
 
+async function nativeOutputFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true })
+  return (await Promise.all(entries.map(entry => entry.isDirectory()
+    ? nativeOutputFiles(path.join(directory, entry.name))
+    : [path.join(directory, entry.name)]))).flat()
+}
+
+async function nativeClassBindings(directory, entries, css) {
+  const files = await nativeOutputFiles(directory)
+  const sources = new Map(await Promise.all(files.filter(file => file.endsWith('.js')).map(async file => [file, await readFile(file, 'utf8')])))
+  const registrations = []
+  const context = createContext({
+    Page: definition => registrations.push({ kind: 'Page', definition }),
+    Component: definition => registrations.push({ kind: 'Component', definition }),
+  })
+  const modules = new Map()
+  const load = (file) => {
+    if (modules.has(file)) {
+      return modules.get(file).exports
+    }
+    const source = sources.get(file)
+    assert.ok(source !== undefined, `Missing emitted native module: ${file}`)
+    const module = { exports: {} }
+    modules.set(file, module)
+    const localRequire = (request) => {
+      assert.ok(request.startsWith('.'), `${file}: expected a bundled relative dependency, got ${request}`)
+      const target = path.resolve(path.dirname(file), request)
+      const resolved = [target, `${target}.js`, path.join(target, 'index.js')].find(candidate => sources.has(candidate))
+      assert.ok(resolved, `${file}: missing emitted dependency ${request}`)
+      return load(resolved)
+    }
+    const factory = new Script(`(function(require,module,exports){${source}\n})`, { filename: file }).runInContext(context)
+    factory(localRequire, module, module.exports)
+    return module.exports
+  }
+  for (const { entry, kind } of entries) {
+    const count = registrations.length
+    load(path.join(directory, `${entry}.js`))
+    const added = registrations.slice(count)
+    assert.equal(added.length, 1, `${entry}: expected one native registration after executing its emitted dependency graph`)
+    assert.equal(added[0].kind, kind, entry)
+    const classes = added[0].definition.data?.sx
+    assert.equal(typeof classes, 'string', `${entry}: native data.sx must bind a class string`)
+    const tokens = classes.trim().split(/\s+/)
+    assert.ok(tokens.length && tokens.every(Boolean), `${entry}: native class binding must not be empty`)
+    for (const token of tokens) {
+      const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      assert.match(css, new RegExp(`\\.${escaped}(?![\\w-])`), `${entry}: bound class ${token} must have an emitted CSS selector`)
+    }
+  }
+}
+
+async function nativePageGrowth() {
+  const samples = []
+  for (const { mode, pageCount } of [{ mode: 'reuse', pageCount: 1 }, { mode: 'reuse', pageCount: 50 }, { mode: 'unique', pageCount: 50 }]) {
+    const cwd = path.join(temporary, `native-growth-${mode}-${pageCount}`)
+    await mkdir(path.join(cwd, 'src'), { recursive: true })
+    await writeFile(path.join(cwd, 'package.json'), '{"name":"native-page-growth-integration","type":"module"}')
+    await writeFile(path.join(cwd, 'project.config.json'), '{"appid":"touristappid","miniprogramRoot":"dist"}')
+    await writeFile(path.join(cwd, 'src/app.ts'), 'App({})')
+    const definition = color => `import * as stylex from '@weapp-stylex/core';export const styles=stylex.create({root:{padding:16,backgroundColor:'${color}'}});`
+    if (mode === 'reuse') {
+      await writeFile(path.join(cwd, 'src/styles.ts'), definition('#224466'))
+    }
+    const routes = []
+    for (let index = 0; index < pageCount; index++) {
+      const route = `pages/probe-${String(index + 1).padStart(3, '0')}/index`
+      routes.push(route)
+      await mkdir(path.dirname(path.join(cwd, 'src', route)), { recursive: true })
+      const styles = mode === 'reuse'
+        ? 'import {styles} from \'../../styles\';'
+        : definition(`#${(0x224466 + index).toString(16)}`)
+      await writeFile(path.join(cwd, `src/${route}.ts`), `${mode === 'reuse' ? 'import * as stylex from \'@weapp-stylex/core\';' : ''}${styles}Page({data:{sx:stylex.attrs(styles.root).class}})`)
+      await writeFile(path.join(cwd, `src/${route}.json`), '{}')
+      await writeFile(path.join(cwd, `src/${route}.wxml`), `<view class="{{sx}}">Page ${index + 1}</view>`)
+    }
+    await writeFile(path.join(cwd, 'src/app.json'), JSON.stringify({ pages: routes }))
+    await writeFile(path.join(cwd, 'vite.config.mjs'), `import {createStylex} from ${JSON.stringify(path.join(root, 'packages/weapp-vite/dist/index.js'))};const sx=createStylex(${JSON.stringify(compilerOptions)});export default {plugins:sx.vitePlugins,resolve:{alias:{'@weapp-stylex/core':${JSON.stringify(core)}}},weapp:{platform:'weapp',srcRoot:'src',compilerPlugins:[sx.compilerPlugin]}}`)
+    await buildTestArtifact({ cwd, outDir: 'dist', skipNpm: true })
+    const output = await nativeOutputFiles(path.join(cwd, 'dist'))
+    const styleAssets = output.filter(file => path.basename(file) === 'stylex.wxss')
+    assert.deepEqual(styleAssets, [path.join(cwd, 'dist/stylex.wxss')], `${pageCount} ${mode} pages must emit one physical StyleX stylesheet`)
+    const css = await readFile(styleAssets[0], 'utf8')
+    assert.equal((css.match(/padding:16px/g) ?? []).length, 1, 'Repeated declarations must remain atomic')
+    assert.equal((css.match(/background-color:/g) ?? []).length, mode === 'reuse' ? 1 : pageCount, 'Unique page colors must reach the shared rule union')
+    for (const route of routes) {
+      const style = await readFile(path.join(cwd, `dist/${route}.wxss`), 'utf8')
+      assert.equal(style, '@import "../../stylex.wxss";\n', `${route}: missing or duplicated explicit shared import`)
+    }
+    await nativeClassBindings(path.join(cwd, 'dist'), routes.map(entry => ({ entry, kind: 'Page' })), css)
+    const rawWxss = await Promise.all(output.filter(file => file.endsWith('.wxss')).map(file => readFile(file)))
+    samples.push({ mode, pageCount, sharedAssets: styleAssets.length, css, cssBytes: Buffer.byteLength(css), wxssBytes: rawWxss.reduce((sum, bytes) => sum + bytes.length, 0) })
+  }
+  assert.equal(samples[0].css, samples[1].css, 'Adding pages that reuse one style module must not grow or copy the rule union')
+  assert.ok(samples[1].wxssBytes - samples[0].wxssBytes < 49 * 100, 'Repeated pages may add small import companions, not full rule copies')
+  await writeFile(path.join(artifacts, `shared-style-growth-${compilerOptions.backend}.json`), JSON.stringify(samples.map(({ css, ...sample }) => sample), null, 2))
+  process.stdout.write(`Real native page growth (${compilerOptions.backend}): ${samples.map(sample => `${sample.mode}/${sample.pageCount} pages=${sample.sharedAssets} shared asset, ${sample.cssBytes} CSS bytes, ${sample.wxssBytes} total WXSS bytes`).join('; ')}\n`)
+}
+
+async function nativeIndependentOutput() {
+  // This verifies the host's separate output scopes, not independent-package
+  // runtime or cold-start support, which still requires its own acceptance.
+  const cwd = path.join(temporary, 'native-independent-output')
+  const source = path.join(cwd, 'src')
+  const output = path.join(cwd, 'dist')
+  const independent = path.join(output, 'independent')
+  await mkdir(source, { recursive: true })
+  await writeFile(path.join(cwd, 'package.json'), '{"name":"native-independent-output-integration","type":"module"}')
+  await writeFile(path.join(cwd, 'project.config.json'), '{"appid":"touristappid","miniprogramRoot":"dist"}')
+  await writeFile(path.join(source, 'app.ts'), 'App({})')
+  await writeFile(path.join(source, 'app.wxss'), '.main-authored{opacity:0.5}')
+  await writeFile(path.join(source, 'app.json'), JSON.stringify({
+    pages: ['pages/home/index'],
+    subPackages: [{ root: 'independent', independent: true, pages: ['pages/one/index', 'pages/two/index'] }],
+  }))
+  for (const { route, color, component } of [
+    { route: 'pages/home/index', color: 'red', component: false },
+    { route: 'independent/pages/one/index', color: 'blue', component: false },
+    { route: 'independent/pages/two/index', color: 'green', component: false },
+    { route: 'independent/components/card/index', color: 'blue', component: true },
+  ]) {
+    await mkdir(path.dirname(path.join(source, route)), { recursive: true })
+    await writeFile(path.join(source, `${route}.ts`), `${declaration(color)}${component ? 'Component' : 'Page'}({${component ? 'options:{styleIsolation:\'isolated\'},' : ''}data:{sx:stylex.attrs(styles.root).class}})`)
+    await writeFile(path.join(source, `${route}.json`), JSON.stringify(component
+      ? { component: true, styleIsolation: 'isolated' }
+      : route.startsWith('independent/') ? { usingComponents: { card: '../../components/card/index' } } : {}))
+    await writeFile(path.join(source, `${route}.wxml`), `<view class="{{sx}}">${color} output scope</view>${route.startsWith('independent/pages/') ? '<card />' : ''}`)
+  }
+  await writeFile(path.join(cwd, 'vite.config.mjs'), `import {createStylex} from ${JSON.stringify(path.join(root, 'packages/weapp-vite/dist/index.js'))};const sx=createStylex(${JSON.stringify(compilerOptions)});export default {plugins:sx.vitePlugins,resolve:{alias:{'@weapp-stylex/core':${JSON.stringify(core)}}},build:{emptyOutDir:false},weapp:{platform:'weapp',srcRoot:'src',compilerPlugins:[sx.compilerPlugin]}}`)
+  // The 7.4 host writes its independent child before the main build into this
+  // same dist directory. Keep those child outputs when the main build starts.
+  await buildTestArtifact({ cwd, outDir: 'dist', skipNpm: true })
+  const files = await nativeOutputFiles(output)
+  const fileSet = new Set(files)
+  assert.deepEqual(files.filter(file => path.basename(file) === 'stylex.wxss').toSorted(), [path.join(independent, 'stylex.wxss'), path.join(output, 'stylex.wxss')].toSorted(), 'Main and independent child output must own one physical stylesheet each')
+  const mainCss = await readFile(path.join(output, 'stylex.wxss'), 'utf8')
+  assert.match(mainCss, /color:red/)
+  assert.doesNotMatch(mainCss, /color:(?:blue|green)/, 'The child rule union must not replace or contaminate the main stylesheet')
+  const childCss = await readFile(path.join(independent, 'stylex.wxss'), 'utf8')
+  assert.match(childCss, /color:blue/)
+  assert.match(childCss, /color:green/)
+  assert.doesNotMatch(childCss, /color:red/, 'Main rules must not replace the child stylesheet')
+  const appStyle = await readFile(path.join(output, 'app.wxss'), 'utf8')
+  assert.match(appStyle, /@import "\.\/stylex\.wxss";/)
+  assert.match(appStyle, /\.main-authored\s*\{/)
+  assert.equal((appStyle.match(/@import\b/g) ?? []).length, 1, 'The child must not overwrite or add another import to app.wxss')
+  await assert.rejects(readFile(path.join(independent, 'app.wxss')), { code: 'ENOENT' })
+  for (const entry of ['pages/one/index', 'pages/two/index', 'components/card/index']) {
+    assert.equal(await readFile(path.join(independent, `${entry}.wxss`), 'utf8'), '@import "../../stylex.wxss";\n', `${entry}: retain its own explicit import, including the isolated component`)
+  }
+  await nativeClassBindings(output, [{ entry: 'pages/home/index', kind: 'Page' }], mainCss)
+  await nativeClassBindings(output, [
+    { entry: 'independent/pages/one/index', kind: 'Page' },
+    { entry: 'independent/pages/two/index', kind: 'Page' },
+    { entry: 'independent/components/card/index', kind: 'Component' },
+  ], childCss)
+  const component = JSON.parse(await readFile(path.join(independent, 'components/card/index.json'), 'utf8'))
+  assert.equal(component.styleIsolation, 'isolated')
+  for (const file of files.filter(file => file.startsWith(`${independent}${path.sep}`) && file.endsWith('.wxss'))) {
+    const css = await readFile(file, 'utf8')
+    for (const [, request] of css.matchAll(/@import\s+['"]([^'"]+)['"]\s*;/g)) {
+      const imported = path.resolve(path.dirname(file), request)
+      const relative = path.relative(independent, imported)
+      assert.ok(relative && !path.isAbsolute(relative) && relative !== '..' && !relative.startsWith(`..${path.sep}`), `${file}: import must stay inside the independent output boundary`)
+      assert.ok(fileSet.has(imported), `${file}: import must resolve to a physical child output`)
+    }
+  }
+  process.stdout.write('Real native independent child output: distinct main/child rule assets, package-local import closure and isolated component import passed; runtime acceptance is outside this check\n')
+}
+
 async function nativeBuild({ target, template, style }) {
   const cwd = path.join(temporary, `native-${target}`)
   await mkdir(path.join(cwd, 'src/pages/index'), { recursive: true })
@@ -208,24 +380,29 @@ async function nativeBuild({ target, template, style }) {
   await writeFile(path.join(cwd, 'src/pages/index/index.ts'), 'Page({data:{sx:""}})')
   await writeFile(path.join(cwd, 'src/components/card/index.ts'), 'Component({data:{sx:""}})')
   await buildTestArtifact(options)
-  await assert.rejects(readFile(path.join(cwd, `dist/pages/index/stylex.${style}`)), { code: 'ENOENT' })
+  await assert.rejects(readFile(path.join(cwd, `dist/stylex.${style}`)), { code: 'ENOENT' })
   await writeFile(path.join(cwd, 'src/pages/index/index.ts'), consumer)
   await writeFile(path.join(cwd, 'src/components/card/index.ts'), componentConsumer)
   invalidateFileCache(path.join(cwd, 'src/components/card/index.ts'))
   await buildTestArtifact(options)
   const css = await readFile(
-    path.join(cwd, `dist/pages/index/stylex.${style}`),
+    path.join(cwd, `dist/stylex.${style}`),
     'utf8',
   )
   assert.match(css, /color:red/)
   assert.match(css, /(?:^|\n)page(?:\s*,[^{}]*)?\{[^}]*:orange/)
   assert.match(
     await readFile(path.join(cwd, `dist/pages/index/index.${style}`), 'utf8'),
-    new RegExp(`@import "\\./stylex\\.${style}"`),
+    new RegExp(`@import "\\.\\./\\.\\./stylex\\.${style}"`),
   )
   assert.match(
     await readFile(path.join(cwd, `dist/components/card/index.${style}`), 'utf8'),
-    new RegExp(`@import "\\./stylex\\.${style}"`),
+    new RegExp(`@import "\\.\\./\\.\\./stylex\\.${style}"`),
+  )
+  assert.deepEqual(
+    (await nativeOutputFiles(path.join(cwd, 'dist'))).filter(file => path.basename(file) === `stylex.${style}`),
+    [path.join(cwd, `dist/stylex.${style}`)],
+    `${target}: the page and isolated component must share one physical stylesheet`,
   )
   assert.match(await readFile(path.join(cwd, `dist/pages/index/index.${template}`), 'utf8'), /shared fixture/)
   if (target !== 'weapp') {
@@ -234,14 +411,14 @@ async function nativeBuild({ target, template, style }) {
   await writeFile(path.join(cwd, 'shared/styles.ts'), themedDeclaration('blue', 'ts'))
   await buildTestArtifact(options)
   const updated = await readFile(
-    path.join(cwd, `dist/pages/index/stylex.${style}`),
+    path.join(cwd, `dist/stylex.${style}`),
     'utf8',
   )
   assert.match(updated, /color:blue/)
   assert.doesNotMatch(updated, /color:red/)
   await writeFile(path.join(cwd, 'shared/tokens.stylex.ts'), tokenDeclaration('purple'))
   await buildTestArtifact(options)
-  const rethemed = await readFile(path.join(cwd, `dist/pages/index/stylex.${style}`), 'utf8')
+  const rethemed = await readFile(path.join(cwd, `dist/stylex.${style}`), 'utf8')
   assert.match(rethemed, /(?:^|\n)page(?:\s*,[^{}]*)?\{[^}]*:purple/)
   assert.doesNotMatch(rethemed, /orange/)
   await writeFile(
@@ -250,7 +427,7 @@ async function nativeBuild({ target, template, style }) {
   )
   await buildTestArtifact(options)
   assert.match(
-    await readFile(path.join(cwd, `dist/pages/index/stylex.${style}`), 'utf8'),
+    await readFile(path.join(cwd, `dist/stylex.${style}`), 'utf8'),
     /color:blue/,
   )
   await writeFile(
@@ -264,7 +441,7 @@ async function nativeBuild({ target, template, style }) {
   invalidateFileCache(path.join(cwd, 'src/components/card/index.ts'))
   await buildTestArtifact(options)
   await assert.rejects(
-    readFile(path.join(cwd, `dist/pages/index/stylex.${style}`)),
+    readFile(path.join(cwd, `dist/stylex.${style}`)),
     { code: 'ENOENT' },
   )
 }
@@ -829,6 +1006,8 @@ try {
     await webpackCache(target)
     process.stdout.write(`${target.target}: native companion styles, watch and cross-target filesystem cache passed\n`)
   }
+  await nativePageGrowth()
+  await nativeIndependentOutput()
   await webpackVueBlocks()
   process.stdout.write(
     'CJS/ESM SFC, WeChat/Alipay/Douyin module graphs, Vite watch, Webpack cache and H5 lifecycle integration passed\n',

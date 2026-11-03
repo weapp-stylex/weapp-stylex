@@ -31,7 +31,7 @@ Vue-loader rereads the raw SFC for inline script, template and style requests. T
 
 ## Output planning
 
-When StyleX rules exist, the emitter writes the aggregated stylesheet as `stylex.wxss` beside each required WXSS directory. Sibling styles import it using `@import "./stylex.wxss";`. This can repeat the stylesheet across directories; it is not a separate stylesheet for each source module.
+When StyleX rules exist, the emitter writes one aggregated `stylex.wxss` per shared output scope. Each page/component stylesheet imports that asset through its own relative path, preserving its style context without copying the full rule set into every directory. Explicit independent output boundaries keep imports inside their own scope; this does not expand the documented independent-package runtime support. Rules are still aggregated for the scope, rather than separately pruned for each source module.
 
 An emitted WXML entry with matching JavaScript and no authored WXSS receives a same-name companion. `app.wxss` is also created when needed. Companions load generated styles without changing the host's page/component registration. See [components and ordinary subpackages](/recipes/components-subpackages/).
 

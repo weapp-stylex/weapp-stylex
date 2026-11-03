@@ -69,7 +69,7 @@ Import token definitions directly from `tokens.stylex.ts` in style and theme mod
 
 ## Verify graph behavior
 
-Build both consumers and confirm their class bindings and WXSS imports. Rules are aggregated and deduplicated before the generated stylesheet is written to each required style directory; this is not a separate stylesheet per source module.
+Build both consumers and confirm their class bindings and relative WXSS imports. Rules are aggregated and deduplicated into one physical stylesheet per shared output scope; consumer directories do not each receive a full copy. This is not a separate stylesheet per source module.
 
 During watch, change a shared declaration and inspect both pages. Removing one consumer must retain styles needed by the other; removing all reachable imports should remove stale rules. These graph cases are covered by the repository's [integration tests](/examples/); your framework's own watcher must still notify it of source changes.
 
