@@ -1,0 +1,79 @@
+[
+  {
+    "step": "final-frozen",
+    "exitCode": 0,
+    "seconds": 0.4,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-frozen.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-library-build",
+    "exitCode": 0,
+    "seconds": 3.8,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-library-build.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-typecheck",
+    "exitCode": 0,
+    "seconds": 7.8,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-typecheck.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-lint",
+    "exitCode": 0,
+    "seconds": 7.1,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-lint.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-unit",
+    "exitCode": 0,
+    "seconds": 1.9,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-unit.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-deps",
+    "exitCode": 0,
+    "seconds": 3.4,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-deps.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-script-tests",
+    "exitCode": 0,
+    "seconds": 7.7,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-script-tests.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-repo-deps",
+    "exitCode": 0,
+    "seconds": 2.1,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-repo-deps.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-doctor",
+    "exitCode": 0,
+    "seconds": 1.6,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-doctor.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-repo-full",
+    "exitCode": 0,
+    "seconds": 65.5,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-repo-full.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-packs",
+    "exitCode": 0,
+    "seconds": 4.3,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-packs.log",
+    "lockUnchanged": true
+  }
+]

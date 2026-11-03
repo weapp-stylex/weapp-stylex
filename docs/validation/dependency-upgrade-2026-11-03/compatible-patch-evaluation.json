@@ -1,0 +1,2979 @@
+{
+  "generatedAt": "2026-11-03T09:45:27.576Z",
+  "node": "v24.18.0",
+  "policy": "read-only registry and installed parent manifests; no install, override, or lockfile changes",
+  "packages": [
+    {
+      "name": "@babel/core",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "8.1.0",
+          "engines": {
+            "node": "^22.18.0 || >=24.11.0"
+          },
+          "dependencies": {
+            "obug": "^3.0.0",
+            "json5": "^2.2.3",
+            "verkit": "^0.5.0",
+            "gensync": "^1.0.0-beta.2",
+            "empathic": "^2.0.1",
+            "@babel/types": "^8.1.0",
+            "@babel/parser": "^8.1.0",
+            "@babel/helpers": "^8.1.0",
+            "@types/gensync": "^1.0.5",
+            "@babel/template": "^8.0.0",
+            "@babel/traverse": "^8.1.0",
+            "@babel/generator": "^8.1.0",
+            "@babel/code-frame": "^8.0.6",
+            "convert-source-map": "^2.0.0",
+            "import-meta-resolve": "^4.2.0",
+            "@babel/helper-compilation-targets": "^8.0.7"
+          },
+          "exports": {
+            ".": {
+              "types": "./lib/index.d.ts",
+              "default": "./lib/index.js"
+            },
+            "./package.json": "./package.json"
+          }
+        },
+        {
+          "query": "7.29.7",
+          "status": 200,
+          "version": "7.29.7",
+          "engines": {
+            "node": ">=6.9.0"
+          },
+          "dependencies": {
+            "debug": "^4.1.0",
+            "json5": "^2.2.3",
+            "semver": "^6.3.1",
+            "gensync": "^1.0.0-beta.2",
+            "@babel/types": "^7.29.7",
+            "@babel/parser": "^7.29.7",
+            "@babel/helpers": "^7.29.7",
+            "@babel/template": "^7.29.7",
+            "@babel/traverse": "^7.29.7",
+            "@babel/generator": "^7.29.7",
+            "@babel/code-frame": "^7.29.7",
+            "convert-source-map": "^2.0.0",
+            "@jridgewell/remapping": "^2.3.5",
+            "@babel/helper-module-transforms": "^7.29.7",
+            "@babel/helper-compilation-targets": "^7.29.7"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@babel/helper-create-class-features-plugin",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-create-class-features-plugin@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/helper-create-class-features-plugin"
+        },
+        {
+          "parent": "@babel/helper-create-class-features-plugin",
+          "version": "8.0.7",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-create-class-features-plugin@8.0.7_@babel+core@8.1.0/node_modules/@babel/helper-create-class-features-plugin"
+        },
+        {
+          "parent": "@babel/helper-create-regexp-features-plugin",
+          "version": "7.29.10",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-create-regexp-features-plugin@7.29.10_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/helper-create-regexp-features-plugin"
+        },
+        {
+          "parent": "@babel/helper-create-regexp-features-plugin",
+          "version": "8.0.7",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-create-regexp-features-plugin@8.0.7_@babel+core@8.1.0/node_modules/@babel/helper-create-regexp-features-plugin"
+        },
+        {
+          "parent": "@babel/helper-define-polyfill-provider",
+          "version": "0.6.8",
+          "section": "peerDependencies",
+          "specifier": "^7.4.0 || ^8.0.0-0 <8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-define-polyfill-provider@0.6.8_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/helper-define-polyfill-provider"
+        },
+        {
+          "parent": "@babel/helper-define-polyfill-provider",
+          "version": "1.0.0",
+          "section": "peerDependencies",
+          "specifier": "^7.4.0 || ^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-define-polyfill-provider@1.0.0_@babel+core@8.1.0/node_modules/@babel/helper-define-polyfill-provider"
+        },
+        {
+          "parent": "@babel/helper-module-transforms",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-module-transforms@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/helper-module-transforms"
+        },
+        {
+          "parent": "@babel/helper-module-transforms",
+          "version": "8.0.6",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-module-transforms@8.0.6_@babel+core@8.1.0/node_modules/@babel/helper-module-transforms"
+        },
+        {
+          "parent": "@babel/helper-plugin-utils",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-plugin-utils@8.0.1_@babel+core@8.1.0/node_modules/@babel/helper-plugin-utils"
+        },
+        {
+          "parent": "@babel/helper-remap-async-to-generator",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-remap-async-to-generator@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/helper-remap-async-to-generator"
+        },
+        {
+          "parent": "@babel/helper-remap-async-to-generator",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-remap-async-to-generator@8.0.1_@babel+core@8.1.0/node_modules/@babel/helper-remap-async-to-generator"
+        },
+        {
+          "parent": "@babel/helper-replace-supers",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-replace-supers@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/helper-replace-supers"
+        },
+        {
+          "parent": "@babel/helper-replace-supers",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-replace-supers@8.0.1_@babel+core@8.1.0/node_modules/@babel/helper-replace-supers"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-firefox-class-in-computed-class-key",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-firefox-class-in-computed-class-key@7.29.7_@babel+core@7.29.7_supp_db592f657b0f3de61e1a789dfedc9ef1/node_modules/@babel/plugin-bugfix-firefox-class-in-computed-class-key"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-firefox-class-in-computed-class-key",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-firefox-class-in-computed-class-key@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-bugfix-firefox-class-in-computed-class-key"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-safari-class-field-initializer-scope",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-safari-class-field-initializer-scope@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-bugfix-safari-class-field-initializer-scope"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-safari-class-field-initializer-scope",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-safari-class-field-initializer-scope@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-bugfix-safari-class-field-initializer-scope"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.29.7_@b_e89b9aed39d4f32709d6698f3b0dd626/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-safari-id-destructuring-collision-in-function-expression@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-safari-rest-destructuring-rhs-array",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-safari-rest-destructuring-rhs-array@7.29.7_@babel+core@7.29.7_supp_93877ed139ef05659715d86ebdbaa441/node_modules/@babel/plugin-bugfix-safari-rest-destructuring-rhs-array"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-safari-rest-destructuring-rhs-array",
+          "version": "8.0.6",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-safari-rest-destructuring-rhs-array@8.0.6_@babel+core@8.1.0/node_modules/@babel/plugin-bugfix-safari-rest-destructuring-rhs-array"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.13.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-v8-spread-parameters-in-optional-chaining@7.29.7_@babel+core@7.29._b3e765cd57e6337b5b0dc833a99d78c9/node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-v8-spread-parameters-in-optional-chaining@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-v8-static-class-fields-redefine-readonly@7.29.7_@babel+core@7.29.7_6b43df71574ee0599906073d629b9903/node_modules/@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly"
+        },
+        {
+          "parent": "@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-bugfix-v8-static-class-fields-redefine-readonly@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly"
+        },
+        {
+          "parent": "@babel/plugin-proposal-decorators",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-proposal-decorators@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-proposal-decorators"
+        },
+        {
+          "parent": "@babel/plugin-proposal-private-property-in-object",
+          "version": "7.21.0-placeholder-for-preset-env.2",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-proposal-private-property-in-object@7.21.0-placeholder-for-preset-env.2_@_a76827d1cc3c1e182ffcd58b4c405890/node_modules/@babel/plugin-proposal-private-property-in-object"
+        },
+        {
+          "parent": "@babel/plugin-syntax-decorators",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-decorators@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-syntax-decorators"
+        },
+        {
+          "parent": "@babel/plugin-syntax-import-assertions",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-import-assertions@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-syntax-import-assertions"
+        },
+        {
+          "parent": "@babel/plugin-syntax-import-attributes",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-import-attributes@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-syntax-import-attributes"
+        },
+        {
+          "parent": "@babel/plugin-syntax-import-meta",
+          "version": "7.10.4",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-import-meta@7.10.4_@babel+core@7.25.2_supports-color@10.2.2_/node_modules/@babel/plugin-syntax-import-meta"
+        },
+        {
+          "parent": "@babel/plugin-syntax-jsx",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-jsx@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-syntax-jsx"
+        },
+        {
+          "parent": "@babel/plugin-syntax-jsx",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-jsx@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-syntax-jsx"
+        },
+        {
+          "parent": "@babel/plugin-syntax-typescript",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-typescript@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-syntax-typescript"
+        },
+        {
+          "parent": "@babel/plugin-syntax-typescript",
+          "version": "8.0.3",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-typescript@8.0.3_@babel+core@8.1.0/node_modules/@babel/plugin-syntax-typescript"
+        },
+        {
+          "parent": "@babel/plugin-syntax-unicode-sets-regex",
+          "version": "7.18.6",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-syntax-unicode-sets-regex@7.18.6_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-syntax-unicode-sets-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-arrow-functions",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-arrow-functions@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-arrow-functions"
+        },
+        {
+          "parent": "@babel/plugin-transform-arrow-functions",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-arrow-functions@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-arrow-functions"
+        },
+        {
+          "parent": "@babel/plugin-transform-async-generator-functions",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-async-generator-functions@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-async-generator-functions"
+        },
+        {
+          "parent": "@babel/plugin-transform-async-generator-functions",
+          "version": "8.0.6",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-async-generator-functions@8.0.6_@babel+core@8.1.0/node_modules/@babel/plugin-transform-async-generator-functions"
+        },
+        {
+          "parent": "@babel/plugin-transform-async-to-generator",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-async-to-generator@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-async-to-generator"
+        },
+        {
+          "parent": "@babel/plugin-transform-async-to-generator",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-async-to-generator@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-async-to-generator"
+        },
+        {
+          "parent": "@babel/plugin-transform-block-scoped-functions",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-block-scoped-functions@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-block-scoped-functions"
+        },
+        {
+          "parent": "@babel/plugin-transform-block-scoped-functions",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-block-scoped-functions@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-block-scoped-functions"
+        },
+        {
+          "parent": "@babel/plugin-transform-block-scoping",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-block-scoping@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-block-scoping"
+        },
+        {
+          "parent": "@babel/plugin-transform-block-scoping",
+          "version": "8.0.7",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-block-scoping@8.0.7_@babel+core@8.1.0/node_modules/@babel/plugin-transform-block-scoping"
+        },
+        {
+          "parent": "@babel/plugin-transform-class-properties",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-class-properties@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-class-properties"
+        },
+        {
+          "parent": "@babel/plugin-transform-class-properties",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-class-properties@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-class-properties"
+        },
+        {
+          "parent": "@babel/plugin-transform-class-static-block",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.12.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-class-static-block@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-class-static-block"
+        },
+        {
+          "parent": "@babel/plugin-transform-class-static-block",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-class-static-block@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-class-static-block"
+        },
+        {
+          "parent": "@babel/plugin-transform-classes",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-classes@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-classes"
+        },
+        {
+          "parent": "@babel/plugin-transform-classes",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-classes@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-classes"
+        },
+        {
+          "parent": "@babel/plugin-transform-computed-properties",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-computed-properties@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-computed-properties"
+        },
+        {
+          "parent": "@babel/plugin-transform-computed-properties",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-computed-properties@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-computed-properties"
+        },
+        {
+          "parent": "@babel/plugin-transform-destructuring",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-destructuring@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-destructuring"
+        },
+        {
+          "parent": "@babel/plugin-transform-destructuring",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-destructuring@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-destructuring"
+        },
+        {
+          "parent": "@babel/plugin-transform-dotall-regex",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-dotall-regex@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-dotall-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-dotall-regex",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-dotall-regex@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-dotall-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-duplicate-keys",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-duplicate-keys@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-duplicate-keys"
+        },
+        {
+          "parent": "@babel/plugin-transform-duplicate-keys",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-duplicate-keys@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-duplicate-keys"
+        },
+        {
+          "parent": "@babel/plugin-transform-duplicate-named-capturing-groups-regex",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-duplicate-named-capturing-groups-regex@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-duplicate-named-capturing-groups-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-duplicate-named-capturing-groups-regex",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-duplicate-named-capturing-groups-regex@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-duplicate-named-capturing-groups-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-dynamic-import",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-dynamic-import@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-dynamic-import"
+        },
+        {
+          "parent": "@babel/plugin-transform-dynamic-import",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-dynamic-import@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-dynamic-import"
+        },
+        {
+          "parent": "@babel/plugin-transform-explicit-resource-management",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-explicit-resource-management@7.29.7_@babel+core@7.29.7_supports_940e68af9bff527ae7a0d2cfd8146e8f/node_modules/@babel/plugin-transform-explicit-resource-management"
+        },
+        {
+          "parent": "@babel/plugin-transform-explicit-resource-management",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-explicit-resource-management@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-explicit-resource-management"
+        },
+        {
+          "parent": "@babel/plugin-transform-exponentiation-operator",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-exponentiation-operator@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-exponentiation-operator"
+        },
+        {
+          "parent": "@babel/plugin-transform-exponentiation-operator",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-exponentiation-operator@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-exponentiation-operator"
+        },
+        {
+          "parent": "@babel/plugin-transform-export-namespace-from",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-export-namespace-from@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-export-namespace-from"
+        },
+        {
+          "parent": "@babel/plugin-transform-export-namespace-from",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-export-namespace-from@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-export-namespace-from"
+        },
+        {
+          "parent": "@babel/plugin-transform-for-of",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-for-of@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-for-of"
+        },
+        {
+          "parent": "@babel/plugin-transform-for-of",
+          "version": "8.0.7",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-for-of@8.0.7_@babel+core@8.1.0/node_modules/@babel/plugin-transform-for-of"
+        },
+        {
+          "parent": "@babel/plugin-transform-function-name",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-function-name@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-function-name"
+        },
+        {
+          "parent": "@babel/plugin-transform-function-name",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-function-name@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-function-name"
+        },
+        {
+          "parent": "@babel/plugin-transform-json-strings",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-json-strings@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-json-strings"
+        },
+        {
+          "parent": "@babel/plugin-transform-json-strings",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-json-strings@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-json-strings"
+        },
+        {
+          "parent": "@babel/plugin-transform-literals",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-literals@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-literals",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-literals@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-logical-assignment-operators",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-logical-assignment-operators@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-logical-assignment-operators"
+        },
+        {
+          "parent": "@babel/plugin-transform-logical-assignment-operators",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-logical-assignment-operators@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-logical-assignment-operators"
+        },
+        {
+          "parent": "@babel/plugin-transform-member-expression-literals",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-member-expression-literals@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-member-expression-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-member-expression-literals",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-member-expression-literals@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-member-expression-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-amd",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-amd@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-modules-amd"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-amd",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-amd@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-modules-amd"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-commonjs",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-commonjs@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-modules-commonjs"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-commonjs",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-commonjs@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-modules-commonjs"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-systemjs",
+          "version": "7.29.8",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-systemjs@7.29.8_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-modules-systemjs"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-systemjs",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-systemjs@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-modules-systemjs"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-umd",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-umd@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-modules-umd"
+        },
+        {
+          "parent": "@babel/plugin-transform-modules-umd",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-modules-umd@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-modules-umd"
+        },
+        {
+          "parent": "@babel/plugin-transform-named-capturing-groups-regex",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-named-capturing-groups-regex@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-named-capturing-groups-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-named-capturing-groups-regex",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-named-capturing-groups-regex@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-named-capturing-groups-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-new-target",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-new-target@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-new-target"
+        },
+        {
+          "parent": "@babel/plugin-transform-new-target",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-new-target@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-new-target"
+        },
+        {
+          "parent": "@babel/plugin-transform-nullish-coalescing-operator",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-nullish-coalescing-operator@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-nullish-coalescing-operator"
+        },
+        {
+          "parent": "@babel/plugin-transform-nullish-coalescing-operator",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-nullish-coalescing-operator@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-nullish-coalescing-operator"
+        },
+        {
+          "parent": "@babel/plugin-transform-numeric-separator",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-numeric-separator@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-numeric-separator"
+        },
+        {
+          "parent": "@babel/plugin-transform-numeric-separator",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-numeric-separator@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-numeric-separator"
+        },
+        {
+          "parent": "@babel/plugin-transform-object-rest-spread",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-object-rest-spread@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-object-rest-spread"
+        },
+        {
+          "parent": "@babel/plugin-transform-object-rest-spread",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-object-rest-spread@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-object-rest-spread"
+        },
+        {
+          "parent": "@babel/plugin-transform-object-super",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-object-super@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-object-super"
+        },
+        {
+          "parent": "@babel/plugin-transform-object-super",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-object-super@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-object-super"
+        },
+        {
+          "parent": "@babel/plugin-transform-optional-catch-binding",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-optional-catch-binding@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-optional-catch-binding"
+        },
+        {
+          "parent": "@babel/plugin-transform-optional-catch-binding",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-optional-catch-binding@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-optional-catch-binding"
+        },
+        {
+          "parent": "@babel/plugin-transform-optional-chaining",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-optional-chaining@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-optional-chaining"
+        },
+        {
+          "parent": "@babel/plugin-transform-optional-chaining",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-optional-chaining@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-optional-chaining"
+        },
+        {
+          "parent": "@babel/plugin-transform-parameters",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-parameters@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-parameters"
+        },
+        {
+          "parent": "@babel/plugin-transform-parameters",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-parameters@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-parameters"
+        },
+        {
+          "parent": "@babel/plugin-transform-private-methods",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-private-methods@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-private-methods"
+        },
+        {
+          "parent": "@babel/plugin-transform-private-methods",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-private-methods@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-private-methods"
+        },
+        {
+          "parent": "@babel/plugin-transform-private-property-in-object",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-private-property-in-object@7.29.7_@babel+core@7.29.7_supports-c_09203f5d1755ec997a87d891cd6513fc/node_modules/@babel/plugin-transform-private-property-in-object"
+        },
+        {
+          "parent": "@babel/plugin-transform-private-property-in-object",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-private-property-in-object@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-private-property-in-object"
+        },
+        {
+          "parent": "@babel/plugin-transform-property-literals",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-property-literals@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-property-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-property-literals",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-property-literals@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-property-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-react-display-name",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-react-display-name@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-react-display-name"
+        },
+        {
+          "parent": "@babel/plugin-transform-react-jsx-development",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-react-jsx-development@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-react-jsx-development"
+        },
+        {
+          "parent": "@babel/plugin-transform-react-jsx-self",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-react-jsx-self@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-react-jsx-self"
+        },
+        {
+          "parent": "@babel/plugin-transform-react-jsx-source",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-react-jsx-source@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-react-jsx-source"
+        },
+        {
+          "parent": "@babel/plugin-transform-react-jsx",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-react-jsx@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-react-jsx"
+        },
+        {
+          "parent": "@babel/plugin-transform-react-pure-annotations",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-react-pure-annotations@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-react-pure-annotations"
+        },
+        {
+          "parent": "@babel/plugin-transform-regenerator",
+          "version": "7.29.8",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-regenerator@7.29.8_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-regenerator"
+        },
+        {
+          "parent": "@babel/plugin-transform-regenerator",
+          "version": "8.0.6",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-regenerator@8.0.6_@babel+core@8.1.0/node_modules/@babel/plugin-transform-regenerator"
+        },
+        {
+          "parent": "@babel/plugin-transform-regexp-modifiers",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-regexp-modifiers@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-regexp-modifiers"
+        },
+        {
+          "parent": "@babel/plugin-transform-regexp-modifiers",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-regexp-modifiers@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-regexp-modifiers"
+        },
+        {
+          "parent": "@babel/plugin-transform-reserved-words",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-reserved-words@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-reserved-words"
+        },
+        {
+          "parent": "@babel/plugin-transform-reserved-words",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-reserved-words@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-reserved-words"
+        },
+        {
+          "parent": "@babel/plugin-transform-runtime",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-runtime@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-runtime"
+        },
+        {
+          "parent": "@babel/plugin-transform-shorthand-properties",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-shorthand-properties@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-shorthand-properties"
+        },
+        {
+          "parent": "@babel/plugin-transform-shorthand-properties",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-shorthand-properties@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-shorthand-properties"
+        },
+        {
+          "parent": "@babel/plugin-transform-spread",
+          "version": "7.29.8",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-spread@7.29.8_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-spread"
+        },
+        {
+          "parent": "@babel/plugin-transform-spread",
+          "version": "8.0.5",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-spread@8.0.5_@babel+core@8.1.0/node_modules/@babel/plugin-transform-spread"
+        },
+        {
+          "parent": "@babel/plugin-transform-sticky-regex",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-sticky-regex@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-sticky-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-sticky-regex",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-sticky-regex@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-sticky-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-template-literals",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-template-literals@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-template-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-template-literals",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-template-literals@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-template-literals"
+        },
+        {
+          "parent": "@babel/plugin-transform-typeof-symbol",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-typeof-symbol@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-typeof-symbol"
+        },
+        {
+          "parent": "@babel/plugin-transform-typeof-symbol",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-typeof-symbol@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-typeof-symbol"
+        },
+        {
+          "parent": "@babel/plugin-transform-typescript",
+          "version": "7.29.9",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-typescript@7.29.9_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/plugin-transform-typescript"
+        },
+        {
+          "parent": "@babel/plugin-transform-typescript",
+          "version": "8.0.6",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-typescript@8.0.6_@babel+core@8.1.0/node_modules/@babel/plugin-transform-typescript"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-escapes",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-escapes@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-unicode-escapes"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-escapes",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-escapes@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-unicode-escapes"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-property-regex",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-property-regex@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-unicode-property-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-property-regex",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-property-regex@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-unicode-property-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-regex",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-regex@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-unicode-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-regex",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-regex@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-unicode-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-sets-regex",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-sets-regex@7.29.7_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/plugin-transform-unicode-sets-regex"
+        },
+        {
+          "parent": "@babel/plugin-transform-unicode-sets-regex",
+          "version": "8.0.1",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+plugin-transform-unicode-sets-regex@8.0.1_@babel+core@8.1.0/node_modules/@babel/plugin-transform-unicode-sets-regex"
+        },
+        {
+          "parent": "@babel/preset-env",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+preset-env@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/preset-env"
+        },
+        {
+          "parent": "@babel/preset-env",
+          "version": "8.0.7",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+preset-env@8.0.7_@babel+core@8.1.0/node_modules/@babel/preset-env"
+        },
+        {
+          "parent": "@babel/preset-modules",
+          "version": "0.1.6-no-external-plugins",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0 || ^8.0.0-0 <8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+preset-modules@0.1.6-no-external-plugins_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/@babel/preset-modules"
+        },
+        {
+          "parent": "@babel/preset-modules",
+          "version": "0.2.0",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+preset-modules@0.2.0_@babel+core@8.1.0/node_modules/@babel/preset-modules"
+        },
+        {
+          "parent": "@babel/preset-react",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+preset-react@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/preset-react"
+        },
+        {
+          "parent": "@babel/preset-typescript",
+          "version": "7.29.7",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+preset-typescript@7.29.7_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/preset-typescript"
+        },
+        {
+          "parent": "@babel/preset-typescript",
+          "version": "8.0.7",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+preset-typescript@8.0.7_@babel+core@8.1.0/node_modules/@babel/preset-typescript"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "7.25.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-c_240f0c1c581ccd29fbfbe35061132f18/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "7.25.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supp_3cdcbbfbc5f0ef4e659d0cff9095adac/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/vite-plugin-uni",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "7.25.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+vite-plugin-uni@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-_54363d52cd7058c4c8315899241fa7a7/node_modules/@dcloudio/vite-plugin-uni"
+        },
+        {
+          "parent": "@dcloudio/vite-plugin-uni",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "7.25.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+vite-plugin-uni@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_sup_faa1c3f404429985c2eb995200c44463/node_modules/@dcloudio/vite-plugin-uni"
+        },
+        {
+          "parent": "@rnx-kit/babel-preset-metro-react-native",
+          "version": "1.1.8",
+          "section": "peerDependencies",
+          "specifier": "^7.20.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@rnx-kit+babel-preset-metro-react-native@1.1.8_@babel+core@7.29.7_supports-color@10.2.2_b52049091f41e4372084ed9d9ec47ad7/node_modules/@rnx-kit/babel-preset-metro-react-native"
+        },
+        {
+          "parent": "@rollup/plugin-babel",
+          "version": "6.1.0",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@rollup+plugin-babel@6.1.0_@babel+core@7.29.7_supports-color@10.2.2__@types+babel__core_d345875b0ad30cb31b235ee84ee29bb9/node_modules/@rollup/plugin-babel"
+        },
+        {
+          "parent": "@stylexjs/babel-plugin",
+          "version": "0.19.1",
+          "section": "dependencies",
+          "specifier": "^7.26.8",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@stylexjs+babel-plugin@0.19.1_supports-color@10.2.2/node_modules/@stylexjs/babel-plugin"
+        },
+        {
+          "parent": "@tarojs/helper",
+          "version": "4.3.0",
+          "section": "dependencies",
+          "specifier": "^7.24.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+helper@4.3.0_supports-color@10.2.2/node_modules/@tarojs/helper"
+        },
+        {
+          "parent": "@tarojs/helper",
+          "version": "4.3.2",
+          "section": "dependencies",
+          "specifier": "^7.24.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+helper@4.3.2_supports-color@10.2.2/node_modules/@tarojs/helper"
+        },
+        {
+          "parent": "@tarojs/plugin-platform-h5",
+          "version": "4.3.0",
+          "section": "dependencies",
+          "specifier": "^7.14.5",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+plugin-platform-h5@4.3.0_@tarojs+taro@4.3.0_85b76f805a67c9a0cb5a24535f855471__@_8e33e652eaa0b1e33294a23b4c9c9fb2/node_modules/@tarojs/plugin-platform-h5"
+        },
+        {
+          "parent": "@tarojs/plugin-platform-h5",
+          "version": "4.3.2",
+          "section": "dependencies",
+          "specifier": "^7.14.5",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+plugin-platform-h5@4.3.2_@tarojs+taro@4.3.2_e6c035e3fd157b70a993d718cc44aeab__@_e8ee0203b97cfe59d3af060e10f6cd07/node_modules/@tarojs/plugin-platform-h5"
+        },
+        {
+          "parent": "@tarojs/vite-runner",
+          "version": "4.3.0",
+          "section": "dependencies",
+          "specifier": "^7.24.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+vite-runner@4.3.0_@tarojs+runtime@4.3.0_@types+babel__core@7.20.5_jiti@2.7.0_po_44d6a9197aa7818ead122845b25a8871/node_modules/@tarojs/vite-runner"
+        },
+        {
+          "parent": "@tarojs/vite-runner",
+          "version": "4.3.2",
+          "section": "dependencies",
+          "specifier": "^7.24.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+vite-runner@4.3.2_@tarojs+runtime@4.3.2_@types+babel__core@7.20.5_jiti@2.7.0_po_6682183a5969a0633d5b7fab723182f8/node_modules/@tarojs/vite-runner"
+        },
+        {
+          "parent": "@tarojs/webpack5-runner",
+          "version": "4.3.0",
+          "section": "peerDependencies",
+          "specifier": "^7.12.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+webpack5-runner@4.3.0_@babel+core@7.29.7_supports-color@10.2.2__@swc+core@1.16._fe0cddbc8148247bf246aab7c169deba/node_modules/@tarojs/webpack5-runner"
+        },
+        {
+          "parent": "@tarojs/webpack5-runner",
+          "version": "4.3.2",
+          "section": "peerDependencies",
+          "specifier": "^7.12.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+webpack5-runner@4.3.2_@babel+core@7.29.7_supports-color@10.2.2__@swc+core@1.16._c31984adbd6878ab8e132454eec237dc/node_modules/@tarojs/webpack5-runner"
+        },
+        {
+          "parent": "@vitejs/plugin-legacy",
+          "version": "4.1.1",
+          "section": "dependencies",
+          "specifier": "^7.22.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vitejs+plugin-legacy@4.1.1_supports-color@10.2.2_terser@5.51.2_vite@4.5.14_@types+node_e4180cc3cd427385676a26f2053fb981/node_modules/@vitejs/plugin-legacy"
+        },
+        {
+          "parent": "@vitejs/plugin-legacy",
+          "version": "5.3.2",
+          "section": "dependencies",
+          "specifier": "^7.23.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vitejs+plugin-legacy@5.3.2_supports-color@10.2.2_terser@5.51.2_vite@5.2.8_@types+node@_7b4571da764e366bfd79eb036aeb465d/node_modules/@vitejs/plugin-legacy"
+        },
+        {
+          "parent": "@vitejs/plugin-react",
+          "version": "4.7.0",
+          "section": "dependencies",
+          "specifier": "^7.28.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vitejs+plugin-react@4.7.0_supports-color@10.2.2_vite@4.5.14_@types+node@26.6.6_less@4._b94325f6e33fb2b6aa79a10b74e988c3/node_modules/@vitejs/plugin-react"
+        },
+        {
+          "parent": "@vitejs/plugin-vue-jsx",
+          "version": "3.1.0",
+          "section": "dependencies",
+          "specifier": "^7.23.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vitejs+plugin-vue-jsx@3.1.0_supports-color@10.2.2_vite@5.2.8_@types+node@26.6.6_less@3_721ae88d373382e315647b1cc6d3a9ea/node_modules/@vitejs/plugin-vue-jsx"
+        },
+        {
+          "parent": "@vue/babel-plugin-jsx",
+          "version": "1.5.0",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vue+babel-plugin-jsx@1.5.0_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@vue/babel-plugin-jsx"
+        },
+        {
+          "parent": "@vue/babel-plugin-jsx",
+          "version": "3.0.0",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vue+babel-plugin-jsx@3.0.0_@babel+core@8.1.0/node_modules/@vue/babel-plugin-jsx"
+        },
+        {
+          "parent": "@vue/babel-plugin-resolve-type",
+          "version": "1.5.0",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vue+babel-plugin-resolve-type@1.5.0_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@vue/babel-plugin-resolve-type"
+        },
+        {
+          "parent": "@vue/babel-plugin-resolve-type",
+          "version": "3.0.0",
+          "section": "peerDependencies",
+          "specifier": "^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@vue+babel-plugin-resolve-type@3.0.0_@babel+core@8.1.0/node_modules/@vue/babel-plugin-resolve-type"
+        },
+        {
+          "parent": "@weapp-vite/ast",
+          "version": "7.4.0",
+          "section": "dependencies",
+          "specifier": "^8.0.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-vite+ast@7.4.0_rolldown@1.2.11/node_modules/@weapp-vite/ast"
+        },
+        {
+          "parent": "@weapp-vite/ast",
+          "version": "7.8.0",
+          "section": "dependencies",
+          "specifier": "^8.0.10",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-vite+ast@7.8.0_rolldown@1.2.16/node_modules/@weapp-vite/ast"
+        },
+        {
+          "parent": "@wevu/compiler",
+          "version": "7.8.0",
+          "section": "dependencies",
+          "specifier": "^8.0.10",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@wevu+compiler@7.8.0_rolldown@1.2.16_rollup@4.64.3_typescript@6.0.3/node_modules/@wevu/compiler"
+        },
+        {
+          "parent": "babel-loader",
+          "version": "8.2.1",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-loader@8.2.1_@babel+core@7.29.7_supports-color@10.2.2__webpack@5.91.0_@swc+core@1_e84200a57d1b388a625cc50b08f6f477/node_modules/babel-loader"
+        },
+        {
+          "parent": "babel-plugin-const-enum",
+          "version": "1.2.0",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0-0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-const-enum@1.2.0_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/babel-plugin-const-enum"
+        },
+        {
+          "parent": "babel-plugin-polyfill-corejs2",
+          "version": "0.4.17",
+          "section": "peerDependencies",
+          "specifier": "^7.4.0 || ^8.0.0-0 <8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-polyfill-corejs2@0.4.17_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/babel-plugin-polyfill-corejs2"
+        },
+        {
+          "parent": "babel-plugin-polyfill-corejs3",
+          "version": "0.13.0",
+          "section": "peerDependencies",
+          "specifier": "^7.4.0 || ^8.0.0-0 <8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-polyfill-corejs3@0.13.0_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/babel-plugin-polyfill-corejs3"
+        },
+        {
+          "parent": "babel-plugin-polyfill-corejs3",
+          "version": "0.14.2",
+          "section": "peerDependencies",
+          "specifier": "^7.4.0 || ^8.0.0-0 <8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-polyfill-corejs3@0.14.2_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/babel-plugin-polyfill-corejs3"
+        },
+        {
+          "parent": "babel-plugin-polyfill-corejs3",
+          "version": "1.0.0",
+          "section": "peerDependencies",
+          "specifier": "^7.4.0 || ^8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-polyfill-corejs3@1.0.0_@babel+core@8.1.0/node_modules/babel-plugin-polyfill-corejs3"
+        },
+        {
+          "parent": "babel-plugin-polyfill-regenerator",
+          "version": "0.6.8",
+          "section": "peerDependencies",
+          "specifier": "^7.4.0 || ^8.0.0-0 <8.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-polyfill-regenerator@0.6.8_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/babel-plugin-polyfill-regenerator"
+        },
+        {
+          "parent": "babel-plugin-transform-taroapi",
+          "version": "4.3.0",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-transform-taroapi@4.3.0_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/babel-plugin-transform-taroapi"
+        },
+        {
+          "parent": "babel-plugin-transform-taroapi",
+          "version": "4.3.2",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-plugin-transform-taroapi@4.3.2_@babel+core@7.29.7_supports-color@10.2.2_/node_modules/babel-plugin-transform-taroapi"
+        },
+        {
+          "parent": "babel-preset-taro",
+          "version": "4.3.0",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-preset-taro@4.3.0_@babel+core@7.29.7_supports-color@10.2.2__@babel+plugin-transfo_8108d525ce2c70af1d20a76fc96fed26/node_modules/babel-preset-taro"
+        },
+        {
+          "parent": "babel-preset-taro",
+          "version": "4.3.2",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/babel-preset-taro@4.3.2_@babel+core@7.29.7_supports-color@10.2.2__@babel+plugin-transfo_4356e492728e855dc9464a063fe34848/node_modules/babel-preset-taro"
+        },
+        {
+          "parent": "eslint-plugin-react-hooks",
+          "version": "7.1.1",
+          "section": "dependencies",
+          "specifier": "^7.24.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint-plugin-react-hooks@7.1.1_eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2__supports-color@10.2.2/node_modules/eslint-plugin-react-hooks"
+        },
+        {
+          "parent": "weapp-vite",
+          "version": "7.8.0",
+          "section": "dependencies",
+          "specifier": "^8.0.10",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/weapp-vite@7.8.0_@devframes+agentic@1.2.3_@oxc-project+types@0.156.0_@types+node@26.6.6_7b9638b8f496c131375befe59701677f/node_modules/weapp-vite"
+        }
+      ]
+    },
+    {
+      "name": "@intlify/core-base",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "11.4.17",
+          "engines": {
+            "node": ">= 22"
+          },
+          "dependencies": {
+            "@intlify/shared": "11.4.17",
+            "@intlify/devtools-types": "11.4.17",
+            "@intlify/message-compiler": "11.4.17"
+          },
+          "exports": {
+            ".": {
+              "node": {
+                "import": {
+                  "default": "./dist/core-base.mjs",
+                  "production": "./dist/core-base.prod.cjs",
+                  "development": "./dist/core-base.mjs"
+                },
+                "require": {
+                  "default": "./index.js",
+                  "production": "./dist/core-base.prod.cjs",
+                  "development": "./dist/core-base.cjs"
+                }
+              },
+              "types": "./dist/core-base.d.ts",
+              "import": "./dist/core-base.mjs",
+              "browser": "./dist/core-base.esm-browser.js"
+            },
+            "./dist/*": "./dist/*",
+            "./package.json": "./package.json"
+          }
+        },
+        {
+          "query": "9.1.11",
+          "status": 200,
+          "version": "9.1.11",
+          "engines": {
+            "node": ">= 10"
+          },
+          "dependencies": {
+            "@intlify/shared": "9.1.10",
+            "@intlify/runtime": "9.1.10",
+            "@intlify/devtools-if": "9.1.10",
+            "@intlify/vue-devtools": "9.1.10",
+            "@intlify/message-compiler": "9.1.10",
+            "@intlify/message-resolver": "9.1.10"
+          }
+        },
+        {
+          "query": "9.14.5",
+          "status": 200,
+          "version": "9.14.5",
+          "engines": {
+            "node": ">= 16"
+          },
+          "dependencies": {
+            "@intlify/shared": "9.14.5",
+            "@intlify/message-compiler": "9.14.5"
+          },
+          "exports": {
+            ".": {
+              "node": {
+                "import": {
+                  "default": "./dist/core-base.mjs",
+                  "production": "./dist/core-base.prod.cjs",
+                  "development": "./dist/core-base.mjs"
+                },
+                "require": {
+                  "default": "./index.js",
+                  "production": "./dist/core-base.prod.cjs",
+                  "development": "./dist/core-base.cjs"
+                }
+              },
+              "types": "./dist/core-base.d.ts",
+              "import": "./dist/core-base.mjs",
+              "browser": "./dist/core-base.esm-browser.js"
+            },
+            "./dist/*": "./dist/*",
+            "./package.json": "./package.json"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-c_240f0c1c581ccd29fbfbe35061132f18/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supp_3cdcbbfbc5f0ef4e659d0cff9095adac/node_modules/@dcloudio/uni-cli-shared"
+        }
+      ]
+    },
+    {
+      "name": "@intlify/message-compiler",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "11.4.17",
+          "engines": {
+            "node": ">= 22"
+          },
+          "dependencies": {
+            "source-map-js": "^1.0.2",
+            "@intlify/shared": "11.4.17"
+          },
+          "exports": {
+            ".": {
+              "node": {
+                "import": {
+                  "default": "./dist/message-compiler.node.mjs",
+                  "production": "./dist/message-compiler.node.mjs",
+                  "development": "./dist/message-compiler.node.mjs"
+                },
+                "require": {
+                  "default": "./index.js",
+                  "production": "./dist/message-compiler.prod.cjs",
+                  "development": "./dist/message-compiler.cjs"
+                }
+              },
+              "types": "./dist/message-compiler.d.ts",
+              "import": "./dist/message-compiler.mjs",
+              "browser": "./dist/message-compiler.esm-browser.js"
+            },
+            "./dist/*": "./dist/*",
+            "./package.json": "./package.json"
+          }
+        },
+        {
+          "query": "9.1.11",
+          "status": 404
+        },
+        {
+          "query": "9.14.5",
+          "status": 200,
+          "version": "9.14.5",
+          "engines": {
+            "node": ">= 16"
+          },
+          "dependencies": {
+            "source-map-js": "^1.0.2",
+            "@intlify/shared": "9.14.5"
+          },
+          "exports": {
+            ".": {
+              "node": {
+                "import": {
+                  "default": "./dist/message-compiler.node.mjs",
+                  "production": "./dist/message-compiler.node.mjs",
+                  "development": "./dist/message-compiler.node.mjs"
+                },
+                "require": {
+                  "default": "./index.js",
+                  "production": "./dist/message-compiler.prod.cjs",
+                  "development": "./dist/message-compiler.cjs"
+                }
+              },
+              "types": "./dist/message-compiler.d.ts",
+              "import": "./dist/message-compiler.mjs",
+              "browser": "./dist/message-compiler.esm-browser.js"
+            },
+            "./dist/*": "./dist/*",
+            "./package.json": "./package.json"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@intlify/core-base",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+core-base@9.1.9/node_modules/@intlify/core-base"
+        },
+        {
+          "parent": "@intlify/runtime",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+runtime@9.1.9/node_modules/@intlify/runtime"
+        }
+      ]
+    },
+    {
+      "name": "@intlify/message-resolver",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "9.1.11",
+          "engines": {
+            "node": ">= 10"
+          }
+        },
+        {
+          "query": "9.1.11",
+          "status": 200,
+          "version": "9.1.11",
+          "engines": {
+            "node": ">= 10"
+          }
+        },
+        {
+          "query": "9.14.5",
+          "status": 404
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@intlify/core-base",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+core-base@9.1.9/node_modules/@intlify/core-base"
+        },
+        {
+          "parent": "@intlify/message-compiler",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+message-compiler@9.1.9/node_modules/@intlify/message-compiler"
+        },
+        {
+          "parent": "@intlify/runtime",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+runtime@9.1.9/node_modules/@intlify/runtime"
+        },
+        {
+          "parent": "@intlify/vue-devtools",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+vue-devtools@9.1.9/node_modules/@intlify/vue-devtools"
+        }
+      ]
+    },
+    {
+      "name": "@intlify/runtime",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "9.1.10",
+          "engines": {
+            "node": ">= 10"
+          },
+          "dependencies": {
+            "@intlify/shared": "9.1.10",
+            "@intlify/message-compiler": "9.1.10",
+            "@intlify/message-resolver": "9.1.10"
+          }
+        },
+        {
+          "query": "9.1.11",
+          "status": 404
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@intlify/core-base",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+core-base@9.1.9/node_modules/@intlify/core-base"
+        },
+        {
+          "parent": "@intlify/vue-devtools",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+vue-devtools@9.1.9/node_modules/@intlify/vue-devtools"
+        }
+      ]
+    },
+    {
+      "name": "@intlify/shared",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "11.4.17",
+          "engines": {
+            "node": ">= 22"
+          },
+          "exports": {
+            ".": {
+              "node": {
+                "import": {
+                  "default": "./dist/shared.mjs",
+                  "production": "./dist/shared.prod.cjs",
+                  "development": "./dist/shared.mjs"
+                },
+                "require": {
+                  "default": "./index.js",
+                  "production": "./dist/shared.prod.cjs",
+                  "development": "./dist/shared.cjs"
+                }
+              },
+              "types": "./dist/shared.d.ts",
+              "import": "./dist/shared.mjs",
+              "browser": "./dist/shared.esm-browser.js"
+            },
+            "./dist/*": "./dist/*",
+            "./package.json": "./package.json"
+          }
+        },
+        {
+          "query": "9.1.11",
+          "status": 404
+        },
+        {
+          "query": "9.14.5",
+          "status": 200,
+          "version": "9.14.5",
+          "engines": {
+            "node": ">= 16"
+          },
+          "exports": {
+            ".": {
+              "node": {
+                "import": {
+                  "default": "./dist/shared.mjs",
+                  "production": "./dist/shared.prod.cjs",
+                  "development": "./dist/shared.mjs"
+                },
+                "require": {
+                  "default": "./index.js",
+                  "production": "./dist/shared.prod.cjs",
+                  "development": "./dist/shared.cjs"
+                }
+              },
+              "types": "./dist/shared.d.ts",
+              "import": "./dist/shared.mjs",
+              "browser": "./dist/shared.esm-browser.js"
+            },
+            "./dist/*": "./dist/*",
+            "./package.json": "./package.json"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-c_240f0c1c581ccd29fbfbe35061132f18/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supp_3cdcbbfbc5f0ef4e659d0cff9095adac/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@intlify/core-base",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+core-base@9.1.9/node_modules/@intlify/core-base"
+        },
+        {
+          "parent": "@intlify/devtools-if",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+devtools-if@9.1.9/node_modules/@intlify/devtools-if"
+        },
+        {
+          "parent": "@intlify/message-compiler",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+message-compiler@9.1.9/node_modules/@intlify/message-compiler"
+        },
+        {
+          "parent": "@intlify/runtime",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+runtime@9.1.9/node_modules/@intlify/runtime"
+        },
+        {
+          "parent": "@intlify/vue-devtools",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+vue-devtools@9.1.9/node_modules/@intlify/vue-devtools"
+        }
+      ]
+    },
+    {
+      "name": "@intlify/vue-devtools",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "9.14.1",
+          "engines": {
+            "node": ">= 16"
+          },
+          "dependencies": {
+            "@intlify/shared": "9.14.1",
+            "@intlify/core-base": "9.14.1"
+          },
+          "exports": {
+            ".": {
+              "node": {
+                "import": {
+                  "default": "./dist/vue-devtools.mjs",
+                  "production": "./dist/vue-devtools.prod.cjs",
+                  "development": "./dist/vue-devtools.mjs"
+                },
+                "require": {
+                  "default": "./index.js",
+                  "production": "./dist/vue-devtools.prod.cjs",
+                  "development": "./dist/vue-devtools.cjs"
+                }
+              },
+              "types": "./dist/vue-devtools.d.ts",
+              "import": "./dist/vue-devtools.mjs"
+            },
+            "./dist/*": "./dist/*",
+            "./package.json": "./package.json"
+          }
+        },
+        {
+          "query": "9.1.11",
+          "status": 404
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-c_240f0c1c581ccd29fbfbe35061132f18/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supp_3cdcbbfbc5f0ef4e659d0cff9095adac/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@intlify/core-base",
+          "version": "9.1.9",
+          "section": "dependencies",
+          "specifier": "9.1.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@intlify+core-base@9.1.9/node_modules/@intlify/core-base"
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "4.4.3",
+          "engines": {
+            "node": ">=6.0"
+          },
+          "dependencies": {
+            "ms": "^2.1.3"
+          }
+        },
+        {
+          "query": "4.3.1",
+          "status": 200,
+          "version": "4.3.1",
+          "engines": {
+            "node": ">=6.0"
+          },
+          "dependencies": {
+            "ms": "2.1.2"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@babel/core",
+          "version": "7.25.2",
+          "section": "dependencies",
+          "specifier": "^4.1.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+core@7.25.2_supports-color@10.2.2/node_modules/@babel/core"
+        },
+        {
+          "parent": "@babel/core",
+          "version": "7.29.7",
+          "section": "dependencies",
+          "specifier": "^4.1.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+core@7.29.7_supports-color@10.2.2/node_modules/@babel/core"
+        },
+        {
+          "parent": "@babel/helper-define-polyfill-provider",
+          "version": "0.6.8",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+helper-define-polyfill-provider@0.6.8_@babel+core@7.29.7_supports-color@10.2.2__supports-color@10.2.2/node_modules/@babel/helper-define-polyfill-provider"
+        },
+        {
+          "parent": "@babel/traverse",
+          "version": "7.29.10",
+          "section": "dependencies",
+          "specifier": "^4.3.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@babel+traverse@7.29.10_supports-color@10.2.2/node_modules/@babel/traverse"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-c_240f0c1c581ccd29fbfbe35061132f18/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supp_3cdcbbfbc5f0ef4e659d0cff9095adac/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-h5-vite",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-h5-vite@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-colo_3f32146f0787d1c06d4270ab3fcd35fe/node_modules/@dcloudio/uni-h5-vite"
+        },
+        {
+          "parent": "@dcloudio/uni-h5-vite",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-h5-vite@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_support_17547e325df61cafaeb6973dc3a54bb4/node_modules/@dcloudio/uni-h5-vite"
+        },
+        {
+          "parent": "@dcloudio/uni-h5",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-h5@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-color@10._a5c01db5712dc9c53cb2b70696b14001/node_modules/@dcloudio/uni-h5"
+        },
+        {
+          "parent": "@dcloudio/uni-h5",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-h5@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supports-col_04421e40dc00cca1ff254f4198d972e0/node_modules/@dcloudio/uni-h5"
+        },
+        {
+          "parent": "@dcloudio/uni-mp-vite",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-mp-vite@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-colo_2cbac745512eace2957d77dd7dc0b72f/node_modules/@dcloudio/uni-mp-vite"
+        },
+        {
+          "parent": "@dcloudio/uni-mp-vite",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-mp-vite@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_support_cc624f391053e3b5a980bb23c64019ce/node_modules/@dcloudio/uni-mp-vite"
+        },
+        {
+          "parent": "@dcloudio/uni-stat",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-stat@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-color@1_e67df82dde63397d399cb7a32cfcb524/node_modules/@dcloudio/uni-stat"
+        },
+        {
+          "parent": "@dcloudio/uni-stat",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-stat@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supports-c_ce577cd53fd935d1af4d469f93260c41/node_modules/@dcloudio/uni-stat"
+        },
+        {
+          "parent": "@dcloudio/vite-plugin-uni",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+vite-plugin-uni@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-_54363d52cd7058c4c8315899241fa7a7/node_modules/@dcloudio/vite-plugin-uni"
+        },
+        {
+          "parent": "@dcloudio/vite-plugin-uni",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "4.3.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+vite-plugin-uni@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_sup_faa1c3f404429985c2eb995200c44463/node_modules/@dcloudio/vite-plugin-uni"
+        },
+        {
+          "parent": "@eslint/config-array",
+          "version": "0.23.5",
+          "section": "dependencies",
+          "specifier": "^4.3.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@eslint+config-array@0.23.5_supports-color@10.2.2/node_modules/@eslint/config-array"
+        },
+        {
+          "parent": "@eslint/eslintrc",
+          "version": "2.1.4",
+          "section": "dependencies",
+          "specifier": "^4.3.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@eslint+eslintrc@2.1.4_supports-color@10.2.2/node_modules/@eslint/eslintrc"
+        },
+        {
+          "parent": "@humanwhocodes/config-array",
+          "version": "0.11.14",
+          "section": "dependencies",
+          "specifier": "^4.3.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@humanwhocodes+config-array@0.11.14_supports-color@10.2.2/node_modules/@humanwhocodes/config-array"
+        },
+        {
+          "parent": "@kwsites/file-exists",
+          "version": "1.1.1",
+          "section": "dependencies",
+          "specifier": "^4.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@kwsites+file-exists@1.1.1_supports-color@10.2.2/node_modules/@kwsites/file-exists"
+        },
+        {
+          "parent": "@tarojs/helper",
+          "version": "4.3.0",
+          "section": "dependencies",
+          "specifier": "^4.3.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+helper@4.3.0_supports-color@10.2.2/node_modules/@tarojs/helper"
+        },
+        {
+          "parent": "@tarojs/helper",
+          "version": "4.3.2",
+          "section": "dependencies",
+          "specifier": "^4.3.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@tarojs+helper@4.3.2_supports-color@10.2.2/node_modules/@tarojs/helper"
+        },
+        {
+          "parent": "@typescript-eslint/parser",
+          "version": "8.71.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+parser@8.71.1_eslint@10.12.0_jiti@2.7.0_supports-color@10.2.2__supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/parser"
+        },
+        {
+          "parent": "@typescript-eslint/parser",
+          "version": "8.72.0",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+parser@8.72.0_eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2__supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/parser"
+        },
+        {
+          "parent": "@typescript-eslint/parser",
+          "version": "8.72.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+parser@8.72.1_eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2__supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/parser"
+        },
+        {
+          "parent": "@typescript-eslint/project-service",
+          "version": "8.71.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+project-service@8.71.1_supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/project-service"
+        },
+        {
+          "parent": "@typescript-eslint/project-service",
+          "version": "8.72.0",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+project-service@8.72.0_supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/project-service"
+        },
+        {
+          "parent": "@typescript-eslint/project-service",
+          "version": "8.72.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+project-service@8.72.1_supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/project-service"
+        },
+        {
+          "parent": "@typescript-eslint/type-utils",
+          "version": "8.71.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+type-utils@8.71.1_eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2__s_618fffa9375f59a30b67c88fb68e1b9c/node_modules/@typescript-eslint/type-utils"
+        },
+        {
+          "parent": "@typescript-eslint/typescript-estree",
+          "version": "8.71.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+typescript-estree@8.71.1_supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/typescript-estree"
+        },
+        {
+          "parent": "@typescript-eslint/typescript-estree",
+          "version": "8.72.0",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+typescript-estree@8.72.0_supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/typescript-estree"
+        },
+        {
+          "parent": "@typescript-eslint/typescript-estree",
+          "version": "8.72.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@typescript-eslint+typescript-estree@8.72.1_supports-color@10.2.2_typescript@6.0.3/node_modules/@typescript-eslint/typescript-estree"
+        },
+        {
+          "parent": "agent-base",
+          "version": "6.0.2",
+          "section": "dependencies",
+          "specifier": "4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/agent-base@6.0.2_supports-color@10.2.2/node_modules/agent-base"
+        },
+        {
+          "parent": "astro-eslint-parser",
+          "version": "3.2.0",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/astro-eslint-parser@3.2.0_supports-color@10.2.2/node_modules/astro-eslint-parser"
+        },
+        {
+          "parent": "body-parser",
+          "version": "1.20.3",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/body-parser@1.20.3_supports-color@10.2.2/node_modules/body-parser"
+        },
+        {
+          "parent": "body-parser",
+          "version": "1.20.8",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/body-parser@1.20.8_supports-color@10.2.2/node_modules/body-parser"
+        },
+        {
+          "parent": "body-parser",
+          "version": "1.20.9",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/body-parser@1.20.9_supports-color@10.2.2/node_modules/body-parser"
+        },
+        {
+          "parent": "compression",
+          "version": "1.8.2",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/compression@1.8.2_supports-color@10.2.2/node_modules/compression"
+        },
+        {
+          "parent": "detect-port",
+          "version": "1.6.1",
+          "section": "dependencies",
+          "specifier": "4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/detect-port@1.6.1_supports-color@10.2.2/node_modules/detect-port"
+        },
+        {
+          "parent": "eslint-plugin-jsdoc",
+          "version": "64.5.4",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint-plugin-jsdoc@64.5.4_eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2__supports-color@10.2.2_typescript@6.0.3/node_modules/eslint-plugin-jsdoc"
+        },
+        {
+          "parent": "eslint-plugin-toml",
+          "version": "1.5.0",
+          "section": "dependencies",
+          "specifier": "^4.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint-plugin-toml@1.5.0_eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2__supports-color@10.2.2/node_modules/eslint-plugin-toml"
+        },
+        {
+          "parent": "eslint",
+          "version": "10.12.0",
+          "section": "dependencies",
+          "specifier": "^4.3.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint@10.12.0_jiti@2.7.0_supports-color@10.2.2/node_modules/eslint"
+        },
+        {
+          "parent": "eslint",
+          "version": "10.14.0",
+          "section": "dependencies",
+          "specifier": "^4.3.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2/node_modules/eslint"
+        },
+        {
+          "parent": "eslint",
+          "version": "8.41.0",
+          "section": "dependencies",
+          "specifier": "^4.3.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint@8.41.0_supports-color@10.2.2/node_modules/eslint"
+        },
+        {
+          "parent": "express",
+          "version": "4.20.0",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/express@4.20.0_supports-color@10.2.2/node_modules/express"
+        },
+        {
+          "parent": "express",
+          "version": "4.22.3",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/express@4.22.3_supports-color@10.2.2/node_modules/express"
+        },
+        {
+          "parent": "finalhandler",
+          "version": "1.2.0",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/finalhandler@1.2.0_supports-color@10.2.2/node_modules/finalhandler"
+        },
+        {
+          "parent": "finalhandler",
+          "version": "1.3.2",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/finalhandler@1.3.2_supports-color@10.2.2/node_modules/finalhandler"
+        },
+        {
+          "parent": "http-proxy-agent",
+          "version": "7.0.2",
+          "section": "dependencies",
+          "specifier": "^4.3.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/http-proxy-agent@7.0.2_supports-color@10.2.2/node_modules/http-proxy-agent"
+        },
+        {
+          "parent": "https-proxy-agent",
+          "version": "5.0.1",
+          "section": "dependencies",
+          "specifier": "4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/https-proxy-agent@5.0.1_supports-color@10.2.2/node_modules/https-proxy-agent"
+        },
+        {
+          "parent": "https-proxy-agent",
+          "version": "7.0.6",
+          "section": "dependencies",
+          "specifier": "4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/https-proxy-agent@7.0.6_supports-color@10.2.2/node_modules/https-proxy-agent"
+        },
+        {
+          "parent": "micromark",
+          "version": "4.0.3",
+          "section": "dependencies",
+          "specifier": "^4.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/micromark@4.0.3_supports-color@10.2.2/node_modules/micromark"
+        },
+        {
+          "parent": "miniprogram-automator",
+          "version": "0.12.1",
+          "section": "dependencies",
+          "specifier": "^4.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/miniprogram-automator@0.12.1_supports-color@10.2.2/node_modules/miniprogram-automator"
+        },
+        {
+          "parent": "miniprogram-automator",
+          "version": "0.13.0",
+          "section": "dependencies",
+          "specifier": "4.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/miniprogram-automator@0.13.0_supports-color@10.2.2/node_modules/miniprogram-automator"
+        },
+        {
+          "parent": "needle",
+          "version": "2.9.1",
+          "section": "dependencies",
+          "specifier": "^3.2.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/needle@2.9.1_supports-color@10.2.2/node_modules/needle"
+        },
+        {
+          "parent": "send",
+          "version": "0.18.0",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/send@0.18.0_supports-color@10.2.2/node_modules/send"
+        },
+        {
+          "parent": "send",
+          "version": "0.19.0",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/send@0.19.0_supports-color@10.2.2/node_modules/send"
+        },
+        {
+          "parent": "send",
+          "version": "0.19.2",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/send@0.19.2_supports-color@10.2.2/node_modules/send"
+        },
+        {
+          "parent": "serve-index",
+          "version": "1.9.2",
+          "section": "dependencies",
+          "specifier": "2.6.9",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/serve-index@1.9.2_supports-color@10.2.2/node_modules/serve-index"
+        },
+        {
+          "parent": "simple-git",
+          "version": "4.0.2",
+          "section": "dependencies",
+          "specifier": "^4.4.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/simple-git@4.0.2_supports-color@10.2.2/node_modules/simple-git"
+        },
+        {
+          "parent": "socks-proxy-agent",
+          "version": "8.0.5",
+          "section": "dependencies",
+          "specifier": "^4.3.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/socks-proxy-agent@8.0.5_supports-color@10.2.2/node_modules/socks-proxy-agent"
+        },
+        {
+          "parent": "spdy-transport",
+          "version": "3.0.0",
+          "section": "dependencies",
+          "specifier": "^4.1.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/spdy-transport@3.0.0_supports-color@10.2.2/node_modules/spdy-transport"
+        },
+        {
+          "parent": "spdy",
+          "version": "4.0.2",
+          "section": "dependencies",
+          "specifier": "^4.1.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/spdy@4.0.2_supports-color@10.2.2/node_modules/spdy"
+        },
+        {
+          "parent": "stream-parser",
+          "version": "0.3.1",
+          "section": "dependencies",
+          "specifier": "2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stream-parser@0.3.1_supports-color@10.2.2/node_modules/stream-parser"
+        },
+        {
+          "parent": "stylelint",
+          "version": "16.26.1",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stylelint@16.26.1_supports-color@10.2.2_typescript@6.0.3/node_modules/stylelint"
+        },
+        {
+          "parent": "stylelint",
+          "version": "17.16.0",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stylelint@17.16.0_supports-color@10.2.2_typescript@6.0.3/node_modules/stylelint"
+        },
+        {
+          "parent": "stylus",
+          "version": "0.64.0",
+          "section": "dependencies",
+          "specifier": "^4.3.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stylus@0.64.0_supports-color@10.2.2/node_modules/stylus"
+        },
+        {
+          "parent": "tuf-js",
+          "version": "4.1.0",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/tuf-js@4.1.0_supports-color@10.2.2/node_modules/tuf-js"
+        },
+        {
+          "parent": "unified-engine",
+          "version": "11.2.2",
+          "section": "dependencies",
+          "specifier": "^4.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/unified-engine@11.2.2_supports-color@10.2.2/node_modules/unified-engine"
+        },
+        {
+          "parent": "vite-tsconfig-paths",
+          "version": "6.1.1",
+          "section": "dependencies",
+          "specifier": "^4.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/vite-tsconfig-paths@6.1.1_supports-color@10.2.2_typescript@6.0.3_vite@8.3.5_@types+node_62d3ecd8c69b632c7c4ca24706762aab/node_modules/vite-tsconfig-paths"
+        },
+        {
+          "parent": "vite-tsconfig-paths",
+          "version": "7.0.0-alpha.3",
+          "section": "dependencies",
+          "specifier": "^4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/vite-tsconfig-paths@7.0.0-alpha.3_supports-color@10.2.2_vite@8.3.5_@types+node@26.6.6_e_e76ceb5533fd723e5b9e1d0d90b89b9d/node_modules/vite-tsconfig-paths"
+        },
+        {
+          "parent": "vue-eslint-parser",
+          "version": "10.4.1",
+          "section": "dependencies",
+          "specifier": "^4.4.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/vue-eslint-parser@10.4.1_eslint@10.14.0_jiti@2.7.0_supports-color@10.2.2__supports-color@10.2.2/node_modules/vue-eslint-parser"
+        },
+        {
+          "parent": "weapp-tailwindcss",
+          "version": "5.6.0",
+          "section": "dependencies",
+          "specifier": "~4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/weapp-tailwindcss@5.6.0_@oxc-project+types@0.153.0_jiti@2.7.0_lightningcss@1.33.0_rolld_83df4218bcc8440e1161b2cd8078baac/node_modules/weapp-tailwindcss"
+        },
+        {
+          "parent": "weapp-tailwindcss",
+          "version": "5.6.3",
+          "section": "dependencies",
+          "specifier": "~4.4.3",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/weapp-tailwindcss@5.6.3_@oxc-project+types@0.156.0_jiti@2.7.0_lightningcss@1.33.0_rolld_c586ea80b7fa9b70314914053299a329/node_modules/weapp-tailwindcss"
+        }
+      ]
+    },
+    {
+      "name": "fast-uri",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "4.2.3"
+        },
+        {
+          "query": "3.1.9",
+          "status": 200,
+          "version": "3.1.9"
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "ajv",
+          "version": "8.20.0",
+          "section": "dependencies",
+          "specifier": "^3.0.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/ajv@8.20.0/node_modules/ajv"
+        }
+      ]
+    },
+    {
+      "name": "ip-address",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "10.7.5",
+          "engines": {
+            "node": ">= 12"
+          }
+        },
+        {
+          "query": "10.7.4",
+          "status": 200,
+          "version": "10.7.4",
+          "engines": {
+            "node": ">= 12"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "socks",
+          "version": "2.8.10",
+          "section": "dependencies",
+          "specifier": "^10.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/socks@2.8.10/node_modules/socks"
+        }
+      ]
+    },
+    {
+      "name": "postcss-selector-parser",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "7.1.7",
+          "engines": {
+            "node": ">=4"
+          },
+          "dependencies": {
+            "cssesc": "^3.0.0",
+            "util-deprecate": "^1.0.2"
+          }
+        },
+        {
+          "query": "6.1.5",
+          "status": 200,
+          "version": "6.1.5",
+          "engines": {
+            "node": ">=4"
+          },
+          "dependencies": {
+            "cssesc": "^3.0.0",
+            "util-deprecate": "^1.0.2"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "@csstools/postcss-cascade-layers",
+          "version": "6.0.2",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@csstools+postcss-cascade-layers@6.0.2_postcss@8.5.32/node_modules/@csstools/postcss-cascade-layers"
+        },
+        {
+          "parent": "@csstools/postcss-is-pseudo-class",
+          "version": "6.0.3",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@csstools+postcss-is-pseudo-class@6.0.3_postcss@8.5.32/node_modules/@csstools/postcss-is-pseudo-class"
+        },
+        {
+          "parent": "@csstools/postcss-scope-pseudo-class",
+          "version": "5.0.0",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@csstools+postcss-scope-pseudo-class@5.0.0_postcss@8.5.32/node_modules/@csstools/postcss-scope-pseudo-class"
+        },
+        {
+          "parent": "@csstools/selector-resolve-nested",
+          "version": "4.0.2",
+          "section": "peerDependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@csstools+selector-resolve-nested@4.0.2_postcss-selector-parser@7.1.7/node_modules/@csstools/selector-resolve-nested"
+        },
+        {
+          "parent": "@csstools/selector-specificity",
+          "version": "5.0.0",
+          "section": "peerDependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@csstools+selector-specificity@5.0.0_postcss-selector-parser@7.1.7/node_modules/@csstools/selector-specificity"
+        },
+        {
+          "parent": "@csstools/selector-specificity",
+          "version": "6.0.1",
+          "section": "peerDependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@csstools+selector-specificity@6.0.1_postcss-selector-parser@7.1.7/node_modules/@csstools/selector-specificity"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "6.1.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-c_240f0c1c581ccd29fbfbe35061132f18/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-cli-shared",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "6.1.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-cli-shared@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supp_3cdcbbfbc5f0ef4e659d0cff9095adac/node_modules/@dcloudio/uni-cli-shared"
+        },
+        {
+          "parent": "@dcloudio/uni-h5",
+          "version": "3.0.0-5030420261029002",
+          "section": "dependencies",
+          "specifier": "6.1.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-h5@3.0.0-5030420261029002_postcss@8.5.32_rollup@4.64.3_supports-color@10._a5c01db5712dc9c53cb2b70696b14001/node_modules/@dcloudio/uni-h5"
+        },
+        {
+          "parent": "@dcloudio/uni-h5",
+          "version": "3.0.0-alpha-5030120260930001",
+          "section": "dependencies",
+          "specifier": "6.1.2",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@dcloudio+uni-h5@3.0.0-alpha-5030120260930001_postcss@8.5.30_rollup@4.64.3_supports-col_04421e40dc00cca1ff254f4198d972e0/node_modules/@dcloudio/uni-h5"
+        },
+        {
+          "parent": "@weapp-tailwindcss/css-compat",
+          "version": "0.1.2",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-tailwindcss+css-compat@0.1.2_postcss@8.5.32/node_modules/@weapp-tailwindcss/css-compat"
+        },
+        {
+          "parent": "@weapp-tailwindcss/postcss-calc",
+          "version": "1.0.10",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-tailwindcss+postcss-calc@1.0.10_postcss@8.5.32/node_modules/@weapp-tailwindcss/postcss-calc"
+        },
+        {
+          "parent": "@weapp-tailwindcss/postcss-calc",
+          "version": "1.0.11",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-tailwindcss+postcss-calc@1.0.11_postcss@8.5.32/node_modules/@weapp-tailwindcss/postcss-calc"
+        },
+        {
+          "parent": "@weapp-tailwindcss/postcss",
+          "version": "3.4.0",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-tailwindcss+postcss@3.4.0_jiti@2.7.0_lightningcss@1.33.0_tailwindcss@4.3.4_yaml@2.9.1/node_modules/@weapp-tailwindcss/postcss"
+        },
+        {
+          "parent": "@weapp-tailwindcss/postcss",
+          "version": "3.4.3",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-tailwindcss+postcss@3.4.3_jiti@2.7.0_lightningcss@1.33.0_tailwindcss@4.3.4_yaml@2.9.1/node_modules/@weapp-tailwindcss/postcss"
+        },
+        {
+          "parent": "@weapp-vite/web",
+          "version": "1.6.0",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-vite+web@1.6.0_@babel+core@8.0.7_miniprogram-api-typings@5.2.3_rollup@4.64.3_typescript@6.0.3_vitest@5.1.0/node_modules/@weapp-vite/web"
+        },
+        {
+          "parent": "@weapp-vite/web",
+          "version": "2.2.0",
+          "section": "dependencies",
+          "specifier": "^7.1.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@weapp-vite+web@2.2.0_@types+node@26.6.6_jiti@2.7.0_less@4.9.1_supports-color@10.2.2__r_8f1e8e2bab9dd124284f54c09037f400/node_modules/@weapp-vite/web"
+        },
+        {
+          "parent": "@wevu/compiler",
+          "version": "7.4.0",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@wevu+compiler@7.4.0_@babel+core@8.0.7_rolldown@1.2.11_rollup@4.64.3_typescript@6.0.3/node_modules/@wevu/compiler"
+        },
+        {
+          "parent": "@wevu/compiler",
+          "version": "7.8.0",
+          "section": "dependencies",
+          "specifier": "^7.1.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/@wevu+compiler@7.8.0_rolldown@1.2.16_rollup@4.64.3_typescript@6.0.3/node_modules/@wevu/compiler"
+        },
+        {
+          "parent": "css-blank-pseudo",
+          "version": "8.0.2",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/css-blank-pseudo@8.0.2_postcss@8.5.32/node_modules/css-blank-pseudo"
+        },
+        {
+          "parent": "css-has-pseudo",
+          "version": "8.0.2",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/css-has-pseudo@8.0.2_postcss@8.5.32/node_modules/css-has-pseudo"
+        },
+        {
+          "parent": "eslint-plugin-astro",
+          "version": "3.2.1",
+          "section": "dependencies",
+          "specifier": "^7.1.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint-plugin-astro@3.2.1_@typescript-eslint+parser@8.72.0_eslint@10.14.0_jiti@2.7.0_su_c2ea06170207fa886ae325705ea7fe9e/node_modules/eslint-plugin-astro"
+        },
+        {
+          "parent": "eslint-plugin-vue",
+          "version": "10.11.1",
+          "section": "dependencies",
+          "specifier": "^7.1.4",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/eslint-plugin-vue@10.11.1_@stylistic+eslint-plugin@5.10.0_eslint@10.14.0_jiti@2.7.0_sup_b59a8b6b3568dd849bb411a9f14c3b6f/node_modules/eslint-plugin-vue"
+        },
+        {
+          "parent": "postcss-attribute-case-insensitive",
+          "version": "8.0.2",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-attribute-case-insensitive@8.0.2_postcss@8.5.32/node_modules/postcss-attribute-case-insensitive"
+        },
+        {
+          "parent": "postcss-calc",
+          "version": "9.0.1",
+          "section": "dependencies",
+          "specifier": "^6.0.11",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-calc@9.0.1_postcss@8.5.32/node_modules/postcss-calc"
+        },
+        {
+          "parent": "postcss-custom-selectors",
+          "version": "9.0.4",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-custom-selectors@9.0.4_postcss@8.5.32/node_modules/postcss-custom-selectors"
+        },
+        {
+          "parent": "postcss-dir-pseudo-class",
+          "version": "10.0.0",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-dir-pseudo-class@10.0.0_postcss@8.5.32/node_modules/postcss-dir-pseudo-class"
+        },
+        {
+          "parent": "postcss-focus-visible",
+          "version": "11.0.0",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-focus-visible@11.0.0_postcss@8.5.32/node_modules/postcss-focus-visible"
+        },
+        {
+          "parent": "postcss-focus-within",
+          "version": "10.0.1",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-focus-within@10.0.1_postcss@8.5.32/node_modules/postcss-focus-within"
+        },
+        {
+          "parent": "postcss-merge-rules",
+          "version": "6.1.1",
+          "section": "dependencies",
+          "specifier": "^6.0.16",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-merge-rules@6.1.1_postcss@8.5.32/node_modules/postcss-merge-rules"
+        },
+        {
+          "parent": "postcss-minify-selectors",
+          "version": "6.0.4",
+          "section": "dependencies",
+          "specifier": "^6.0.16",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-minify-selectors@6.0.4_postcss@8.5.32/node_modules/postcss-minify-selectors"
+        },
+        {
+          "parent": "postcss-modules-local-by-default",
+          "version": "4.2.0",
+          "section": "dependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-modules-local-by-default@4.2.0_postcss@8.5.32/node_modules/postcss-modules-local-by-default"
+        },
+        {
+          "parent": "postcss-modules-scope",
+          "version": "3.2.1",
+          "section": "dependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-modules-scope@3.2.1_postcss@8.5.32/node_modules/postcss-modules-scope"
+        },
+        {
+          "parent": "postcss-nested",
+          "version": "7.0.2",
+          "section": "dependencies",
+          "specifier": "^7.0.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-nested@7.0.2_postcss@8.5.32/node_modules/postcss-nested"
+        },
+        {
+          "parent": "postcss-nesting",
+          "version": "14.0.3",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-nesting@14.0.3_postcss@8.5.32/node_modules/postcss-nesting"
+        },
+        {
+          "parent": "postcss-pseudo-class-any-link",
+          "version": "11.0.1",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-pseudo-class-any-link@11.0.1_postcss@8.5.32/node_modules/postcss-pseudo-class-any-link"
+        },
+        {
+          "parent": "postcss-selector-not",
+          "version": "9.0.0",
+          "section": "dependencies",
+          "specifier": "^7.1.1",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-selector-not@9.0.0_postcss@8.5.32/node_modules/postcss-selector-not"
+        },
+        {
+          "parent": "postcss-tailwindcss",
+          "version": "3.1.5",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-tailwindcss@3.1.5/node_modules/postcss-tailwindcss"
+        },
+        {
+          "parent": "postcss-unique-selectors",
+          "version": "6.0.4",
+          "section": "dependencies",
+          "specifier": "^6.0.16",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/postcss-unique-selectors@6.0.4_postcss@8.5.32/node_modules/postcss-unique-selectors"
+        },
+        {
+          "parent": "stylehacks",
+          "version": "6.1.1",
+          "section": "dependencies",
+          "specifier": "^6.0.16",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stylehacks@6.1.1_postcss@8.5.32/node_modules/stylehacks"
+        },
+        {
+          "parent": "stylelint-scss",
+          "version": "7.3.0",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stylelint-scss@7.3.0_stylelint@17.16.0_supports-color@10.2.2_typescript@6.0.3_/node_modules/stylelint-scss"
+        },
+        {
+          "parent": "stylelint",
+          "version": "16.26.1",
+          "section": "dependencies",
+          "specifier": "^7.1.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stylelint@16.26.1_supports-color@10.2.2_typescript@6.0.3/node_modules/stylelint"
+        },
+        {
+          "parent": "stylelint",
+          "version": "17.16.0",
+          "section": "dependencies",
+          "specifier": "^7.1.5",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/stylelint@17.16.0_supports-color@10.2.2_typescript@6.0.3/node_modules/stylelint"
+        },
+        {
+          "parent": "weapp-vite",
+          "version": "7.4.0",
+          "section": "dependencies",
+          "specifier": "^7.1.6",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/weapp-vite@7.4.0_@devframes+agentic@1.2.3_@oxc-project+types@0.153.0_@types+node@26.6.6_8108834fe74697c8aa5a3822dec48d6f/node_modules/weapp-vite"
+        },
+        {
+          "parent": "weapp-vite",
+          "version": "7.8.0",
+          "section": "dependencies",
+          "specifier": "^7.1.7",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/weapp-vite@7.8.0_@devframes+agentic@1.2.3_@oxc-project+types@0.156.0_@types+node@26.6.6_7b9638b8f496c131375befe59701677f/node_modules/weapp-vite"
+        }
+      ]
+    },
+    {
+      "name": "qs",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "6.17.1",
+          "engines": {
+            "node": ">=0.6"
+          },
+          "dependencies": {
+            "side-channel": "^1.1.1",
+            "es-define-property": "^1.0.1"
+          }
+        },
+        {
+          "query": "6.16.1",
+          "status": 200,
+          "version": "6.16.1",
+          "engines": {
+            "node": ">=0.6"
+          },
+          "dependencies": {
+            "side-channel": "^1.1.1",
+            "es-define-property": "^1.0.1"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "body-parser",
+          "version": "1.20.3",
+          "section": "dependencies",
+          "specifier": "6.13.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/body-parser@1.20.3_supports-color@10.2.2/node_modules/body-parser"
+        },
+        {
+          "parent": "body-parser",
+          "version": "1.20.8",
+          "section": "dependencies",
+          "specifier": "~6.16.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/body-parser@1.20.8_supports-color@10.2.2/node_modules/body-parser"
+        },
+        {
+          "parent": "body-parser",
+          "version": "1.20.9",
+          "section": "dependencies",
+          "specifier": "~6.16.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/body-parser@1.20.9_supports-color@10.2.2/node_modules/body-parser"
+        },
+        {
+          "parent": "express",
+          "version": "4.20.0",
+          "section": "dependencies",
+          "specifier": "6.11.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/express@4.20.0_supports-color@10.2.2/node_modules/express"
+        },
+        {
+          "parent": "express",
+          "version": "4.22.3",
+          "section": "dependencies",
+          "specifier": "~6.16.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/express@4.22.3_supports-color@10.2.2/node_modules/express"
+        }
+      ]
+    },
+    {
+      "name": "seroval",
+      "official": [
+        {
+          "query": "latest",
+          "status": 200,
+          "version": "1.7.7",
+          "engines": {
+            "node": ">=20"
+          },
+          "exports": {
+            ".": {
+              "import": "./dist/index.js",
+              "browser": {
+                "import": "./dist/index.js",
+                "default": "./dist/index.js",
+                "require": "./dist/index.cjs"
+              },
+              "default": "./dist/index.js",
+              "require": "./dist/index.cjs",
+              "development": {
+                "import": "./dist/dev/index.js",
+                "browser": {
+                  "import": "./dist/dev/index.js",
+                  "default": "./dist/dev/index.js",
+                  "require": "./dist/dev/index.cjs"
+                },
+                "default": "./dist/dev/index.js",
+                "require": "./dist/dev/index.cjs"
+              }
+            },
+            "./package.json": "./package.json"
+          }
+        },
+        {
+          "query": "1.6.11",
+          "status": 200,
+          "version": "1.6.11",
+          "engines": {
+            "node": ">=10"
+          },
+          "exports": {
+            ".": {
+              "import": "./dist/index.js",
+              "default": "./dist/index.js",
+              "require": "./dist/index.cjs",
+              "development": {
+                "import": "./dist/dev/index.js",
+                "default": "./dist/dev/index.js",
+                "require": "./dist/dev/index.cjs"
+              }
+            },
+            "./package.json": "./package.json"
+          }
+        }
+      ],
+      "actualParents": [
+        {
+          "parent": "seroval-plugins",
+          "version": "1.6.9",
+          "section": "peerDependencies",
+          "specifier": "^1.0",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/seroval-plugins@1.6.9_seroval@1.6.9/node_modules/seroval-plugins"
+        },
+        {
+          "parent": "solid-js",
+          "version": "1.9.17",
+          "section": "dependencies",
+          "specifier": "~1.6.8",
+          "directory": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/node_modules/.pnpm/solid-js@1.9.17/node_modules/solid-js"
+        }
+      ]
+    }
+  ]
+}

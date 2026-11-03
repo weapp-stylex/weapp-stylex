@@ -3,7 +3,7 @@
   "path": "SECURITY.md",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "3.0.1",
+    "version": "3.1.4",
     "assetPath": "SECURITY.md",
     "hash": "833763eabfd6a8c922c717366995b44229f37384d3c362c87ecbca0df2edf141"
   },

@@ -60,7 +60,7 @@ pnpm exec uni build -p mp-weixin
 
 插件拒绝其他 `UNI_PLATFORM`。Vue 2 与 uni-app x 不在支持范围内。
 
-[uni-vue3 示例](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3)固定官方 Vue 3 通道 `3.0.0-alpha-5030120260930001`。DCloud 包保持同版本，Vite 为 `5.2.8`，Vue 为 `3.4.21`。这些固定版本来自框架兼容要求，不应强制应用到其他 workspace。
+[uni-vue3 示例](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3)固定官方 Vue 3 通道 `3.0.0-5030420261029002`。DCloud 包保持同版本，Vite 为 `5.2.8`，Vue 为 `3.4.21`。适配器 peer 同时保留原来的 `3.0.0-alpha-5030120260930001`，精确范围为 `3.0.0-alpha-5030120260930001 || 3.0.0-5030420261029002`。选择其中一个完整通道及其匹配的 SFC parser，不混用版本。这些固定版本来自框架兼容要求，不应强制应用到其他 workspace。
 
 ## 跨平台与 H5
 

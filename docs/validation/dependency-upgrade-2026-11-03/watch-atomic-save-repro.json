@@ -1,0 +1,122 @@
+{
+  "status": "reproduced-before-atomic-save",
+  "finding": "fs.writeFile truncates a watched file before writing its new complete contents. A concurrently scheduled rebuild can transform that empty intermediate input and report MISSING_EXPORT. The same event ordering was observed using official weapp-vite 7.4.0 and 7.8.0.",
+  "fix": "Write the complete fixture source to a sibling staging file and atomically rename it over the watched file. Keep the target watchChange/build-generation/input-content and CSS assertions.",
+  "controls": [
+    {
+      "weappVite": "7.4.0",
+      "iteration": 8,
+      "events": [
+        {
+          "sequence": 638,
+          "time": 1793700440949,
+          "iteration": 8,
+          "event": "write:before",
+          "hash": "dc0bf06a665fb62e66c989f8b62e371a6b07e3ffd6b5632e234d02a6a9fc9edc",
+          "source": "import * as stylex from '@weapp-stylex/core';export const styles=stylex.create({root:{color:'blue',padding:16}});export default styles;import {tokens} from './tokens.stylex.js';export const themed=stylex.create({root:{backgroundColor:tokens.accent}});",
+          "file": "shared.js"
+        },
+        {
+          "sequence": 640,
+          "time": 1793700440953,
+          "iteration": 8,
+          "event": "transform",
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source": "",
+          "file": "shared.js"
+        },
+        {
+          "sequence": 642,
+          "time": 1793700440974,
+          "iteration": 8,
+          "event": "write:after",
+          "hash": "dc0bf06a665fb62e66c989f8b62e371a6b07e3ffd6b5632e234d02a6a9fc9edc",
+          "source": "import * as stylex from '@weapp-stylex/core';export const styles=stylex.create({root:{color:'blue',padding:16}});export default styles;import {tokens} from './tokens.stylex.js';export const themed=stylex.create({root:{backgroundColor:tokens.accent}});",
+          "file": "shared.js"
+        }
+      ],
+      "buildError": {
+        "sequence": 643,
+        "time": 1793700440999,
+        "kind": "MISSING_EXPORT"
+      },
+      "sourceTrace": "artifacts/dependency-upgrade/watch-diagnostic-fixed/trace-7.4.jsonl"
+    },
+    {
+      "weappVite": "7.8.0",
+      "iteration": 13,
+      "events": [
+        {
+          "sequence": 1037,
+          "time": 1793700451479,
+          "iteration": 13,
+          "event": "write:before",
+          "hash": "418fdf024555a64d25f966e3fdd0823d1cbb64f6ea442bd7df9c73ed85564921",
+          "source": "import * as stylex from '@weapp-stylex/core';export const tokens=stylex.defineVars({accent:'purple'})",
+          "file": "tokens.stylex.js"
+        },
+        {
+          "sequence": 1038,
+          "time": 1793700451481,
+          "iteration": 13,
+          "event": "transform",
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source": "",
+          "file": "tokens.stylex.js"
+        },
+        {
+          "sequence": 1039,
+          "time": 1793700451485,
+          "iteration": 13,
+          "event": "write:after",
+          "hash": "418fdf024555a64d25f966e3fdd0823d1cbb64f6ea442bd7df9c73ed85564921",
+          "source": "import * as stylex from '@weapp-stylex/core';export const tokens=stylex.defineVars({accent:'purple'})",
+          "file": "tokens.stylex.js"
+        }
+      ],
+      "buildError": {
+        "sequence": 1040,
+        "time": 1793700451501,
+        "kind": "MISSING_EXPORT"
+      },
+      "sourceTrace": "artifacts/dependency-upgrade/watch-diagnostic-fixed/trace-7.8.jsonl"
+    }
+  ],
+  "afterFix": {
+    "report": "artifacts/dependency-upgrade/watch-diagnostic-atomic/report.json",
+    "watchRunsPerHost": 20,
+    "hosts": [
+      "7.4.0",
+      "7.8.0"
+    ],
+    "allPassed": true,
+    "stderrEmpty": true,
+    "unitTests": [
+      "A partially written staging stream leaves the previous complete watched source visible.",
+      "A failed staging stream preserves the old watched source and removes the staging file."
+    ]
+  },
+  "runtimeVersions": [
+    {
+      "name": "control-7.4",
+      "weappVite": "7.4.0",
+      "vite": "8.3.1",
+      "rolldown": "1.2.11",
+      "viteEntry": "/tmp/weapp-vite-linux-gate-tvv0o4os/control-7.4/node_modules/vite/dist/node/index.js"
+    },
+    {
+      "name": "standalone-7.8",
+      "weappVite": "7.8.0",
+      "vite": "8.3.5",
+      "rolldown": "1.2.16",
+      "viteEntry": "/tmp/weapp-vite-linux-gate-tvv0o4os/node_modules/vite/dist/node/index.js"
+    },
+    {
+      "name": "workspace-7.8",
+      "weappVite": "7.8.0",
+      "vite": "8.3.5",
+      "rolldown": "1.2.16",
+      "viteEntry": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/node_modules/.pnpm/vite@8.3.5_@types+node@26.6.6_esbuild@0.28.2_jiti@2.7.0_less@4.9.1_supports-color@10.2._14fba5015eadbbf080841188ef8f98cf/node_modules/vite/dist/node/index.js"
+    }
+  ]
+}

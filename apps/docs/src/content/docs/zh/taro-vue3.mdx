@@ -57,7 +57,7 @@ const meter = computed(() => stylex.attrs(styles.meter(width.value)))
 
 ## Builder 版本与单位
 
-示例验证 Taro `4.3.0`、React `18` / Vue `3`、Vite `4` 与 Webpack `5.91.0`。全部 `@tarojs/*` 包保持同版本，不要用全局 Vite 或 Babel override 替换 Taro 的工具链。
+示例固定 Taro `4.3.2`、React `18` / Vue `3`、Vite `4` 与 Webpack `5.91.0`。全部 `@tarojs/*` 包保持同版本，不要用全局 Vite 或 Babel override 替换 Taro 的工具链。
 
 StyleX WXSS 在 Taro 尺寸转换之后输出。数值 `16` 保持 `16px`，需要时显式写 `'16rpx'`。Webpack 在模块 `buildInfo` 保存 StyleX metadata，filesystem cache 命中仍会收集 CSS。
 

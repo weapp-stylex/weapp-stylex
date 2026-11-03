@@ -1,0 +1,94 @@
+CJS/ESM cached SFC completion: canonical ownership, token updates, Babel guard and final rule cleanup passed
+H5 production and serve: base paths, live styles, graph pruning, reimport and owned asset cleanup passed
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-weapp/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-weapp/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-weapp/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-weapp/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-weapp/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-weapp/dist 目录
+weapp: native companion styles, watch and cross-target filesystem cache passed
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-alipay/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-alipay/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-alipay/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-alipay/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-alipay/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-alipay/dist 目录
+alipay: native companion styles, watch and cross-target filesystem cache passed
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-tt/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-tt/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-tt/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-tt/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-tt/dist 目录
+[success] 已清空 /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/integration-ye5ei2/native-tt/dist 目录
+tt: native companion styles, watch and cross-target filesystem cache passed
+[info] 目标平台：[32mweapp[39m
+[success] 已清空 dist 目录
+[success] 小程序构建完成，耗时：[32m1626ms[39m
+[success] 主包/分包体积报告：
+[info] 主包：4.88 KB
+[success] 开发服务已就绪：
+[info] 小程序：执行 [1m[32mpnpm run open[39m[22m，或手动导入 [32mproject.config.json[39m
+[info] UI：未启用
+[info] 提示：手动打开对应平台开发者工具，导入根目录（[32mproject.config.json[39m 文件所在目录）
+[info] 目标平台：[32mweapp[39m
+[success] 已清空 dist 目录
+[success] 小程序构建完成，耗时：[32m9121ms[39m
+[success] 主包/分包体积报告：
+[info] 主包：18.6 KB
+[success] 开发服务已就绪：
+[info] 小程序：执行 [1m[32mpnpm run open[39m[22m，或手动导入 [32mproject.config.json[39m
+[info] UI：未启用
+[info] 提示：手动打开对应平台开发者工具，导入根目录（[32mproject.config.json[39m 文件所在目录）
+[33m[33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 8.1s of this 8.5s build (95%).
+4 callbacks are listed without a time. Their calls overlapped, so the time inside one call includes work from other calls. To find their cost, profile the build with `node --cpu-prof`:
+  - plugin weapp-vite:pre resolveId (508 calls)
+  - plugin vite:asset load (152 calls)
+  - plugin weapp-vite:pre load (409 calls)
+  … and 1 more
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+[39m
+[info] 目标平台：[32mweapp[39m
+[success] 已清空 dist 目录
+[success] 小程序构建完成，耗时：[32m8253ms[39m
+[success] 主包/分包体积报告：
+[info] 主包：22.7 KB
+[success] 开发服务已就绪：
+[info] 小程序：执行 [1m[32mpnpm run open[39m[22m，或手动导入 [32mproject.config.json[39m
+[info] UI：未启用
+[info] 提示：手动打开对应平台开发者工具，导入根目录（[32mproject.config.json[39m 文件所在目录）
+[33m[33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 7.2s of this 7.6s build (95%).
+4 callbacks are listed without a time. Their calls overlapped, so the time inside one call includes work from other calls. To find their cost, profile the build with `node --cpu-prof`:
+  - plugin weapp-vite:pre resolveId (457 calls)
+  - plugin vite:asset load (152 calls)
+  - plugin weapp-vite:pre load (408 calls)
+  … and 1 more
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+[39m
+Real native page growth (babel): reuse/1 pages=1 shared asset, 61 CSS bytes, 115 total WXSS bytes; reuse/50 pages=1 shared asset, 61 CSS bytes, 1536 total WXSS bytes; unique/50 pages=1 shared asset, 1847 CSS bytes, 3322 total WXSS bytes
+[info] 目标平台：[32mweapp[39m
+[success] 小程序构建完成，耗时：[32m3120ms[39m
+[success] 主包/分包体积报告：
+[info] 主包：728 B
+[info] 独立分包 independent：1.51 KB
+[success] 开发服务已就绪：
+[info] 小程序：执行 [1m[32mpnpm run open[39m[22m，或手动导入 [32mproject.config.json[39m
+[info] UI：未启用
+[info] 提示：手动打开对应平台开发者工具，导入根目录（[32mproject.config.json[39m 文件所在目录）
+Real native independent child output: distinct main/child rule assets, package-local import closure and isolated component import passed; runtime acceptance is outside this check
+Real Vue-loader blocks, setup execution, external scripts, custom blocks and disk cache passed
+CJS/ESM SFC, WeChat/Alipay/Douyin module graphs, Vite watch, Webpack cache and H5 lifecycle integration passed
+Installing isolated weapp-stylex; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-Hn6adM
+Installing isolated weapp-stylex without optional dependencies; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-ZXJRLZ
+Installing isolated @weapp-stylex/core; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-f9vIBr
+Independent @weapp-stylex/core: ESM/CJS, public types, candidate dependency graph and optional host isolation passed
+Installing isolated @weapp-stylex/compiler; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-irnWAv
+Installing isolated @weapp-stylex/compiler without optional dependencies; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-5V25BB
+Independent @weapp-stylex/compiler: ESM/CJS, public types, candidate dependency graph and optional host isolation passed
+Installing isolated @weapp-stylex/weapp-vite; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-WmSBQr
+Independent @weapp-stylex/weapp-vite: ESM/CJS, public types, candidate dependency graph and optional host isolation passed
+Installing isolated @weapp-stylex/taro; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-xhv2E1
+Independent @weapp-stylex/taro: ESM/CJS, public types, candidate dependency graph and optional host isolation passed
+Installing isolated @weapp-stylex/uni-app; diagnostics: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumer-install-5pTKsV
+Independent @weapp-stylex/uni-app: ESM/CJS, public types, candidate dependency graph and optional host isolation passed
+Candidate consumer evidence: /tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/consumers-node-24.22.1.json
+Packed facade (Node 24.22.1): all package export files, optional hosts, ESM/CJS runtime isolation, StyleX compilation and TypeScript public compiler/adapter types, ESM build maps and addon-omitted install passed

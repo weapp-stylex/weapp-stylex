@@ -1,0 +1,72 @@
+[
+  {
+    "step": "final-build-babel",
+    "exitCode": 0,
+    "seconds": 125.3,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-build-babel.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-examples-babel",
+    "exitCode": 0,
+    "seconds": 1.4,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-examples-babel.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-h5-babel",
+    "exitCode": 0,
+    "seconds": 50.9,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-h5-babel.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-minimum-babel",
+    "exitCode": 0,
+    "seconds": 12.8,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-minimum-babel.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-integration-babel",
+    "exitCode": 0,
+    "seconds": 46.2,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-integration-babel.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-build-auto",
+    "exitCode": 0,
+    "seconds": 111.9,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-build-auto.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-examples-auto",
+    "exitCode": 0,
+    "seconds": 1.7,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-examples-auto.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-h5-auto",
+    "exitCode": 0,
+    "seconds": 65.6,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-h5-auto.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-minimum-auto",
+    "exitCode": 0,
+    "seconds": 13.4,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-minimum-auto.log",
+    "lockUnchanged": true
+  },
+  {
+    "step": "final-integration-auto",
+    "exitCode": 0,
+    "seconds": 36.4,
+    "log": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/final-integration-auto.log",
+    "lockUnchanged": true
+  }
+]

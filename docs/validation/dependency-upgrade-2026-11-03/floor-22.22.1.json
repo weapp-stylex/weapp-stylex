@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-11-03T10:21:28.990Z",
+  "nodeVersion": "22.22.1",
+  "status": "passed",
+  "libraryPacks": {
+    "id": "791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1",
+    "runId": "5e62c554-f0f4-4678-a108-6c2d17a2667d",
+    "manifestPath": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/library-packs-final2/library-packs.json"
+  },
+  "candidates": [
+    {
+      "name": "weapp-stylex",
+      "version": "0.3.1",
+      "path": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/library-packs-final2/weapp-stylex-0.3.1.tgz",
+      "sha256": "62107c4c01561960ace4ea1b9f8512596b06d985e5f9babf036931bf9a826ecc"
+    },
+    {
+      "name": "@weapp-stylex/compiler",
+      "version": "0.3.1",
+      "path": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/library-packs-final2/weapp-stylex-compiler-0.3.1.tgz",
+      "sha256": "a048287760144fa58b92d2c625b8d813927ec2e90ef566c23d8c39ebce71c94c"
+    },
+    {
+      "name": "@weapp-stylex/core",
+      "version": "0.1.3",
+      "path": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/library-packs-final2/weapp-stylex-core-0.1.3.tgz",
+      "sha256": "d6ef64967d4c69e880953fccc250cf00707989ac4d7675dff5e65fa18286dcac"
+    },
+    {
+      "name": "@weapp-stylex/taro",
+      "version": "0.3.1",
+      "path": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/library-packs-final2/weapp-stylex-taro-0.3.1.tgz",
+      "sha256": "11a1a945cf25d53197ef19f428217ca40dc8bf6c563f7a9b4bae6108220b8600"
+    },
+    {
+      "name": "@weapp-stylex/uni-app",
+      "version": "0.3.1",
+      "path": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/library-packs-final2/weapp-stylex-uni-app-0.3.1.tgz",
+      "sha256": "32524fc19bc358f2461c13669c7f2fed2c874835e4d2ca27188fe55ec2dc13aa"
+    },
+    {
+      "name": "@weapp-stylex/weapp-vite",
+      "version": "0.4.1",
+      "path": "/Users/icebreaker/Documents/Codex/2026-11-03/wo/work/weapp-stylex/artifacts/dependency-upgrade/library-packs-final2/weapp-stylex-weapp-vite-0.4.1.tgz",
+      "sha256": "dca37d7d6fe963eb8f8df37ad8e58de899ccc2a5fdc430c988ca94d1a046c02e"
+    }
+  ],
+  "directInstalls": [
+    "@weapp-stylex/core",
+    "@weapp-stylex/compiler",
+    "@weapp-stylex/weapp-vite",
+    "@weapp-stylex/taro",
+    "@weapp-stylex/uni-app",
+    "weapp-stylex"
+  ]
+}

@@ -3,7 +3,7 @@
   "path": "pnpm-workspace.yaml",
   "source": {
     "package": "@icebreakers/monorepo-templates",
-    "version": "3.0.1",
+    "version": "3.1.4",
     "assetPath": "pnpm-workspace.yaml",
     "hash": "e80d99aaac093d51c7f1065c1b54d00704403e7bcb16ed0dc6a1c74c1e360c29"
   },

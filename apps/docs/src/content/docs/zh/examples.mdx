@@ -9,11 +9,11 @@ sidebar:
 
 | Workspace | 工具链 | 产物 |
 | --- | --- | --- |
-| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.4 / Vite 8 | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
-| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu / Vite 8，SFC + JSX | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
-| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3 / React 18 | `dist/<platform>-<builder>` |
-| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3 / Vue 3 | `dist/<platform>-<builder>` |
-| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 CLI | `dist/build/<platform>` |
+| [wechat-native](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-native) | weapp-vite 7.8.0 / Vite 8.3.5 | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
+| [wechat-wevu](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/wechat-wevu) | Wevu 7.8.0 / Vite 8.3.5，SFC + JSX | `dist`, `dist/alipay`, `dist/tt`, `dist/web` |
+| [taro-react](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-react) | Taro 4.3.2 / React 18.3.1 | `dist/<platform>-<builder>` |
+| [taro-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/taro-vue3) | Taro 4.3.2 / Vue 3.5.44 | `dist/<platform>-<builder>` |
+| [uni-vue3](https://github.com/weapp-stylex/weapp-stylex/tree/main/examples/uni-vue3) | DCloud Vue 3 `3.0.0-5030420261029002` | `dist/build/<platform>` |
 
 全部示例覆盖共享模块、多消费者、条件合并、主题、动态值和普通分包，保留少量内联声明作为对照。
 
@@ -24,6 +24,7 @@ sidebar:
 ```sh
 git clone https://github.com/weapp-stylex/weapp-stylex.git
 cd weapp-stylex
+npm install --global corepack@0.36.0
 corepack enable
 corepack pnpm install --frozen-lockfile
 corepack pnpm build
@@ -32,7 +33,7 @@ corepack pnpm test:examples
 
 `build` 先构建包，再构建依赖这些包的示例。Taro 的两个 builder 顺序输出到不同目录。`test:examples` 检查全部 28 份产物，并通过 `@mpcore/test` 运行原生/Wevu headless 交互。
 
-CI 按 Node 22/24 与 `weapp`、`alipay`、`tt`、`h5` 拆分目标任务。单目标可运行 `corepack pnpm exec node scripts/build-examples.mjs alipay`，随后用 `WEAPP_STYLEX_TARGET=alipay corepack pnpm test:examples` 仅验证该目标。
+CI 按 Node 22/24/26 与 `weapp`、`alipay`、`tt`、`h5` 拆分目标任务。单目标可运行 `corepack pnpm exec node scripts/build-examples.mjs alipay`，随后用 `WEAPP_STYLEX_TARGET=alipay corepack pnpm test:examples` 仅验证该目标。
 
 ## 自动检查
 

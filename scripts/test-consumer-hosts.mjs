@@ -5,19 +5,23 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import process from 'node:process'
 import { captureBuildInputs, verifyBuildProvenance, writeBuildProvenance } from './build-provenance.mjs'
-import { candidateSummary, ensureArtifactsDirectory, fileHash, installConsumer, prepareCandidates, root, run, verifyCandidateGraph, verifyCandidates } from './consumers/candidates.mjs'
+import { candidateSummary, ensureArtifactsDirectory, fileHash, installConsumer, packageRoot, prepareCandidates, root, run, supportedUniHostVersions, verifyCandidateGraph, verifyCandidates } from './consumers/candidates.mjs'
 import { examples, targets } from './example-matrix.mjs'
 
 const tooling = createRequire(new URL('../package.json', import.meta.url))
 const { parse } = tooling('yaml')
+const uniHostPackages = ['uni-app', 'uni-components', 'uni-h5', 'uni-mp-alipay', 'uni-mp-toutiao', 'uni-mp-weixin', 'vite-plugin-uni']
 const requestedTarget = process.env.WEAPP_STYLEX_TARGET
 const requestedBackend = process.env.WEAPP_STYLEX_BACKEND
 const requestedNames = process.env.WEAPP_STYLEX_CONSUMER_NAMES?.split(',')
+const requestedUniHostVersion = process.env.WEAPP_STYLEX_UNI_HOST_VERSION
 const entry = process.env.WEAPP_STYLEX_CONSUMER_ENTRY ?? 'facade'
 assert.ok(['facade', 'adapter'].includes(entry), 'WEAPP_STYLEX_CONSUMER_ENTRY must be facade or adapter')
 assert.ok(!requestedTarget || Object.hasOwn(targets, requestedTarget), 'WEAPP_STYLEX_TARGET must be weapp, alipay, tt or h5')
 assert.ok(!requestedBackend || ['babel', 'auto'].includes(requestedBackend), 'WEAPP_STYLEX_BACKEND must be babel or auto')
-const matrix = examples.filter(example => (!requestedTarget || example.target === requestedTarget) && (!requestedNames || requestedNames.includes(example.name)))
+assert.ok(!requestedUniHostVersion || supportedUniHostVersions.includes(requestedUniHostVersion), `WEAPP_STYLEX_UNI_HOST_VERSION must be ${supportedUniHostVersions.join(' or ')}`)
+assert.ok(!requestedUniHostVersion || !requestedNames || requestedNames.every(name => name === 'uni-vue3'), 'WEAPP_STYLEX_UNI_HOST_VERSION selects only the uni-vue3 consumer')
+const matrix = examples.filter(example => (!requestedTarget || example.target === requestedTarget) && (!requestedNames || requestedNames.includes(example.name)) && (!requestedUniHostVersion || example.name === 'uni-vue3'))
 assert.ok(matrix.length, 'Consumer host selection is empty')
 if (requestedNames) {
   assert.ok(requestedNames.every(name => matrix.some(example => example.name === name)), 'Unknown consumer host name')
@@ -32,7 +36,7 @@ const sourceRoot = path.join(workspace, 'source')
 const prepared = await prepareCandidates(process.env.WEAPP_STYLEX_TEST_PACKS_DIR ?? path.join(workspace, 'artifacts', 'packs'), { pack: !process.env.WEAPP_STYLEX_TEST_PACKS_DIR })
 const candidates = candidateSummary(prepared.candidates)
 const manifestPath = path.join(evidence, 'manifest.json')
-const report = { checkedAt: new Date().toISOString(), status: 'pending', entry, workspace, sourceRoot, libraryPacks: prepared.attestation, candidates, consumers: [], builds: [], artifacts: [] }
+const report = { checkedAt: new Date().toISOString(), status: 'pending', entry, requestedUniHostVersion, workspace, sourceRoot, libraryPacks: prepared.attestation, candidates, consumers: [], builds: [], artifacts: [] }
 const save = () => writeFile(manifestPath, `${JSON.stringify(report, null, 2)}\n`)
 await save()
 try {
@@ -60,12 +64,24 @@ try {
       assert.ok(resolved?.version && !resolved.version.startsWith('link:'), `No locked external version for ${name}/${dependency}`)
       dependencies[dependency] = resolved.version.split('(')[0]
     }
+    const uniHostVersion = name === 'uni-vue3' ? requestedUniHostVersion ?? dependencies['@dcloudio/vite-plugin-uni'] : undefined
+    if (name === 'uni-vue3') {
+      assert.ok(supportedUniHostVersions.includes(uniHostVersion), `Unsupported locked uni-app host version: ${uniHostVersion}`)
+      for (const dependency of uniHostPackages) {
+        const packageName = `@dcloudio/${dependency}`
+        assert.ok(Object.hasOwn(dependencies, packageName), `The uni-app consumer must declare ${packageName}`)
+        dependencies[packageName] = uniHostVersion
+      }
+      assert.equal(dependencies.vite, '5.2.8', 'The evaluated uni-app channels require Vite 5.2.8')
+      assert.equal(dependencies.vue, '3.4.21', 'The evaluated uni-app channels require Vue 3.4.21')
+    }
     if (entry === 'adapter') {
       dependencies['@stylexjs/stylex'] = prepared.candidates.find(candidate => candidate.name === '@weapp-stylex/core').manifest.dependencies['@stylexjs/stylex']
       await useAdapterEntry(consumer)
     }
-    const { installed, logs } = await installConsumer(consumer, prepared.candidates, directPackage, { dependencies, host: true })
-    report.consumers.push({ name, entry, directPackage, directory: consumer, logs, dependencies, candidatePackages: Object.fromEntries(installed), lockfile: { path: path.join(consumer, 'pnpm-lock.yaml'), sha256: await fileHash(path.join(consumer, 'pnpm-lock.yaml')) } })
+    const { installed, logs } = await installConsumer(consumer, prepared.candidates, directPackage, { dependencies, host: true, uniHostVersion })
+    const uniHost = name === 'uni-vue3' ? await verifyUniHost(consumer, uniHostVersion) : undefined
+    report.consumers.push({ name, entry, directPackage, directory: consumer, logs, dependencies, uniHost, candidatePackages: Object.fromEntries(installed), lockfile: { path: path.join(consumer, 'pnpm-lock.yaml'), sha256: await fileHash(path.join(consumer, 'pnpm-lock.yaml')) } })
     await save()
   }
   for (const backend of backends) {
@@ -136,6 +152,32 @@ finally {
   // Preserve source, lockfiles, candidates and output for IDE acceptance and
   // inspection. Removing the reported workspace explicitly cleans up this run.
   process.stdout.write(`External consumer workspace retained: ${workspace}\n`)
+}
+
+async function verifyUniHost(directory, version) {
+  const requireConsumer = createRequire(path.join(directory, 'package.json'))
+  const requirePlugin = createRequire(requireConsumer.resolve('@dcloudio/vite-plugin-uni/package.json'))
+  for (const name of uniHostPackages) {
+    assert.equal(requireConsumer(`@dcloudio/${name}/package.json`).version, version, `The uni-app consumer installed a different ${name} channel`)
+  }
+  const requirePlatform = createRequire(requireConsumer.resolve('@dcloudio/uni-mp-weixin/package.json'))
+  const requireMpVite = createRequire(requirePlatform.resolve('@dcloudio/uni-mp-vite/package.json'))
+  const walkerPackage = JSON.parse(await readFile(path.join(await packageRoot(requireMpVite, 'estree-walker'), 'package.json'), 'utf8'))
+  const versions = {
+    channel: version,
+    vite: requireConsumer('vite/package.json').version,
+    vue: requireConsumer('vue/package.json').version,
+    compilerSfc: requirePlugin('@vue/compiler-sfc/package.json').version,
+    mpVite: requirePlatform('@dcloudio/uni-mp-vite/package.json').version,
+    estreeWalker: walkerPackage.version,
+  }
+  assert.deepEqual(versions, { channel: version, vite: '5.2.8', vue: '3.4.21', compilerSfc: '3.4.21', mpVite: version, estreeWalker: '2.0.2' })
+  const visited = []
+  requireMpVite('estree-walker').walk({ type: 'Identifier', name: 'stylex' }, {
+    enter(node) { visited.push(node.type) },
+  })
+  assert.deepEqual(visited, ['Identifier'], 'The uni-app package extension must provide the CommonJS estree-walker API')
+  return versions
 }
 
 async function useAdapterEntry(directory) {

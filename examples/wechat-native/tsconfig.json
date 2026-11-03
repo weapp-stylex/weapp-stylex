@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
+    "types": ["node", "miniprogram-api-typings"],
     "noEmit": true,
     "outDir": "dist/.types"
   },

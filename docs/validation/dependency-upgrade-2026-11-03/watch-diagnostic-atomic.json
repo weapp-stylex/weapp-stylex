@@ -1,0 +1,184 @@
+[
+  {
+    "version": "7.4",
+    "exitCode": 0,
+    "stderr": "",
+    "report": {
+      "hostVersion": "7.4.0",
+      "viteEntry": "/tmp/weapp-vite-linux-gate-tvv0o4os/control-7.4/node_modules/vite/dist/node/index.js",
+      "runs": [
+        {
+          "iteration": 1,
+          "status": "passed"
+        },
+        {
+          "iteration": 2,
+          "status": "passed"
+        },
+        {
+          "iteration": 3,
+          "status": "passed"
+        },
+        {
+          "iteration": 4,
+          "status": "passed"
+        },
+        {
+          "iteration": 5,
+          "status": "passed"
+        },
+        {
+          "iteration": 6,
+          "status": "passed"
+        },
+        {
+          "iteration": 7,
+          "status": "passed"
+        },
+        {
+          "iteration": 8,
+          "status": "passed"
+        },
+        {
+          "iteration": 9,
+          "status": "passed"
+        },
+        {
+          "iteration": 10,
+          "status": "passed"
+        },
+        {
+          "iteration": 11,
+          "status": "passed"
+        },
+        {
+          "iteration": 12,
+          "status": "passed"
+        },
+        {
+          "iteration": 13,
+          "status": "passed"
+        },
+        {
+          "iteration": 14,
+          "status": "passed"
+        },
+        {
+          "iteration": 15,
+          "status": "passed"
+        },
+        {
+          "iteration": 16,
+          "status": "passed"
+        },
+        {
+          "iteration": 17,
+          "status": "passed"
+        },
+        {
+          "iteration": 18,
+          "status": "passed"
+        },
+        {
+          "iteration": 19,
+          "status": "passed"
+        },
+        {
+          "iteration": 20,
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  {
+    "version": "7.8",
+    "exitCode": 0,
+    "stderr": "",
+    "report": {
+      "hostVersion": "7.8.0",
+      "viteEntry": "/tmp/weapp-vite-linux-gate-tvv0o4os/node_modules/vite/dist/node/index.js",
+      "runs": [
+        {
+          "iteration": 1,
+          "status": "passed"
+        },
+        {
+          "iteration": 2,
+          "status": "passed"
+        },
+        {
+          "iteration": 3,
+          "status": "passed"
+        },
+        {
+          "iteration": 4,
+          "status": "passed"
+        },
+        {
+          "iteration": 5,
+          "status": "passed"
+        },
+        {
+          "iteration": 6,
+          "status": "passed"
+        },
+        {
+          "iteration": 7,
+          "status": "passed"
+        },
+        {
+          "iteration": 8,
+          "status": "passed"
+        },
+        {
+          "iteration": 9,
+          "status": "passed"
+        },
+        {
+          "iteration": 10,
+          "status": "passed"
+        },
+        {
+          "iteration": 11,
+          "status": "passed"
+        },
+        {
+          "iteration": 12,
+          "status": "passed"
+        },
+        {
+          "iteration": 13,
+          "status": "passed"
+        },
+        {
+          "iteration": 14,
+          "status": "passed"
+        },
+        {
+          "iteration": 15,
+          "status": "passed"
+        },
+        {
+          "iteration": 16,
+          "status": "passed"
+        },
+        {
+          "iteration": 17,
+          "status": "passed"
+        },
+        {
+          "iteration": 18,
+          "status": "passed"
+        },
+        {
+          "iteration": 19,
+          "status": "passed"
+        },
+        {
+          "iteration": 20,
+          "status": "passed"
+        }
+      ]
+    }
+  }
+]

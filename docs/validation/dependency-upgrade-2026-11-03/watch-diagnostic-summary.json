@@ -1,0 +1,159 @@
+{
+  "conclusion": "The old waiter accepted END from the preceding token build before the requested entry watchChange and transform.",
+  "hostVersion": "7.8.0",
+  "platform": "linux x64",
+  "target": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+  "events": [
+    {
+      "sequence": 77,
+      "time": 1793699448598,
+      "iteration": 1,
+      "event": "write:before",
+      "file": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+      "hash": "04c1dc26d70754cdd3955303d78c3fcf95293b07516de9e05aba40998e60a7d9",
+      "source": "export const sx=\"\""
+    },
+    {
+      "sequence": 78,
+      "time": 1793699448612,
+      "iteration": 1,
+      "event": "write:after",
+      "file": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+      "hash": "04c1dc26d70754cdd3955303d78c3fcf95293b07516de9e05aba40998e60a7d9",
+      "source": "export const sx=\"\""
+    },
+    {
+      "sequence": 82,
+      "time": 1793699448638,
+      "iteration": 1,
+      "event": "event:BUNDLE_END",
+      "modules": [
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/packages/core/src/index.ts",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/shared.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/tokens.stylex.js"
+      ],
+      "css": "page, .sx139wz10{--sxa4s5dg:purple;}\n.sx1tamke2{padding:16px}\n.sx11qozvi{background-color:var(--sxa4s5dg)}\n.sxju2f9n{color:blue}",
+      "entry": "export const sx=\"\""
+    },
+    {
+      "sequence": 83,
+      "time": 1793699448639,
+      "iteration": 1,
+      "event": "event:END",
+      "modules": [
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/packages/core/src/index.ts",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/shared.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/tokens.stylex.js"
+      ],
+      "css": "page, .sx139wz10{--sxa4s5dg:purple;}\n.sx1tamke2{padding:16px}\n.sx11qozvi{background-color:var(--sxa4s5dg)}\n.sxju2f9n{color:blue}",
+      "entry": "export const sx=\"\""
+    },
+    {
+      "sequence": 84,
+      "time": 1793699448641,
+      "iteration": 1,
+      "event": "watchChange",
+      "id": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+      "change": {
+        "event": "update"
+      }
+    },
+    {
+      "sequence": 85,
+      "time": 1793699448643,
+      "iteration": 1,
+      "event": "event:START",
+      "modules": [
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/packages/core/src/index.ts",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/shared.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/tokens.stylex.js"
+      ],
+      "css": "page, .sx139wz10{--sxa4s5dg:purple;}\n.sx1tamke2{padding:16px}\n.sx11qozvi{background-color:var(--sxa4s5dg)}\n.sxju2f9n{color:blue}",
+      "entry": "export const sx=\"\""
+    },
+    {
+      "sequence": 86,
+      "time": 1793699448643,
+      "iteration": 1,
+      "event": "event:BUNDLE_START",
+      "modules": [
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/packages/core/src/index.ts",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/shared.js",
+        "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/tokens.stylex.js"
+      ],
+      "css": "page, .sx139wz10{--sxa4s5dg:purple;}\n.sx1tamke2{padding:16px}\n.sx11qozvi{background-color:var(--sxa4s5dg)}\n.sxju2f9n{color:blue}",
+      "entry": "export const sx=\"\""
+    },
+    {
+      "sequence": 89,
+      "time": 1793699448657,
+      "iteration": 1,
+      "event": "transform",
+      "id": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-BqscP1/vite-alipay/entry.js",
+      "hash": "04c1dc26d70754cdd3955303d78c3fcf95293b07516de9e05aba40998e60a7d9",
+      "source": "export const sx=\"\""
+    }
+  ],
+  "assertionsPreserved": [
+    "CSS color and token content",
+    "final CSS asset ENOENT",
+    "host style preservation",
+    "session shutdown metadata cleanup"
+  ],
+  "fix": "Require target watchChange, subsequent build generation, matching raw transformed source, BUNDLE_END and END; never poll expected CSS output.",
+  "control": {
+    "hostVersion": "7.4.0",
+    "runsBeforeReproduction": 12,
+    "failedIteration": 13,
+    "sameAssertion": "Missing expected rejection. CSS asset still exists before entry invalidation build completes.",
+    "events": [
+      {
+        "sequence": 1026,
+        "event": "write:before",
+        "source": "export const sx=\"\""
+      },
+      {
+        "sequence": 1028,
+        "event": "transform",
+        "id": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-Wz6Et1/vite-alipay/entry.js",
+        "source": "import * as stylex from '@weapp-stylex/core';import {styles,themed} from './shared.js';export const sx=stylex.attrs(styles.root,themed.root).class;\n// importer edit"
+      },
+      {
+        "sequence": 1031,
+        "event": "write:after",
+        "source": "export const sx=\"\""
+      },
+      {
+        "sequence": 1036,
+        "event": "event:BUNDLE_END"
+      },
+      {
+        "sequence": 1037,
+        "event": "event:END"
+      },
+      {
+        "sequence": 1038,
+        "event": "watchChange",
+        "id": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-Wz6Et1/vite-alipay/entry.js"
+      },
+      {
+        "sequence": 1039,
+        "event": "event:START"
+      },
+      {
+        "sequence": 1040,
+        "event": "event:BUNDLE_START"
+      },
+      {
+        "sequence": 1043,
+        "event": "transform",
+        "id": "/tmp/weapp-vite-linux-gate-tvv0o4os/workspace/artifacts/watch-diagnostic-Wz6Et1/vite-alipay/entry.js",
+        "source": "export const sx=\"\""
+      }
+    ]
+  }
+}

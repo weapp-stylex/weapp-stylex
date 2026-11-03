@@ -1,0 +1,4445 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-03T10:13:46.024Z",
+  "sourceCommit": "2b3e5890a35bac61e6cd12c860ed5d92a89c34d5",
+  "scope": "HEAD 与当前 13 个 workspace manifests 的全部直接外部 dependency/devDependency/optionalDependency/peerDependency；不含 workspace:* 内部边、传递依赖、Actions 和运行环境版本。",
+  "validationStatus": "local-final-passed-pending-ide-and-remote-ci",
+  "registry": "https://registry.npmjs.org",
+  "rawQueryCache": "artifacts/dependency-audit-2026-11-03/",
+  "summary": {
+    "manifestCount": 13,
+    "uniqueExternalPackages": 89,
+    "directExternalEntries": 132,
+    "excludedWorkspaceEntries": 13,
+    "changedEntries": 81,
+    "statusCounts": {
+      "added-direct-stable": 2,
+      "current-stable": 25,
+      "expanded-supported-framework-channels": 1,
+      "held-api-and-peer-compatibility": 2,
+      "held-compatible-major": 13,
+      "held-framework-exact-peer": 4,
+      "held-framework-parser-alignment": 1,
+      "held-framework-peer": 3,
+      "supported-peer-range-retained": 3,
+      "updated-framework-channel": 7,
+      "updated-framework-host": 4,
+      "updated-lockstep-group": 30,
+      "updated-optional-backend": 1,
+      "updated-stable": 36
+    }
+  },
+  "manifests": [
+    {
+      "manifest": "apps/docs/package.json",
+      "packageName": "docs",
+      "beforeVersion": "0.0.0",
+      "afterVersion": "0.0.0",
+      "beforeSha256": "e2b6628e1caf12cde386450a2e2182b33d33db0b38c13c28842ec0c9690eaae9",
+      "afterSha256": "710108b4226fdafcaa3fc2e66a772e63508e01e99857ffbbdf453d75f3d4b1b5"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "packageName": "taro-react",
+      "beforeVersion": "0.0.5",
+      "afterVersion": "0.0.5",
+      "beforeSha256": "83656fb1a462db02b9451f34334ff46108379dd57257b6b1001986e9dd3e0dbd",
+      "afterSha256": "79ae12bb7a61dc22225d9a75919a94b5d975b5ae2a3e608288bfb9a3d731f944"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "packageName": "taro-vue3",
+      "beforeVersion": "0.0.5",
+      "afterVersion": "0.0.5",
+      "beforeSha256": "7e9499c2e83ccf6c7039c1b0979e9da2f9ba82df6f51297df4adeb844b5928ff",
+      "afterSha256": "137ccac76b58db379ba6862eba1acc15c161563f863515737572fd3848237a35"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "packageName": "uni-vue3",
+      "beforeVersion": "0.0.5",
+      "afterVersion": "0.0.5",
+      "beforeSha256": "da81a185f03718c1a4fdb509a3dd5e4a3122c4d7942e49245098d4a706acd0d4",
+      "afterSha256": "7811675272c74633627283c6d451a2ecbe09d6266faeab1094ab5624392ac9ae"
+    },
+    {
+      "manifest": "examples/wechat-native/package.json",
+      "packageName": "wechat-native",
+      "beforeVersion": "0.1.5",
+      "afterVersion": "0.1.5",
+      "beforeSha256": "3b49f5512da46a9e824468e536197a8b79f4eb1e69f7e436afff6f50a723aad6",
+      "afterSha256": "bfd5dbcc17ce23ba149ea2811a80aee53a0c9fd0a6f8e0308886ea6fe2aa096e"
+    },
+    {
+      "manifest": "examples/wechat-wevu/package.json",
+      "packageName": "wechat-wevu",
+      "beforeVersion": "0.0.5",
+      "afterVersion": "0.0.5",
+      "beforeSha256": "8dfe9d24171ca17332521e419a81fbf216298c2587c2762e73951f2e501a3cdd",
+      "afterSha256": "0597370994e8a717c930dc4db3b2d7990a53fd53661dcfc4d3a65f700e83019f"
+    },
+    {
+      "manifest": "package.json",
+      "packageName": "weapp-stylex-workspace",
+      "beforeVersion": "0.1.0",
+      "afterVersion": "0.1.0",
+      "beforeSha256": "6707aa32e79ede5af3a2bb1643f059da74a3971059e7263b7671b8937a784761",
+      "afterSha256": "4b3d6a95c1cc8049b515c39f73bf1ebdad08c7507de1c09c1c04e342afb3de61"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "packageName": "@weapp-stylex/compiler",
+      "beforeVersion": "0.3.1",
+      "afterVersion": "0.3.1",
+      "beforeSha256": "f87857413250a8bc334b1166bd3cc5237c786844307d0d4787279e70d853fc3f",
+      "afterSha256": "bb1d982221b9496623c8e643c6f4136c65fc5cd9ab4e031febb9e3983fa7928c"
+    },
+    {
+      "manifest": "packages/core/package.json",
+      "packageName": "@weapp-stylex/core",
+      "beforeVersion": "0.1.3",
+      "afterVersion": "0.1.3",
+      "beforeSha256": "6e1b682459e658b8c66427f48d469ef861c8dfde4058f74b4654cdf5b19e1bb8",
+      "afterSha256": "6e1b682459e658b8c66427f48d469ef861c8dfde4058f74b4654cdf5b19e1bb8"
+    },
+    {
+      "manifest": "packages/taro/package.json",
+      "packageName": "@weapp-stylex/taro",
+      "beforeVersion": "0.3.1",
+      "afterVersion": "0.3.1",
+      "beforeSha256": "5c13d04c6e7097afda8d1ff7ba786516c4c26014dff8fa768f77f0a5853a9ce8",
+      "afterSha256": "e398fb8976e70aaa35bd9e5add55c009c2743d4d2c2fcb1d604da439f434caf8"
+    },
+    {
+      "manifest": "packages/uni-app/package.json",
+      "packageName": "@weapp-stylex/uni-app",
+      "beforeVersion": "0.3.1",
+      "afterVersion": "0.3.1",
+      "beforeSha256": "0335891d74844b10876a33759d3ef27f04cfc655a838b723b763cc7fcd7e23c7",
+      "afterSha256": "e5d77735ac98a2c91b8b0b76778169c2f39d30874bd97b439a8bb4e84f065659"
+    },
+    {
+      "manifest": "packages/weapp-stylex/package.json",
+      "packageName": "weapp-stylex",
+      "beforeVersion": "0.3.1",
+      "afterVersion": "0.3.1",
+      "beforeSha256": "d6c611ee86cd4389104b680981469b0c496ea9f5b0a4f892905f58e2a7eaf6a4",
+      "afterSha256": "483af7eb3f948efb80da2ecc36d75203e7a1934e4cc13b110760450bb4176b2d"
+    },
+    {
+      "manifest": "packages/weapp-vite/package.json",
+      "packageName": "@weapp-stylex/weapp-vite",
+      "beforeVersion": "0.4.1",
+      "afterVersion": "0.4.1",
+      "beforeSha256": "c5f9b86f8cf8dd1e501850f585031cb5ecc28285c85ae8ed863cd158199d01b0",
+      "afterSha256": "8fc5d1078806d9c9bbc06d480eda991cb65c099dae8c15580bb4426f0cc9a955"
+    }
+  ],
+  "packages": [
+    {
+      "name": "@astrojs/check",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.9.12",
+      "npmLatest": "0.9.12",
+      "distTags": {
+        "alpha": "0.9.6-alpha.0",
+        "beta": "0.9.7-beta.1",
+        "latest": "0.9.12"
+      },
+      "queriedVersions": {
+        "0.9.12": {
+          "registryEvidence": "https://registry.npmjs.org/%40astrojs%2Fcheck/0.9.12",
+          "engines": null,
+          "peerDependencies": {
+            "typescript": "^5.0.0 || ^6.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@babel/core",
+      "selectedChannel": "latest",
+      "selectedLatest": "8.1.0",
+      "npmLatest": "8.1.0",
+      "distTags": {
+        "bridge6": "6.0.0-bridge.1",
+        "esm": "7.21.4-esm.4",
+        "next": "8.0.0-rc.6",
+        "latest": "8.1.0"
+      },
+      "queriedVersions": {
+        "8.1.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40babel%2Fcore/8.1.0",
+          "engines": {
+            "node": "^22.18.0 || >=24.11.0"
+          },
+          "peerDependencies": {}
+        },
+        "7.29.7": {
+          "registryEvidence": "https://registry.npmjs.org/%40babel%2Fcore/7.29.7",
+          "engines": {
+            "node": ">=6.9.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@babel/preset-react",
+      "selectedChannel": "latest",
+      "selectedLatest": "8.0.1",
+      "npmLatest": "8.0.1",
+      "distTags": {
+        "esm": "7.21.4-esm.4",
+        "next": "8.0.0-rc.6",
+        "latest": "8.0.1"
+      },
+      "queriedVersions": {
+        "8.0.1": {
+          "registryEvidence": "https://registry.npmjs.org/%40babel%2Fpreset-react/8.0.1",
+          "engines": {
+            "node": "^22.18.0 || >=24.11.0"
+          },
+          "peerDependencies": {
+            "@babel/core": "^8.0.0"
+          }
+        },
+        "7.29.7": {
+          "registryEvidence": "https://registry.npmjs.org/%40babel%2Fpreset-react/7.29.7",
+          "engines": {
+            "node": ">=6.9.0"
+          },
+          "peerDependencies": {
+            "@babel/core": "^7.0.0-0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@ampproject/remapping",
+      "selectedChannel": "latest",
+      "selectedLatest": "2.3.0",
+      "npmLatest": "2.3.0",
+      "distTags": {
+        "latest": "2.3.0"
+      },
+      "queriedVersions": {
+        "2.3.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40ampproject%2Fremapping/2.3.0",
+          "engines": {
+            "node": ">=6.0.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@astrojs/language-server",
+      "selectedChannel": "latest",
+      "selectedLatest": "2.17.3",
+      "npmLatest": "2.17.3",
+      "distTags": {
+        "next": "2.0.0-next.12",
+        "alpha": "2.16.1-alpha.0",
+        "beta": "2.16.1-beta.1",
+        "latest": "2.17.3"
+      },
+      "queriedVersions": {
+        "2.17.3": {
+          "registryEvidence": "https://registry.npmjs.org/%40astrojs%2Flanguage-server/2.17.3",
+          "engines": null,
+          "peerDependencies": {
+            "prettier": "^3.0.0",
+            "prettier-plugin-astro": ">=0.11.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@cloudflare/nimbus-docs",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.19.2",
+      "npmLatest": "0.19.2",
+      "distTags": {
+        "latest": "0.19.2"
+      },
+      "queriedVersions": {
+        "0.19.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40cloudflare%2Fnimbus-docs/0.19.2",
+          "engines": {
+            "node": ">=22.12.0"
+          },
+          "peerDependencies": {
+            "astro": ">=7.2.6 <8.0.0",
+            "react": ">=19.0.0",
+            "satori": ">=0.26.0 <0.27.0",
+            "react-dom": ">=19.0.0",
+            "@resvg/resvg-js": ">=2.6.2 <3.0.0",
+            "openapi-sampler": ">=1.5.0",
+            "@readme/httpsnippet": ">=10.0.0",
+            "@scalar/openapi-parser": ">=0.10.0 <1.0.0",
+            "@modelcontextprotocol/server": ">=2.3.0 <3.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@commitlint/cli",
+      "selectedChannel": "latest",
+      "selectedLatest": "21.2.4",
+      "npmLatest": "21.2.4",
+      "distTags": {
+        "latest": "21.2.4"
+      },
+      "queriedVersions": {
+        "21.2.4": {
+          "registryEvidence": "https://registry.npmjs.org/%40commitlint%2Fcli/21.2.4",
+          "engines": {
+            "node": ">=22.12.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/types",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.4.32",
+      "npmLatest": "3.4.32",
+      "distTags": {
+        "next": "3.3.2",
+        "latest": "3.4.32"
+      },
+      "queriedVersions": {
+        "3.4.32": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Ftypes/3.4.32",
+          "engines": null,
+          "peerDependencies": {}
+        },
+        "3.4.31": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Ftypes/3.4.31",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/uni-app",
+      "selectedChannel": "vue3",
+      "selectedLatest": "3.0.0-5030420261029002",
+      "npmLatest": "2.0.2-5030320261023001",
+      "distTags": {
+        "nvue3": "3.0.0-alpha-3040320220324001",
+        "alpha": "2.0.2-alpha-5030320261021001",
+        "latest": "2.0.2-5030320261023001",
+        "next": "2.0.2-5030420261028001",
+        "vue3": "3.0.0-5030420261029002"
+      },
+      "queriedVersions": {
+        "3.0.0-5030420261029002": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Funi-app/3.0.0-5030420261029002",
+          "engines": null,
+          "peerDependencies": {
+            "@dcloudio/types": "3.4.31"
+          }
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/uni-components",
+      "selectedChannel": "vue3",
+      "selectedLatest": "3.0.0-5030420261029002",
+      "npmLatest": "3.0.0-alpha-3000020210521001",
+      "distTags": {
+        "latest": "3.0.0-alpha-3000020210521001",
+        "alpha": "3.0.0-alpha-3000020210521005",
+        "nvue3": "3.0.0-alpha-3040320220324001",
+        "vue3": "3.0.0-5030420261029002"
+      },
+      "queriedVersions": {
+        "3.0.0-5030420261029002": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Funi-components/3.0.0-5030420261029002",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/uni-h5",
+      "selectedChannel": "vue3",
+      "selectedLatest": "3.0.0-5030420261029002",
+      "npmLatest": "2.0.2-5030320261023001",
+      "distTags": {
+        "v3": "3.0.0-alpha-2632020024003",
+        "nvue3": "3.0.0-alpha-3040320220324001",
+        "alpha": "2.0.2-alpha-5030320261021001",
+        "latest": "2.0.2-5030320261023001",
+        "next": "2.0.2-5030420261028001",
+        "vue3": "3.0.0-5030420261029002"
+      },
+      "queriedVersions": {
+        "3.0.0-5030420261029002": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Funi-h5/3.0.0-5030420261029002",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/uni-mp-alipay",
+      "selectedChannel": "vue3",
+      "selectedLatest": "3.0.0-5030420261029002",
+      "npmLatest": "2.0.2-5030320261023001",
+      "distTags": {
+        "v3": "3.0.0-alpha-2632020024003",
+        "nvue3": "3.0.0-alpha-3040320220324001",
+        "alpha": "2.0.2-alpha-5030320261021001",
+        "latest": "2.0.2-5030320261023001",
+        "next": "2.0.2-5030420261028001",
+        "vue3": "3.0.0-5030420261029002"
+      },
+      "queriedVersions": {
+        "3.0.0-5030420261029002": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Funi-mp-alipay/3.0.0-5030420261029002",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/uni-mp-toutiao",
+      "selectedChannel": "vue3",
+      "selectedLatest": "3.0.0-5030420261029002",
+      "npmLatest": "2.0.2-5030320261023001",
+      "distTags": {
+        "v3": "3.0.0-alpha-2632020024003",
+        "nvue3": "3.0.0-alpha-3040320220324001",
+        "alpha": "2.0.2-alpha-5030320261021001",
+        "latest": "2.0.2-5030320261023001",
+        "next": "2.0.2-5030420261028001",
+        "vue3": "3.0.0-5030420261029002"
+      },
+      "queriedVersions": {
+        "3.0.0-5030420261029002": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Funi-mp-toutiao/3.0.0-5030420261029002",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/uni-mp-weixin",
+      "selectedChannel": "vue3",
+      "selectedLatest": "3.0.0-5030420261029002",
+      "npmLatest": "2.0.2-5030320261023001",
+      "distTags": {
+        "v3": "3.0.0-alpha-2632020024003",
+        "nvue3": "3.0.0-alpha-3040320220324001",
+        "alpha": "2.0.2-alpha-5030320261021001",
+        "latest": "2.0.2-5030320261023001",
+        "next": "2.0.2-5030420261028001",
+        "vue3": "3.0.0-5030420261029002"
+      },
+      "queriedVersions": {
+        "3.0.0-5030420261029002": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Funi-mp-weixin/3.0.0-5030420261029002",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@eslint/config-inspector",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.5.0",
+      "npmLatest": "3.5.0",
+      "distTags": {
+        "latest": "3.5.0"
+      },
+      "queriedVersions": {
+        "3.5.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40eslint%2Fconfig-inspector/3.5.0",
+          "engines": {
+            "node": "^20.19.0 || ^22.13.0 || >=24"
+          },
+          "peerDependencies": {
+            "eslint": "^8.50.0 || ^9.0.0 || ^10.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@mpcore/test",
+      "selectedChannel": "latest",
+      "selectedLatest": "1.2.1",
+      "npmLatest": "1.2.1",
+      "distTags": {
+        "latest": "1.2.1",
+        "snapshot-nightly": "1.2.1-snapshot.nightly.cb6d0577164c8ccb3b2c0e5afff702c1997297550.b61fe174ce663ad393c7f312f83ea57aebcb15cd3bbaa0bef1580af00ab58e5ab"
+      },
+      "queriedVersions": {
+        "1.2.1": {
+          "registryEvidence": "https://registry.npmjs.org/%40mpcore%2Ftest/1.2.1",
+          "engines": {
+            "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@dcloudio/vite-plugin-uni",
+      "selectedChannel": "vue3",
+      "selectedLatest": "3.0.0-5030420261029002",
+      "npmLatest": "3.0.0-alpha-3000020210521001",
+      "distTags": {
+        "latest": "3.0.0-alpha-3000020210521001",
+        "alpha": "3.0.0-alpha-3000020210521005",
+        "nvue3": "3.0.0-alpha-3040320220324001",
+        "vue3": "3.0.0-5030420261029002"
+      },
+      "queriedVersions": {
+        "3.0.0-5030420261029002": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Fvite-plugin-uni/3.0.0-5030420261029002",
+          "engines": {
+            "node": ">=22.12.0"
+          },
+          "peerDependencies": {
+            "vite": "5.2.8"
+          }
+        },
+        "3.0.0-alpha-5030120260930001": {
+          "registryEvidence": "https://registry.npmjs.org/%40dcloudio%2Fvite-plugin-uni/3.0.0-alpha-5030120260930001",
+          "engines": {
+            "node": ">=22.12.0"
+          },
+          "peerDependencies": {
+            "vite": "5.2.8"
+          }
+        }
+      }
+    },
+    {
+      "name": "@jridgewell/trace-mapping",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.3.31",
+      "npmLatest": "0.3.31",
+      "distTags": {
+        "latest": "0.3.31"
+      },
+      "queriedVersions": {
+        "0.3.31": {
+          "registryEvidence": "https://registry.npmjs.org/%40jridgewell%2Ftrace-mapping/0.3.31",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@phosphor-icons/core",
+      "selectedChannel": "latest",
+      "selectedLatest": "2.1.1",
+      "npmLatest": "2.1.1",
+      "distTags": {
+        "latest": "2.1.1"
+      },
+      "queriedVersions": {
+        "2.1.1": {
+          "registryEvidence": "https://registry.npmjs.org/%40phosphor-icons%2Fcore/2.1.1",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@stylexswc/rs-compiler",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.20.0",
+      "npmLatest": "0.20.0",
+      "distTags": {
+        "latest": "0.20.0",
+        "next": "0.20.0-rc.2"
+      },
+      "queriedVersions": {
+        "0.20.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40stylexswc%2Frs-compiler/0.20.0",
+          "engines": {
+            "node": ">=20"
+          },
+          "peerDependencies": {
+            "@swc/core": "^1"
+          }
+        }
+      }
+    },
+    {
+      "name": "@stylexjs/babel-plugin",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.19.1",
+      "npmLatest": "0.19.1",
+      "distTags": {
+        "alpha": "0.5.0-alpha.4",
+        "beta": "0.10.0-beta.2",
+        "canary": "0.0.0-6e16619c",
+        "latest": "0.19.1"
+      },
+      "queriedVersions": {
+        "0.19.1": {
+          "registryEvidence": "https://registry.npmjs.org/%40stylexjs%2Fbabel-plugin/0.19.1",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@stylexjs/stylex",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.19.1",
+      "npmLatest": "0.19.1",
+      "distTags": {
+        "alpha": "0.5.0-alpha.4",
+        "beta": "0.10.0-beta.2",
+        "latest": "0.19.1"
+      },
+      "queriedVersions": {
+        "0.19.1": {
+          "registryEvidence": "https://registry.npmjs.org/%40stylexjs%2Fstylex/0.19.1",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@pmmmwh/react-refresh-webpack-plugin",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.6.3",
+      "npmLatest": "0.6.3",
+      "distTags": {
+        "next": "0.6.3",
+        "latest": "0.6.3"
+      },
+      "queriedVersions": {
+        "0.6.3": {
+          "registryEvidence": "https://registry.npmjs.org/%40pmmmwh%2Freact-refresh-webpack-plugin/0.6.3",
+          "engines": {
+            "node": ">=18.12"
+          },
+          "peerDependencies": {
+            "webpack": "^5.0.0",
+            "type-fest": ">=0.17.0 <6.0.0",
+            "react-refresh": ">=0.10.0 <1.0.0",
+            "sockjs-client": "^1.4.0",
+            "@types/webpack": "5.x",
+            "webpack-dev-server": "^4.8.0 || 5.x || 6.x",
+            "webpack-plugin-serve": "1.x",
+            "webpack-hot-middleware": "2.x"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/cli",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "experimental": "0.0.0-experimental.2",
+        "1.x": "1.3.46",
+        "3.0": "3.0.29",
+        "2.x": "2.2.22",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fcli/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/helper",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "3.0": "3.0.29",
+        "2.x": "2.2.22",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fhelper/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/components",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "experimental": "0.0.0-experimental.2",
+        "1.x": "1.3.46",
+        "3.0": "3.0.29",
+        "2.x": "2.2.22",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fcomponents/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/plugin-framework-react",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fplugin-framework-react/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "vite": "^4",
+            "react": "^18",
+            "preact": "^10",
+            "webpack": "^5",
+            "@tarojs/helper": "4.3.2",
+            "@tarojs/shared": "4.3.2",
+            "@tarojs/runtime": "4.3.2",
+            "@prefresh/webpack": "^4",
+            "@preact/preset-vite": "^2",
+            "@vitejs/plugin-react": "^4",
+            "@pmmmwh/react-refresh-webpack-plugin": "*"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/plugin-framework-vue3",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fplugin-framework-vue3/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "vue": "^3",
+            "vite": "^4",
+            "webpack": "^5",
+            "vue-loader": "^17.0.0",
+            "@tarojs/helper": "4.3.2",
+            "@tarojs/shared": "4.3.2",
+            "@tarojs/runtime": "4.3.2",
+            "@vitejs/plugin-vue": "^4",
+            "@tarojs/runner-utils": "4.3.2",
+            "@vitejs/plugin-vue-jsx": "^3"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/plugin-platform-h5",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fplugin-platform-h5/4.3.2",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/plugin-platform-alipay",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fplugin-platform-alipay/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "@tarojs/shared": "4.3.2",
+            "@tarojs/service": "4.3.2"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/plugin-platform-tt",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fplugin-platform-tt/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "@tarojs/shared": "4.3.2",
+            "@tarojs/service": "4.3.2"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/react",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "experimental": "0.0.0-experimental.2",
+        "3.0": "3.0.29",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Freact/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "react": "^18"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/runtime",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "experimental": "0.0.0-experimental.2",
+        "3.0": "3.0.29",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fruntime/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/plugin-platform-weapp",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fplugin-platform-weapp/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "@tarojs/shared": "4.3.2",
+            "@tarojs/service": "4.3.2"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/service",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "3.0": "3.0.29",
+        "2.x": "2.2.22",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fservice/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {}
+        },
+        "4.3.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fservice/4.3.0",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/shared",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "experimental": "0.0.0-experimental.2",
+        "3.0": "3.0.29",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fshared/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/taro",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "experimental": "0.0.0-experimental.2",
+        "1.x": "1.3.46",
+        "3.0": "3.0.29",
+        "2.x": "2.2.22",
+        "nightly": "3.6.24-nightly.10",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Ftaro/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "vue": "^3",
+            "rollup": "^3",
+            "postcss": "^8",
+            "webpack": "^5",
+            "@types/react": "^18",
+            "webpack-chain": "^6",
+            "@tarojs/helper": "4.3.2",
+            "@tarojs/shared": "4.3.2",
+            "@tarojs/components": "4.3.2",
+            "webpack-dev-server": "^4",
+            "html-webpack-plugin": "^5"
+          }
+        }
+      }
+    },
+    {
+      "name": "@types/babel__core",
+      "selectedChannel": "latest",
+      "selectedLatest": "7.20.5",
+      "npmLatest": "7.20.5",
+      "distTags": {
+        "ts2.8": "7.0.1",
+        "ts2.9": "7.1.4",
+        "ts3.0": "7.1.4",
+        "ts3.1": "7.1.4",
+        "ts3.2": "7.1.4",
+        "ts3.3": "7.1.4",
+        "ts3.4": "7.1.12",
+        "ts3.5": "7.1.14",
+        "ts3.6": "7.1.15",
+        "ts3.7": "7.1.16",
+        "ts3.8": "7.1.18",
+        "ts3.9": "7.1.19",
+        "ts4.0": "7.1.19",
+        "ts4.1": "7.1.20",
+        "ts4.2": "7.20.0",
+        "ts4.3": "7.20.1",
+        "ts4.4": "7.20.1",
+        "ts5.8": "7.20.5",
+        "ts6.0": "7.20.5",
+        "ts5.7": "7.20.5",
+        "latest": "7.20.5",
+        "ts4.5": "7.20.5",
+        "ts4.6": "7.20.5",
+        "ts4.7": "7.20.5",
+        "ts4.8": "7.20.5",
+        "ts4.9": "7.20.5",
+        "ts5.0": "7.20.5",
+        "ts5.1": "7.20.5",
+        "ts5.2": "7.20.5",
+        "ts5.3": "7.20.5",
+        "ts5.4": "7.20.5",
+        "ts5.5": "7.20.5",
+        "ts5.9": "7.20.5",
+        "ts5.6": "7.20.5",
+        "ts7.0": "7.20.5",
+        "ts7.1": "7.20.5"
+      },
+      "queriedVersions": {
+        "7.20.5": {
+          "registryEvidence": "https://registry.npmjs.org/%40types%2Fbabel__core/7.20.5",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@tarojs/webpack5-runner",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fwebpack5-runner/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "less": "^4",
+            "sass": "^1.3.0",
+            "stylus": ">=0.52.4",
+            "postcss": "^8",
+            "webpack": "5.91.0",
+            "@babel/core": "^7.12.0",
+            "@tarojs/runtime": "4.3.2"
+          }
+        }
+      }
+    },
+    {
+      "name": "@tarojs/vite-runner",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40tarojs%2Fvite-runner/4.3.2",
+          "engines": null,
+          "peerDependencies": {
+            "vite": "^4",
+            "postcss": "^8",
+            "@tarojs/runtime": "4.3.2"
+          }
+        }
+      }
+    },
+    {
+      "name": "@types/node",
+      "selectedChannel": "latest",
+      "selectedLatest": "26.6.6",
+      "npmLatest": "26.6.6",
+      "distTags": {
+        "ts2.0": "12.12.6",
+        "ts2.2": "12.12.6",
+        "ts2.4": "12.12.6",
+        "ts2.3": "12.12.6",
+        "ts2.7": "12.12.6",
+        "ts2.5": "12.12.6",
+        "ts2.1": "12.12.6",
+        "ts2.6": "12.12.6",
+        "ts2.8": "13.13.4",
+        "ts2.9": "14.0.1",
+        "ts3.0": "14.6.0",
+        "ts3.1": "14.10.1",
+        "ts3.2": "14.14.9",
+        "ts3.3": "14.14.20",
+        "ts3.4": "14.14.31",
+        "ts3.5": "15.6.1",
+        "ts3.6": "16.6.2",
+        "ts3.7": "16.11.7",
+        "ts3.8": "17.0.21",
+        "ts3.9": "17.0.41",
+        "ts4.0": "18.7.14",
+        "ts4.1": "18.11.9",
+        "ts4.2": "18.15.3",
+        "ts4.3": "20.6.0",
+        "ts4.4": "20.6.0",
+        "ts4.5": "20.10.0",
+        "ts4.6": "20.11.25",
+        "ts4.7": "20.14.8",
+        "ts4.8": "22.9.0",
+        "ts4.9": "22.9.3",
+        "ts5.0": "22.13.14",
+        "ts5.1": "24.1.0",
+        "ts5.2": "25.5.0",
+        "ts5.3": "25.9.3",
+        "ts5.5": "25.9.3",
+        "ts5.4": "25.9.3",
+        "old-version": "24.19.2",
+        "ts7.0": "26.6.6",
+        "ts6.0": "26.6.6",
+        "ts5.9": "26.6.6",
+        "ts5.7": "26.6.6",
+        "ts5.8": "26.6.6",
+        "ts5.6": "26.6.6",
+        "ts7.1": "26.6.6",
+        "latest": "26.6.6"
+      },
+      "queriedVersions": {
+        "26.6.6": {
+          "registryEvidence": "https://registry.npmjs.org/%40types%2Fnode/26.6.6",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@types/react",
+      "selectedChannel": "latest",
+      "selectedLatest": "19.3.0",
+      "npmLatest": "19.3.0",
+      "distTags": {
+        "ts2.0": "15.0.1",
+        "ts2.1": "15.0.20",
+        "ts2.2": "15.0.30",
+        "ts2.4": "16.0.36",
+        "ts2.3": "16.0.36",
+        "ts2.5": "16.0.36",
+        "ts2.7": "16.4.7",
+        "ts2.6": "16.4.7",
+        "ts2.8": "16.9.34",
+        "ts2.9": "16.9.35",
+        "ts3.0": "16.9.46",
+        "ts3.1": "16.9.49",
+        "ts3.2": "16.9.56",
+        "ts3.3": "17.0.0",
+        "ts3.4": "17.0.2",
+        "ts3.5": "17.0.8",
+        "ts3.6": "17.0.19",
+        "ts3.7": "17.0.35",
+        "ts3.8": "17.0.39",
+        "ts3.9": "18.0.12",
+        "ts4.0": "18.0.18",
+        "ts4.1": "18.0.25",
+        "ts4.2": "18.0.28",
+        "ts4.3": "18.2.21",
+        "ts4.4": "18.2.21",
+        "ts4.5": "18.2.39",
+        "ts4.6": "18.2.64",
+        "ts4.7": "18.3.3",
+        "ts4.9": "18.3.12",
+        "ts4.8": "18.3.12",
+        "ts5.0": "19.0.12",
+        "ts5.1": "19.1.9",
+        "ts5.2": "19.2.14",
+        "ts5.4": "19.2.17",
+        "ts5.3": "19.2.17",
+        "ts5.5": "19.2.17",
+        "ts5.9": "19.3.0",
+        "ts5.6": "19.3.0",
+        "ts5.8": "19.3.0",
+        "ts7.0": "19.3.0",
+        "ts5.7": "19.3.0",
+        "ts6.0": "19.3.0",
+        "latest": "19.3.0",
+        "ts7.1": "19.3.0"
+      },
+      "queriedVersions": {
+        "19.3.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40types%2Freact/19.3.0",
+          "engines": null,
+          "peerDependencies": {}
+        },
+        "18.3.31": {
+          "registryEvidence": "https://registry.npmjs.org/%40types%2Freact/18.3.31",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "@types/react-dom",
+      "selectedChannel": "latest",
+      "selectedLatest": "19.3.0",
+      "npmLatest": "19.3.0",
+      "distTags": {
+        "ts2.0": "0.14.20",
+        "ts2.1": "15.5.0",
+        "ts2.2": "15.5.0",
+        "ts2.5": "16.0.3",
+        "ts2.3": "16.0.3",
+        "ts2.4": "16.0.3",
+        "ts2.7": "16.0.6",
+        "ts2.6": "16.0.6",
+        "ts2.8": "16.9.7",
+        "ts3.0": "16.9.8",
+        "ts2.9": "16.9.8",
+        "ts3.1": "16.9.8",
+        "ts3.2": "16.9.9",
+        "ts3.3": "17.0.0",
+        "ts3.4": "17.0.1",
+        "ts3.5": "17.0.5",
+        "ts3.6": "17.0.9",
+        "ts3.8": "17.0.11",
+        "ts3.7": "17.0.11",
+        "ts3.9": "18.0.5",
+        "ts4.0": "18.0.6",
+        "ts4.1": "18.0.9",
+        "ts4.2": "18.0.11",
+        "ts4.4": "18.2.7",
+        "ts4.3": "18.2.7",
+        "ts4.5": "18.2.17",
+        "ts4.6": "18.2.21",
+        "ts4.7": "18.3.0",
+        "ts4.8": "18.3.1",
+        "ts4.9": "18.3.1",
+        "ts5.0": "19.0.4",
+        "ts5.1": "19.1.7",
+        "ts5.2": "19.2.3",
+        "ts5.5": "19.2.3",
+        "ts5.3": "19.2.3",
+        "ts5.4": "19.2.3",
+        "ts5.8": "19.3.0",
+        "ts5.7": "19.3.0",
+        "ts6.0": "19.3.0",
+        "ts5.9": "19.3.0",
+        "ts7.0": "19.3.0",
+        "ts5.6": "19.3.0",
+        "latest": "19.3.0",
+        "ts7.1": "19.3.0"
+      },
+      "queriedVersions": {
+        "19.3.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40types%2Freact-dom/19.3.0",
+          "engines": null,
+          "peerDependencies": {
+            "@types/react": "^19.3.0"
+          }
+        },
+        "18.3.7": {
+          "registryEvidence": "https://registry.npmjs.org/%40types%2Freact-dom/18.3.7",
+          "engines": null,
+          "peerDependencies": {
+            "@types/react": "^18.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@vitejs/plugin-react",
+      "selectedChannel": "latest",
+      "selectedLatest": "6.2.1",
+      "npmLatest": "6.2.1",
+      "distTags": {
+        "alpha": "3.0.0-alpha.2",
+        "beta": "6.0.0-beta.0",
+        "latest": "6.2.1"
+      },
+      "queriedVersions": {
+        "6.2.1": {
+          "registryEvidence": "https://registry.npmjs.org/%40vitejs%2Fplugin-react/6.2.1",
+          "engines": {
+            "node": "^20.19.0 || >=22.12.0"
+          },
+          "peerDependencies": {
+            "vite": "^8.0.0",
+            "oxc-transform-react": ">=0.152.0 <0.157.0",
+            "@rolldown/plugin-babel": "^0.1.7 || ^0.2.0 || ^0.3.0",
+            "babel-plugin-react-compiler": "^1.0.0"
+          }
+        },
+        "4.7.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40vitejs%2Fplugin-react/4.7.0",
+          "engines": {
+            "node": "^14.18.0 || >=16.0.0"
+          },
+          "peerDependencies": {
+            "vite": "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@vitejs/plugin-vue",
+      "selectedChannel": "latest",
+      "selectedLatest": "6.0.10",
+      "npmLatest": "6.0.10",
+      "distTags": {
+        "alpha": "5.0.0-alpha.0",
+        "previous": "4.6.2",
+        "beta": "6.0.0-beta.2",
+        "latest": "6.0.10"
+      },
+      "queriedVersions": {
+        "6.0.10": {
+          "registryEvidence": "https://registry.npmjs.org/%40vitejs%2Fplugin-vue/6.0.10",
+          "engines": {
+            "node": "^20.19.0 || >=22.12.0"
+          },
+          "peerDependencies": {
+            "vue": "^3.2.25 || ^3.6.0-rc.10",
+            "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+          }
+        },
+        "4.6.2": {
+          "registryEvidence": "https://registry.npmjs.org/%40vitejs%2Fplugin-vue/4.6.2",
+          "engines": {
+            "node": "^14.18.0 || >=16.0.0"
+          },
+          "peerDependencies": {
+            "vue": "^3.2.25",
+            "vite": "^4.0.0 || ^5.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@vitejs/plugin-vue-jsx",
+      "selectedChannel": "latest",
+      "selectedLatest": "5.1.6",
+      "npmLatest": "5.1.6",
+      "distTags": {
+        "alpha": "3.0.0-alpha.0",
+        "beta": "5.0.0-beta.0",
+        "latest": "5.1.6"
+      },
+      "queriedVersions": {
+        "5.1.6": {
+          "registryEvidence": "https://registry.npmjs.org/%40vitejs%2Fplugin-vue-jsx/5.1.6",
+          "engines": {
+            "node": "^20.19.0 || >=22.12.0"
+          },
+          "peerDependencies": {
+            "vue": "^3.0.0",
+            "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+          }
+        },
+        "3.1.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40vitejs%2Fplugin-vue-jsx/3.1.0",
+          "engines": {
+            "node": "^14.18.0 || >=16.0.0"
+          },
+          "peerDependencies": {
+            "vue": "^3.0.0",
+            "vite": "^4.0.0 || ^5.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "selectedChannel": "latest",
+      "selectedLatest": "8.72.1",
+      "npmLatest": "8.72.1",
+      "distTags": {
+        "rc-v3": "3.0.0-alpha.27",
+        "rc-v4": "4.0.0-alpha.16",
+        "rc-v5": "5.0.0-alpha.42",
+        "rc-v": "6.0.0-alpha.58",
+        "rc-v6": "7.0.0-alpha.0",
+        "rc-v8": "8.0.0-alpha.62",
+        "latest": "8.72.1",
+        "canary": "8.72.2-alpha.11"
+      },
+      "queriedVersions": {
+        "8.72.1": {
+          "registryEvidence": "https://registry.npmjs.org/%40typescript-eslint%2Fparser/8.72.1",
+          "engines": {
+            "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+          },
+          "peerDependencies": {
+            "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+            "typescript": ">=4.8.4 <6.1.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@vitest/coverage-v8",
+      "selectedChannel": "latest",
+      "selectedLatest": "5.1.0",
+      "npmLatest": "5.1.0",
+      "distTags": {
+        "V3": "3.2.7",
+        "rc": "5.0.0-rc.4",
+        "latest": "5.1.0",
+        "V4": "4.1.12",
+        "beta": "5.1.0-beta.1"
+      },
+      "queriedVersions": {
+        "5.1.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40vitest%2Fcoverage-v8/5.1.0",
+          "engines": null,
+          "peerDependencies": {
+            "vitest": "5.1.0",
+            "@vitest/browser": "5.1.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@vue/babel-plugin-jsx",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.0.0",
+      "npmLatest": "3.0.0",
+      "distTags": {
+        "alpha": "1.2.0-alpha.0",
+        "latest": "3.0.0"
+      },
+      "queriedVersions": {
+        "3.0.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40vue%2Fbabel-plugin-jsx/3.0.0",
+          "engines": {
+            "node": "^22.18.0 || >=24.11.0"
+          },
+          "peerDependencies": {
+            "@babel/core": "^8.0.0"
+          }
+        },
+        "1.5.0": {
+          "registryEvidence": "https://registry.npmjs.org/%40vue%2Fbabel-plugin-jsx/1.5.0",
+          "engines": null,
+          "peerDependencies": {
+            "@babel/core": "^7.0.0-0"
+          }
+        }
+      }
+    },
+    {
+      "name": "@vue/compiler-sfc",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.5.44",
+      "npmLatest": "3.5.44",
+      "distTags": {
+        "v2-alpha": "2.7.0-alpha.12",
+        "v2-beta": "2.7.16-beta.2",
+        "v2-latest": "2.7.16",
+        "alpha": "3.6.0-alpha.7",
+        "beta": "3.6.0-beta.17",
+        "latest": "3.5.44",
+        "rc": "3.6.0-rc.14"
+      },
+      "queriedVersions": {
+        "3.5.44": {
+          "registryEvidence": "https://registry.npmjs.org/%40vue%2Fcompiler-sfc/3.5.44",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "astro",
+      "selectedChannel": "latest",
+      "selectedLatest": "7.4.5",
+      "npmLatest": "7.4.5",
+      "distTags": {
+        "next--format-astro-url": "0.0.0-20220816201344",
+        "next--wasm": "0.0.0-wasm-20220921185024",
+        "next--imgcache": "0.0.0-imgcache-20220929145446",
+        "next--perf-2": "0.0.0-perf-2-20221003212959",
+        "next--node-standalone": "0.0.0-node-standalone-20221011210529",
+        "next--include-files": "0.0.0-include-files-20221014142503",
+        "next--hmr-recovery": "0.0.0-hmr-recovery-20221027125930",
+        "next--config-errors": "0.0.0-config-errors-20221101194733",
+        "next--vercel-image-2": "0.0.0-vercel-image-2-20221112151551",
+        "next--new-config": "0.0.0-new-config-20221114154518",
+        "next--image-next": "0.0.0-image-next-20221114175548",
+        "next--image-api": "0.0.0-image-api-20221114180701",
+        "next--vercel-code": "0.0.0-vercel-code-20221115191719",
+        "next--telefunc": "0.0.0-telefunc-20221130131719",
+        "next--error-overlay": "0.0.0-error-overlay-20221203190718",
+        "next--join-base": "0.0.0-join-base-20221208170900",
+        "next--content-collections": "0.0.0-content-collections-20221215161753",
+        "next--prerender": "0.0.0-prerender-20221215222121",
+        "next--vercel-proc-bug": "0.0.0-vercel-proc-bug-20230124214915",
+        "next--netlify-undici-fix": "0.0.0-netlify-undici-fix-20230131152620",
+        "next--mdx-links": "0.0.0-mdx-links-20230206172907",
+        "next--shiki-vercel": "0.0.0-shiki-vercel-20230209184129",
+        "next--headbody": "0.0.0-headbody-20230210211734",
+        "next--devapp": "0.0.0-devapp-20230213161446",
+        "next--head-bubbling": "0.0.0-head-bubbling-20230217175534",
+        "next--loaders": "0.0.0-loaders-20230222215040",
+        "next--vercel-fix": "0.0.0-vercel-fix-20230227215002",
+        "next--markdoc": "0.0.0-markdoc-20230302210326",
+        "next--check-watch": "0.0.0-check-watch-20230303211357",
+        "next--ssr-manifest": "0.0.0-ssr-manifest-20230306183729",
+        "next--cloudcannon-fix": "0.0.0-cloudcannon-fix-20230306211609",
+        "next--experimental-assets": "0.0.0-experimental-assets-20230307131344",
+        "next--vercel-clientaddress": "0.0.0-vercel-clientaddress-20230309142435",
+        "next--image-image-size": "0.0.0-image-image-size-20230309180922",
+        "next--vercel-json": "0.0.0-vercel-json-20230313201834",
+        "next--head-prop": "0.0.0-head-prop-20230323183456",
+        "next--schema-image": "0.0.0-schema-image-20230401013700",
+        "next--scopedStyleStrategy": "0.0.0-scopedStyleStrategy-20230406135310",
+        "next--image-wasm-ssr": "0.0.0-image-wasm-ssr-20230411145607",
+        "next--data-collections": "0.0.0-data-collections-20230418125011",
+        "next--middleware": "0.0.0-middleware-20230418135507",
+        "next--vercel-image": "0.0.0-vercel-image-20230428112211",
+        "next--multi-chunk": "0.0.0-multi-chunk-20230508112531",
+        "next--outlet": "0.0.0-outlet-20230516145630",
+        "next--spa": "0.0.0-spa-20230519211519",
+        "next--content-serial": "0.0.0-content-serial-20230522100058",
+        "next--nested-hydrate": "0.0.0-nested-hydrate-20230524151829",
+        "next--redirects": "0.0.0-redirects-20230524173123",
+        "next--markdoc-import-urls": "0.0.0-markdoc-import-urls-20230607221652",
+        "next--simple-nested-hydration": "0.0.0-simple-nested-hydration-20230612101258",
+        "next--tailwind-config": "0.0.0-tailwind-config-20230612122302",
+        "next--pm-fix": "0.0.0-pm-fix-20230620193235",
+        "next--markdoc-config-changes": "0.0.0-markdoc-config-changes-20230626153541",
+        "next--vercel-split": "0.0.0-vercel-split-20230629135007",
+        "next--vercel-edge-middleware": "0.0.0-vercel-edge-middleware-20230630125718",
+        "next--netlify-edge-middleware": "0.0.0-netlify-edge-middleware-20230714131425",
+        "next--view-transitions": "0.0.0-view-transitions-20230731172701",
+        "rc": "3.0.0-rc.11",
+        "next--astro-check-fix": "0.0.0-astro-check-fix-20230830133734",
+        "next--vt-root-anim": "0.0.0-vt-root-anim-20230830212910",
+        "next--vt-fallback-filter": "0.0.0-vt-fallback-filter-20230831170045",
+        "next--vercel-symbolic-link": "0.0.0-vercel-symbolic-link-20230901110045",
+        "next--symbolic-link": "0.0.0-symbolic-link-20230901124103",
+        "next--sanitize-filenames": "0.0.0-sanitize-filenames-20230901203435",
+        "next--fix-mime": "0.0.0-fix-mime-20230904023307",
+        "next--vercel-upgrade": "0.0.0-vercel-upgrade-20230905174957",
+        "next--optional-sharp": "0.0.0-optional-sharp-20230906121801",
+        "next--propagation-metadata": "0.0.0-propagation-metadata-20230907174633",
+        "next--perf": "0.0.0-perf-20230907211643",
+        "next--vercel-speed-insights": "0.0.0-vercel-speed-insights-20230912155045",
+        "next--picture": "0.0.0-picture-20231008095742",
+        "next--srcset-remote": "0.0.0-srcset-remote-20231013141048",
+        "next--concurrent-assets": "0.0.0-concurrent-assets-20231015222920",
+        "next--fragments": "0.0.0-fragments-20231017161931",
+        "next--integration-middleware": "0.0.0-integration-middleware-20231019151221",
+        "next--content-cache": "0.0.0-content-cache-20231019190330",
+        "experimental--react-children-client": "0.0.0-react-children-client-20231023164643",
+        "experimental--dev-overlay": "0.0.0-dev-overlay-20231024213927",
+        "experimental--extra-logging": "0.0.0-extra-logging-20231030194239",
+        "experimental--i18n-routing": "0.0.0-i18n-routing-20231101144500",
+        "experimental--content-cache": "0.0.0-content-cache-20231108193031",
+        "experimental--assets-uint8array": "0.0.0-assets-uint8array-20231109073138",
+        "experimental--name": "0.0.0-name-20231110143304",
+        "experimental--404-trailing-slash": "0.0.0-404-trailing-slash-20231117145629",
+        "experimental--self-closing-children": "0.0.0-self-closing-children-20231120173528",
+        "experimental--netlify-fix": "0.0.0-netlify-fix-20231122190344",
+        "experimental--xray": "0.0.0-xray-20231129021231",
+        "experimental--add-stable": "0.0.0-add-stable-20231208215901",
+        "experimental--vt-partytown": "0.0.0-vt-partytown-20231212203707",
+        "experimental--handle-unhandled": "0.0.0-handle-unhandled-20231213202808",
+        "experimental--dupicate-content-entry-improved-message": "0.0.0-dupicate-content-entry-improved-message-20231220220040",
+        "experimental--9591": "0.0.0-9591-20240103143428",
+        "experimental--ssg-no-streaming": "0.0.0-ssg-no-streaming-20240104123901",
+        "experimental--9624": "0.0.0-9624-20240105191325",
+        "experimental--pin-sharp": "0.0.0-pin-sharp-20240109233547",
+        "experimental--data-astro-transition": "0.0.0-data-astro-transition-20240111220209",
+        "experimental--9685": "0.0.0-9685-20240112193246",
+        "experimental--isr": "0.0.0-isr-20240125224234",
+        "experimental--toolbar-absolute-paths": "0.0.0-toolbar-absolute-paths-20240126155246",
+        "experimental--improve-sync-errors": "0.0.0-improve-sync-errors-20240201210128",
+        "experimental--cc-hmr": "0.0.0-cc-hmr-20240205141934",
+        "experimental--cssesc": "0.0.0-cssesc-20240207015359",
+        "experimental--edge-middleware-verification": "0.0.0-edge-middleware-verification-20240207135919",
+        "experimental--astro-content-fix": "0.0.0-astro-content-fix-20240207175526",
+        "experimental--island-loading-error-messages": "0.0.0-island-loading-error-messages-20240209173859",
+        "experimental--debug-missing-endpoint": "0.0.0-debug-missing-endpoint-20240209211325",
+        "experimental--get-remote-dimensions": "0.0.0-get-remote-dimensions-20240211001920",
+        "experimental--render-nodejs": "0.0.0-render-nodejs-20240213145612",
+        "experimental--node-crypto-error": "0.0.0-node-crypto-error-20240214144952",
+        "experimental--allow-cc": "0.0.0-allow-cc-20240222155628",
+        "experimental--edge-nested": "0.0.0-edge-nested-20240223135627",
+        "experimental--audits-ui": "0.0.0-audits-ui-20240223144827",
+        "experimental--no-error-in-stream": "0.0.0-no-error-in-stream-20240223213844",
+        "experimental--vite-runtime-api": "0.0.0-vite-runtime-api-20240224085712",
+        "experimental--svelte-editor-fix": "0.0.0-svelte-editor-fix-20240227111439",
+        "experimental--direct-render-script": "0.0.0-direct-render-script-20240227141119",
+        "experimental--treeshake-scoped-css": "0.0.0-treeshake-scoped-css-20240304133731",
+        "experimental--db-export-bug": "0.0.0-db-export-bug-20240307130354",
+        "experimental--db-integrations-support": "0.0.0-db-integrations-support-20240307154857",
+        "experimental--db-batch": "0.0.0-db-batch-20240307184301",
+        "experimental--non-admin-test": "0.0.0-non-admin-test-20240308195029",
+        "experimental--token-renewal": "0.0.0-token-renewal-20240315122343",
+        "experimental--inline-ccc": "0.0.0-inline-ccc-20240324145742",
+        "experimental--head-body-content": "0.0.0-head-body-content-20240329190922",
+        "experimental--10745": "0.0.0-10745-20240410180016",
+        "experimental--js-strictest": "0.0.0-js-strictest-20240411160410",
+        "experimental--skew-protection": "0.0.0-skew-protection-20240412093445",
+        "experimental--cc-invalid": "0.0.0-cc-invalid-20240417202858",
+        "experimental--toolbar-improvements": "0.0.0-toolbar-improvements-20240420123233",
+        "experimental--assets-vitest": "0.0.0-assets-vitest-20240422184742",
+        "experimental--route-key": "0.0.0-route-key-20240430102522",
+        "experimental--mdx-v3": "0.0.0-mdx-v3-20240502124041",
+        "experimental--cc-preserve-cache": "0.0.0-cc-preserve-cache-20240502141405",
+        "experimental--vitals-fix": "0.0.0-vitals-fix-20240503214211",
+        "experimental--actions": "0.0.0-actions-20240507170618",
+        "experimental--node-streaming": "0.0.0-node-streaming-20240515211034",
+        "experimental--astro-env": "0.0.0-astro-env-20240522153443",
+        "experimental--container": "0.0.0-container-20240524172326",
+        "experimental--cf-build-option": "0.0.0-cf-build-option-20240527121637",
+        "experimental--ccc-scripts": "0.0.0-ccc-scripts-20240531125856",
+        "experimental--vitest-config": "0.0.0-vitest-config-20240611074527",
+        "experimental--experimental-container": "0.0.0-experimental-container-20240613104104",
+        "experimental--refactor-prerender": "0.0.0-refactor-prerender-20240614140807",
+        "experimental--content-layer": "0.0.0-content-layer-20240628202150",
+        "experimental--content-layer-images": "0.0.0-content-layer-images-20240717095022",
+        "experimental--noSync": "0.0.0-noSync-20240718092432",
+        "experimental--server-islands": "0.0.0-server-islands-20240718131003",
+        "experimental--contentlayer": "0.0.0-contentlayer-20240808151214",
+        "experimental--content-collections-intellisense": "0.0.0-content-collections-intellisense-20240808223933",
+        "experimental--server-island-regression": "0.0.0-server-island-regression-20240814104839",
+        "experimental--si-crypto-reg": "0.0.0-si-crypto-reg-20240814162819",
+        "experimental--immutable-datastore": "0.0.0-immutable-datastore-20240815133714",
+        "experimental--content-types-dev": "0.0.0-content-types-dev-20240815140037",
+        "experimental--si-get": "0.0.0-si-get-20240815175345",
+        "experimental--mdx-layout-style": "0.0.0-mdx-layout-style-20240822115312",
+        "experimental--actions-bun-workaround": "0.0.0-actions-bun-workaround-20240827210959",
+        "experimental--dynamic-middleware": "0.0.0-dynamic-middleware-20240829171109",
+        "experimental--crypto-env": "0.0.0-crypto-env-20240829194602",
+        "experimental--tw5": "0.0.0-tw5-20240917210903",
+        "experimental--edge-middleware-regression": "0.0.0-edge-middleware-regression-20241003093448",
+        "experimental--test-apis": "0.0.0-test-apis-20241008195645",
+        "experimental--astro-url-fix": "0.0.0-astro-url-fix-20241011143901",
+        "experimental--env-override": "0.0.0-env-override-20241016131627",
+        "experimental--env-middleware": "0.0.0-env-middleware-20241105160737",
+        "experimental--env-race-condition": "0.0.0-env-race-condition-20241114151936",
+        "experimental--si-header": "0.0.0-si-header-20241120190819",
+        "experimental--process-env-override": "0.0.0-process-env-override-20241206130809",
+        "experimental--astroenv-dev": "0.0.0-astroenv-dev-20241206160513",
+        "experimental--svg-leak": "0.0.0-svg-leak-20241209134543",
+        "experimental--routemanifest-refactor": "0.0.0-routemanifest-refactor-20241209145150",
+        "experimental--middleware-fix": "0.0.0-middleware-fix-20241210163342",
+        "experimental--atomic-writes": "0.0.0-atomic-writes-20241212091949",
+        "experimental--sessions": "0.0.0-sessions-20241216171652",
+        "experimental--clean-sm": "0.0.0-clean-sm-20241216182429",
+        "experimental--dev-after-sync": "0.0.0-dev-after-sync-20250102175105",
+        "experimental--render-type": "0.0.0-render-type-20250103094003",
+        "experimental--data-store-location": "0.0.0-data-store-location-20250109131010",
+        "experimental--alpine-scripts": "0.0.0-alpine-scripts-20250121133658",
+        "experimental--trailing-slash-redirect": "0.0.0-trailing-slash-redirect-20250128153540",
+        "experimental--router-noexec": "0.0.0-router-noexec-20250129135648",
+        "experimental--adapter-sessions": "0.0.0-adapter-sessions-20250207124921",
+        "legacy": "4.16.19",
+        "alpha": "7.0.0-alpha.2",
+        "incremental-graph-hashing": "0.0.0-incremental-graph-hashing-20260807161014",
+        "latest": "7.4.5",
+        "beta": "7.4.4-beta.0"
+      },
+      "queriedVersions": {
+        "7.4.5": {
+          "registryEvidence": "https://registry.npmjs.org/astro/7.4.5",
+          "engines": {
+            "npm": ">=9.6.5",
+            "node": ">=22.23.4",
+            "pnpm": ">=7.1.0"
+          },
+          "peerDependencies": {
+            "@astrojs/markdown-remark": "^7.3.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "astro-eslint-parser",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.2.0",
+      "npmLatest": "3.2.0",
+      "distTags": {
+        "latest": "3.2.0"
+      },
+      "queriedVersions": {
+        "3.2.0": {
+          "registryEvidence": "https://registry.npmjs.org/astro-eslint-parser/3.2.0",
+          "engines": {
+            "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "babel-preset-taro",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.2",
+      "npmLatest": "4.3.2",
+      "distTags": {
+        "experimental": "0.0.0-experimental.2",
+        "3.0": "3.0.29",
+        "nightly": "3.6.24-nightly.10",
+        "theta": "3.6.15-theta.0",
+        "next": "4.0.2",
+        "canary": "4.0.7-canary.6",
+        "test": "4.0.9-alpha.8",
+        "v3-beta": "3.6.40-beta.1",
+        "v3-latest": "3.6.40",
+        "latest": "4.3.2",
+        "beta": "4.3.2-beta.2",
+        "alpha": "4.3.2-alpha.2"
+      },
+      "queriedVersions": {
+        "4.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/babel-preset-taro/4.3.2",
+          "engines": {
+            "node": ">= 18"
+          },
+          "peerDependencies": {
+            "@babel/core": "^7.0.0",
+            "react-refresh": "^0.14.0",
+            "@tarojs/taro-rn": "4.3.2",
+            "babel-preset-solid": "^1.8.16",
+            "@babel/preset-react": "^7.24.1",
+            "@vue/babel-plugin-jsx": "^1.2.2",
+            "@prefresh/babel-plugin": "^0.5.1"
+          }
+        }
+      }
+    },
+    {
+      "name": "eslint-plugin-astro",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.2.1",
+      "npmLatest": "3.2.1",
+      "distTags": {
+        "latest": "3.2.1"
+      },
+      "queriedVersions": {
+        "3.2.1": {
+          "registryEvidence": "https://registry.npmjs.org/eslint-plugin-astro/3.2.1",
+          "engines": {
+            "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
+          },
+          "peerDependencies": {
+            "eslint": ">=10.0.0",
+            "typescript-eslint": ">=8.61.0",
+            "eslint-plugin-jsx-a11y": ">=6.10.2",
+            "eslint-plugin-jsx-a11y-x": ">=0.2.0",
+            "@typescript-eslint/parser": ">=8.61.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "eslint",
+      "selectedChannel": "latest",
+      "selectedLatest": "10.14.0",
+      "npmLatest": "10.14.0",
+      "distTags": {
+        "es6jsx": "0.11.0-alpha.0",
+        "next": "10.0.0-rc.2",
+        "maintenance": "9.39.5",
+        "latest": "10.14.0"
+      },
+      "queriedVersions": {
+        "10.14.0": {
+          "registryEvidence": "https://registry.npmjs.org/eslint/10.14.0",
+          "engines": {
+            "node": "^20.19.0 || ^22.13.0 || >=24"
+          },
+          "peerDependencies": {
+            "jiti": "*"
+          }
+        }
+      }
+    },
+    {
+      "name": "execa",
+      "selectedChannel": "latest",
+      "selectedLatest": "10.2.1",
+      "npmLatest": "10.2.1",
+      "distTags": {
+        "next": "2.0.0-alpha.0",
+        "latest": "10.2.1"
+      },
+      "queriedVersions": {
+        "10.2.1": {
+          "registryEvidence": "https://registry.npmjs.org/execa/10.2.1",
+          "engines": {
+            "node": ">=22"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "eslint-plugin-mdx",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.9.1",
+      "npmLatest": "3.9.1",
+      "distTags": {
+        "canary": "0.11.2",
+        "beta": "1.5.5-beta.1",
+        "next": "2.0.0-next.5",
+        "release-v1": "1.17.1",
+        "release-v2": "2.3.4",
+        "latest": "3.9.1"
+      },
+      "queriedVersions": {
+        "3.9.1": {
+          "registryEvidence": "https://registry.npmjs.org/eslint-plugin-mdx/3.9.1",
+          "engines": {
+            "node": ">=18.0.0"
+          },
+          "peerDependencies": {
+            "eslint": ">=8.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "lefthook",
+      "selectedChannel": "latest",
+      "selectedLatest": "2.2.2",
+      "npmLatest": "2.2.2",
+      "distTags": {
+        "latest": "2.2.2"
+      },
+      "queriedVersions": {
+        "2.2.2": {
+          "registryEvidence": "https://registry.npmjs.org/lefthook/2.2.2",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "magic-string",
+      "selectedChannel": "latest",
+      "selectedLatest": "1.4.5",
+      "npmLatest": "1.4.5",
+      "distTags": {
+        "latest": "1.4.5"
+      },
+      "queriedVersions": {
+        "1.4.5": {
+          "registryEvidence": "https://registry.npmjs.org/magic-string/1.4.5",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "less",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.9.1",
+      "npmLatest": "4.9.1",
+      "distTags": {
+        "canary": "3.13.1-next.1",
+        "beta": "4.6.3-beta.0",
+        "latest": "4.9.1",
+        "alpha": "5.0.0-alpha.17"
+      },
+      "queriedVersions": {
+        "4.9.1": {
+          "registryEvidence": "https://registry.npmjs.org/less/4.9.1",
+          "engines": {
+            "node": ">=18"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "miniprogram-api-typings",
+      "selectedChannel": "latest",
+      "selectedLatest": "5.2.3",
+      "npmLatest": "5.2.3",
+      "distTags": {
+        "beta": "2.12.0-beta.4",
+        "latest": "5.2.3"
+      },
+      "queriedVersions": {
+        "5.2.3": {
+          "registryEvidence": "https://registry.npmjs.org/miniprogram-api-typings/5.2.3",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "only-allow",
+      "selectedChannel": "latest",
+      "selectedLatest": "1.2.2",
+      "npmLatest": "1.2.2",
+      "distTags": {
+        "latest": "1.2.2"
+      },
+      "queriedVersions": {
+        "1.2.2": {
+          "registryEvidence": "https://registry.npmjs.org/only-allow/1.2.2",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "miniprogram-automator",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.13.0",
+      "npmLatest": "0.13.0",
+      "distTags": {
+        "beta": "0.12.0-beta.1",
+        "latest": "0.13.0"
+      },
+      "queriedVersions": {
+        "0.13.0": {
+          "registryEvidence": "https://registry.npmjs.org/miniprogram-automator/0.13.0",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "pagefind",
+      "selectedChannel": "latest",
+      "selectedLatest": "1.6.0",
+      "npmLatest": "1.6.0",
+      "distTags": {
+        "rc": "1.4.0-rc.3",
+        "alpha": "1.5.0-alpha.4",
+        "beta": "1.5.0-beta.2",
+        "latest": "1.6.0"
+      },
+      "queriedVersions": {
+        "1.6.0": {
+          "registryEvidence": "https://registry.npmjs.org/pagefind/1.6.0",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "postcss",
+      "selectedChannel": "latest",
+      "selectedLatest": "8.5.32",
+      "npmLatest": "8.5.32",
+      "distTags": {
+        "latest": "8.5.32"
+      },
+      "queriedVersions": {
+        "8.5.32": {
+          "registryEvidence": "https://registry.npmjs.org/postcss/8.5.32",
+          "engines": {
+            "node": "^10 || ^12 || >=14"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "postcss-selector-parser",
+      "selectedChannel": "latest",
+      "selectedLatest": "7.1.7",
+      "npmLatest": "7.1.7",
+      "distTags": {
+        "latest": "7.1.7",
+        "legacy-v6": "6.1.5"
+      },
+      "queriedVersions": {
+        "7.1.7": {
+          "registryEvidence": "https://registry.npmjs.org/postcss-selector-parser/7.1.7",
+          "engines": {
+            "node": ">=4"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "playwright",
+      "selectedChannel": "latest",
+      "selectedLatest": "1.64.1",
+      "npmLatest": "1.64.1",
+      "distTags": {
+        "rc": "1.18.0-rc1",
+        "latest": "1.64.1",
+        "beta": "1.64.1-beta-1793483565000",
+        "next": "1.65.0-alpha-2026-11-03"
+      },
+      "queriedVersions": {
+        "1.64.1": {
+          "registryEvidence": "https://registry.npmjs.org/playwright/1.64.1",
+          "engines": {
+            "node": ">=20"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "react-dom",
+      "selectedChannel": "latest",
+      "selectedLatest": "19.3.1",
+      "npmLatest": "19.3.1",
+      "distTags": {
+        "beta": "19.0.0-beta-26f2496093-20240514",
+        "rc": "19.0.0-rc.1",
+        "next": "19.3.0-canary-d5736f09-20260507",
+        "latest": "19.3.1",
+        "backport": "19.1.10",
+        "experimental": "0.0.0-experimental-e84e1492-20261031",
+        "canary": "19.3.0-canary-e84e1492-20261031"
+      },
+      "queriedVersions": {
+        "19.3.1": {
+          "registryEvidence": "https://registry.npmjs.org/react-dom/19.3.1",
+          "engines": null,
+          "peerDependencies": {
+            "react": "^19.3.1"
+          }
+        },
+        "18.3.1": {
+          "registryEvidence": "https://registry.npmjs.org/react-dom/18.3.1",
+          "engines": null,
+          "peerDependencies": {
+            "react": "^18.3.1"
+          }
+        }
+      }
+    },
+    {
+      "name": "postcss-value-parser",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.2.0",
+      "npmLatest": "4.2.0",
+      "distTags": {
+        "latest": "4.2.0"
+      },
+      "queriedVersions": {
+        "4.2.0": {
+          "registryEvidence": "https://registry.npmjs.org/postcss-value-parser/4.2.0",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "react",
+      "selectedChannel": "latest",
+      "selectedLatest": "19.3.1",
+      "npmLatest": "19.3.1",
+      "distTags": {
+        "beta": "19.0.0-beta-26f2496093-20240514",
+        "rc": "19.0.0-rc.1",
+        "next": "19.3.0-canary-d5736f09-20260507",
+        "latest": "19.3.1",
+        "backport": "19.1.10",
+        "experimental": "0.0.0-experimental-e84e1492-20261031",
+        "canary": "19.3.0-canary-e84e1492-20261031"
+      },
+      "queriedVersions": {
+        "19.3.1": {
+          "registryEvidence": "https://registry.npmjs.org/react/19.3.1",
+          "engines": {
+            "node": ">=0.10.0"
+          },
+          "peerDependencies": {}
+        },
+        "18.3.1": {
+          "registryEvidence": "https://registry.npmjs.org/react/18.3.1",
+          "engines": {
+            "node": ">=0.10.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "react-refresh",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.19.0",
+      "npmLatest": "0.19.0",
+      "distTags": {
+        "beta": "0.16.0-beta-26f2496093-20240514",
+        "rc": "0.16.0-rc.1",
+        "next": "0.19.0-canary-d5736f09-20260507",
+        "latest": "0.19.0",
+        "experimental": "0.0.0-experimental-e84e1492-20261031",
+        "canary": "0.19.0-canary-e84e1492-20261031"
+      },
+      "queriedVersions": {
+        "0.19.0": {
+          "registryEvidence": "https://registry.npmjs.org/react-refresh/0.19.0",
+          "engines": {
+            "node": ">=0.10.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "sass",
+      "selectedChannel": "latest",
+      "selectedLatest": "1.107.1",
+      "npmLatest": "1.107.1",
+      "distTags": {
+        "test": "1.26.0-test.3",
+        "rc": "1.45.0-rc.2",
+        "latest": "1.107.1"
+      },
+      "queriedVersions": {
+        "1.107.1": {
+          "registryEvidence": "https://registry.npmjs.org/sass/1.107.1",
+          "engines": {
+            "node": ">=20.19.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "repoctl",
+      "selectedChannel": "latest",
+      "selectedLatest": "6.3.2",
+      "npmLatest": "6.3.2",
+      "distTags": {
+        "snapshot-nightly": "6.3.2-snapshot.nightly.cc3d932afc63002ee5722648e38df4964272f842c.b7f8bca14f499dea877afcf8b7bc1cb690e4f413bd43dd47d6db506e8f8c8ae40",
+        "latest": "6.3.2"
+      },
+      "queriedVersions": {
+        "6.3.2": {
+          "registryEvidence": "https://registry.npmjs.org/repoctl/6.3.2",
+          "engines": {
+            "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
+          },
+          "peerDependencies": {
+            "eslint": "^9.0.0 || ^10.0.0",
+            "vitest": "^5.0.5",
+            "stylelint": "^17.16.0",
+            "typescript": "^5.0.0 || ^6.0.0",
+            "@commitlint/cli": "^21.2.4"
+          }
+        }
+      }
+    },
+    {
+      "name": "tailwindcss",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.3.4",
+      "npmLatest": "4.3.4",
+      "distTags": {
+        "next": "4.0.0",
+        "v3-lts": "3.4.19",
+        "latest": "4.3.4",
+        "insiders": "0.0.0-insiders.2626ae6"
+      },
+      "queriedVersions": {
+        "4.3.4": {
+          "registryEvidence": "https://registry.npmjs.org/tailwindcss/4.3.4",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "stylelint",
+      "selectedChannel": "latest",
+      "selectedLatest": "17.16.0",
+      "npmLatest": "17.16.0",
+      "distTags": {
+        "latest": "17.16.0",
+        "next": "18.0.0-next.0"
+      },
+      "queriedVersions": {
+        "17.16.0": {
+          "registryEvidence": "https://registry.npmjs.org/stylelint/17.16.0",
+          "engines": {
+            "node": ">=20.19.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "tsdown",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.23.4",
+      "npmLatest": "0.23.4",
+      "distTags": {
+        "beta": "0.23.0-beta.3",
+        "rc": "0.23.0-rc.1",
+        "latest": "0.23.4"
+      },
+      "queriedVersions": {
+        "0.23.4": {
+          "registryEvidence": "https://registry.npmjs.org/tsdown/0.23.4",
+          "engines": {
+            "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+          },
+          "peerDependencies": {
+            "tsx": "*",
+            "unrun": "*",
+            "publint": "^0.3.8",
+            "typescript": "^5.0.0 || ^6.0.0 || ^7.0.0",
+            "@tsdown/css": "0.23.4",
+            "@tsdown/exe": "0.23.4",
+            "unplugin-unused": ">=0.5.0",
+            "@vitejs/devtools": "*",
+            "@arethetypeswrong/core": "^0.18.1"
+          }
+        }
+      }
+    },
+    {
+      "name": "tsd",
+      "selectedChannel": "latest",
+      "selectedLatest": "0.33.0",
+      "npmLatest": "0.33.0",
+      "distTags": {
+        "next": "0.6.0-beta.5",
+        "beta": "0.6.5-beta",
+        "beta.2": "0.6.5-beta.2",
+        "latest": "0.33.0"
+      },
+      "queriedVersions": {
+        "0.33.0": {
+          "registryEvidence": "https://registry.npmjs.org/tsd/0.33.0",
+          "engines": {
+            "node": ">=14.16"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "typescript",
+      "selectedChannel": "latest",
+      "selectedLatest": "7.0.2",
+      "npmLatest": "7.0.2",
+      "distTags": {
+        "dev": "3.9.4",
+        "tag-for-publishing-older-releases": "4.1.6",
+        "insiders": "4.6.2-insiders.20220225",
+        "rc": "7.0.1-rc",
+        "latest": "7.0.2",
+        "beta": "7.1.0-beta",
+        "next": "7.1.0-dev.20261103.1"
+      },
+      "queriedVersions": {
+        "7.0.2": {
+          "registryEvidence": "https://registry.npmjs.org/typescript/7.0.2",
+          "engines": {
+            "node": ">=16.20.0"
+          },
+          "peerDependencies": {},
+          "exports": {
+            ".": "./lib/version.cjs",
+            "./unstable/fs": "./dist/api/fs.js",
+            "./package.json": "./package.json",
+            "./unstable/ast": "./dist/ast/index.js",
+            "./unstable/sync": "./dist/api/sync/api.js",
+            "./unstable/async": "./dist/api/async/api.js",
+            "./unstable/proto": "./dist/api/proto.js",
+            "./unstable/ast/is": "./dist/ast/is.js",
+            "./unstable/ast/clone": "./dist/ast/clone.js",
+            "./unstable/ast/utils": "./dist/ast/utils.js",
+            "./unstable/ast/factory": "./dist/ast/factory.generated.js",
+            "./unstable/ast/scanner": "./dist/ast/scanner.js",
+            "./unstable/ast/visitor": "./dist/ast/visitor.js"
+          }
+        },
+        "6.0.3": {
+          "registryEvidence": "https://registry.npmjs.org/typescript/6.0.3",
+          "engines": {
+            "node": ">=14.17"
+          },
+          "peerDependencies": {},
+          "exports": null
+        }
+      }
+    },
+    {
+      "name": "turbo",
+      "selectedChannel": "latest",
+      "selectedLatest": "2.11.10",
+      "npmLatest": "2.11.10",
+      "distTags": {
+        "next": "0.9.0-next.22",
+        "turbo-2.3": "2.3.7",
+        "canary": "2.11.11-canary.1",
+        "latest": "2.11.10"
+      },
+      "queriedVersions": {
+        "2.11.10": {
+          "registryEvidence": "https://registry.npmjs.org/turbo/2.11.10",
+          "engines": null,
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "vite",
+      "selectedChannel": "latest",
+      "selectedLatest": "8.3.5",
+      "npmLatest": "8.3.5",
+      "distTags": {
+        "alpha": "6.0.0-alpha.24",
+        "beta": "8.3.0-beta.1",
+        "latest": "8.3.5",
+        "previous": "6.4.5"
+      },
+      "queriedVersions": {
+        "8.3.5": {
+          "registryEvidence": "https://registry.npmjs.org/vite/8.3.5",
+          "engines": {
+            "node": "^20.19.0 || >=22.12.0"
+          },
+          "peerDependencies": {
+            "tsx": "^4.8.1",
+            "jiti": ">=1.21.0",
+            "less": "^4.0.0",
+            "sass": "^1.70.0",
+            "yaml": "^2.4.2",
+            "stylus": ">=0.54.8",
+            "terser": "^5.16.0",
+            "esbuild": "^0.27.0 || ^0.28.0",
+            "sugarss": "^5.0.0",
+            "@types/node": "^20.19.0 || >=22.12.0",
+            "sass-embedded": "^1.70.0",
+            "@vitejs/devtools": "^0.7.1 || ^0.8.0"
+          }
+        },
+        "4.5.14": {
+          "registryEvidence": "https://registry.npmjs.org/vite/4.5.14",
+          "engines": {
+            "node": "^14.18.0 || >=16.0.0"
+          },
+          "peerDependencies": {
+            "less": "*",
+            "sass": "*",
+            "stylus": "*",
+            "terser": "^5.4.0",
+            "sugarss": "*",
+            "@types/node": ">= 14",
+            "lightningcss": "^1.21.0"
+          }
+        },
+        "5.2.8": {
+          "registryEvidence": "https://registry.npmjs.org/vite/5.2.8",
+          "engines": {
+            "node": "^18.0.0 || >=20.0.0"
+          },
+          "peerDependencies": {
+            "less": "*",
+            "sass": "*",
+            "stylus": "*",
+            "terser": "^5.4.0",
+            "sugarss": "*",
+            "@types/node": "^18.0.0 || >=20.0.0",
+            "lightningcss": "^1.21.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "vitest",
+      "selectedChannel": "latest",
+      "selectedLatest": "5.1.0",
+      "npmLatest": "5.1.0",
+      "distTags": {
+        "V3": "3.2.7",
+        "rc": "5.0.0-rc.4",
+        "latest": "5.1.0",
+        "V4": "4.1.12",
+        "beta": "5.1.0-beta.1"
+      },
+      "queriedVersions": {
+        "5.1.0": {
+          "registryEvidence": "https://registry.npmjs.org/vitest/5.1.0",
+          "engines": {
+            "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+          },
+          "peerDependencies": {
+            "vite": "^6.4.0 || ^7.0.0 || ^8.0.0",
+            "jsdom": "*",
+            "happy-dom": "*",
+            "@vitest/ui": "5.1.0",
+            "@types/node": "^22.0.0 || >=24.0.0",
+            "@edge-runtime/vm": "*",
+            "@opentelemetry/api": "^1.9.0",
+            "@vitest/coverage-v8": "5.1.0",
+            "@vitest/browser-preview": "5.1.0",
+            "@vitest/coverage-istanbul": "5.1.0",
+            "@vitest/browser-playwright": "5.1.0",
+            "@vitest/browser-webdriverio": "^5.0.0-beta.5 || >=5.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "vue",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.5.44",
+      "npmLatest": "3.5.44",
+      "distTags": {
+        "csp": "1.0.28-csp",
+        "v2-latest": "2.7.16",
+        "legacy": "2.7.16",
+        "alpha": "3.6.0-alpha.7",
+        "beta": "3.6.0-beta.17",
+        "latest": "3.5.44",
+        "rc": "3.6.0-rc.14"
+      },
+      "queriedVersions": {
+        "3.5.44": {
+          "registryEvidence": "https://registry.npmjs.org/vue/3.5.44",
+          "engines": null,
+          "peerDependencies": {
+            "typescript": "*"
+          }
+        },
+        "3.4.21": {
+          "registryEvidence": "https://registry.npmjs.org/vue/3.4.21",
+          "engines": null,
+          "peerDependencies": {
+            "typescript": "*"
+          }
+        }
+      }
+    },
+    {
+      "name": "vue-loader",
+      "selectedChannel": "latest",
+      "selectedLatest": "17.4.2",
+      "npmLatest": "17.4.2",
+      "distTags": {
+        "latest": "17.4.2",
+        "legacy": "15.11.1",
+        "next": "17.3.1",
+        "v15-beta": "15.10.0-beta.6",
+        "beta": "17.1.0-beta.0"
+      },
+      "queriedVersions": {
+        "17.4.2": {
+          "registryEvidence": "https://registry.npmjs.org/vue-loader/17.4.2",
+          "engines": null,
+          "peerDependencies": {
+            "webpack": "^4.1.0 || ^5.0.0-0"
+          }
+        }
+      }
+    },
+    {
+      "name": "vue-tsc",
+      "selectedChannel": "latest",
+      "selectedLatest": "3.3.14",
+      "npmLatest": "3.3.14",
+      "distTags": {
+        "v3.0": "3.0.11",
+        "latest": "3.3.14"
+      },
+      "queriedVersions": {
+        "3.3.14": {
+          "registryEvidence": "https://registry.npmjs.org/vue-tsc/3.3.14",
+          "engines": null,
+          "peerDependencies": {
+            "typescript": ">=5.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "weapp-vite",
+      "selectedChannel": "latest",
+      "selectedLatest": "7.8.0",
+      "npmLatest": "7.8.0",
+      "distTags": {
+        "beta": "5.0.0-beta.0",
+        "rollup": "4.1.3",
+        "alpha": "6.0.0-alpha.7",
+        "latest": "7.8.0",
+        "snapshot-nightly": "7.8.0-snapshot.nightly.cb6d0577164c8ccb3b2c0e5afff702c1997297550.b61fe174ce663ad393c7f312f83ea57aebcb15cd3bbaa0bef1580af00ab58e5ab"
+      },
+      "queriedVersions": {
+        "7.8.0": {
+          "registryEvidence": "https://registry.npmjs.org/weapp-vite/7.8.0",
+          "engines": {
+            "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
+          },
+          "peerDependencies": {
+            "@vitejs/devtools-kit": "^0.8.0"
+          }
+        },
+        "7.4.0": {
+          "registryEvidence": "https://registry.npmjs.org/weapp-vite/7.4.0",
+          "engines": {
+            "node": "^20.19.0 || >=22.12.0"
+          },
+          "peerDependencies": {
+            "@vitejs/devtools-kit": "^0.7.6"
+          }
+        }
+      }
+    },
+    {
+      "name": "wevu",
+      "selectedChannel": "latest",
+      "selectedLatest": "7.8.0",
+      "npmLatest": "7.8.0",
+      "distTags": {
+        "alpha": "1.0.0-alpha.5",
+        "latest": "7.8.0",
+        "snapshot-nightly": "7.8.0-snapshot.nightly.cb6d0577164c8ccb3b2c0e5afff702c1997297550.b61fe174ce663ad393c7f312f83ea57aebcb15cd3bbaa0bef1580af00ab58e5ab"
+      },
+      "queriedVersions": {
+        "7.8.0": {
+          "registryEvidence": "https://registry.npmjs.org/wevu/7.8.0",
+          "engines": {
+            "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
+          },
+          "peerDependencies": {
+            "vitest": ">=4.0.0"
+          }
+        }
+      }
+    },
+    {
+      "name": "webpack",
+      "selectedChannel": "latest",
+      "selectedLatest": "5.112.2",
+      "npmLatest": "5.112.2",
+      "distTags": {
+        "legacy": "1.15.0",
+        "webpack-2": "2.7.0",
+        "webpack-3": "3.12.0",
+        "next": "5.0.0-rc.6",
+        "webpack-4": "4.47.0",
+        "latest": "5.112.2"
+      },
+      "queriedVersions": {
+        "5.112.2": {
+          "registryEvidence": "https://registry.npmjs.org/webpack/5.112.2",
+          "engines": {
+            "node": ">=10.13.0"
+          },
+          "peerDependencies": {}
+        },
+        "5.91.0": {
+          "registryEvidence": "https://registry.npmjs.org/webpack/5.91.0",
+          "engines": {
+            "node": ">=10.13.0"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "yaml",
+      "selectedChannel": "latest",
+      "selectedLatest": "2.9.1",
+      "npmLatest": "2.9.1",
+      "distTags": {
+        "next": "3.0.0-2",
+        "latest": "2.9.1"
+      },
+      "queriedVersions": {
+        "2.9.1": {
+          "registryEvidence": "https://registry.npmjs.org/yaml/2.9.1",
+          "engines": {
+            "node": ">= 14.6"
+          },
+          "peerDependencies": {}
+        }
+      }
+    },
+    {
+      "name": "wrangler",
+      "selectedChannel": "latest",
+      "selectedLatest": "4.156.2",
+      "npmLatest": "4.156.2",
+      "distTags": {
+        "wrangler@2.2.4": "2.2.4",
+        "legacy": "3.114.17",
+        "latest": "4.156.2"
+      },
+      "queriedVersions": {
+        "4.156.2": {
+          "registryEvidence": "https://registry.npmjs.org/wrangler/4.156.2",
+          "engines": {
+            "node": ">=22.0.0"
+          },
+          "peerDependencies": {
+            "@cloudflare/workers-types": "^5.20261102.1"
+          }
+        }
+      }
+    }
+  ],
+  "entries": [
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "dependencies",
+      "name": "@cloudflare/nimbus-docs",
+      "before": "0.18.1",
+      "after": "0.19.2",
+      "latest": "0.19.2",
+      "channel": "latest",
+      "npmLatest": "0.19.2",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40cloudflare%2Fnimbus-docs/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "dependencies",
+      "name": "@phosphor-icons/core",
+      "before": "2.1.1",
+      "after": "2.1.1",
+      "latest": "2.1.1",
+      "channel": "latest",
+      "npmLatest": "2.1.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40phosphor-icons%2Fcore/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "dependencies",
+      "name": "astro",
+      "before": "7.3.8",
+      "after": "7.4.5",
+      "latest": "7.4.5",
+      "channel": "latest",
+      "npmLatest": "7.4.5",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/astro/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "@astrojs/check",
+      "before": "^0.9.10",
+      "after": "^0.9.12",
+      "latest": "0.9.12",
+      "channel": "latest",
+      "npmLatest": "0.9.12",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40astrojs%2Fcheck/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "@astrojs/language-server",
+      "before": "2.17.2",
+      "after": "2.17.3",
+      "latest": "2.17.3",
+      "channel": "latest",
+      "npmLatest": "2.17.3",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40astrojs%2Flanguage-server/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "@typescript-eslint/parser",
+      "before": null,
+      "after": "^8.72.1",
+      "latest": "8.72.1",
+      "channel": "latest",
+      "npmLatest": "8.72.1",
+      "status": "added-direct-stable",
+      "reason": "由实际使用的工作区显式声明官方 stable/latest 工具依赖，避免借用宿主或传递依赖；安装与完整验证状态单独记录。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40typescript-eslint%2Fparser/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "astro-eslint-parser",
+      "before": "^3.2.0",
+      "after": "^3.2.0",
+      "latest": "3.2.0",
+      "channel": "latest",
+      "npmLatest": "3.2.0",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/astro-eslint-parser/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "eslint-plugin-astro",
+      "before": "^3.2.1",
+      "after": "^3.2.1",
+      "latest": "3.2.1",
+      "channel": "latest",
+      "npmLatest": "3.2.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/eslint-plugin-astro/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "eslint-plugin-mdx",
+      "before": "^3.8.1",
+      "after": "^3.9.1",
+      "latest": "3.9.1",
+      "channel": "latest",
+      "npmLatest": "3.9.1",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/eslint-plugin-mdx/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "pagefind",
+      "before": "^1.5.2",
+      "after": "^1.6.0",
+      "latest": "1.6.0",
+      "channel": "latest",
+      "npmLatest": "1.6.0",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/pagefind/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "typescript",
+      "before": "6.0.3",
+      "after": "6.0.3",
+      "latest": "7.0.2",
+      "channel": "latest",
+      "npmLatest": "7.0.2",
+      "status": "held-api-and-peer-compatibility",
+      "reason": "TypeScript 7.0.2 根入口只暴露版本，旧 Compiler API 转至 unstable/*；仓库仍使用 ts.transpileModule，最新 repoctl 6.3.2 与 @astrojs/check 0.9.12 的 peer 均仅 ^5 || ^6。保留 6.0.3，不能用全局 override 绕过 API/peer 迁移。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/typescript/dist-tags"
+    },
+    {
+      "manifest": "apps/docs/package.json",
+      "section": "devDependencies",
+      "name": "wrangler",
+      "before": "^4.151.0",
+      "after": "^4.156.2",
+      "latest": "4.156.2",
+      "channel": "latest",
+      "npmLatest": "4.156.2",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/wrangler/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/components",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fcomponents/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/react",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Freact/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/runtime",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fruntime/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/shared",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fshared/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/taro",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Ftaro/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "dependencies",
+      "name": "react",
+      "before": "^18.3.1",
+      "after": "^18.3.1",
+      "latest": "19.3.1",
+      "channel": "latest",
+      "npmLatest": "19.3.1",
+      "status": "held-compatible-major",
+      "reason": "Taro 4.3.2 的 React 框架适配与 @tarojs/react 要求 React ^18，类型声明也保持 React 18 系；当前值为该兼容主版本的已审计最新版本，React 19 不属于此宿主组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/react/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "dependencies",
+      "name": "react-dom",
+      "before": "^18.3.1",
+      "after": "^18.3.1",
+      "latest": "19.3.1",
+      "channel": "latest",
+      "npmLatest": "19.3.1",
+      "status": "held-compatible-major",
+      "reason": "Taro 4.3.2 的 React 框架适配与 @tarojs/react 要求 React ^18，类型声明也保持 React 18 系；当前值为该兼容主版本的已审计最新版本，React 19 不属于此宿主组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/react-dom/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@babel/core",
+      "before": "^7.29.7",
+      "after": "^7.29.7",
+      "latest": "8.1.0",
+      "channel": "latest",
+      "npmLatest": "8.1.0",
+      "status": "held-compatible-major",
+      "reason": "7.29.7 已为 Babel 7 系最新；StyleX 官方 plugin 依赖 Babel ^7.26.8，Taro preset/runner 也要求 Babel 7。Babel 8 由 weapp-vite 宿主单独解析，不全局替换共享编译器。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40babel%2Fcore/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@babel/preset-react",
+      "before": "^7.29.7",
+      "after": "^7.29.7",
+      "latest": "8.0.1",
+      "channel": "latest",
+      "npmLatest": "8.0.1",
+      "status": "held-compatible-major",
+      "reason": "7.29.7 已为 Babel 7 系最新；StyleX 官方 plugin 依赖 Babel ^7.26.8，Taro preset/runner 也要求 Babel 7。Babel 8 由 weapp-vite 宿主单独解析，不全局替换共享编译器。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40babel%2Fpreset-react/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@pmmmwh/react-refresh-webpack-plugin",
+      "before": "0.6.3",
+      "after": "0.6.3",
+      "latest": "0.6.3",
+      "channel": "latest",
+      "npmLatest": "0.6.3",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40pmmmwh%2Freact-refresh-webpack-plugin/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/cli",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fcli/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/helper",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fhelper/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-framework-react",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-framework-react/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-alipay",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-alipay/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-h5",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-h5/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-tt",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-tt/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-weapp",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-weapp/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/vite-runner",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fvite-runner/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/webpack5-runner",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fwebpack5-runner/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@types/react",
+      "before": "^18.3.31",
+      "after": "^18.3.31",
+      "latest": "19.3.0",
+      "channel": "latest",
+      "npmLatest": "19.3.0",
+      "status": "held-compatible-major",
+      "reason": "Taro 4.3.2 的 React 框架适配与 @tarojs/react 要求 React ^18，类型声明也保持 React 18 系；当前值为该兼容主版本的已审计最新版本，React 19 不属于此宿主组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Freact/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@types/react-dom",
+      "before": "^18.3.7",
+      "after": "^18.3.7",
+      "latest": "19.3.0",
+      "channel": "latest",
+      "npmLatest": "19.3.0",
+      "status": "held-compatible-major",
+      "reason": "Taro 4.3.2 的 React 框架适配与 @tarojs/react 要求 React ^18，类型声明也保持 React 18 系；当前值为该兼容主版本的已审计最新版本，React 19 不属于此宿主组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Freact-dom/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "@vitejs/plugin-react",
+      "before": "^4.7.0",
+      "after": "^4.7.0",
+      "latest": "6.2.1",
+      "channel": "latest",
+      "npmLatest": "6.2.1",
+      "status": "held-compatible-major",
+      "reason": "Taro 4.3.2 framework plugins 分别要求 plugin-react ^4、plugin-vue ^4、plugin-vue-jsx ^3；当前值已为相应兼容主版本最新。新版 Vite plugins 的宿主 peer 不覆盖此 Taro Vite 4 组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40vitejs%2Fplugin-react/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "babel-preset-taro",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/babel-preset-taro/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "less",
+      "before": "^4.9.1",
+      "after": "^4.9.1",
+      "latest": "4.9.1",
+      "channel": "latest",
+      "npmLatest": "4.9.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/less/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "react-refresh",
+      "before": "0.19.0",
+      "after": "0.19.0",
+      "latest": "0.19.0",
+      "channel": "latest",
+      "npmLatest": "0.19.0",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/react-refresh/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "sass",
+      "before": "^1.105.1",
+      "after": "^1.107.1",
+      "latest": "1.107.1",
+      "channel": "latest",
+      "npmLatest": "1.107.1",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/sass/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "vite",
+      "before": "^4.5.14",
+      "after": "^4.5.14",
+      "latest": "8.3.5",
+      "channel": "latest",
+      "npmLatest": "8.3.5",
+      "status": "held-framework-peer",
+      "reason": "Taro 4.3.2 vite-runner 与 framework plugins 仍要求 Vite ^4；4.5.14 已是 4 系最新，保留隔离，不能切换 Vite 8。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vite/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-react/package.json",
+      "section": "devDependencies",
+      "name": "webpack",
+      "before": "5.91.0",
+      "after": "5.91.0",
+      "latest": "5.112.2",
+      "channel": "latest",
+      "npmLatest": "5.112.2",
+      "status": "held-framework-exact-peer",
+      "reason": "Taro webpack5-runner 4.3.2 仍精确 peer webpack 5.91.0；保留该开发/示例版本，不以全局 latest 5.112.2 破坏官方宿主契约。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/webpack/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/components",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fcomponents/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/runtime",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fruntime/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/shared",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fshared/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "dependencies",
+      "name": "@tarojs/taro",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Ftaro/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "dependencies",
+      "name": "vue",
+      "before": "^3.5.44",
+      "after": "^3.5.44",
+      "latest": "3.5.44",
+      "channel": "latest",
+      "npmLatest": "3.5.44",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vue/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@babel/core",
+      "before": "^7.29.7",
+      "after": "^7.29.7",
+      "latest": "8.1.0",
+      "channel": "latest",
+      "npmLatest": "8.1.0",
+      "status": "held-compatible-major",
+      "reason": "7.29.7 已为 Babel 7 系最新；StyleX 官方 plugin 依赖 Babel ^7.26.8，Taro preset/runner 也要求 Babel 7。Babel 8 由 weapp-vite 宿主单独解析，不全局替换共享编译器。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40babel%2Fcore/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/cli",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fcli/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/helper",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fhelper/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-framework-vue3",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-framework-vue3/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-alipay",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-alipay/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-h5",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-h5/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-tt",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-tt/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/plugin-platform-weapp",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fplugin-platform-weapp/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/vite-runner",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fvite-runner/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/webpack5-runner",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fwebpack5-runner/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@vitejs/plugin-vue",
+      "before": "^4.6.2",
+      "after": "^4.6.2",
+      "latest": "6.0.10",
+      "channel": "latest",
+      "npmLatest": "6.0.10",
+      "status": "held-compatible-major",
+      "reason": "Taro 4.3.2 framework plugins 分别要求 plugin-react ^4、plugin-vue ^4、plugin-vue-jsx ^3；当前值已为相应兼容主版本最新。新版 Vite plugins 的宿主 peer 不覆盖此 Taro Vite 4 组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40vitejs%2Fplugin-vue/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@vitejs/plugin-vue-jsx",
+      "before": "^3.1.0",
+      "after": "^3.1.0",
+      "latest": "5.1.6",
+      "channel": "latest",
+      "npmLatest": "5.1.6",
+      "status": "held-compatible-major",
+      "reason": "Taro 4.3.2 framework plugins 分别要求 plugin-react ^4、plugin-vue ^4、plugin-vue-jsx ^3；当前值已为相应兼容主版本最新。新版 Vite plugins 的宿主 peer 不覆盖此 Taro Vite 4 组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40vitejs%2Fplugin-vue-jsx/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@vue/babel-plugin-jsx",
+      "before": "^1.5.0",
+      "after": "^1.5.0",
+      "latest": "3.0.0",
+      "channel": "latest",
+      "npmLatest": "3.0.0",
+      "status": "held-compatible-major",
+      "reason": "Taro babel-preset-taro 4.3.2 peer 要求 @vue/babel-plugin-jsx ^1.2.2；1.5.0 为兼容 1 系最新。全局 latest 3.0.0 要求 Babel ^8.0.0，不属于此 Taro Babel 7 组合。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40vue%2Fbabel-plugin-jsx/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "babel-preset-taro",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/babel-preset-taro/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "less",
+      "before": "^4.9.1",
+      "after": "^4.9.1",
+      "latest": "4.9.1",
+      "channel": "latest",
+      "npmLatest": "4.9.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/less/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "sass",
+      "before": "^1.105.1",
+      "after": "^1.107.1",
+      "latest": "1.107.1",
+      "channel": "latest",
+      "npmLatest": "1.107.1",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/sass/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "vite",
+      "before": "^4.5.14",
+      "after": "^4.5.14",
+      "latest": "8.3.5",
+      "channel": "latest",
+      "npmLatest": "8.3.5",
+      "status": "held-framework-peer",
+      "reason": "Taro 4.3.2 vite-runner 与 framework plugins 仍要求 Vite ^4；4.5.14 已是 4 系最新，保留隔离，不能切换 Vite 8。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vite/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "vue-loader",
+      "before": "^17.4.2",
+      "after": "^17.4.2",
+      "latest": "17.4.2",
+      "channel": "latest",
+      "npmLatest": "17.4.2",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vue-loader/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "vue-tsc",
+      "before": "^3.3.13",
+      "after": "^3.3.14",
+      "latest": "3.3.14",
+      "channel": "latest",
+      "npmLatest": "3.3.14",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vue-tsc/dist-tags"
+    },
+    {
+      "manifest": "examples/taro-vue3/package.json",
+      "section": "devDependencies",
+      "name": "webpack",
+      "before": "5.91.0",
+      "after": "5.91.0",
+      "latest": "5.112.2",
+      "channel": "latest",
+      "npmLatest": "5.112.2",
+      "status": "held-framework-exact-peer",
+      "reason": "Taro webpack5-runner 4.3.2 仍精确 peer webpack 5.91.0；保留该开发/示例版本，不以全局 latest 5.112.2 破坏官方宿主契约。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/webpack/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "dependencies",
+      "name": "@dcloudio/uni-app",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "2.0.2-5030320261023001",
+      "status": "updated-framework-channel",
+      "reason": "追踪官方 vue3 dist-tag，整套 DCloud 平台包精确对齐；npm 默认 latest 仍是旧 Vue 通道，不用它覆盖当前 Vue 3 工程。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Funi-app/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "dependencies",
+      "name": "@dcloudio/uni-components",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "3.0.0-alpha-3000020210521001",
+      "status": "updated-framework-channel",
+      "reason": "追踪官方 vue3 dist-tag，整套 DCloud 平台包精确对齐；npm 默认 latest 仍是旧 Vue 通道，不用它覆盖当前 Vue 3 工程。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Funi-components/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "dependencies",
+      "name": "@dcloudio/uni-h5",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "2.0.2-5030320261023001",
+      "status": "updated-framework-channel",
+      "reason": "追踪官方 vue3 dist-tag，整套 DCloud 平台包精确对齐；npm 默认 latest 仍是旧 Vue 通道，不用它覆盖当前 Vue 3 工程。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Funi-h5/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "dependencies",
+      "name": "@dcloudio/uni-mp-alipay",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "2.0.2-5030320261023001",
+      "status": "updated-framework-channel",
+      "reason": "追踪官方 vue3 dist-tag，整套 DCloud 平台包精确对齐；npm 默认 latest 仍是旧 Vue 通道，不用它覆盖当前 Vue 3 工程。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Funi-mp-alipay/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "dependencies",
+      "name": "@dcloudio/uni-mp-toutiao",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "2.0.2-5030320261023001",
+      "status": "updated-framework-channel",
+      "reason": "追踪官方 vue3 dist-tag，整套 DCloud 平台包精确对齐；npm 默认 latest 仍是旧 Vue 通道，不用它覆盖当前 Vue 3 工程。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Funi-mp-toutiao/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "dependencies",
+      "name": "@dcloudio/uni-mp-weixin",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "2.0.2-5030320261023001",
+      "status": "updated-framework-channel",
+      "reason": "追踪官方 vue3 dist-tag，整套 DCloud 平台包精确对齐；npm 默认 latest 仍是旧 Vue 通道，不用它覆盖当前 Vue 3 工程。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Funi-mp-weixin/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "dependencies",
+      "name": "vue",
+      "before": "3.4.21",
+      "after": "3.4.21",
+      "latest": "3.5.44",
+      "channel": "latest",
+      "npmLatest": "3.5.44",
+      "status": "held-framework-parser-alignment",
+      "reason": "DCloud 当前 Vue 3 通道内部 compiler-sfc/compiler-dom/shared/server-renderer 均固定 3.4.21；应用 Vue 与其配对，不能借用共享编译器的 Vue 3.5 parser。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vue/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@dcloudio/types",
+      "before": "3.4.31",
+      "after": "3.4.31",
+      "latest": "3.4.32",
+      "channel": "latest",
+      "npmLatest": "3.4.32",
+      "status": "held-framework-exact-peer",
+      "reason": "DCloud uni-app 新 Vue 3 通道精确 peer @dcloudio/types 3.4.31；保持官方类型配对。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Ftypes/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@dcloudio/vite-plugin-uni",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "3.0.0-alpha-3000020210521001",
+      "status": "updated-framework-channel",
+      "reason": "追踪官方 vue3 dist-tag，整套 DCloud 平台包精确对齐；npm 默认 latest 仍是旧 Vue 通道，不用它覆盖当前 Vue 3 工程。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Fvite-plugin-uni/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "devDependencies",
+      "name": "vite",
+      "before": "5.2.8",
+      "after": "5.2.8",
+      "latest": "8.3.5",
+      "channel": "latest",
+      "npmLatest": "8.3.5",
+      "status": "held-framework-peer",
+      "reason": "DCloud vite-plugin-uni Vue 3 通道精确 peer Vite 5.2.8；保持框架底座，不与 weapp-vite/Astro 的 Vite 8 合并。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vite/dist-tags"
+    },
+    {
+      "manifest": "examples/uni-vue3/package.json",
+      "section": "devDependencies",
+      "name": "vue-tsc",
+      "before": "^3.3.13",
+      "after": "^3.3.14",
+      "latest": "3.3.14",
+      "channel": "latest",
+      "npmLatest": "3.3.14",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vue-tsc/dist-tags"
+    },
+    {
+      "manifest": "examples/wechat-native/package.json",
+      "section": "devDependencies",
+      "name": "miniprogram-api-typings",
+      "before": null,
+      "after": "^5.2.3",
+      "latest": "5.2.3",
+      "channel": "latest",
+      "npmLatest": "5.2.3",
+      "status": "added-direct-stable",
+      "reason": "原生示例直接声明官方 5.2.3 小程序 API 类型，并在 tsconfig 显式引用，修复升级宿主后依赖隐式全局类型暴露的边界；最终类型检查状态另列。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/miniprogram-api-typings/dist-tags"
+    },
+    {
+      "manifest": "examples/wechat-native/package.json",
+      "section": "devDependencies",
+      "name": "weapp-vite",
+      "before": "7.4.0",
+      "after": "7.8.0",
+      "latest": "7.8.0",
+      "channel": "latest",
+      "npmLatest": "7.8.0",
+      "status": "updated-framework-host",
+      "reason": "开发与示例整组升级官方 7.8.0；真实 Linux 原故障位置及宿主生成的 497/533-byte synthetic sidecar 输入已通过。历史 7.5 失败不再作为排除新版本的依据；最终完整 integration、Babel/auto、IDE 与 CI 仍待验收。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/weapp-vite/dist-tags"
+    },
+    {
+      "manifest": "examples/wechat-wevu/package.json",
+      "section": "dependencies",
+      "name": "wevu",
+      "before": "7.4.0",
+      "after": "7.8.0",
+      "latest": "7.8.0",
+      "channel": "latest",
+      "npmLatest": "7.8.0",
+      "status": "updated-framework-host",
+      "reason": "开发与示例整组升级官方 7.8.0；真实 Linux 原故障位置及宿主生成的 497/533-byte synthetic sidecar 输入已通过。历史 7.5 失败不再作为排除新版本的依据；最终完整 integration、Babel/auto、IDE 与 CI 仍待验收。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/wevu/dist-tags"
+    },
+    {
+      "manifest": "examples/wechat-wevu/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "examples/wechat-wevu/package.json",
+      "section": "devDependencies",
+      "name": "miniprogram-api-typings",
+      "before": "^5.2.3",
+      "after": "^5.2.3",
+      "latest": "5.2.3",
+      "channel": "latest",
+      "npmLatest": "5.2.3",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/miniprogram-api-typings/dist-tags"
+    },
+    {
+      "manifest": "examples/wechat-wevu/package.json",
+      "section": "devDependencies",
+      "name": "vue-tsc",
+      "before": "^3.3.13",
+      "after": "^3.3.14",
+      "latest": "3.3.14",
+      "channel": "latest",
+      "npmLatest": "3.3.14",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vue-tsc/dist-tags"
+    },
+    {
+      "manifest": "examples/wechat-wevu/package.json",
+      "section": "devDependencies",
+      "name": "weapp-vite",
+      "before": "7.4.0",
+      "after": "7.8.0",
+      "latest": "7.8.0",
+      "channel": "latest",
+      "npmLatest": "7.8.0",
+      "status": "updated-framework-host",
+      "reason": "开发与示例整组升级官方 7.8.0；真实 Linux 原故障位置及宿主生成的 497/533-byte synthetic sidecar 输入已通过。历史 7.5 失败不再作为排除新版本的依据；最终完整 integration、Babel/auto、IDE 与 CI 仍待验收。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/weapp-vite/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "@commitlint/cli",
+      "before": "^21.2.3",
+      "after": "^21.2.4",
+      "latest": "21.2.4",
+      "channel": "latest",
+      "npmLatest": "21.2.4",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40commitlint%2Fcli/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "@eslint/config-inspector",
+      "before": "^3.5.0",
+      "after": "^3.5.0",
+      "latest": "3.5.0",
+      "channel": "latest",
+      "npmLatest": "3.5.0",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40eslint%2Fconfig-inspector/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "@mpcore/test",
+      "before": "1.0.0",
+      "after": "1.2.1",
+      "latest": "1.2.1",
+      "channel": "latest",
+      "npmLatest": "1.2.1",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40mpcore%2Ftest/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "@vitest/coverage-v8",
+      "before": "~5.0.5",
+      "after": "~5.1.0",
+      "latest": "5.1.0",
+      "channel": "latest",
+      "npmLatest": "5.1.0",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40vitest%2Fcoverage-v8/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "eslint",
+      "before": "^10.12.0",
+      "after": "^10.14.0",
+      "latest": "10.14.0",
+      "channel": "latest",
+      "npmLatest": "10.14.0",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/eslint/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "execa",
+      "before": "^10.1.1",
+      "after": "^10.2.1",
+      "latest": "10.2.1",
+      "channel": "latest",
+      "npmLatest": "10.2.1",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/execa/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "lefthook",
+      "before": "2.2.2",
+      "after": "2.2.2",
+      "latest": "2.2.2",
+      "channel": "latest",
+      "npmLatest": "2.2.2",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/lefthook/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "miniprogram-automator",
+      "before": "0.12.1",
+      "after": "0.13.0",
+      "latest": "0.13.0",
+      "channel": "latest",
+      "npmLatest": "0.13.0",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/miniprogram-automator/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "only-allow",
+      "before": "^1.2.2",
+      "after": "^1.2.2",
+      "latest": "1.2.2",
+      "channel": "latest",
+      "npmLatest": "1.2.2",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/only-allow/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "playwright",
+      "before": "1.64.1",
+      "after": "1.64.1",
+      "latest": "1.64.1",
+      "channel": "latest",
+      "npmLatest": "1.64.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/playwright/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "repoctl",
+      "before": "6.0.1",
+      "after": "6.3.2",
+      "latest": "6.3.2",
+      "channel": "latest",
+      "npmLatest": "6.3.2",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/repoctl/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "stylelint",
+      "before": "^17.16.0",
+      "after": "^17.16.0",
+      "latest": "17.16.0",
+      "channel": "latest",
+      "npmLatest": "17.16.0",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/stylelint/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "tailwindcss",
+      "before": "^4.3.3",
+      "after": "^4.3.4",
+      "latest": "4.3.4",
+      "channel": "latest",
+      "npmLatest": "4.3.4",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/tailwindcss/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "tsd",
+      "before": "^0.33.0",
+      "after": "^0.33.0",
+      "latest": "0.33.0",
+      "channel": "latest",
+      "npmLatest": "0.33.0",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/tsd/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "tsdown",
+      "before": "0.23.1",
+      "after": "0.23.4",
+      "latest": "0.23.4",
+      "channel": "latest",
+      "npmLatest": "0.23.4",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/tsdown/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "turbo",
+      "before": "^2.11.8",
+      "after": "^2.11.10",
+      "latest": "2.11.10",
+      "channel": "latest",
+      "npmLatest": "2.11.10",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/turbo/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "typescript",
+      "before": "6.0.3",
+      "after": "6.0.3",
+      "latest": "7.0.2",
+      "channel": "latest",
+      "npmLatest": "7.0.2",
+      "status": "held-api-and-peer-compatibility",
+      "reason": "TypeScript 7.0.2 根入口只暴露版本，旧 Compiler API 转至 unstable/*；仓库仍使用 ts.transpileModule，最新 repoctl 6.3.2 与 @astrojs/check 0.9.12 的 peer 均仅 ^5 || ^6。保留 6.0.3，不能用全局 override 绕过 API/peer 迁移。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/typescript/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "vitest",
+      "before": "~5.0.5",
+      "after": "~5.1.0",
+      "latest": "5.1.0",
+      "channel": "latest",
+      "npmLatest": "5.1.0",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/vitest/dist-tags"
+    },
+    {
+      "manifest": "package.json",
+      "section": "devDependencies",
+      "name": "yaml",
+      "before": "^2.9.1",
+      "after": "^2.9.1",
+      "latest": "2.9.1",
+      "channel": "latest",
+      "npmLatest": "2.9.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/yaml/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "@ampproject/remapping",
+      "before": "^2.3.0",
+      "after": "^2.3.0",
+      "latest": "2.3.0",
+      "channel": "latest",
+      "npmLatest": "2.3.0",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40ampproject%2Fremapping/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "@babel/core",
+      "before": "^7.29.7",
+      "after": "^7.29.7",
+      "latest": "8.1.0",
+      "channel": "latest",
+      "npmLatest": "8.1.0",
+      "status": "held-compatible-major",
+      "reason": "7.29.7 已为 Babel 7 系最新；StyleX 官方 plugin 依赖 Babel ^7.26.8，Taro preset/runner 也要求 Babel 7。Babel 8 由 weapp-vite 宿主单独解析，不全局替换共享编译器。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40babel%2Fcore/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "@stylexjs/babel-plugin",
+      "before": "0.19.1",
+      "after": "0.19.1",
+      "latest": "0.19.1",
+      "channel": "latest",
+      "npmLatest": "0.19.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40stylexjs%2Fbabel-plugin/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "@types/babel__core",
+      "before": "^7.20.5",
+      "after": "^7.20.5",
+      "latest": "7.20.5",
+      "channel": "latest",
+      "npmLatest": "7.20.5",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fbabel__core/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "@vue/compiler-sfc",
+      "before": "^3.5.44",
+      "after": "^3.5.44",
+      "latest": "3.5.44",
+      "channel": "latest",
+      "npmLatest": "3.5.44",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40vue%2Fcompiler-sfc/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "magic-string",
+      "before": "^1.4.3",
+      "after": "^1.4.5",
+      "latest": "1.4.5",
+      "channel": "latest",
+      "npmLatest": "1.4.5",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/magic-string/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "postcss",
+      "before": "^8.5.30",
+      "after": "^8.5.32",
+      "latest": "8.5.32",
+      "channel": "latest",
+      "npmLatest": "8.5.32",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/postcss/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "postcss-selector-parser",
+      "before": "^7.1.6",
+      "after": "^7.1.7",
+      "latest": "7.1.7",
+      "channel": "latest",
+      "npmLatest": "7.1.7",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/postcss-selector-parser/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "dependencies",
+      "name": "postcss-value-parser",
+      "before": "^4.2.0",
+      "after": "^4.2.0",
+      "latest": "4.2.0",
+      "channel": "latest",
+      "npmLatest": "4.2.0",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/postcss-value-parser/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "devDependencies",
+      "name": "@jridgewell/trace-mapping",
+      "before": "^0.3.31",
+      "after": "^0.3.31",
+      "latest": "0.3.31",
+      "channel": "latest",
+      "npmLatest": "0.3.31",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40jridgewell%2Ftrace-mapping/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "packages/compiler/package.json",
+      "section": "optionalDependencies",
+      "name": "@stylexswc/rs-compiler",
+      "before": "0.19.1",
+      "after": "0.20.0",
+      "latest": "0.20.0",
+      "channel": "latest",
+      "npmLatest": "0.20.0",
+      "status": "updated-optional-backend",
+      "reason": "采用 stable 0.20.0，仍为 optional/lazy addon；新增 .ts/.mts/.cts 非 JSX 泛型的实际输出/runtime/CSS parity 回归。保留 raw SFC/template-only binding 的 Babel guard，不因新增 processStylexRules API 扩大已验证能力子集。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40stylexswc%2Frs-compiler/dist-tags"
+    },
+    {
+      "manifest": "packages/core/package.json",
+      "section": "dependencies",
+      "name": "@stylexjs/stylex",
+      "before": "0.19.1",
+      "after": "0.19.1",
+      "latest": "0.19.1",
+      "channel": "latest",
+      "npmLatest": "0.19.1",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40stylexjs%2Fstylex/dist-tags"
+    },
+    {
+      "manifest": "packages/taro/package.json",
+      "section": "devDependencies",
+      "name": "@tarojs/service",
+      "before": "4.3.0",
+      "after": "4.3.2",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "updated-lockstep-group",
+      "reason": "采用官方 stable 4.3.2，Taro CLI、runtime、平台、framework 与两个 runner 整组同版本；保留宿主各自的 React/Vite/Webpack/Babel peer 边界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fservice/dist-tags"
+    },
+    {
+      "manifest": "packages/taro/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "packages/taro/package.json",
+      "section": "devDependencies",
+      "name": "webpack",
+      "before": "5.91.0",
+      "after": "5.91.0",
+      "latest": "5.112.2",
+      "channel": "latest",
+      "npmLatest": "5.112.2",
+      "status": "held-framework-exact-peer",
+      "reason": "Taro webpack5-runner 4.3.2 仍精确 peer webpack 5.91.0；保留该开发/示例版本，不以全局 latest 5.112.2 破坏官方宿主契约。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/webpack/dist-tags"
+    },
+    {
+      "manifest": "packages/taro/package.json",
+      "section": "peerDependencies",
+      "name": "@tarojs/service",
+      "before": ">=4.3.0 <4.4.0",
+      "after": ">=4.3.0 <4.4.0",
+      "latest": "4.3.2",
+      "channel": "latest",
+      "npmLatest": "4.3.2",
+      "status": "supported-peer-range-retained",
+      "reason": "公开 >=4.3.0 <4.4.0 已包含候选 4.3.2，保留兼容下界；开发与示例中的 Taro 包整组对齐 4.3.2。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40tarojs%2Fservice/dist-tags"
+    },
+    {
+      "manifest": "packages/taro/package.json",
+      "section": "peerDependencies",
+      "name": "webpack",
+      "before": "^5.91.0",
+      "after": "^5.91.0",
+      "latest": "5.112.2",
+      "channel": "latest",
+      "npmLatest": "5.112.2",
+      "status": "supported-peer-range-retained",
+      "reason": "公开 peer 范围保留兼容下界；开发验证版本由框架宿主组另行精确约束，peer 范围不是安装版本。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/webpack/dist-tags"
+    },
+    {
+      "manifest": "packages/uni-app/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "packages/uni-app/package.json",
+      "section": "peerDependencies",
+      "name": "@dcloudio/vite-plugin-uni",
+      "before": "3.0.0-alpha-5030120260930001",
+      "after": "3.0.0-alpha-5030120260930001 || 3.0.0-5030420261029002",
+      "latest": "3.0.0-5030420261029002",
+      "channel": "vue3",
+      "npmLatest": "3.0.0-alpha-3000020210521001",
+      "status": "expanded-supported-framework-channels",
+      "reason": "公开 peer 同时保留原 3.0.0-alpha-5030120260930001 与新 3.0.0-5030420261029002；隔离消费者分别选择匹配的 Vue/parser 与缺失依赖补全，最终双通道验证状态另列，不因开发升级删除旧通道支持。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40dcloudio%2Fvite-plugin-uni/dist-tags"
+    },
+    {
+      "manifest": "packages/weapp-stylex/package.json",
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "^26.6.5",
+      "after": "^26.6.6",
+      "latest": "26.6.6",
+      "channel": "latest",
+      "npmLatest": "26.6.6",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fnode/dist-tags"
+    },
+    {
+      "manifest": "packages/weapp-vite/package.json",
+      "section": "dependencies",
+      "name": "@babel/core",
+      "before": "^7.29.7",
+      "after": "^7.29.7",
+      "latest": "8.1.0",
+      "channel": "latest",
+      "npmLatest": "8.1.0",
+      "status": "held-compatible-major",
+      "reason": "7.29.7 已为 Babel 7 系最新；StyleX 官方 plugin 依赖 Babel ^7.26.8，Taro preset/runner 也要求 Babel 7。Babel 8 由 weapp-vite 宿主单独解析，不全局替换共享编译器。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40babel%2Fcore/dist-tags"
+    },
+    {
+      "manifest": "packages/weapp-vite/package.json",
+      "section": "dependencies",
+      "name": "postcss",
+      "before": "^8.5.30",
+      "after": "^8.5.32",
+      "latest": "8.5.32",
+      "channel": "latest",
+      "npmLatest": "8.5.32",
+      "status": "updated-stable",
+      "reason": "更新到本次官方 stable/latest 候选；安装、构建、测试与发布验收状态独立记录，不以版本选择表示验证已完成。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/postcss/dist-tags"
+    },
+    {
+      "manifest": "packages/weapp-vite/package.json",
+      "section": "devDependencies",
+      "name": "@types/babel__core",
+      "before": "^7.20.5",
+      "after": "^7.20.5",
+      "latest": "7.20.5",
+      "channel": "latest",
+      "npmLatest": "7.20.5",
+      "status": "current-stable",
+      "reason": "当前 manifest 已指向本次官方 stable/latest，无需修改版本声明。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/%40types%2Fbabel__core/dist-tags"
+    },
+    {
+      "manifest": "packages/weapp-vite/package.json",
+      "section": "devDependencies",
+      "name": "weapp-vite",
+      "before": "7.4.0",
+      "after": "7.8.0",
+      "latest": "7.8.0",
+      "channel": "latest",
+      "npmLatest": "7.8.0",
+      "status": "updated-framework-host",
+      "reason": "开发与示例整组升级官方 7.8.0；真实 Linux 原故障位置及宿主生成的 497/533-byte synthetic sidecar 输入已通过。历史 7.5 失败不再作为排除新版本的依据；最终完整 integration、Babel/auto、IDE 与 CI 仍待验收。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/weapp-vite/dist-tags"
+    },
+    {
+      "manifest": "packages/weapp-vite/package.json",
+      "section": "peerDependencies",
+      "name": "weapp-vite",
+      "before": ">=7.4.0 <8",
+      "after": ">=7.4.0 <8",
+      "latest": "7.8.0",
+      "channel": "latest",
+      "npmLatest": "7.8.0",
+      "status": "supported-peer-range-retained",
+      "reason": "保留公开 >=7.4.0 <8 支持范围；开发与示例升级配对的 weapp-vite/Wevu 7.8.0，最低宿主与完整矩阵验收独立记录，不缩小公开兼容下界。",
+      "registryEvidence": "https://registry.npmjs.org/-/package/weapp-vite/dist-tags"
+    }
+  ]
+}

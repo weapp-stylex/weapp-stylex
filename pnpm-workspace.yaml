@@ -29,7 +29,7 @@ versioning:
   changelog:
     storage: repository
 packageExtensions:
-  '@dcloudio/uni-mp-vite@3.0.0-alpha-5030120260930001':
+  '@dcloudio/uni-mp-vite@3.0.0-5030420261029002':
     dependencies:
       estree-walker: 2.0.2
   weapp-vite@7.4.0:
@@ -39,7 +39,7 @@ overrides:
   prettier: 3.9.10
   typescript: 6.0.3
   '@arethetypeswrong/core>typescript': 5.9.3
-  postcss: 8.5.30
+  postcss: 8.5.32
   brace-expansion: 5.0.12
   minimatch@<4>brace-expansion: 1.1.21
   minimatch@>=4 <10>brace-expansion: 2.1.7
@@ -48,12 +48,42 @@ overrides:
   '@icebreakers/monorepo>simple-git': 4.0.2
   oxfmt>tinypool: 2.2.0
   micromark-extension-math>katex: 0.19.0
-  vite@>=8 <9: 8.3.4
+  vite@>=8 <9: 8.3.5
   esbuild@>=0.28 <0.29: 0.28.2
   nanoid@>=6: 6.0.2
-  js-yaml@>=5: 5.4.3
+  js-yaml@>=5: 5.5.0
   uuid@>=14: 14.0.3
-  postcss-selector-parser@>=7: 7.1.6
+  postcss-selector-parser@>=7: 7.1.7
+  postcss-selector-parser@>=6 <7: 6.1.5
+  node-forge@>=1 <2: 1.4.2
+  source-map-js@>=1 <2: 1.2.2
+  zod@>=4 <5: 4.6.7
+  undici@>=6 <7: 6.29.1
+  undici@>=7 <8: 7.30.1
+  undici@>=8 <9: 8.12.3
+  body-parser@>=1 <2: 1.20.9
+  path-to-regexp@>=0.1 <0.2: 0.1.13
+  follow-redirects@>=1 <2: 1.16.2
+  joi@>=17 <18: 17.13.9
+  lodash@>=4 <5: 4.18.1
+  lodash-es@>=4 <5: 4.18.1
+  decode-uri-component@>=0.5 <0.6: 0.5.1
+  ws@>=8 <9: 8.22.1
+  glob@>=10 <11: 10.5.0
+  mkdirp@>=0.5 <0.6: 0.5.6
+  debug@>=4 <5: 4.4.3
+  qs@>=6 <7: 6.16.1
+  fast-uri@>=3 <4: 3.1.9
+  ip-address@>=10 <11: 10.7.5
+  seroval@>=1.6 <1.7: 1.6.11
+  '@babel/core@>=7 <8': 7.29.7
+  '@intlify/core-base@>=9.1 <9.2': 9.1.11
+  '@intlify/message-resolver@>=9.1 <9.2': 9.1.11
+  '@intlify/message-compiler@>=9.1 <9.2': 9.1.10
+  '@intlify/runtime@>=9.1 <9.2': 9.1.10
+  '@intlify/shared@>=9.1 <9.2': 9.1.10
+  '@intlify/devtools-if@>=9.1 <9.2': 9.1.10
+  '@intlify/vue-devtools@>=9.1 <9.2': 9.1.10
 allowBuilds:
   '@swc/core': true
   esbuild: true
