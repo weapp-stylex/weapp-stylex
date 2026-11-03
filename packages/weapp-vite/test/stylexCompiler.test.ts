@@ -157,6 +157,82 @@ describe('stylexCompiler', () => {
     expect(transformed.code).not.toContain('padding: 16')
   })
 
+  it.each([
+    ['physical then raw', true, true],
+    ['raw then physical', false, true],
+    ['physical then raw without an import', true, false],
+    ['raw without an import then physical', false, false],
+  ] as const)('keeps native source ownership for %s', async (_, physicalFirst, rawHasImport) => {
+    const plugin = stylexCompiler()
+    if (typeof plugin === 'function') {
+      throw new TypeError('Expected provider')
+    }
+    const context = makeContext()
+    const controller = await plugin.create(context as never)
+    const id = '/project/src/pages/index/index.ts'
+    const code = `import * as stylex from '@weapp-stylex/core';const styles=stylex.create({root:{padding:16,color:'red'}});Page({data:{sx:stylex.attrs(styles.root).class}})`
+    const physical = { id, code, kind: 'script' as const }
+    const raw = {
+      id: `${id}?raw&weapp-vite-sidecar-owner=${encodeURIComponent(id)}&weapp-vite-sidecar=script&lang.js`,
+      // Vite's raw module contains the import only inside a string literal.
+      code: `export default ${JSON.stringify(rawHasImport ? code : 'Page({})')}`,
+      kind: 'script' as const,
+    }
+    let physicalCode = ''
+    for (const request of physicalFirst ? [physical, raw] : [raw, physical]) {
+      if (request === physical) {
+        expect(controller.claimSource?.(request)).toEqual({ id, entryId: id })
+        const result = await controller.transformSource?.(request)
+        physicalCode = result?.code ?? ''
+      }
+      else {
+        expect(controller.claimSource?.(request)).toBe(false)
+        // Guard direct calls too: a host may already have selected the provider.
+        expect(await controller.transformSource?.(request)).toBeNull()
+      }
+    }
+    expect(physicalCode).toContain('sx1tamke2')
+    expect(physicalCode).not.toContain('stylex.create')
+    const bundle: TestBundle = {
+      'app.js': { type: 'chunk', fileName: 'app.js', code: 'App({})' },
+      'pages/index/index.js': {
+        type: 'chunk',
+        fileName: 'pages/index/index.js',
+        code: physicalCode,
+        modules: { [id]: {}, [raw.id]: {} },
+      },
+      'pages/index/index.wxml': { type: 'asset', fileName: 'pages/index/index.wxml', source: '<view class="{{sx}}" />' },
+    }
+    await controller.generateBundle?.(bundle as never, context as never)
+    const css = String(bundle['stylex.wxss']?.source)
+    expect(css).toContain('.sx1tamke2{padding:16px}')
+    expect(css).toContain('color:red')
+    expect(css.match(/padding:16px/g)).toHaveLength(1)
+    expect(bundle['pages/index/index.wxss']?.source).toBe('@import "../../stylex.wxss";\n')
+    await controller.closeWatcher?.()
+  })
+
+  it.each([
+    'virtual:page.ts',
+    '\0/project/src/page.ts',
+    'weapp-vite:logical-entry:page:%2Fproject%2Fsrc%2Fpage.ts:module.js',
+    'weapp-vite:sidecar:script:%2Fproject%2Fsrc%2Fpage.ts:%2Fproject%2Fsrc%2Fpage.ts:module.js',
+  ])('does not claim or transform native virtual module %s', async (id) => {
+    const plugin = stylexCompiler()
+    if (typeof plugin === 'function') {
+      throw new TypeError('Expected provider')
+    }
+    const controller = await plugin.create(makeContext() as never)
+    const request = {
+      id,
+      kind: 'script' as const,
+      code: `import * as stylex from '@weapp-stylex/core';export const styles=stylex.create({root:{padding:16}})`,
+    }
+    expect(controller.claimSource?.(request)).toBe(false)
+    expect(await controller.transformSource?.(request)).toBeNull()
+    await controller.closeWatcher?.()
+  })
+
   it('compiles conditional and merged styles to deterministic class branches', async () => {
     const { transformed } = await compile(`
       import * as stylex from '@stylexjs/stylex';

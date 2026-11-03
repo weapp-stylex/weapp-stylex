@@ -21,7 +21,7 @@ export default defineConfig({
 })
 ```
 
-`stylexCompiler()` 支持原生 JS、TS、JSX、TSX 源码模块。项目同时含 Vue SFC 时改用 `createStylex()`。
+`stylexCompiler()` 支持原生 JS、TS、JSX、TSX 源码模块。它忽略 `?raw` 等派生请求，避免其元数据覆盖或删除物理源的规则。项目同时含 Vue SFC 时改用 `createStylex()`。
 
 ## 显式绑定 class 与 style
 
