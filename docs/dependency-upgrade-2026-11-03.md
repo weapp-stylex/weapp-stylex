@@ -1,6 +1,6 @@
 # 2026-11-03 依赖升级记录
 
-本次按官方已发布版本检查并升级工作区依赖，同时保留框架要求的版本边界。开发宿主 weapp-vite/Wevu 已升级到 `7.8.0`。最终冻结安装、类型检查、lint、单元测试、100 项脚本测试与 29 包真实 API 已通过；同一批 final2 tarball 的 Babel/auto 各 28 份构建、H5 交互、最低宿主、完整 integration、120 次隔离框架构建及两个最低 Node 版本消费者均已通过。微信开发者工具和远程 CI 仍待本轮最终验收，不能据此宣布整个升级已通过。
+本次按官方已发布版本检查并升级工作区依赖，同时保留框架要求的版本边界。开发宿主 weapp-vite/Wevu 已升级到 `7.8.0`。最终冻结安装、类型检查、lint、单元测试、100 项脚本测试与 29 包真实 API 已通过；同一批 final2 tarball 的 Babel/auto 各 28 份构建、H5 交互、最低宿主、完整 integration、120 次隔离框架构建、两个最低 Node 版本消费者，以及官方稳定微信开发者工具 direct 启动的完整七产物验收均已通过。远程 CI/CD 以 [PR #13 最新提交的 checks](https://github.com/weapp-stylex/weapp-stylex/pull/13/checks)为准，全部通过方可合并。
 
 本文的审计数字来自本轮 `audit-before.json` / `audit-after.json` 快照。代码和锁文件尚在验收阶段，任何后续依赖变化都需要重新安装、审计和验证，并同步本文与逐项清单。
 
@@ -158,9 +158,27 @@ Nimbus 的官方 `migrate --dry-run --json` 从 0.18.1 到 0.19.2 未报告源�
 
 本地[稳定版](./validation/dependency-upgrade-2026-11-03/docs-browser-stable.json)与[预览版](./validation/dependency-upgrade-2026-11-03/docs-browser-preview.json)生产产物的浏览器报告均为 Node 26.13.0、`headless: true`、`passed: true`、无错误。覆盖中英文生产搜索、键盘焦点、复制、主题持久化、语言路由、桌面/移动视口和无 JavaScript 内容。报告确认本任务创建的浏览器与服务均已关闭。这是本地生产构建证据，不是远程部署成功记录。
 
+## 微信 IDE 启动方式与失败记录
+
+本机默认的 `open-before-auto` 路径先执行官方 CLI open，再启动 auto。该路径本轮没有取得完整通过结果：一次运行的原生与 Wevu 已通过，Taro React Webpack 的三轮主题、条件和尺寸计算样式也已通过，但在 `mini.reLaunch('/subpackage/detail/index')` 阶段收到 IDE 协议的 response timeout；另两次重试分别在 Wevu 初始路由与 Taro 启动后 native readiness 阶段失败。这些失败不会被后续成功覆盖成通过记录。
+
+已有原生日志显示，Taro 分包冷编译时发生了旧 App dispose 等待、AppService 重启编译与 reload；官方 SDK 0.13.0 会把 IDE 协议返回的 error 原样抛出，因此该 timeout 不能直接等同于 Node 端计时器。重复初始化与冷编译重启之间的竞争更符合当前事件顺序，但尚不能据此确定是 IDE 或 Taro 的缺陷。
+
+对照仅使用脚本已有的 `WEAPP_STYLEX_IDE_PREOPEN=0`，改成单次 auto 的 `direct` 启动；官方 SDK、IDE、同批产物、分包导航、断言与超时均未修改。该路径先完成了后五个产物的 partial 验证，随后完整七产物运行在 206.2 秒内全部通过。最终使用官方稳定 IDE `2.02.2609240`、基础库 `3.17.6`、auto 后端与相同 final2 pack ID，381 条计算样式检查覆盖三轮主题/条件/尺寸、普通分包导航与返回重入；七个本任务资源的 native window、自动化端点全部确认关闭，全局 suite lock 已释放，见[脱敏完整报告](./validation/dependency-upgrade-2026-11-03/ide-sanitized.json)。
+
+[启动诊断摘要](./validation/dependency-upgrade-2026-11-03/ide-startup-diagnostic.json)保留 preopen 失败及 direct 对照，未把旧失败快照改写成通过。尤其 attempt4 原快照没有完成资源关闭记录；其后通过原生 UI 与端口独立检查确认任务窗口已退出，该后续观察与最终 full7 的清理证明分开记录。
+
+最终 21 张首页、分包与返回截图经过人工视觉和隐私核对，图像原始字节与 SHA-256 见[截图审查记录](./validation/dependency-upgrade-2026-11-03/ide-screenshot-review.json)及[证据索引](./validation/dependency-upgrade-2026-11-03/README.md)。公开 JSON 已移除测试身份、原始账户及锁所有权 token；公开 gzip 保存脱敏源文件的字节，不包含原始 IDE account/protocol 报告。
+
+![七个产物的首页、分包与返回截图](./validation/dependency-upgrade-2026-11-03/ide/contact-sheet.png)
+
+## 远程 CI 运行记录
+
+PR #13 首轮有 20 项通过、2 项 doctor 失败。Node 22.23.4 / 24.22.2 的失败位置为 repoctl doctor 环境规则：engines 兼容检查 `node-version` 已通过，`node-version-files` 则将仓库 canonical `.node-version=26.13.0` 与矩阵运行时精确比较。CI 现在由三个版本显式执行 `doctor --rules node-version --strict`，完整 doctor 只在 canonical Node 26 上运行；三个版本仍执行 `repo check --full`。首轮失败保留，远程 CI/CD 以[最新提交的 checks](https://github.com/weapp-stylex/weapp-stylex/pull/13/checks)为准，全部通过方可合并。
+
 ## 已取得的验证与未完成门禁
 
-本节以现有日志为准。[最终准备检查](./validation/dependency-upgrade-2026-11-03/final-prepare-summary.json)、[原子写入修复后的复核与打包](./validation/dependency-upgrade-2026-11-03/final-repack-summary.json)和[最终 Babel/auto 矩阵](./validation/dependency-upgrade-2026-11-03/final-matrix-summary.json)均为 exit 0，前后锁文件哈希保持相同。矩阵、隔离框架消费者及最低 Node 消费者共用 final2 的六包 tarball，pack ID 为 `791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1`，各包原始 SHA-256 见[打包清单](./validation/dependency-upgrade-2026-11-03/library-packs-final2.json)。IDE 与远程 CI 仍需完成，不能用早期通过记录代替最终结果。
+本节以现有日志为准。[最终准备检查](./validation/dependency-upgrade-2026-11-03/final-prepare-summary.json)、[原子写入修复后的复核与打包](./validation/dependency-upgrade-2026-11-03/final-repack-summary.json)和[最终 Babel/auto 矩阵](./validation/dependency-upgrade-2026-11-03/final-matrix-summary.json)均为 exit 0，前后锁文件哈希保持相同。矩阵、隔离框架消费者、最低 Node 消费者与最终 IDE 验收共用 final2 的六包 tarball，pack ID 为 `791d81f0a621e2ca1c6a27517377385ce4e7577f727d00141862d6e415e932a1`，各包原始 SHA-256 见[打包清单](./validation/dependency-upgrade-2026-11-03/library-packs-final2.json)。远程 CI 的合并门禁跟踪最新提交，早期通过记录不能替代当前结果。
 
 | 检查                                    | 本轮证据                                                                                                                                                                                                          | 状态                                            |
 | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
@@ -181,8 +199,8 @@ Nimbus 的官方 `migrate --dry-run --json` 从 0.18.1 到 0.19.2 未报告源�
 | 四平台、七种宿主产物、Babel/auto 一致性 | 同批 final2 包的 Babel/auto 各 28 份构建、产物检查、H5 生产/开发交互、最低宿主与 integration 均通过                                                                                                               | 最终冻结配置已通过                              |
 | 新旧 DCloud、facade/adapter 隔离消费者  | [120 次真实构建](./validation/dependency-upgrade-2026-11-03/framework-consumers-final2.json)，6 个命令均 exit 0，锁与 pack ID 一致                                                                                | 本地已通过                                      |
 | Node 最低版本消费者                     | [22.22.1](./validation/dependency-upgrade-2026-11-03/floor-22.22.1.json) / [24.11.0](./validation/dependency-upgrade-2026-11-03/floor-24.11.0.json)：六包独立入口、ESM/CJS、types、Babel/auto/SWC 与无 addon 安装 | 本地已通过                                      |
-| 真实微信开发者工具                      | 0.13.0 automator、真实 AppID、官方稳定 IDE、交互与资源清理                                                                                                                                                        | 待完成                                          |
-| GitHub Actions / CD                     | 新 Node 矩阵和受管工作流                                                                                                                                                                                          | 尚未取得远程通过结论                            |
+| 真实微信开发者工具                      | automator 0.13.0、稳定 IDE 2.02.2609240、基础库 3.17.6；auto/direct 完整七产物、381 条计算样式检查、21 截图与七个资源关闭通过                                                                                     | direct 路径已通过；preopen 失败保留             |
+| GitHub Actions / CD                     | [PR #13 最新提交 checks](https://github.com/weapp-stylex/weapp-stylex/pull/13/checks)：新 Node 矩阵与受管工作流                                                                                                   | 合并门禁：须全部通过（查看最新结果）            |
 
 ## 复现入口
 
@@ -242,12 +260,18 @@ corepack pnpm --filter docs check:site
 corepack pnpm exec node scripts/test-docs-browser.mjs
 ```
 
-微信 IDE 验收须提供本机官方稳定版 CLI 路径与真实测试 AppID，并保持全局串行：
+微信 IDE 验收须提供本机官方稳定版 CLI 路径与真实测试 AppID，并保持全局串行。本轮选择现有 direct 启动路径，使用同一批已验证消费者 manifest；不设置 `WEAPP_STYLEX_IDE_START_AT`，执行完整七产物验收：
 
 ```bash
 WEAPP_STYLEX_APPID='<real-appid>' \
 WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH='<official-devtools-cli>' \
+WEAPP_STYLEX_IDE_CONSUMER_MANIFEST='<absolute-final-consumer-manifest>' \
+WEAPP_STYLEX_BACKEND=auto \
+WEAPP_STYLEX_IDE_PREOPEN=0 \
+DEBUG=automator:protocol \
 corepack pnpm test:ide
 ```
+
+`DEBUG` 用于诊断官方 SDK 与 IDE 的协议交互，不改变验收断言。原始协议日志和 IDE account 响应可能包含测试身份信息，只在本地保留；公开证据使用脱敏报告与人工核对后的截图。`WEAPP_STYLEX_IDE_PREOPEN=1` 可单独重现 preopen 路径，但本轮没有将该路径标为通过。
 
 `corepack pnpm audit --json` 用于重新取得传递依赖审计快照；存在本节已披露的 advisory 时该命令会以非零状态退出，不能忽略或标为审计通过。锁文件、逐项 JSON、原始审计、运行环境及最终 CI 必须对应同一提交。本轮不执行 npm 发布，也不以本地文档预览代替受管部署记录。

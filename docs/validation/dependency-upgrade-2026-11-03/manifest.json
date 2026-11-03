@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-03T10:36:31.774Z",
-  "policy": "Whitelisted validation evidence only; no AppID, authentication state, full node_modules, or source trees. Each gzip archive preserves the exact original source bytes; readable JSON may be formatted without changing parsed data. Six full consumer manifests are archived without duplicate readable copies.",
+  "generatedAt": "2026-11-03T11:17:00.644Z",
+  "policy": "Whitelisted validation evidence only; no AppID, authentication state, full node_modules, or source trees. Each gzip archive preserves the exact original source bytes; readable JSON may be formatted without changing parsed data. IDE JSON is sanitized before archiving; raw account/protocol reports are excluded. Six full consumer manifests are archived without duplicate readable copies. Reviewed PNGs are saved directly with exact-byte hashes.",
   "evidence": [
     {
       "file": "audit-before.json",
@@ -312,6 +312,48 @@
       "readableMatchesOriginalBytes": true
     },
     {
+      "file": "ide-sanitized.json",
+      "kind": "json",
+      "source": "artifacts/dependency-upgrade/ide-sanitized/report.json",
+      "originalBytes": 484913,
+      "originalSha256": "79b852e674fcb51b75411ff4e3f3d754da5c5f9af5cc87a29d354cb48a739353",
+      "originalArchive": "ide-sanitized.json.gz",
+      "archiveBytes": 50903,
+      "archiveSha256": "f1ce21cc84067f0542566e69d01e47ff7e66e9d50745b2b5af0ae069950639de",
+      "readableIncluded": true,
+      "readableBytes": 484913,
+      "readableSha256": "79b852e674fcb51b75411ff4e3f3d754da5c5f9af5cc87a29d354cb48a739353",
+      "readableMatchesOriginalBytes": true
+    },
+    {
+      "file": "ide-screenshot-review.json",
+      "kind": "json",
+      "source": "artifacts/dependency-upgrade/ide-screenshot-review.json",
+      "originalBytes": 9282,
+      "originalSha256": "b52f1de9e0fa747162572590fc362962b8144770a3fdc88f1793d99188241c94",
+      "originalArchive": "ide-screenshot-review.json.gz",
+      "archiveBytes": 1680,
+      "archiveSha256": "6e9041abb76a1fa17aba8372b632fbe6cff29331f45527f821faba96935b7c19",
+      "readableIncluded": true,
+      "readableBytes": 9282,
+      "readableSha256": "b52f1de9e0fa747162572590fc362962b8144770a3fdc88f1793d99188241c94",
+      "readableMatchesOriginalBytes": true
+    },
+    {
+      "file": "ide-startup-diagnostic.json",
+      "kind": "json",
+      "source": "artifacts/dependency-upgrade/ide-startup-diagnostic.json",
+      "originalBytes": 14587,
+      "originalSha256": "02f244514bb3ea8010cf5dad5cea11824574a8da76550197f0339408128391e5",
+      "originalArchive": "ide-startup-diagnostic.json.gz",
+      "archiveBytes": 3419,
+      "archiveSha256": "b0573304562c1abb9be8baf8eb323ff2cc830b72be4e20deaf97b4729f8174b4",
+      "readableIncluded": true,
+      "readableBytes": 14587,
+      "readableSha256": "02f244514bb3ea8010cf5dad5cea11824574a8da76550197f0339408128391e5",
+      "readableMatchesOriginalBytes": true
+    },
+    {
       "file": "weapp-vite-7.8-linux-integration.log.txt",
       "kind": "text",
       "source": "artifacts/dependency-upgrade/weapp-vite-7.8-linux-real-flow/workspace-integration-watch-fixed-7.8.log",
@@ -404,6 +446,247 @@
       "archiveBytes": 41389,
       "archiveSha256": "ef0c1b62f579423a2410db946e7a8890941ca3b382d2ea1dee4254cdfb83fba8",
       "readableIncluded": false
+    }
+  ],
+  "media": [
+    {
+      "artifact": "wechat-native",
+      "directory": "dist",
+      "view": "index",
+      "source": "artifacts/ide/run-1793703785083/0-wechat-native/index.png",
+      "file": "ide/0-wechat-native/index.png",
+      "bytes": 81713,
+      "sha256": "cf5cc85ad2dcdf60ae4265af024505875ad0f75fb4f48c57fb34f604419d4d20",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "wechat-native",
+      "directory": "dist",
+      "view": "subpackage",
+      "source": "artifacts/ide/run-1793703785083/0-wechat-native/subpackage.png",
+      "file": "ide/0-wechat-native/subpackage.png",
+      "bytes": 32550,
+      "sha256": "24c2c864367e15f5512136e68252bdde814d78a9064ac1b89ccf224b43270999",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "wechat-native",
+      "directory": "dist",
+      "view": "reentry",
+      "source": "artifacts/ide/run-1793703785083/0-wechat-native/reentry.png",
+      "file": "ide/0-wechat-native/reentry.png",
+      "bytes": 81713,
+      "sha256": "cf5cc85ad2dcdf60ae4265af024505875ad0f75fb4f48c57fb34f604419d4d20",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "wechat-wevu",
+      "directory": "dist",
+      "view": "index",
+      "source": "artifacts/ide/run-1793703785083/1-wechat-wevu/index.png",
+      "file": "ide/1-wechat-wevu/index.png",
+      "bytes": 77678,
+      "sha256": "f419d97f35fbe5c7ae97b27e130683fbe1cee71d64d30c8a3e11cd958126fac2",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "wechat-wevu",
+      "directory": "dist",
+      "view": "subpackage",
+      "source": "artifacts/ide/run-1793703785083/1-wechat-wevu/subpackage.png",
+      "file": "ide/1-wechat-wevu/subpackage.png",
+      "bytes": 30250,
+      "sha256": "ef2f130b6971c9264b8682f6b1e333d2bc4aab1d8c3ce197215d2efb2039cf35",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "wechat-wevu",
+      "directory": "dist",
+      "view": "reentry",
+      "source": "artifacts/ide/run-1793703785083/1-wechat-wevu/reentry.png",
+      "file": "ide/1-wechat-wevu/reentry.png",
+      "bytes": 77678,
+      "sha256": "f419d97f35fbe5c7ae97b27e130683fbe1cee71d64d30c8a3e11cd958126fac2",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-react",
+      "directory": "dist/weapp-webpack",
+      "view": "index",
+      "source": "artifacts/ide/run-1793703785083/2-taro-react/index.png",
+      "file": "ide/2-taro-react/index.png",
+      "bytes": 66160,
+      "sha256": "f4ac683a3c6d48485e46f2ed1986978a5ffcb69bc325533b20d465db7ebbf84b",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-react",
+      "directory": "dist/weapp-webpack",
+      "view": "subpackage",
+      "source": "artifacts/ide/run-1793703785083/2-taro-react/subpackage.png",
+      "file": "ide/2-taro-react/subpackage.png",
+      "bytes": 28794,
+      "sha256": "fcc71edbb9d7aa0e790ffb02417534903da17e48e3a28dfcf64d3f8f16ca7a6b",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-react",
+      "directory": "dist/weapp-webpack",
+      "view": "reentry",
+      "source": "artifacts/ide/run-1793703785083/2-taro-react/reentry.png",
+      "file": "ide/2-taro-react/reentry.png",
+      "bytes": 66160,
+      "sha256": "f4ac683a3c6d48485e46f2ed1986978a5ffcb69bc325533b20d465db7ebbf84b",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-react",
+      "directory": "dist/weapp-vite",
+      "view": "index",
+      "source": "artifacts/ide/run-1793703785083/3-taro-react/index.png",
+      "file": "ide/3-taro-react/index.png",
+      "bytes": 66160,
+      "sha256": "f4ac683a3c6d48485e46f2ed1986978a5ffcb69bc325533b20d465db7ebbf84b",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-react",
+      "directory": "dist/weapp-vite",
+      "view": "subpackage",
+      "source": "artifacts/ide/run-1793703785083/3-taro-react/subpackage.png",
+      "file": "ide/3-taro-react/subpackage.png",
+      "bytes": 28794,
+      "sha256": "fcc71edbb9d7aa0e790ffb02417534903da17e48e3a28dfcf64d3f8f16ca7a6b",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-react",
+      "directory": "dist/weapp-vite",
+      "view": "reentry",
+      "source": "artifacts/ide/run-1793703785083/3-taro-react/reentry.png",
+      "file": "ide/3-taro-react/reentry.png",
+      "bytes": 66160,
+      "sha256": "f4ac683a3c6d48485e46f2ed1986978a5ffcb69bc325533b20d465db7ebbf84b",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-vue3",
+      "directory": "dist/weapp-webpack",
+      "view": "index",
+      "source": "artifacts/ide/run-1793703785083/4-taro-vue3/index.png",
+      "file": "ide/4-taro-vue3/index.png",
+      "bytes": 66749,
+      "sha256": "3b6d6c30de3cb4ed35e18612b1bfa42e8060f518d844b69b43393d732edc823f",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-vue3",
+      "directory": "dist/weapp-webpack",
+      "view": "subpackage",
+      "source": "artifacts/ide/run-1793703785083/4-taro-vue3/subpackage.png",
+      "file": "ide/4-taro-vue3/subpackage.png",
+      "bytes": 28875,
+      "sha256": "e3878e39dc1271018834662574dd76023746e90bc7e2ee4e7bb86e924d389d35",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-vue3",
+      "directory": "dist/weapp-webpack",
+      "view": "reentry",
+      "source": "artifacts/ide/run-1793703785083/4-taro-vue3/reentry.png",
+      "file": "ide/4-taro-vue3/reentry.png",
+      "bytes": 66749,
+      "sha256": "3b6d6c30de3cb4ed35e18612b1bfa42e8060f518d844b69b43393d732edc823f",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-vue3",
+      "directory": "dist/weapp-vite",
+      "view": "index",
+      "source": "artifacts/ide/run-1793703785083/5-taro-vue3/index.png",
+      "file": "ide/5-taro-vue3/index.png",
+      "bytes": 66749,
+      "sha256": "3b6d6c30de3cb4ed35e18612b1bfa42e8060f518d844b69b43393d732edc823f",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-vue3",
+      "directory": "dist/weapp-vite",
+      "view": "subpackage",
+      "source": "artifacts/ide/run-1793703785083/5-taro-vue3/subpackage.png",
+      "file": "ide/5-taro-vue3/subpackage.png",
+      "bytes": 28875,
+      "sha256": "e3878e39dc1271018834662574dd76023746e90bc7e2ee4e7bb86e924d389d35",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "taro-vue3",
+      "directory": "dist/weapp-vite",
+      "view": "reentry",
+      "source": "artifacts/ide/run-1793703785083/5-taro-vue3/reentry.png",
+      "file": "ide/5-taro-vue3/reentry.png",
+      "bytes": 66749,
+      "sha256": "3b6d6c30de3cb4ed35e18612b1bfa42e8060f518d844b69b43393d732edc823f",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "uni-vue3",
+      "directory": "dist/build/mp-weixin",
+      "view": "index",
+      "source": "artifacts/ide/run-1793703785083/6-uni-vue3/index.png",
+      "file": "ide/6-uni-vue3/index.png",
+      "bytes": 67066,
+      "sha256": "a43908e5f151c6ee5fb90b4023fedcb9a008e255f74ababb1d65b7ad1af1bbca",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "uni-vue3",
+      "directory": "dist/build/mp-weixin",
+      "view": "subpackage",
+      "source": "artifacts/ide/run-1793703785083/6-uni-vue3/subpackage.png",
+      "file": "ide/6-uni-vue3/subpackage.png",
+      "bytes": 26981,
+      "sha256": "70619e79f315373689e7a7c48533788734254463295af6df167d027e99f5206f",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "artifact": "uni-vue3",
+      "directory": "dist/build/mp-weixin",
+      "view": "reentry",
+      "source": "artifacts/ide/run-1793703785083/6-uni-vue3/reentry.png",
+      "file": "ide/6-uni-vue3/reentry.png",
+      "bytes": 67066,
+      "sha256": "a43908e5f151c6ee5fb90b4023fedcb9a008e255f74ababb1d65b7ad1af1bbca",
+      "width": 780,
+      "height": 1688
+    },
+    {
+      "source": "artifacts/dependency-upgrade/ide-contact-sheet.png",
+      "file": "ide/contact-sheet.png",
+      "bytes": 112419,
+      "sha256": "8538a0f072c013425e40163b1ece4f84a82a21f77e8c61ef5a256136ad9b3187",
+      "width": 1260,
+      "height": 1230
     }
   ]
 }

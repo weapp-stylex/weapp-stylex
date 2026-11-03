@@ -3,7 +3,7 @@
   "generatedAt": "2026-11-03T10:13:46.024Z",
   "sourceCommit": "2b3e5890a35bac61e6cd12c860ed5d92a89c34d5",
   "scope": "HEAD 与当前 13 个 workspace manifests 的全部直接外部 dependency/devDependency/optionalDependency/peerDependency；不含 workspace:* 内部边、传递依赖、Actions 和运行环境版本。",
-  "validationStatus": "local-final-passed-pending-ide-and-remote-ci",
+  "validationStatus": "local-and-ide-passed-remote-status-tracked-on-pr",
   "registry": "https://registry.npmjs.org",
   "rawQueryCache": "artifacts/dependency-audit-2026-11-03/",
   "summary": {

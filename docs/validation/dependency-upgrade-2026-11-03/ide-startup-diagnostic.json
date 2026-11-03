@@ -1,0 +1,393 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-03T11:14:39.147798+00:00",
+  "scope": "IDE 启动策略失败与 direct 对照的最小脱敏诊断；不是库修复归因或 SDK/IDE 缺陷定论。",
+  "redaction": "仅白名单摘录；不包含 AppID、account、openId、完整协议日志或附近用户标识行。",
+  "sdk": {
+    "name": "miniprogram-automator",
+    "version": "0.13.0",
+    "sources": [
+      {
+        "path": "node_modules/.pnpm/miniprogram-automator@0.13.0_supports-color@10.2.2/node_modules/miniprogram-automator/out/MiniProgram.js",
+        "sha256": "6c4c6cd1cba491faee591c7e757b322205aeced3e22424969893924317019dcc"
+      },
+      {
+        "path": "node_modules/.pnpm/miniprogram-automator@0.13.0_supports-color@10.2.2/node_modules/miniprogram-automator/out/Connection.js",
+        "sha256": "214bce3a476cbbb780d395dc16f46ec96095b19d7dac33c8bd05851b2d543afd"
+      }
+    ],
+    "changeRouteSequence": [
+      "currentPage()",
+      "callWxMethod('reLaunch', { url })",
+      "SDK 固定等待 3000ms",
+      "currentPage()"
+    ],
+    "protocolError": "Connection.onMessage 收到 IDE 返回的 error.message 后 reject；timeout waiting for automator response 来自 IDE 协议响应，不是 SDK 本地 timer。",
+    "existingDiagnosticSwitch": "DEBUG=automator:protocol 可记录 SEND/RECV；此次未修改 SDK。"
+  },
+  "runs": [
+    {
+      "run": "1793702648023",
+      "rawReport": {
+        "path": "artifacts/dependency-upgrade/ide-attempt2-raw.json",
+        "sha256": "230cf40fe978d8022051640acb6bffbe48ffc7aaf3b658a1fdf13c7d958495f6"
+      },
+      "scope": "full",
+      "backend": "auto",
+      "startup": "open-before-auto",
+      "status": "failed",
+      "installedVersion": "2.02.2609240",
+      "artifacts": [
+        {
+          "name": "wechat-native",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "wechat-wevu",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-react",
+          "status": "failed",
+          "stage": "subpackage route and computed shared styles",
+          "SDKVersion": "3.17.6",
+          "screenshots": 1,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        }
+      ],
+      "resources": [
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        }
+      ]
+    },
+    {
+      "run": "1793703031626",
+      "rawReport": {
+        "path": "artifacts/dependency-upgrade/ide-attempt3-raw.json",
+        "sha256": "469609bf8d030d9052a3050948998bc45640d1a8dcdd9fe68ea32eb4347a9b63"
+      },
+      "scope": "full",
+      "backend": "auto",
+      "startup": "open-before-auto",
+      "status": "failed",
+      "installedVersion": "2.02.2609240",
+      "artifacts": [
+        {
+          "name": "wechat-native",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "wechat-wevu",
+          "status": "failed",
+          "stage": "index route and precise initial styles",
+          "SDKVersion": "3.17.6",
+          "screenshots": 0,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        }
+      ],
+      "resources": [
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        }
+      ]
+    },
+    {
+      "run": "1793703244708",
+      "rawReport": {
+        "path": "artifacts/dependency-upgrade/ide-attempt4-raw.json",
+        "sha256": "94b4bfb7f58acaba98c14d208f2ab730859956561f4dd48e0e260c0e7865758f"
+      },
+      "scope": "partial: artifacts 3–7",
+      "backend": "auto",
+      "startup": "open-before-auto",
+      "status": "failed",
+      "installedVersion": "2.02.2609240",
+      "artifacts": [
+        {
+          "name": "taro-react",
+          "status": "failed",
+          "stage": "post-launch native readiness",
+          "screenshots": 0,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        }
+      ],
+      "resources": [
+        {
+          "closed": false,
+          "endpointClosed": null
+        }
+      ],
+      "cleanupSnapshotNote": "原始 snapshot 记录 closed=false，未记录 endpointClosed；不得将后续清理观察当作原始报告已清理。",
+      "laterCleanupObservation": {
+        "source": "root 后续报告；此子代理未独立操作 UI 核验",
+        "nativeUi": "仅保留用户原有 tdesign 项目",
+        "endpoint": "任务端口 55108 返回 ECONNREFUSED",
+        "nativeLifecycleEvents": [
+          {
+            "time": "18:55:34.649",
+            "event": "s8 closed"
+          },
+          {
+            "time": "18:55:34.657",
+            "event": "s8 destroyed"
+          }
+        ],
+        "rawNativeLog": "日志已 rollover；不提供或推造原始 SHA-256。"
+      }
+    },
+    {
+      "run": "1793703439984",
+      "rawReport": {
+        "path": "artifacts/dependency-upgrade/ide-attempt5-direct-partial-raw.json",
+        "sha256": "b5ced3c8bdc158e25b6be87469d0fc7fb7c8d35f9f9a593bf060ae43a7cbf4df"
+      },
+      "scope": "partial: artifacts 3–7",
+      "backend": "auto",
+      "startup": "direct",
+      "status": "partial",
+      "installedVersion": "2.02.2609240",
+      "artifacts": [
+        {
+          "name": "taro-react",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-react",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-vue3",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-vue3",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "uni-vue3",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        }
+      ],
+      "resources": [
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        }
+      ]
+    },
+    {
+      "run": "1793703785083",
+      "rawReport": {
+        "path": "artifacts/ide/run-1793703785083/report.json",
+        "sha256": "6817ddf0f84ccdf4421eb46f8fc318e978cec7eab3a5eca5e8fc23f38ad966d8"
+      },
+      "scope": "full",
+      "backend": "auto",
+      "startup": "direct",
+      "status": "passed",
+      "installedVersion": "2.02.2609240",
+      "artifacts": [
+        {
+          "name": "wechat-native",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "wechat-wevu",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-react",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-react",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-vue3",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "taro-vue3",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        },
+        {
+          "name": "uni-vue3",
+          "status": "passed",
+          "stage": "return and reenter index with initial state",
+          "SDKVersion": "3.17.6",
+          "screenshots": 3,
+          "screenshotsCountBasis": "record.assertions.screenshots 中实际保存的截图数组；不计 record.screenshots 计划路径。"
+        }
+      ],
+      "resources": [
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        },
+        {
+          "closed": true,
+          "endpointClosed": true
+        }
+      ]
+    }
+  ],
+  "nativeTimeline": {
+    "rawLog": {
+      "path": "artifacts/ide/run-1793702648023/2-taro-react/native.log",
+      "sha256": "b4661d4b51f9fb74b668054f7e5ca7c0ca491851b0da45fab64ff286df1aa58a"
+    },
+    "events": [
+      {
+        "time": "18:46:44.182",
+        "event": "index screenshot completed"
+      },
+      {
+        "time": "18:46:44.220",
+        "event": "subpackage cold compilation started"
+      },
+      {
+        "time": "18:46:44.289",
+        "event": "LoadApp: waiting for previous app to dispose"
+      },
+      {
+        "time": "18:46:44.315",
+        "event": "[appservice] restart appservice compile"
+      },
+      {
+        "time": "18:46:44.322",
+        "event": "webview dialog event compileTs mismatch"
+      },
+      {
+        "time": "18:46:44.416",
+        "event": "[appservice] appservice reload"
+      }
+    ],
+    "selection": "仅转述本代理已读到的最小事件，未复制完整日志行；故不包含相邻用户标识。"
+  },
+  "observations": [
+    "attempt2 的 native/Wevu 成功分包阶段出现冷编译；Taro React webpack 的失败阶段同时出现 AppService 重新初始化事件。",
+    "attempt2 Taro React webpack 在分包导航失败前，三轮初始/条件/主题/动态值的计算样式检查已通过。",
+    "Taro initNativeApi 使用 processApis(taro, wx)；现有证据不能证明其改写 wx.reLaunch；构建 app.json 分包路由合法。",
+    "direct partial 后五产物全部通过，但 status=partial，不能记为完整矩阵通过。",
+    "最终 direct full7 七产物全部 passed，共 21 screenshots；七资源 closed=true 且 endpointClosed=true；实际基础库 SDKVersion=3.17.6，官方稳定 IDE=2.02.2609240。",
+    "最终采用现有开关 WEAPP_STYLEX_IDE_PREOPEN=0；产物、SDK、宿主及原断言保留，没有打补丁或增加超时。"
+  ],
+  "interpretation": {
+    "hypothesis": "preopen 与 automator 重复初始化可能和分包冷编译发生重启竞争，使旧上下文请求丢失。",
+    "confidence": "证据支持的可能解释；无法据此确定唯一根因。",
+    "limits": [
+      "三次失败发生于不同宿主和阶段，不能定为 Taro 独有问题。",
+      "direct 全通过说明现有启动配置可完成同一验收，不能证明 IDE 或 SDK 的确定性缺陷。",
+      "未通过新增实验单独隔离每个变量，未修改宿主、SDK 或 IDE。"
+    ]
+  },
+  "followUp": "最终 full7 已通过；不为此诊断增加测试、重试或改动冻结源。"
+}

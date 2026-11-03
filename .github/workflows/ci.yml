@@ -43,7 +43,11 @@ jobs:
         env:
           WEAPP_STYLEX_BACKEND: auto
       - run: pnpm exec repo deps check
-      - run: pnpm exec repo doctor
+      - name: Verify each matrix runtime against the workspace Node engines
+        run: pnpm exec repo doctor --rules node-version --strict
+      - name: Verify the canonical development environment
+        if: matrix.node == '26.13.0'
+        run: pnpm exec repo doctor
       - run: pnpm exec repo check --full
       - name: Retain verification diagnostics
         if: always()
