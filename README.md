@@ -294,9 +294,9 @@ corepack pnpm test:ide
 
 `test:integration` 使用真实原生模块图、Vite watcher 和 Webpack filesystem cache；`test:examples` 检查 28 份产物并运行原生/Wevu `@mpcore/test` 逻辑树和交互断言。IDE suite 全局串行，每份产物只启动一次 automator，以 `reLaunch` 切页，先断言再截图。
 
-IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`（选定的官方稳定版 CLI），先登录并开启服务端口。构建脚本从环境注入 AppID；测试在独立产物副本同步 AppID 和条件页，不改动用户已打开的项目。日志、截图、版本和资源清理记录写入 `artifacts/ide`；缺环境时返回退出码 2 并明确标记 pending。
+IDE 验收需设置 `WEAPP_STYLEX_APPID`（真实 AppID）和 `WEAPP_VITE_E2E_DEVTOOLS_CLI_PATH`（选定的官方稳定版 CLI），先登录并开启服务端口。本轮完整验收选择 `WEAPP_STYLEX_IDE_PREOPEN=0` 的单次启动路径；同批产物与 auto 后端的完整命令及启动方式限制见[升级报告](docs/dependency-upgrade-2026-11-03.md#微信-ide-启动方式与失败记录)。构建脚本从环境注入 AppID；测试在独立产物副本同步 AppID 和条件页，不改动用户已打开的项目。日志、截图、版本和资源清理记录写入 `artifacts/ide`；缺环境时返回退出码 2 并明确标记 pending。
 
-本轮依赖变更、保留理由、本地验收和远端工作流状态见 [2026-10-13 依赖升级](docs/dependency-upgrade-2026-10-13.md)。历史验证、审计残留和 IDE 状态见 [多框架验收记录](docs/multi-framework-validation.md)；历史记录中的环境和结果保持原日期。
+此前依赖变更、保留理由、本地验收和远端工作流状态见 [2026-10-13 依赖升级](docs/dependency-upgrade-2026-10-13.md)。历史验证、审计残留和 IDE 状态见 [多框架验收记录](docs/multi-framework-validation.md)；历史记录中的环境和结果保持原日期。
 
 ## 支持边界
 
